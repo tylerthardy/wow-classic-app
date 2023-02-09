@@ -1,12 +1,12 @@
 <div class="modal-content">
   <div class="modal-header">
-    <h4>{{ "Confirm" }}</h4>
+    <h4>{{ 'Confirm' }}</h4>
   </div>
   <div class="modal-body">
-    <div>Raid: <app-raid-selection [(ngModel)]="raid"></app-raid-selection></div>
+    <div>Raid: <app-raid-selection [(ngModel)]="instanceSlug"></app-raid-selection></div>
     <div>
       Hard Reserve:
-      <app-item-selection [instance]="raid" [(ngModel)]="hardReserveItem"></app-item-selection>
+      <app-item-selection [instance]="instanceSlug" [(ngModel)]="hardReserveItem"></app-item-selection>
     </div>
     <div>Recipient: <input [(ngModel)]="hardReserveRecipient" /></div>
   </div>

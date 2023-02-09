@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { Observable } from 'rxjs';
 import { ConfirmModalComponent } from '../common/components/confirm-modal/confirm-modal.component';
 import { HtmlCopyUtil } from '../common/html-copy-util';
+import { Raid } from '../common/services/raids/raid.interface';
 import { Softres } from '../common/services/softres/http/common/softres.interface';
 import { CreateSoftresResponse } from '../common/services/softres/http/create-softres-response.interface';
 import { CreateSoftresOptions } from '../common/services/softres/options/create-softres-options.interface';
@@ -19,12 +20,15 @@ import { CreateSoftresModalComponent } from '../create-softres-modal/create-soft
 })
 export class SoftresManagerComponent implements OnInit {
   private debug = false;
-  softres: Softres | undefined = this.debug
+
+  @Input() raid?: Raid;
+
+  public softres: Softres | undefined = this.debug
     ? JSON.parse(
         '{"raidId":"po8p78","edition":"wotlk","instance":"obsidiansanctum10p2","discord":true,"discordId":null,"discordInvite":null,"token":"direwing809","reserved":[],"modifications":0,"faction":"Alliance","amount":1,"lock":false,"note":"","raidDate":null,"lockRaidDate":false,"hideReserves":false,"allowDuplicate":true,"itemLimit":0,"plusModifier":1,"plusType":0,"restrictByClass":true,"characterNotes":true,"itemNotes":[],"date":"2023-01-27T16:15:21.478Z","updated":"2023-01-27T16:15:21.478Z","_id":"63d3f899f13fcda11edcd847"}'
       )
     : undefined;
-  showEmbedded: boolean = true;
+  public showEmbedded: boolean = true;
 
   get softResUrl(): string {
     if (!this.softres) {
@@ -100,16 +104,17 @@ export class SoftresManagerComponent implements OnInit {
       alert('Cannot create softres. One already exists.');
       return;
     }
+    const data: CreateSoftresModalData = {
+      instanceSlug: 'wotlknaxx10p2',
+      softReserveCount: 1,
+      ...this.raid
+    };
 
-    this.simpleModalService
-      .addModal(CreateSoftresModalComponent, {
-        raid: 'wotlknaxx25'
-      })
-      .subscribe((result: CreateSoftresModalData) => {
-        if (result) {
-          this.createSoftres(result).subscribe((result) => (this.softres = result));
-        }
-      });
+    this.simpleModalService.addModal(CreateSoftresModalComponent, data).subscribe((result: CreateSoftresModalData) => {
+      if (result) {
+        this.createSoftres(result).subscribe((result) => (this.softres = result));
+      }
+    });
   }
 
   getSoftresUrl(): string {
@@ -123,7 +128,7 @@ export class SoftresManagerComponent implements OnInit {
   private createSoftres(modalData: CreateSoftresModalData): Observable<CreateSoftresResponse> {
     let createOptions: CreateSoftresOptions = {
       edition: 'wotlk',
-      instance: modalData.raid,
+      instance: modalData.instanceSlug,
       faction: 'Alliance',
       discord: true,
       amount: 1,

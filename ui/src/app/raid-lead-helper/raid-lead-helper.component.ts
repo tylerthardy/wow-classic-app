@@ -39,7 +39,7 @@ export class RaidLeadHelperComponent implements OnInit {
   public detailsButtons: RaidInformationButton[];
   public isRecopyAfterPaste: boolean = true;
 
-  public instanceInput: SoftresRaidSlug | undefined;
+  public instanceInput: SoftresRaidSlug = 'wotlknaxx10p2';
   public hardReserveItemInput: ItemData | undefined;
   public hardReserveRecipientInput: string | undefined;
   public softReserveCountInput: number = 1;

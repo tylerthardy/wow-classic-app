@@ -1,8 +1,3 @@
-import { ItemData } from '../common/item-data.interface';
-import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
+import { Raid } from '../common/services/raids/raid.interface';
 
-export interface CreateSoftresModalData {
-  raid: SoftresRaidSlug;
-  hardReserveItem?: ItemData;
-  hardReserveRecipient?: string;
-}
+export interface CreateSoftresModalData extends Raid {}

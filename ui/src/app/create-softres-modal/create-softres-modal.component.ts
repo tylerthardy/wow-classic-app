@@ -13,9 +13,10 @@ export class CreateSoftresModalComponent
   extends SimpleModalComponent<CreateSoftresModalData, CreateSoftresModalData>
   implements CreateSoftresModalData
 {
-  raid!: SoftresRaidSlug;
+  instanceSlug!: SoftresRaidSlug;
   hardReserveItem: ItemData | undefined = undefined;
   hardReserveRecipient: string | undefined = undefined;
+  softReserveCount: number = 1;
 
   constructor() {
     super();
@@ -29,16 +30,17 @@ export class CreateSoftresModalComponent
     }
 
     this.result = {
-      raid: this.raid,
+      instanceSlug: this.instanceSlug,
       hardReserveItem: this.hardReserveItem,
-      hardReserveRecipient: this.hardReserveRecipient
+      hardReserveRecipient: this.hardReserveRecipient,
+      softReserveCount: this.softReserveCount
     };
     this.close();
   }
 
   private getFormErrors(): string[] {
     const errors: string[] = [];
-    if (!this.raid) {
+    if (!this.instanceSlug) {
       errors.push('A raid must be selected');
     }
     if (this.hardReserveItem && !this.hardReserveRecipient) {
