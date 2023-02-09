@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="instance-image"><img [src]="getInstanceImageUrl()" /></div>
+  <div class="raid-info">
+    <h2>{{ getInstanceName() + " " + getInstanceSize() }}</h2>
+    <ng-container *ngIf="!raid.hardReserveItem">Hard Reserve: None</ng-container>
+    <ng-container *ngIf="raid.hardReserveItem">
+      <div>
+        Hard Reserve:
+        <ng-container *ngIf="raid.hardReserveItem">
+          <wowhead-link [id]="raid.hardReserveItem.id" type="item"></wowhead-link>
+        </ng-container>
+        <ng-container *ngIf="!raid.hardReserveItem">None</ng-container>
+      </div>
+      <div>{{ raid.hardReserveRecipient }}</div>
+    </ng-container>
+    <div>Soft Reserve Count: {{ raid.softReserveCount }}</div>
+  </div>
+  <div class="buttons">
+    <button *ngFor="let button of buttons" (click)="button.click()">{{ button.label }}</button>
+  </div>
+</div>

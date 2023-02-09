@@ -1,0 +1,40 @@
+<div id="search-form">
+  Player Name:
+  <input [(ngModel)]="characterName" (keypress)="onPlayerNameKeyPress($event)" />
+  Raid:
+  <app-raid-selection [(ngModel)]="instanceSlug" [removeDuplicates]="true"></app-raid-selection>
+  <button (click)="onSearchClick()">Search</button>
+  <button (click)="onClearClick()">Clear</button>
+</div>
+
+<div class="loading-spinner large" *ngIf="zoneRankingsLoading"></div>
+
+<ng-container *ngIf="viewModel && !zoneRankingsLoading">
+  <div style="display: flex">
+    <div style="flex: 1; border: 1px black solid; border-right: 0">
+      <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+        <h3 style="text-align: center">{{ viewModel.characterName }}</h3>
+        <h4 style="flex: 1">Best Perf. Avg</h4>
+        <div style="flex: 1">
+          <app-parse-number
+            *ngIf="viewModel.bestPerformanceAverage"
+            [value]="viewModel.bestPerformanceAverage"
+            sizePx="30px"
+          ></app-parse-number>
+        </div>
+        <h4 style="flex: 1">Median Perf. Avg</h4>
+        <div style="flex: 1">
+          <app-parse-number
+            *ngIf="viewModel.medianPerformanceAverage"
+            [value]="viewModel.medianPerformanceAverage"
+            sizePx="20px"
+          ></app-parse-number>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex: 2; display: flex; flex-direction: column; justify-content: center; align-items: center">
+      <app-grid style="width: 100%" [data]="viewModel.data" [columns]="viewModel.columns"></app-grid>
+    </div>
+  </div>
+</ng-container>

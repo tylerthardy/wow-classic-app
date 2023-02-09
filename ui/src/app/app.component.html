@@ -1,0 +1,19 @@
+<div class="wrapper" [ngClass]="containerStyles[containerStyle].cssClass">
+  <header>
+    <span>WOTLK Companion</span>
+    <button (click)="cycleContainerStyle()">{{ nextContainerStyle }}</button>
+  </header>
+  <div class="light-theme" id="main">
+    <aside id="side-navigation">
+      <div *ngFor="let nav of navigation">
+        <a [routerLink]="nav.routerLink">{{ nav.title }}</a>
+      </div>
+    </aside>
+    <section id="content">
+      <router-outlet></router-outlet>
+    </section>
+  </div>
+  <!-- <footer>Footer</footer> -->
+
+  <div class="custom-toast-container" toastContainer></div>
+</div>

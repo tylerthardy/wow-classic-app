@@ -1,0 +1,26 @@
+<div class="dropdown">
+  <wowhead-link
+    #selectedItemElement
+    class="selected-item"
+    *ngIf="selectedItem"
+    [id]="selectedItem.id"
+    type="item"
+    [disableLink]="true"
+  ></wowhead-link>
+  <input
+    #textFilterElement
+    [(ngModel)]="textFilterInput"
+    (keyup)="onTextFilterKeyUp()"
+    (focus)="onInputFocus()"
+    (blur)="onInputBlur()"
+  />
+  <div class="dropdown-content">
+    <ng-container *ngIf="itemChoices">
+      <span class="dropdown-item" *ngFor="let filteredItem of itemChoices" (click)="onItemNameClick(filteredItem)">
+        <wowhead-link [id]="filteredItem.id" type="item" [disableLink]="true">{{
+          filteredItem.name
+        }}</wowhead-link></span
+      >
+    </ng-container>
+  </div>
+</div>

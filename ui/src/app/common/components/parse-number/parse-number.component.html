@@ -1,0 +1,8 @@
+<div [ngStyle]="containerStyles">
+  <app-specialization-icon
+    *ngIf="specialization"
+    [specialization]="specialization"
+    sizePx="17px"
+  ></app-specialization-icon>
+  <strong [ngClass]="cssClasses">{{ value | number : "1.1-1" }}</strong>
+</div>

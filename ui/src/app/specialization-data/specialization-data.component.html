@@ -1,0 +1,47 @@
+<div id="settings">
+  <button id="settings-button" (click)="onToggleSettingsButton()">
+    <span class="emoji">⚙</span>
+  </button>
+  <div *ngIf="showSettings">
+    <button
+      *ngFor="let specialization of specializations; let i = index"
+      class="setting-specialization-button"
+      [ngClass]="getSpecializationButtonClasses(i)"
+      (click)="onToggleSpecializationVisibility(i)"
+    >
+      <app-specialization-icon [specialization]="specialization" size="small"></app-specialization-icon>
+    </button>
+  </div>
+</div>
+<div id="visible-specializations">
+  <button *ngFor="let i of visibleSpecs" (click)="onSpecializationButtonClick(i)">
+    <app-specialization-icon [specialization]="specializations[i]" size="large"></app-specialization-icon>
+  </button>
+</div>
+<table *ngIf="selectedSpecialization">
+  <tr>
+    <th>Specialization:</th>
+    <td>
+      {{ selectedSpecialization.specializationName }}
+      {{ selectedSpecialization.className }} {{ selectedSpecialization.role }}
+    </td>
+  </tr>
+  <tr>
+    <th>Phase 1 BIS</th>
+    <td>
+      <button class="spec-link-button" (click)="onPhaseBisClick(1)">LINK</button>
+    </td>
+  </tr>
+  <tr>
+    <th>Phase 2 BIS</th>
+    <td>
+      <button class="spec-link-button" (click)="onPhaseBisClick(2)">LINK</button>
+    </td>
+  </tr>
+  <tr>
+    <th>Stat Priority</th>
+    <td>
+      <button class="spec-link-button" (click)="onStatPriorityClick()">LINK</button>
+    </td>
+  </tr>
+</table>

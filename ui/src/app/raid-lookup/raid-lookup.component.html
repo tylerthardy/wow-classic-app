@@ -1,0 +1,26 @@
+<div id="search-form">
+  <span>Import:</span>
+  <textarea [(ngModel)]="importJson"></textarea>
+  <span>Raid:</span>
+  <app-raid-selection [(ngModel)]="instanceInput" [removeDuplicates]="true"></app-raid-selection>
+  <button (click)="onSearchClick()">Search</button>
+  <button (click)="onClearClick()">Clear</button>
+</div>
+
+<div class="loading-spinner large" *ngIf="raidRankingsLoading"></div>
+
+<div *ngIf="viewModel">
+  <app-grid [data]="viewModel.data" [columns]="viewModel.columns">
+    <tr>
+      <td></td>
+      <td></td>
+      <td>
+        <app-parse-number [value]="viewModel.raidBestPerformanceAverage"></app-parse-number>
+      </td>
+      <td>
+        <app-parse-number [value]="viewModel.raidMedianPerformance"></app-parse-number>
+      </td>
+      <td></td>
+    </tr>
+  </app-grid>
+</div>

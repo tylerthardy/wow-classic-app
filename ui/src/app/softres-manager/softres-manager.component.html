@@ -1,0 +1,18 @@
+<div>
+  <ng-container *ngIf="!softres">
+    <button class="chunky-btn" (click)="onCreateSoftResClick()">Create Softres</button>
+  </ng-container>
+  <ng-container *ngIf="softres">
+    <input id="softres-url" readonly [value]="softResUrl" />
+    <div>
+      <button class="chunky-btn" (click)="onCopyClick()">Copy Softres</button>
+      <button class="chunky-btn" (click)="onToggleEmbeddedClick()" *ngIf="softres">
+        {{ showEmbedded ? "Hide Softres" : "Show Softres" }}
+      </button>
+      <button class="chunky-btn" style="float: right" (click)="onClearSoftResClick()">Clear Softres</button>
+    </div>
+    <div>
+      <iframe *ngIf="showEmbedded" id="embedded-softres" [src]="getSoftresUrl() | safe : 'resourceUrl'"></iframe>
+    </div>
+  </ng-container>
+</div>

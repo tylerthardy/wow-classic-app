@@ -1,0 +1,93 @@
+// Styles specific to index.html
+body {
+  height: 100vh;
+  width: 100vw;
+  margin: 0px;
+  background-color: darkgray;
+  font-family: sans-serif;
+  font-size: 12px;
+}
+
+// Global styles
+@import "ngx-toastr/toastr";
+.custom-toast-top-right {
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+}
+.custom-toast-container {
+  width: 100%;
+  pointer-events: none;
+  position: absolute;
+}
+.middle-container .custom-toast-container {
+  max-width: 1280px;
+}
+.left-container .custom-toast-container {
+  max-width: 1280px;
+}
+
+@import "../node_modules/ngx-simple-modal/styles/simple-modal.scss";
+.modal-content {
+  border-radius: 0;
+}
+
+@import "./styles/item-quality.scss";
+table,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th,
+td {
+  padding: 5px;
+  text-align: left;
+}
+
+button {
+  cursor: pointer;
+  margin-right: 5px;
+}
+.chunky-btn {
+  padding: 15px;
+}
+.toggle-btn.enabled {
+  background-color: #eccf99;
+}
+.button-bar {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.emoji {
+  font-family: "Twemoji Mozilla", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji",
+    "EmojiOne Color", "Android Emoji", sans-serif;
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  border-top-color: #000000;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+.loading-spinner.large {
+  width: 50px;
+  height: 50px;
+}
+
+@keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}

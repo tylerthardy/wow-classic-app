@@ -1,0 +1,56 @@
+<div style="width: 50%">
+  <h3>Search</h3>
+  <div>Guild Name: <input [(ngModel)]="guildName" /></div>
+  <div>Server Slug: <input [(ngModel)]="serverSlug" /></div>
+  <div>Server Region: <input [(ngModel)]="serverRegion" /></div>
+  <div>Limit: <input [(ngModel)]="limit" /></div>
+  <button (click)="searchGuild()">Search</button>
+</div>
+
+<div class="loading-spinner large" *ngIf="logsLoading"></div>
+<ng-container *ngIf="!logsLoading">
+  <div style="width: 50%">
+    <h3>Filters</h3>
+    Killing Blow:
+    <select [(ngModel)]="filterKillingAbilityId" (change)="onFilterChanged()">
+      <option></option>
+      <option *ngFor="let killingAbilityId of killingAbilityIds" [ngValue]="killingAbilityId">
+        <wowhead-link type="spell" [id]="killingAbilityId"></wowhead-link>
+      </option>
+    </select>
+  </div>
+
+  <h3>Logs</h3>
+  <div style="padding-bottom: 10px">Showing results for {{ guildReports.length }} logs</div>
+  <table>
+    <tr>
+      <th>Player</th>
+      <th>Date</th>
+      <th>Encounter</th>
+      <th>Death</th>
+    </tr>
+    <tr *ngFor="let reportPlayerDeath of filteredReportPlayerDeaths">
+      <td width="25%">
+        <img
+          src="https://assets.rpglogs.com/img/warcraft/icons/actors.jpg?v=12"
+          class="report-table-icon sprite"
+          [ngClass]="getIconClasses(reportPlayerDeath.player.icon)"
+        />
+        {{ reportPlayerDeath.player.name }}
+      </td>
+      <td width="25%">
+        {{ reportPlayerDeath.report.startTime | date }}
+        &nbsp;
+        <a [href]="'https://classic.warcraftlogs.com/reports/' + reportPlayerDeath.report.code" target="_blank"
+          >(link)</a
+        >
+      </td>
+      <td width="25%">
+        {{ zoneEncounters[reportPlayerDeath.death.fightDetails.encounterID].name }}
+      </td>
+      <td width="25%">
+        <wowhead-link type="spell" [id]="reportPlayerDeath.death.killingAbilityGameID"></wowhead-link>
+      </td>
+    </tr>
+  </table>
+</ng-container>

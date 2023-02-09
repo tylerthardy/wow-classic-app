@@ -1,0 +1,13 @@
+<div class="container" (click)="onContainerClick()">
+  <div *ngFor="let viewModel of viewModels" (click)="viewModel.toggle()" [ngClass]="{ selected: viewModel.selected }">
+    <app-specialization-icon size="small" [specialization]="viewModel.specialization"></app-specialization-icon>
+    <span>&nbsp;{{ viewModel.specialization.className }} {{ viewModel.specialization.specializationName }}</span>
+  </div>
+</div>
+<div>
+  <button class="chunky-btn" (click)="onClearClick()">Clear</button>
+  <button class="chunky-btn" (click)="onCopyClick()">Copy</button>
+</div>
+<div>
+  <input id="lfg-output" style="width: 90%" [value]="getLfgString()" />
+</div>

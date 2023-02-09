@@ -1,0 +1,83 @@
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CharacterService } from '../common/services/character.service';
+import { CharacterZoneRankings, Metric, ZoneRankingsQuery } from '../common/services/graphql';
+import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
+import { RaidService } from '../common/services/raids/raid.service';
+import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
+import { RaidLookupViewModel } from './raid-lookup.viewmodel';
+import { RaidPlayerRole } from './raid-player-role.type';
+import { RaidPlayer } from './raid-player.interface';
+
+@Component({
+  selector: 'app-raid-lookup',
+  templateUrl: './raid-lookup.component.html',
+  styleUrls: ['./raid-lookup.component.scss']
+})
+export class RaidLookupComponent implements OnInit {
+  @Output() characterNameClicked: EventEmitter<string> = new EventEmitter<string>();
+  @Input() instanceInput: SoftresRaidSlug = 'ulduar10';
+  importJson: string | undefined;
+  raidRankingsLoading: boolean = false;
+  viewModel: RaidLookupViewModel | undefined;
+
+  constructor(private characterService: CharacterService, private raidService: RaidService) {}
+
+  ngOnInit(): void {}
+
+  public onSearchClick(): void {
+    if (!this.importJson) {
+      alert('JSON is required in the import field');
+      return;
+    }
+    this.searchRaid(this.importJson);
+  }
+
+  public onCharacterNameClick(characterName: string): void {
+    this.characterNameClicked.emit(characterName);
+  }
+
+  public searchRaid(json: string): void {
+    this.importJson = json;
+    this.raidRankingsLoading = true;
+
+    const raidZoneAndSize: RaidZoneAndSize = this.raidService.getZoneAndSize(this.instanceInput);
+
+    let players: RaidPlayer[];
+    try {
+      players = JSON.parse(this.importJson);
+    } catch (err) {
+      throw new Error(`Error while parsing players json: ${err}`);
+    }
+
+    const queries: ZoneRankingsQuery[] = players.map((player) => {
+      const query: ZoneRankingsQuery = {
+        characterName: player.name,
+        metric: this.getMetricFromRole(player.role),
+        serverRegion: 'us',
+        serverSlug: 'benediction',
+        zoneId: raidZoneAndSize.zoneId,
+        size: raidZoneAndSize.size
+      };
+      return query;
+    });
+
+    this.characterService.getMultipleZoneRankings(queries).subscribe((result: CharacterZoneRankings[]) => {
+      this.viewModel = new RaidLookupViewModel(result, players, (value) => this.onCharacterNameClick(value));
+      this.raidRankingsLoading = false;
+    });
+  }
+
+  public onClearClick(): void {
+    this.viewModel = undefined;
+  }
+
+  private getMetricFromRole(role: RaidPlayerRole): Metric {
+    switch (role) {
+      case 'DAMAGER':
+      case 'TANK':
+        return 'dps';
+      case 'HEALER':
+        return 'hps';
+    }
+  }
+}

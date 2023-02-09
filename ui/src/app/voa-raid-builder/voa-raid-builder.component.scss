@@ -1,0 +1,33 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    ". . . ."
+    ". . . ."
+    ". . . ."
+    ". . . ."
+    ". . . .";
+  border-left: 1px solid black;
+  border-top: 1px solid black;
+  margin-bottom: 5px;
+}
+.container div {
+  height: 40px;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.container div:hover {
+  background-color: #f0f0f0;
+}
+.container div.selected {
+  background-color: #ffdb97;
+}
+.container div.selected:hover {
+  background-color: #ffebc6;
+}

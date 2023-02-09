@@ -1,0 +1,13 @@
+<ng-container *ngIf="type === 'spell'">
+  <a *ngIf="id > 1" [href]="url" [attr.data-wowhead]="'spell=' + id">
+    <div class="loading-spinner"></div>
+  </a>
+  <!-- The following should be part of a death wowhead-link component -->
+  <span *ngIf="id <= 1">Melee</span>
+  <span *ngIf="!id">1-Shot</span>
+</ng-container>
+<ng-container *ngIf="type === 'item'">
+  <a *ngIf="id > 1" [href]="url" [attr.data-wowhead]="'item=' + id">
+    <div class="loading-spinner"></div>
+  </a>
+</ng-container>

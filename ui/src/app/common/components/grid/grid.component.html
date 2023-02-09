@@ -1,0 +1,44 @@
+<table>
+  <tr>
+    <th *ngFor="let column of columns; let i = index" (click)="onClickColumnSort(i)">
+      {{ column.label }}
+      <ng-container *ngIf="i === sortedColumnId">
+        <ng-container *ngIf="sortDirection === 'asc'">🔼</ng-container>
+        <ng-container *ngIf="sortDirection === 'desc'">🔽</ng-container>
+      </ng-container>
+    </th>
+  </tr>
+  <tr *ngFor="let dataRow of sortedData" [ngStyle]="dataRow.rowStyle">
+    <td
+      *ngFor="let column of columns"
+      [ngStyle]="getCellStyle(dataRow, column)"
+      (click)="onClickCell(dataRow, column)"
+      [attr.title]="getCellTooltip(dataRow, column)"
+    >
+      <ng-container *ngIf="column.format">
+        <ng-container [ngSwitch]="column.format.type">
+          <ng-container *ngSwitchCase="'parse'">
+            <app-parse-number
+              *ngIf="dataRow[column.valueKey].value"
+              [specialization]="dataRow[column.valueKey].specialization"
+              [value]="dataRow[column.valueKey].value"
+            ></app-parse-number>
+          </ng-container>
+          <ng-container *ngSwitchCase="'number'">
+            {{ dataRow[column.valueKey] | number : column.format.params }}
+          </ng-container>
+          <ng-container *ngSwitchCase="'date'">
+            {{ dataRow[column.valueKey] | date : column.format.params }}
+          </ng-container>
+          <ng-container *ngSwitchCase="'custom'">
+            {{ getColumnCustomFormat(column, dataRow) }}
+          </ng-container>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="!column.format">
+        {{ dataRow[column.valueKey] }}
+      </ng-container>
+    </td>
+  </tr>
+  <ng-content></ng-content>
+</table>

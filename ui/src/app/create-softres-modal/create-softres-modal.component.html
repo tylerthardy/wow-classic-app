@@ -1,0 +1,17 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4>{{ "Confirm" }}</h4>
+  </div>
+  <div class="modal-body">
+    <div>Raid: <app-raid-selection [(ngModel)]="raid"></app-raid-selection></div>
+    <div>
+      Hard Reserve:
+      <app-item-selection [instance]="raid" [(ngModel)]="hardReserveItem"></app-item-selection>
+    </div>
+    <div>Recipient: <input [(ngModel)]="hardReserveRecipient" /></div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger" (click)="close()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="confirm()">OK</button>
+  </div>
+</div>
