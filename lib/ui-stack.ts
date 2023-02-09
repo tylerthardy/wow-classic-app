@@ -23,7 +23,7 @@ export class ClassicCompanionUiStack extends Stack {
     });
 
     new BucketDeployment(this, 'classic-companion-ui-bucket-deployment', {
-      sources: [Source.asset(path.resolve(__dirname, '../ui/dist'))],
+      sources: [Source.asset(path.resolve(__dirname, '../ui/dist/classic-companion'))],
       destinationBucket: websiteBucket
     });
   }
