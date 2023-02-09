@@ -18,7 +18,7 @@ import { SoftresManagerComponent } from '../softres-manager/softres-manager.comp
   styleUrls: ['./raid-lead-helper.component.scss']
 })
 export class RaidLeadHelperComponent implements OnInit {
-  private debug: boolean = true;
+  private debug: boolean = false;
 
   @ViewChild('raidSpamCard') raidSpamCardRef!: CardComponent;
   @ViewChild('playerLookupCard') playerLookupCardRef!: CardComponent;
