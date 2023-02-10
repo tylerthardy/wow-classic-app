@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LocalStorageService } from '../common/services/local-storage.service';
 import { SpecializationData } from '../common/specialization/specialization-data.interface';
 import { SpecializationService } from '../common/specialization/specialization.service';
 
@@ -13,13 +14,18 @@ export class SpecializationDataComponent implements OnInit {
   selectedSpecialization: SpecializationData | undefined;
   showSettings: boolean = false;
 
-  constructor(speciailizationService: SpecializationService) {
-    this.specializations = speciailizationService.getSpecializations({
+  constructor(specializationService: SpecializationService, private localStorageService: LocalStorageService) {
+    this.specializations = specializationService.getSpecializations({
       omitWarcraftLogsSpecs: true
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const storedSpecs: number[] = this.localStorageService.get('specializationData', 'visibleSpecs');
+    if (storedSpecs?.length > 0) {
+      this.visibleSpecs = storedSpecs;
+    }
+  }
 
   onSpecializationButtonClick(specializationIndex: number): void {
     const selectedSpecialization: SpecializationData = this.specializations[specializationIndex];
@@ -38,6 +44,7 @@ export class SpecializationDataComponent implements OnInit {
     } else {
       this.visibleSpecs.splice(specIndex, 1);
     }
+    this.localStorageService.store('specializationData', 'visibleSpecs', this.visibleSpecs);
   }
 
   onToggleSettingsButton(): void {
