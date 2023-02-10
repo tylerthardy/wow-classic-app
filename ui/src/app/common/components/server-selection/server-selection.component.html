@@ -1,0 +1,12 @@
+<select [ngModel]="regionSlug" (change)="onRegionSelectChange($event)">
+  <option [value]="undefined">-</option>
+  <option *ngFor="let region of regions | keyvalue" [value]="region.value.slug">
+    {{ region.value.compactName }}
+  </option>
+</select>
+<select *ngIf="regionSlug" [ngModel]="serverSlug" (change)="onServerSelectChange($event)">
+  <option [value]="undefined">-</option>
+  <option *ngFor="let server of regions[regionSlug].servers" [value]="server.slug">
+    {{ server.name }}
+  </option>
+</select>

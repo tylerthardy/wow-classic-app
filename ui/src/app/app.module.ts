@@ -33,6 +33,7 @@ import { SpecializationDataComponent } from './specialization-data/specializatio
 import { SpecializationIconComponent } from './specialization-icon/specialization-icon.component';
 import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.component';
 import { WowheadLinkComponent } from './wowhead-link/wowhead-link.component';
+import { ServerSelectionComponent } from './common/components/server-selection/server-selection.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { WowheadLinkComponent } from './wowhead-link/wowhead-link.component';
     VoaRaidBuilderComponent,
     GridComponent,
     ParseNumberComponent,
-    RaidInformationComponent
+    RaidInformationComponent,
+    ServerSelectionComponent
   ],
   imports: [
     BrowserAnimationsModule,
