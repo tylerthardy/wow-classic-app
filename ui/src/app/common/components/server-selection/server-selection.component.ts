@@ -1,12 +1,8 @@
 import { Component, forwardRef, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { RegionServer } from './region-server.interface';
 import { Region } from './region.interface';
 import { regions } from './regions';
-
-export interface RegionServer {
-  regionSlug?: string;
-  serverSlug?: string;
-}
 
 @Component({
   selector: 'app-server-selection',
@@ -34,6 +30,8 @@ export class ServerSelectionComponent implements ControlValueAccessor, OnInit {
 
   writeValue(value: RegionServer): void {
     this.regionServer = value;
+    this.regionSlug = value?.regionSlug;
+    this.serverSlug = value?.serverSlug;
   }
   registerOnChange(fn: any): void {
     this.onChangeCallback = fn;

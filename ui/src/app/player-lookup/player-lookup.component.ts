@@ -3,6 +3,7 @@ import { CharacterService } from '../common/services/character.service';
 import { CharacterZoneRankings } from '../common/services/graphql';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';
+import { RegionServerService } from '../common/services/region-server.service';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { PlayerLookupViewModel } from './player-lookup.viewmodel';
 
@@ -17,7 +18,11 @@ export class PlayerLookupComponent implements OnInit {
   zoneRankingsLoading: boolean = false;
   viewModel: PlayerLookupViewModel | undefined;
 
-  constructor(private characterService: CharacterService, private raidService: RaidService) {}
+  constructor(
+    private characterService: CharacterService,
+    private raidService: RaidService,
+    public regionServerService: RegionServerService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -37,15 +42,20 @@ export class PlayerLookupComponent implements OnInit {
 
   public searchPlayer(name: string) {
     this.characterName = name;
-    this.zoneRankingsLoading = true;
+
+    if (!this.regionServerService.regionServer.regionSlug || !this.regionServerService.regionServer.serverSlug) {
+      alert('choose your server at top of page'); // FIXME: Use toast, among other bullshit
+      return;
+    }
 
     const raidZoneAndSize: RaidZoneAndSize = this.raidService.getZoneAndSize(this.instanceSlug);
+    this.zoneRankingsLoading = true;
     this.characterService
       .getZoneRankings({
         characterName: this.characterName,
         metric: 'dps',
-        serverRegion: 'us',
-        serverSlug: 'benediction',
+        serverRegion: this.regionServerService.regionServer.regionSlug,
+        serverSlug: this.regionServerService.regionServer.serverSlug,
         zoneId: raidZoneAndSize.zoneId,
         size: raidZoneAndSize.size
       })

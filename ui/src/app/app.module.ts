@@ -17,6 +17,7 @@ import { GridComponent } from './common/components/grid/grid.component';
 import { ItemSelectionComponent } from './common/components/item-selection/item-selection.component';
 import { ParseNumberComponent } from './common/components/parse-number/parse-number.component';
 import { RaidSelectionComponent } from './common/components/raid-selection/raid-selection.component';
+import { ServerSelectionComponent } from './common/components/server-selection/server-selection.component';
 import { GraphQLModule } from './common/services/graphql/graphql.module';
 import { CreateSoftresModalComponent } from './create-softres-modal/create-softres-modal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -33,7 +34,6 @@ import { SpecializationDataComponent } from './specialization-data/specializatio
 import { SpecializationIconComponent } from './specialization-icon/specialization-icon.component';
 import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.component';
 import { WowheadLinkComponent } from './wowhead-link/wowhead-link.component';
-import { ServerSelectionComponent } from './common/components/server-selection/server-selection.component';
 
 @NgModule({
   declarations: [

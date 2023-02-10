@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr';
+import { RegionServerService } from './common/services/region-server.service';
 import { navigation } from './navigation';
 
 export interface ContainerStyle {
@@ -24,7 +25,7 @@ export class AppComponent implements OnInit {
     { name: 'Full', cssClass: { 'full-container': true } }
   ];
 
-  constructor(private toastrService: ToastrService) {}
+  constructor(private toastrService: ToastrService, public regionServerService: RegionServerService) {}
 
   ngOnInit() {
     this.toastrService.overlayContainer = this.toastContainer;

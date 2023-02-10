@@ -3,6 +3,7 @@ import { CharacterService } from '../common/services/character.service';
 import { CharacterZoneRankings, Metric, ZoneRankingsQuery } from '../common/services/graphql';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';
+import { RegionServerService } from '../common/services/region-server.service';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { RaidLookupViewModel } from './raid-lookup.viewmodel';
 import { RaidPlayerRole } from './raid-player-role.type';
@@ -20,7 +21,11 @@ export class RaidLookupComponent implements OnInit {
   raidRankingsLoading: boolean = false;
   viewModel: RaidLookupViewModel | undefined;
 
-  constructor(private characterService: CharacterService, private raidService: RaidService) {}
+  constructor(
+    private characterService: CharacterService,
+    private raidService: RaidService,
+    private regionServerService: RegionServerService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -38,7 +43,12 @@ export class RaidLookupComponent implements OnInit {
 
   public searchRaid(json: string): void {
     this.importJson = json;
-    this.raidRankingsLoading = true;
+
+    // FIXME: Jesus, look at this method
+    if (!this.regionServerService.regionServer.regionSlug || !this.regionServerService.regionServer.serverSlug) {
+      alert('choose your server at top of page'); // FIXME: Use toast, among other bullshit
+      return;
+    }
 
     const raidZoneAndSize: RaidZoneAndSize = this.raidService.getZoneAndSize(this.instanceInput);
 
@@ -61,6 +71,7 @@ export class RaidLookupComponent implements OnInit {
       return query;
     });
 
+    this.raidRankingsLoading = true;
     this.characterService.getMultipleZoneRankings(queries).subscribe((result: CharacterZoneRankings[]) => {
       this.viewModel = new RaidLookupViewModel(result, players, (value) => this.onCharacterNameClick(value));
       this.raidRankingsLoading = false;
