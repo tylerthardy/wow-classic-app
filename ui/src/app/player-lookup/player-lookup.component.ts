@@ -14,7 +14,7 @@ import { PlayerLookupViewModel } from './player-lookup.viewmodel';
 })
 export class PlayerLookupComponent implements OnInit {
   @Input() instanceSlug: SoftresRaidSlug = 'ulduar10';
-  characterName: string = 'merterter';
+  characterName: string | undefined;
   zoneRankingsLoading: boolean = false;
   viewModel: PlayerLookupViewModel | undefined;
 
@@ -33,6 +33,10 @@ export class PlayerLookupComponent implements OnInit {
   }
 
   public onSearchClick(): void {
+    if (!this.characterName) {
+      alert('a character name must be specified'); // FIXME: Use toast, among other bullshit
+      return;
+    }
     this.searchPlayer(this.characterName);
   }
 
