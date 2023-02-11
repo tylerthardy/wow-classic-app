@@ -68,8 +68,7 @@ export class PlayerLookupComponent implements OnInit {
       })
       .pipe(finalize(() => (this.zoneRankingsLoading = false)))
       .subscribe({
-        next: (result: CharacterZoneRankings) => (this.viewModel = new PlayerLookupViewModel(result)),
-        error: (err: any) => this.toastService.error('Error', err.error.message)
+        next: (result: CharacterZoneRankings) => (this.viewModel = new PlayerLookupViewModel(result))
       });
   }
 }

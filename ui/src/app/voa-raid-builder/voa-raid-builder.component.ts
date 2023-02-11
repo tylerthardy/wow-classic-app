@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { HtmlCopyUtil } from '../common/html-copy-util';
 import { ToastService } from '../common/services/toast.service';
 import { SpecializationData } from '../common/specialization/specialization-data.interface';
 import { specializations } from '../common/specialization/specializations';
 import { WowClass } from '../common/specialization/wow-class';
+import { HtmlCopyUtil } from '../common/utils/html-copy-util';
 import { VoaSpec } from './voa-spec.interface';
 import { VoaSpecializationViewModel } from './voa-specialization.viewmodel';
 
@@ -98,7 +98,7 @@ export class VoaRaidBuilderComponent implements OnInit {
       this.copyOutput();
     } catch (err) {
       console.error(err);
-      this.toast.error('Error', err);
+      this.toast.error('Error', (err as Error).toString());
       return;
     }
     this.toast.info('Copied!', 'LFG spam copied to clipboard');

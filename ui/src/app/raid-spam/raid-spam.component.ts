@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { HtmlCopyUtil } from '../common/html-copy-util';
 import { RaidData } from '../common/services/raids/raid-data.interface';
 import { Raid } from '../common/services/raids/raid.interface';
 import { raids } from '../common/services/raids/raids';
 import { ToastService } from '../common/services/toast.service';
+import { HtmlCopyUtil } from '../common/utils/html-copy-util';
 
 @Component({
   selector: 'app-raid-spam',

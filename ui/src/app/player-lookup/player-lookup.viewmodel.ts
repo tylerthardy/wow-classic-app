@@ -1,9 +1,9 @@
 import { ColumnSpecification, ParseColumn } from '../common/components/grid/grid.component';
-import { ParseUtil } from '../common/parse-util';
 import { CharacterZoneRankings, ZoneEncounterRanking } from '../common/services/graphql';
 import { SpecializationData } from '../common/specialization/specialization-data.interface';
 import { specializations } from '../common/specialization/specializations';
 import { WowClass } from '../common/specialization/wow-class';
+import { ParseUtil } from '../common/utils';
 
 export interface PlayerLookupViewModelRanking {
   encounterName: string;

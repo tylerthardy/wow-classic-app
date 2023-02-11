@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -18,6 +18,7 @@ import { ItemSelectionComponent } from './common/components/item-selection/item-
 import { ParseNumberComponent } from './common/components/parse-number/parse-number.component';
 import { RaidSelectionComponent } from './common/components/raid-selection/raid-selection.component';
 import { ServerSelectionComponent } from './common/components/server-selection/server-selection.component';
+import { GlobalErrorHandler } from './common/global-error-handler';
 import { GraphQLModule } from './common/services/graphql/graphql.module';
 import { CreateSoftresModalComponent } from './create-softres-modal/create-softres-modal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -78,6 +79,10 @@ import { WowheadLinkComponent } from './wowhead-link/wowhead-link.component';
     {
       provide: AppConfig,
       useValue: new AppConfig()
+    },
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler
     }
   ],
   bootstrap: [AppComponent]

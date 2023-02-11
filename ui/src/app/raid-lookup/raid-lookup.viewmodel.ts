@@ -1,7 +1,7 @@
 import { ColumnSpecification, ParseColumn } from '../common/components/grid/grid.component';
-import { ParseUtil } from '../common/parse-util';
 import { CharacterZoneRankings, ZoneEncounterRanking } from '../common/services/graphql';
 import { WowClass } from '../common/specialization/wow-class';
+import { ParseUtil } from '../common/utils';
 import { RaidPlayerRole } from './raid-player-role.type';
 import { RaidPlayer } from './raid-player.interface';
 

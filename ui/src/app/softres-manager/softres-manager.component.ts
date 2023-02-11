@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { Observable } from 'rxjs';
 import { ConfirmModalComponent } from '../common/components/confirm-modal/confirm-modal.component';
-import { HtmlCopyUtil } from '../common/html-copy-util';
 import { Raid } from '../common/services/raids/raid.interface';
 import { Softres } from '../common/services/softres/http/common/softres.interface';
 import { CreateSoftresResponse } from '../common/services/softres/http/create-softres-response.interface';
@@ -10,6 +9,7 @@ import { CreateSoftresOptions } from '../common/services/softres/options/create-
 import { CreateSoftresWithHardReserveOptions } from '../common/services/softres/options/create-softres-with-hard-reserve-options.interface';
 import { SoftresService } from '../common/services/softres/softres.service';
 import { ToastService } from '../common/services/toast.service';
+import { HtmlCopyUtil } from '../common/utils/html-copy-util';
 import { CreateSoftresModalData } from '../create-softres-modal/create-softres-modal-data.interface';
 import { CreateSoftresModalComponent } from '../create-softres-modal/create-softres-modal.component';
 

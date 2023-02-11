@@ -16,28 +16,33 @@ export class ToastService {
     toastr.overlayContainer;
   }
 
-  public success(title: string, message: string) {
+  public success(title: string, message: string, additionalOptions?: Partial<IndividualConfig>) {
     this.toastr.success(message, title, {
       ...defaultOptions,
-      timeOut: 3000
+      timeOut: 3000,
+      ...additionalOptions
     });
   }
 
-  public info(title: string, message: string) {
-    this.toastr.info(message, title, defaultOptions);
+  public info(title: string, message: string, additionalOptions?: Partial<IndividualConfig>) {
+    this.toastr.info(message, title, {
+      ...defaultOptions,
+      ...additionalOptions
+    });
   }
 
-  public error(title: string, error: any, messagePrefix?: string) {
-    let message: string = messagePrefix ? `${messagePrefix}\n` : '';
+  public error(title: string, error: any, additionalOptions?: Partial<IndividualConfig>) {
+    let message: string;
     if (typeof error === 'string') {
-      message += error;
+      message = error;
     } else {
-      message += JSON.stringify(error);
+      message = JSON.stringify(error);
     }
     this.toastr.error(message, title, {
       ...defaultOptions,
       disableTimeOut: true,
-      closeButton: true
+      closeButton: true,
+      ...additionalOptions
     });
   }
 }

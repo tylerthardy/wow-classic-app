@@ -82,8 +82,7 @@ export class RaidLookupComponent implements OnInit {
       .pipe(finalize(() => (this.raidRankingsLoading = false)))
       .subscribe({
         next: (result: CharacterZoneRankings[]) =>
-          (this.viewModel = new RaidLookupViewModel(result, players, (value) => this.onCharacterNameClick(value))),
-        error: (err: any) => this.toastService.error('Error', err.error.message)
+          (this.viewModel = new RaidLookupViewModel(result, players, (value) => this.onCharacterNameClick(value)))
       });
   }
 
