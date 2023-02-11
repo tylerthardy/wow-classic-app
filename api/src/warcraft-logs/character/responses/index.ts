@@ -1,1 +1,1 @@
-export * from './get-character-zone-rankings-response';
+export * from './get-character-zone-rankings-response.interface';

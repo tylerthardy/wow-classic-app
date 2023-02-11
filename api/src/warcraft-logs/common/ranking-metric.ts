@@ -1,1 +1,2 @@
-export type RankingMetric = 'dps' | 'hps';
+export const RankingMetricValues = ['dps', 'hps'] as const;
+export type RankingMetric = (typeof RankingMetricValues)[number];
