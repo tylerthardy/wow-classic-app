@@ -1,7 +1,7 @@
 import { Controller, Post } from '@nestjs/common';
 import { Body } from '@nestjs/common/decorators';
 import { CharacterService } from './character.service';
-import { GetCharacterZoneRankingsRequest } from './requests';
+import { GetCharacterZoneRankingsRequest, GetMultipleCharacterZoneRankingsRequest } from './requests';
 import { GetCharacterZoneRankingsResponse } from './responses';
 
 @Controller()
@@ -17,7 +17,7 @@ export class CharacterController {
 
   @Post('multiple')
   public getMultipleCharacterZoneRankings(
-    @Body() request: GetCharacterZoneRankingsRequest[]
+    @Body() request: GetMultipleCharacterZoneRankingsRequest
   ): Promise<GetCharacterZoneRankingsResponse[]> {
     return this.service.getMultipleCharactersZoneRankings(request);
   }

@@ -17,6 +17,10 @@ export class CharacterService {
 
   public getMultipleZoneRankings(queries: ZoneRankingsQuery[]): Observable<CharacterZoneRankings[]> {
     const url: string = `${this.config.apiUrl}/character/multiple`;
-    return this.http.post<CharacterZoneRankings[]>(url, queries);
+    // FIXME: Use imported interface type
+    const body = {
+      characters: queries
+    };
+    return this.http.post<CharacterZoneRankings[]>(url, body);
   }
 }

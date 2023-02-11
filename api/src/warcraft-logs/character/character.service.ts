@@ -1,7 +1,7 @@
 import { ApolloClient, ApolloQueryResult, gql, TypedDocumentNode } from '@apollo/client/core';
 import { Injectable } from '@nestjs/common';
 import { CharacterData } from '../common';
-import { GetCharacterZoneRankingsRequest } from './requests';
+import { GetCharacterZoneRankingsRequest, GetMultipleCharacterZoneRankingsRequest } from './requests';
 import { GetCharacterZoneRankingsResponse } from './responses';
 
 @Injectable()
@@ -39,8 +39,8 @@ export class CharacterService {
   }
 
   public getMultipleCharactersZoneRankings(
-    queries: GetCharacterZoneRankingsRequest[]
+    request: GetMultipleCharacterZoneRankingsRequest
   ): Promise<GetCharacterZoneRankingsResponse[]> {
-    return Promise.all(queries.map((query) => this.getCharacterZoneRankings(query)));
+    return Promise.all(request.characters.map((query) => this.getCharacterZoneRankings(query)));
   }
 }
