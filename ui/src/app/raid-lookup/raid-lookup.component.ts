@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { finalize } from 'rxjs';
 import { CharacterService } from '../common/services/character.service';
 import { CharacterZoneRankings, Metric, ZoneRankingsQuery } from '../common/services/graphql';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';
 import { RegionServerService } from '../common/services/region-server.service';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
+import { ToastService } from '../common/services/toast.service';
 import { RaidLookupViewModel } from './raid-lookup.viewmodel';
 import { RaidPlayerRole } from './raid-player-role.type';
 import { RaidPlayer } from './raid-player.interface';
@@ -24,7 +26,8 @@ export class RaidLookupComponent implements OnInit {
   constructor(
     private characterService: CharacterService,
     private raidService: RaidService,
-    private regionServerService: RegionServerService
+    private regionServerService: RegionServerService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {}
@@ -55,8 +58,10 @@ export class RaidLookupComponent implements OnInit {
     let players: RaidPlayer[];
     try {
       players = JSON.parse(this.importJson);
-    } catch (err) {
-      throw new Error(`Error while parsing players json: ${err}`);
+    } catch (err: any) {
+      const error = err as Error;
+      this.toastService.error('Error while parsing players json', error.toString());
+      return;
     }
 
     const queries: ZoneRankingsQuery[] = players.map((player) => {
@@ -72,10 +77,14 @@ export class RaidLookupComponent implements OnInit {
     });
 
     this.raidRankingsLoading = true;
-    this.characterService.getMultipleZoneRankings(queries).subscribe((result: CharacterZoneRankings[]) => {
-      this.viewModel = new RaidLookupViewModel(result, players, (value) => this.onCharacterNameClick(value));
-      this.raidRankingsLoading = false;
-    });
+    this.characterService
+      .getMultipleZoneRankings(queries)
+      .pipe(finalize(() => (this.raidRankingsLoading = false)))
+      .subscribe({
+        next: (result: CharacterZoneRankings[]) =>
+          (this.viewModel = new RaidLookupViewModel(result, players, (value) => this.onCharacterNameClick(value))),
+        error: (err: any) => this.toastService.error('Error', err.error.message)
+      });
   }
 
   public onClearClick(): void {

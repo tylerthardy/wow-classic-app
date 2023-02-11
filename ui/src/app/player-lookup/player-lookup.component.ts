@@ -1,10 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { finalize } from 'rxjs';
 import { CharacterService } from '../common/services/character.service';
 import { CharacterZoneRankings } from '../common/services/graphql';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';
 import { RegionServerService } from '../common/services/region-server.service';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
+import { ToastService } from '../common/services/toast.service';
 import { PlayerLookupViewModel } from './player-lookup.viewmodel';
 
 @Component({
@@ -21,6 +23,7 @@ export class PlayerLookupComponent implements OnInit {
   constructor(
     private characterService: CharacterService,
     private raidService: RaidService,
+    private toastService: ToastService,
     public regionServerService: RegionServerService
   ) {}
 
@@ -63,9 +66,10 @@ export class PlayerLookupComponent implements OnInit {
         zoneId: raidZoneAndSize.zoneId,
         size: raidZoneAndSize.size
       })
-      .subscribe((result: CharacterZoneRankings) => {
-        this.viewModel = new PlayerLookupViewModel(result);
-        this.zoneRankingsLoading = false;
+      .pipe(finalize(() => (this.zoneRankingsLoading = false)))
+      .subscribe({
+        next: (result: CharacterZoneRankings) => (this.viewModel = new PlayerLookupViewModel(result)),
+        error: (err: any) => this.toastService.error('Error', err.error.message)
       });
   }
 }
