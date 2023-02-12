@@ -72,7 +72,12 @@ import { WowheadLinkComponent } from './wowhead-link/wowhead-link.component';
     Json2TreeModule,
     SafePipeModule,
     SimpleModalModule,
-    ToastrModule.forRoot({ positionClass: 'inline' }),
+    ToastrModule.forRoot({
+      positionClass: 'inline',
+      countDuplicates: true,
+      resetTimeoutOnDuplicate: true,
+      preventDuplicates: true
+    }),
     ToastContainerModule
   ],
   providers: [

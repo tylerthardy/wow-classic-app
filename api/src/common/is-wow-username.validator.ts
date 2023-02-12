@@ -1,7 +1,7 @@
 import {
-  IsAlpha,
   IsString,
   Length,
+  Matches,
   NotContains,
   registerDecorator,
   validate,
@@ -14,7 +14,7 @@ class IsWowUsernameValidatorClass {
   }
   @IsString()
   @Length(2, 12)
-  @IsAlpha()
+  @Matches('^[A-Za-z0-9_.ßàáâãäåæçèéêëìíîïðòóôõö÷øúûüùýþÿ]+$')
   @NotContains(' ')
   username: string;
 }
