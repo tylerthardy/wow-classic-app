@@ -2,7 +2,8 @@ import { ApolloClient, ApolloQueryResult, gql, TypedDocumentNode } from '@apollo
 import { Injectable } from '@nestjs/common';
 import { CharacterData } from '../common';
 import { GetCharacterZoneRankingsRequest, GetMultipleCharacterZoneRankingsRequest } from './requests';
-import { GetCharacterZoneRankingsResponse } from './responses';
+import { GetCharacterZoneRankingsResponse, IGetMultipleCharacterZoneRankingsResponseV2 } from './responses';
+import { GetMultipleCharacterZoneRankingsResponseV2Item } from './responses/get-multiple-character-zone-rankings-response-v2-item';
 
 @Injectable()
 export class CharacterService {
@@ -42,5 +43,32 @@ export class CharacterService {
     request: GetMultipleCharacterZoneRankingsRequest
   ): Promise<GetCharacterZoneRankingsResponse[]> {
     return Promise.all(request.characters.map((query) => this.getCharacterZoneRankings(query)));
+  }
+
+  public async getMultipleCharactersZoneRankingsV2(
+    request: GetMultipleCharacterZoneRankingsRequest
+  ): Promise<IGetMultipleCharacterZoneRankingsResponseV2> {
+    type fuckery = {
+      query: any;
+      rankingData: any;
+    };
+
+    const mapForInput: fuckery[] = await Promise.all(
+      request.characters.map(async (query) => {
+        const rankingData = await this.getCharacterZoneRankings(query);
+        return {
+          query: query,
+          rankingData: rankingData
+        };
+      })
+    );
+
+    const characters = mapForInput.map(
+      (queryAndData) => new GetMultipleCharacterZoneRankingsResponseV2Item(queryAndData.query, queryAndData.rankingData)
+    );
+
+    return {
+      characters: characters
+    };
   }
 }
