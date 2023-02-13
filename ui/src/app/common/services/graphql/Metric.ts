@@ -1,1 +1,1 @@
-export type Metric = 'dps' | 'hps';
+export type RankingMetric = 'dps' | 'hps';

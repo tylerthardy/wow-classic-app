@@ -1,10 +1,12 @@
-export interface IGetMultipleCharacterZoneRankingsResponseV2 {
-  characters: IGetMultipleCharacterZoneRankingsResponseV2Item[];
+import { RankingMetric } from '../../common';
+
+export interface IGetMultipleCharacterZoneRankingsResponse {
+  characters: IGetMultipleCharacterZoneRankingsResponseItem[];
 }
 
-export interface IGetMultipleCharacterZoneRankingsResponseV2Item {
+export interface IGetMultipleCharacterZoneRankingsResponseItem {
   characterName: string;
-  metric: string;
+  metric: RankingMetric;
   warcraftLogsClassId?: number;
   bestPerformanceAverage?: number;
   medianPerformanceAverage?: number;

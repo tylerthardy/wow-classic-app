@@ -1,11 +1,11 @@
-import { ZoneEncounterRanking } from '../../common';
+import { RankingMetric, ZoneEncounterRanking } from '../../common';
 import { GetCharacterZoneRankingsRequest } from '../requests';
 import { GetCharacterZoneRankingsResponse } from './get-character-zone-rankings-response.interface';
-import { IGetMultipleCharacterZoneRankingsResponseV2Item } from './get-multiple-character-zone-rankings-response-v2.interface';
+import { IGetMultipleCharacterZoneRankingsResponseItem } from './get-multiple-character-zone-rankings-response.interface';
 
-export class GetMultipleCharacterZoneRankingsResponseV2Item implements IGetMultipleCharacterZoneRankingsResponseV2Item {
+export class GetMultipleCharacterZoneRankingsResponseItem implements IGetMultipleCharacterZoneRankingsResponseItem {
   public characterName: string;
-  public metric: string;
+  public metric: RankingMetric;
   public warcraftLogsClassId?: number;
   public bestPerformanceAverage?: number;
   public medianPerformanceAverage?: number;

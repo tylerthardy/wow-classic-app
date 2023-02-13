@@ -7,6 +7,13 @@ declare global {
 }
 
 Math.median = function (array: number[]): number {
+  console.log('median', JSON.stringify(array));
+  if (array.length === 0) {
+    return NaN;
+  }
+  if (array.length === 1) {
+    return array[0];
+  }
   const middle: number = Math.floor(array.length / 2);
   const sorted: number[] = array.sort((a, b) => a - b);
   if (sorted.length % 2 === 0) {

@@ -34,10 +34,6 @@ export class ParseNumberComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    if (!this.value) {
-      throw new Error('"value" is required for this component');
-    }
-
     if (this.sizePx) {
       this.containerStyles['font-size'] = this.sizePx;
     }

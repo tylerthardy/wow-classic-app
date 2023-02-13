@@ -10,11 +10,11 @@ import {
 
 class IsWowUsernameValidatorClass {
   constructor(username: string) {
-    this.username = username;
+    this.username = username.toLowerCase();
   }
   @IsString()
   @Length(2, 12)
-  @Matches('^[A-Za-z0-9_.ßàáâãäåæçèéêëìíîïðòóôõö÷øúûüùýþÿ]+$')
+  @Matches('^[A-Za-z0-9_.ßàáâãäåæçèéêëìíîïðòóôõö÷øúûüùýþÿñ]+$')
   @NotContains(' ')
   username: string;
 }

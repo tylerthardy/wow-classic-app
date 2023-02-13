@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { finalize } from 'rxjs';
-import { CharacterService } from '../common/services/character.service';
-import { CharacterZoneRankings, Metric, ZoneRankingsQuery } from '../common/services/graphql';
+import { CharacterService } from '../common/services/character/character.service';
+import { IGetMultipleCharacterZoneRankingsResponse } from '../common/services/character/get-multiple-character-zone-rankings-response';
+import { RankingMetric, ZoneRankingsQuery } from '../common/services/graphql';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';
 import { RegionServerService } from '../common/services/region-server.service';
@@ -19,7 +20,7 @@ import { RaidPlayer } from './raid-player.interface';
 export class RaidLookupComponent implements OnInit {
   @Output() characterNameClicked: EventEmitter<string> = new EventEmitter<string>();
   @Input() instanceInput: SoftresRaidSlug = 'ulduar10';
-  importJson: string | undefined;
+  importJson: string | undefined = '[{"name":"Døctwo","role":"TANK"}]';
   raidRankingsLoading: boolean = false;
   viewModel: RaidLookupViewModel | undefined;
 
@@ -81,8 +82,10 @@ export class RaidLookupComponent implements OnInit {
       .getMultipleZoneRankings(queries)
       .pipe(finalize(() => (this.raidRankingsLoading = false)))
       .subscribe({
-        next: (result: CharacterZoneRankings[]) =>
-          (this.viewModel = new RaidLookupViewModel(result, players, (value) => this.onCharacterNameClick(value)))
+        next: (response: IGetMultipleCharacterZoneRankingsResponse) =>
+          (this.viewModel = new RaidLookupViewModel(response.characters, players, (value) =>
+            this.onCharacterNameClick(value)
+          ))
       });
   }
 
@@ -90,7 +93,7 @@ export class RaidLookupComponent implements OnInit {
     this.viewModel = undefined;
   }
 
-  private getMetricFromRole(role: RaidPlayerRole): Metric {
+  private getMetricFromRole(role: RaidPlayerRole): RankingMetric {
     switch (role) {
       case 'DAMAGER':
       case 'TANK':

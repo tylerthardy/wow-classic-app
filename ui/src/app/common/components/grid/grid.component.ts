@@ -1,14 +1,16 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { SpecializationData } from '../../specialization/specialization-data.interface';
 
-export interface ParseColumn {
+// FIXME: Deprecate
+export interface ParseColumnDeprecated {
   value: number;
   specialization?: SpecializationData;
 }
 export interface ColumnFormat<T> {
   type: 'number' | 'string' | 'parse' | 'date' | 'custom';
-  params?: any;
+  formatParams?: any;
   customFormat?: (rowValue: T) => string;
+  transform?: (rowValue: T) => any;
 }
 export type SortType = 'number' | 'string' | 'parse';
 export type SortDirection = 'asc' | 'desc' | 'none';
@@ -16,7 +18,8 @@ export interface ColumnSpecification<T> {
   label: string;
   valueKey: keyof T;
   format?: ColumnFormat<T>;
-  tooltip?: string | ((rowValue: T) => string);
+  transform?: (rowValue: T) => any;
+  tooltip?: string | ((rowValue: T) => string | undefined);
   sortType?: SortType;
   onClick?: (value: any) => void;
   style?: { [key: string]: any } | ((rowValue: T) => { [key: string]: any });
@@ -62,6 +65,14 @@ export class GridComponent implements OnInit, OnChanges {
       return;
     }
     column.onClick(dataRow[column.valueKey]);
+  }
+
+  // TODO: Signature "dataRow: any, column: ColumnSpecification<any>" is repeated - indicates a class, method, or pattern
+  getCellValue(dataRow: any, column: ColumnSpecification<any>): any {
+    if (column.transform) {
+      return column.transform(dataRow);
+    }
+    return dataRow[column.valueKey];
   }
 
   getCellStyle(dataRow: any, column: ColumnSpecification<any>): { [key: string]: any } {

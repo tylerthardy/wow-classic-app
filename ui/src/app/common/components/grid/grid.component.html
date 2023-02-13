@@ -15,28 +15,31 @@
       (click)="onClickCell(dataRow, column)"
       [attr.title]="getCellTooltip(dataRow, column)"
     >
-      <ng-container *ngIf="column.format">
-        <ng-container [ngSwitch]="column.format.type">
-          <ng-container *ngSwitchCase="'parse'">
-            <app-parse-number
-              *ngIf="dataRow[column.valueKey].value"
-              [specialization]="dataRow[column.valueKey].specialization"
-              [value]="dataRow[column.valueKey].value"
-            ></app-parse-number>
-          </ng-container>
-          <ng-container *ngSwitchCase="'number'">
-            {{ dataRow[column.valueKey] | number : column.format.params }}
-          </ng-container>
-          <ng-container *ngSwitchCase="'date'">
-            {{ dataRow[column.valueKey] | date : column.format.params }}
-          </ng-container>
-          <ng-container *ngSwitchCase="'custom'">
-            {{ getColumnCustomFormat(column, dataRow) }}
+      <!-- TODO: Wrapping an array and using ngFor is a hack to set the variable -->
+      <ng-container *ngFor="let cellValue of [getCellValue(dataRow, column)]">
+        <ng-container *ngIf="column.format">
+          <ng-container [ngSwitch]="column.format.type">
+            <ng-container *ngSwitchCase="'parse'">
+              <app-parse-number
+                *ngIf="cellValue"
+                [specialization]="cellValue.specialization"
+                [value]="cellValue.value"
+              ></app-parse-number>
+            </ng-container>
+            <ng-container *ngSwitchCase="'number'">
+              {{ cellValue | number : column.format.formatParams }}
+            </ng-container>
+            <ng-container *ngSwitchCase="'date'">
+              {{ cellValue | date : column.format.formatParams }}
+            </ng-container>
+            <ng-container *ngSwitchCase="'custom'">
+              {{ getColumnCustomFormat(column, dataRow) }}
+            </ng-container>
           </ng-container>
         </ng-container>
-      </ng-container>
-      <ng-container *ngIf="!column.format">
-        {{ dataRow[column.valueKey] }}
+        <ng-container *ngIf="!column.format">
+          {{ cellValue }}
+        </ng-container>
       </ng-container>
     </td>
   </tr>

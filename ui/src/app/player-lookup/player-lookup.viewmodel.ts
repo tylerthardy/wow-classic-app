@@ -1,4 +1,4 @@
-import { ColumnSpecification, ParseColumn } from '../common/components/grid/grid.component';
+import { ColumnSpecification, ParseColumnDeprecated } from '../common/components/grid/grid.component';
 import { CharacterZoneRankings, ZoneEncounterRanking } from '../common/services/graphql';
 import { SpecializationData } from '../common/specialization/specialization-data.interface';
 import { specializations } from '../common/specialization/specializations';
@@ -7,8 +7,8 @@ import { ParseUtil } from '../common/utils';
 
 export interface PlayerLookupViewModelRanking {
   encounterName: string;
-  bestPercent: ParseColumn;
-  medianPercent: ParseColumn;
+  bestPercent: ParseColumnDeprecated;
+  medianPercent: ParseColumnDeprecated;
   highestDps: number;
   highestDifficulty: string;
   kills: number;
@@ -60,7 +60,7 @@ export class PlayerLookupViewModel {
       sortType: 'number',
       format: {
         type: 'number',
-        params: '1.1-1'
+        formatParams: '1.1-1'
       }
     },
     {
@@ -80,7 +80,7 @@ export class PlayerLookupViewModel {
       sortType: 'number',
       format: {
         type: 'date',
-        params: 'm:ss'
+        formatParams: 'm:ss'
       }
     }
   ];

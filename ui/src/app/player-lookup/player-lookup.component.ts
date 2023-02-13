@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { finalize } from 'rxjs';
-import { CharacterService } from '../common/services/character.service';
+import { CharacterService } from '../common/services/character/character.service';
 import { CharacterZoneRankings } from '../common/services/graphql';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';
