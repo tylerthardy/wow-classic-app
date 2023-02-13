@@ -20,7 +20,7 @@ import { RaidPlayer } from './raid-player.interface';
 export class RaidLookupComponent implements OnInit {
   @Output() characterNameClicked: EventEmitter<string> = new EventEmitter<string>();
   @Input() instanceInput: SoftresRaidSlug = 'ulduar10';
-  importJson: string | undefined = '[{"name":"Døctwo","role":"TANK"}]';
+  importJson: string | undefined;
   raidRankingsLoading: boolean = false;
   viewModel: RaidLookupViewModel | undefined;
 

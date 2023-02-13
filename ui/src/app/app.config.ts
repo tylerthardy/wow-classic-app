@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../environments/environment';
 
 @Injectable()
 export class AppConfig {
   public apiUrl: string;
 
   constructor() {
-    // this.apiUrl = 'https://6zdrton9kb.execute-api.us-east-1.amazonaws.com/prod';
-    this.apiUrl = 'http://localhost:3000';
+    this.apiUrl = environment.apiUrl;
   }
 }
