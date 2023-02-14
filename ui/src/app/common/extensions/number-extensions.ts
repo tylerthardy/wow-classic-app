@@ -7,7 +7,6 @@ declare global {
 }
 
 Math.median = function (array: number[]): number {
-  console.log('median', JSON.stringify(array));
   if (array.length === 0) {
     return NaN;
   }
