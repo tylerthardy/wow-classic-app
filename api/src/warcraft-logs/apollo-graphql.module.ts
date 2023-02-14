@@ -1,13 +1,10 @@
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client/core';
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import fetch from 'cross-fetch';
-import { CharacterController } from './character.controller';
-import { CharacterService } from './character.service';
 
+@Global()
 @Module({
-  imports: [],
   providers: [
-    CharacterService,
     {
       provide: ApolloClient,
       useFactory: () => {
@@ -32,6 +29,6 @@ import { CharacterService } from './character.service';
       }
     }
   ],
-  controllers: [CharacterController]
+  exports: [ApolloClient]
 })
-export class CharacterModule {}
+export class ApolloGraphqlModule {}

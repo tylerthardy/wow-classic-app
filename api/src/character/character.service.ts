@@ -1,23 +1,16 @@
-import { ApolloClient, ApolloQueryResult, gql, TypedDocumentNode } from '@apollo/client/core';
 import { Injectable } from '@nestjs/common';
 import { NotFoundError } from 'common-errors';
-import { CharacterData } from '../common';
+import { GetWclCharacterZoneRankingsResponse } from '../warcraft-logs/service/get-wcl-character-zone-rankings-response.interface';
+import { WarcraftLogsService } from '../warcraft-logs/warcraft-logs.service';
 import { GetCharacterZoneRankingsRequest, GetMultipleCharacterZoneRankingsRequest } from './requests';
-import { GetCharacterZoneRankingsResponse } from './responses';
 import { GetCharacterZoneRankingsV2Response } from './responses/get-character-zone-rankings-response-v2';
 import { GetMultipleCharacterZoneRankingsResponseItem } from './responses/get-multiple-character-zone-rankings-response-item';
 
 @Injectable()
 export class CharacterService {
-  constructor(private apollo: ApolloClient<any>) {}
+  constructor(private warcraftLogsService: WarcraftLogsService) {}
 
   public async getCharacterZoneRankings(
-    request: GetCharacterZoneRankingsRequest
-  ): Promise<GetCharacterZoneRankingsResponse> {
-    return this.getWclCharacterZoneRankings(request);
-  }
-
-  public async getCharacterZoneRankingsV2(
     request: GetCharacterZoneRankingsRequest
   ): Promise<GetCharacterZoneRankingsV2Response> {
     const wclRankings = await this.getWclCharacterZoneRankings(request);
@@ -55,32 +48,7 @@ export class CharacterService {
 
   private async getWclCharacterZoneRankings(
     request: GetCharacterZoneRankingsRequest
-  ): Promise<GetCharacterZoneRankingsResponse> {
-    const GET_CHARACTER_ZONE_RANKINGS: TypedDocumentNode<CharacterData, unknown> = gql`
-          query {
-            characterData {
-              character(
-                name: "${request.characterName}"
-                serverSlug: "${request.serverSlug}"
-                serverRegion: "${request.serverRegion}"
-              ) {
-                id
-                name
-                classID
-                canonicalID
-                server {
-                  slug
-                }
-                zoneRankings(zoneID: ${request.zoneId}, metric: ${request.metric}, size: ${request.size})
-              }
-            }
-          }
-        `;
-
-    const result: ApolloQueryResult<CharacterData> = await this.apollo.query({
-      query: GET_CHARACTER_ZONE_RANKINGS,
-      fetchPolicy: 'network-only'
-    });
-    return result.data.characterData.character as GetCharacterZoneRankingsResponse;
+  ): Promise<GetWclCharacterZoneRankingsResponse> {
+    return await this.warcraftLogsService.getWclCharacterZoneRankings(request);
   }
 }

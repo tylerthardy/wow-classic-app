@@ -1,5 +1,5 @@
-import { DifficultyLevel } from '../../../common/models/difficulty-level.type';
-import { ZoneEncounterRanking } from '../../common';
+import { DifficultyLevel } from '../../common/models/difficulty-level.type';
+import { ZoneEncounterRanking } from '../../warcraft-logs/common';
 import { IGetCharacterZoneRankingsResponseV2Ranking } from './get-character-zone-rankings-response-v2-ranking.interface';
 
 export class GetCharacterZoneRankingsResponseV2Ranking implements IGetCharacterZoneRankingsResponseV2Ranking {

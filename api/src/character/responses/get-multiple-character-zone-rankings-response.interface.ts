@@ -1,4 +1,4 @@
-import { RankingMetric } from '../../common';
+import { RankingMetric } from '../../warcraft-logs/common';
 
 export interface IGetMultipleCharacterZoneRankingsResponse {
   characters: IGetMultipleCharacterZoneRankingsResponseItem[];

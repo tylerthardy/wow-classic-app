@@ -1,14 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { finalize } from 'rxjs';
 import { CharacterService } from '../common/services/character/character.service';
-import { IGetCharacterZoneRankingsResponseV2 } from '../common/services/character/get-character-zone-rankings-response-v2.interface';
+import { IGetCharacterZoneRankingsResponse } from '../common/services/character/get-character-zone-rankings-response.interface';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';
 import { RegionServerService } from '../common/services/region-server.service';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { ToastService } from '../common/services/toast.service';
 import { PlayerLookupViewModel } from './player-lookup.viewmodel';
-import { PlayerLookupViewModelV2 } from './player-lookup.viewmodel-v2';
 
 @Component({
   selector: 'app-player-lookup',
@@ -20,7 +19,6 @@ export class PlayerLookupComponent implements OnInit {
   characterName: string | undefined;
   zoneRankingsLoading: boolean = false;
   viewModel: PlayerLookupViewModel | undefined;
-  viewModelV2: PlayerLookupViewModelV2 | undefined;
 
   constructor(
     private characterService: CharacterService,
@@ -51,7 +49,7 @@ export class PlayerLookupComponent implements OnInit {
 
   public searchPlayer(name: string) {
     this.characterName = name;
-    this.viewModelV2 = undefined;
+    this.viewModel = undefined;
 
     if (!this.regionServerService.regionServer.regionSlug || !this.regionServerService.regionServer.serverSlug) {
       alert('choose your server at top of page'); // FIXME: Use toast, among other bullshit
@@ -61,7 +59,7 @@ export class PlayerLookupComponent implements OnInit {
     const raidZoneAndSize: RaidZoneAndSize = this.raidService.getZoneAndSize(this.instanceSlug);
     this.zoneRankingsLoading = true;
     this.characterService
-      .getZoneRankingsV2({
+      .getZoneRankings({
         characterName: this.characterName,
         metric: 'dps',
         serverRegion: this.regionServerService.regionServer.regionSlug,
@@ -71,7 +69,7 @@ export class PlayerLookupComponent implements OnInit {
       })
       .pipe(finalize(() => (this.zoneRankingsLoading = false)))
       .subscribe({
-        next: (result: IGetCharacterZoneRankingsResponseV2) => (this.viewModelV2 = new PlayerLookupViewModelV2(result)),
+        next: (result: IGetCharacterZoneRankingsResponse) => (this.viewModel = new PlayerLookupViewModel(result)),
         error: (error) => {
           if (error.status === 400) {
             this.toastService.warn('Invalid Request', error.error.message);

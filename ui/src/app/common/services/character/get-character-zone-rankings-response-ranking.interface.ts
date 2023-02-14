@@ -1,5 +1,5 @@
 // FIXME: Duplicated from the API
-export interface IGetCharacterZoneRankingsResponseV2Ranking {
+export interface IGetCharacterZoneRankingsResponseRanking {
   encounterName: string;
   lockedIn: boolean;
   bestPercent?: number;
