@@ -1,5 +1,13 @@
 <div class="flex-container">
-  <app-card [collapsed]="true" header="Playground"> </app-card>
+  <app-card [collapsed]="false" header="Playground">
+    <app-raid-size-selection></app-raid-size-selection>
+    <app-raid-size-selection raid="wotlknaxx"></app-raid-size-selection>
+    <app-raid-size-selection [size10]="true"></app-raid-size-selection>
+    <app-raid-size-selection [size10]="true" [size25]="true"></app-raid-size-selection>
+    <app-raid-size-selection raid="wotlknaxx" [size10]="true" [size25]="true"></app-raid-size-selection>
+    <app-raid-size-selection raid="ulduar" [size25]="true"></app-raid-size-selection>
+    <app-raid-size-selection raid="wotlknaxx" [size10]="true"></app-raid-size-selection>
+  </app-card>
 
   <app-card [collapsed]="true" header="VoA Raid Builder">
     <app-voa-raid-builder></app-voa-raid-builder>

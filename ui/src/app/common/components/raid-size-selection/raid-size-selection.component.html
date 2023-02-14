@@ -1,0 +1,11 @@
+<select #raidSelect (change)="onSelectChange($event)">
+  <option value="">-</option>
+  <option value="wotlknaxx">Naxx/Dragons</option>
+  <option value="ulduar">Ulduar</option>
+</select>
+<label for="size10">10</label>
+<input #size10 id="size10" name="sizeSelection" [type]="selectionType" (change)="onInputChange($event)" />
+<label for="size25">25</label>
+<input #size25 id="size25" name="sizeSelection" [type]="selectionType" (change)="onInputChange($event)" />
+
+<div *ngFor="let value of values">{{ value.raid }}{{ value.size }}</div>

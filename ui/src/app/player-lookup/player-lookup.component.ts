@@ -58,6 +58,7 @@ export class PlayerLookupComponent implements OnInit {
 
     const raidZoneAndSize: RaidZoneAndSize = this.raidService.getZoneAndSize(this.instanceSlug);
     this.zoneRankingsLoading = true;
+
     this.characterService
       .getZoneRankings({
         characterName: this.characterName,
