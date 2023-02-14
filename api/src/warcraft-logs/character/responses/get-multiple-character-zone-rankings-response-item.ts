@@ -15,16 +15,16 @@ export class GetMultipleCharacterZoneRankingsResponseItem implements IGetMultipl
   public hardModes?: string[];
   public maxPossibleHardmodes?: number;
 
-  constructor(query: GetCharacterZoneRankingsRequest, rankingData: GetCharacterZoneRankingsResponse) {
+  constructor(query: GetCharacterZoneRankingsRequest, characterRankingData: GetCharacterZoneRankingsResponse) {
     this.characterName = query.characterName;
     this.metric = query.metric;
-    if (rankingData) {
-      this.warcraftLogsClassId = rankingData.classID;
-      this.bestPerformanceAverage = rankingData.zoneRankings.bestPerformanceAverage;
-      this.medianPerformanceAverage = rankingData.zoneRankings.medianPerformanceAverage;
+    if (characterRankingData) {
+      this.warcraftLogsClassId = characterRankingData.classID;
+      this.bestPerformanceAverage = characterRankingData.zoneRankings.bestPerformanceAverage;
+      this.medianPerformanceAverage = characterRankingData.zoneRankings.medianPerformanceAverage;
 
       const FLAME_LEVIATHAN_ENCOUNTER_ID: number = 744;
-      const encounterRankings: ZoneEncounterRanking[] = rankingData.zoneRankings.rankings.filter(
+      const encounterRankings: ZoneEncounterRanking[] = characterRankingData.zoneRankings.rankings.filter(
         (encounterRanking) => encounterRanking.encounter.id !== FLAME_LEVIATHAN_ENCOUNTER_ID
       );
 
@@ -34,7 +34,7 @@ export class GetMultipleCharacterZoneRankingsResponseItem implements IGetMultipl
       const hardModes: string[] = this.getHardModes(encounterRankings);
       this.bestHardModeProgress = hardModes.length;
       this.hardModes = hardModes;
-      this.maxPossibleHardmodes = this.getHardModeCount(rankingData.zoneRankings.zone);
+      this.maxPossibleHardmodes = this.getHardModeCount(characterRankingData.zoneRankings.zone);
     }
   }
 

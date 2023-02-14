@@ -3,7 +3,7 @@ import { SpecializationData } from '../../specialization/specialization-data.int
 
 // FIXME: Deprecate
 export interface ParseColumnDeprecated {
-  value: number;
+  value?: number;
   specialization?: SpecializationData;
 }
 export interface ColumnFormat<T> {

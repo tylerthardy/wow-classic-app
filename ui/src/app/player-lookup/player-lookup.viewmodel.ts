@@ -16,7 +16,6 @@ export interface PlayerLookupViewModelRanking {
   rowStyle?: { [key: string]: any };
 }
 
-export type Difficulty = 'Normal Mode' | 'Medium Mode' | 'Hard Mode';
 export type DifficultyLevel = 0 | 1 | 2 | 3 | 4;
 
 export class PlayerLookupViewModel {

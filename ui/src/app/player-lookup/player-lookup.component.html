@@ -38,3 +38,33 @@
     </div>
   </div>
 </ng-container>
+
+<ng-container *ngIf="viewModelV2 && viewModelV2.encounters && !zoneRankingsLoading">
+  <div style="display: flex">
+    <div style="flex: 1; border: 1px black solid; border-right: 0">
+      <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+        <h3 style="text-align: center">{{ viewModelV2.characterName }}</h3>
+        <h4 style="flex: 1">Best Perf. Avg</h4>
+        <div style="flex: 1">
+          <app-parse-number
+            *ngIf="viewModelV2.bestPerformanceAverage"
+            [value]="viewModelV2.bestPerformanceAverage"
+            sizePx="30px"
+          ></app-parse-number>
+        </div>
+        <h4 style="flex: 1">Median Perf. Avg</h4>
+        <div style="flex: 1">
+          <app-parse-number
+            *ngIf="viewModelV2.medianPerformanceAverage"
+            [value]="viewModelV2.medianPerformanceAverage"
+            sizePx="20px"
+          ></app-parse-number>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex: 2; display: flex; flex-direction: column; justify-content: center; align-items: center">
+      <app-grid style="width: 100%" [data]="viewModelV2.encounters" [columns]="viewModelV2.columns"></app-grid>
+    </div>
+  </div>
+</ng-container>

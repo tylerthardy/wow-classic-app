@@ -14,7 +14,7 @@ class IsWowUsernameValidatorClass {
   }
   @IsString()
   @Length(2, 12)
-  @Matches('^[A-Za-z0-9_.ßàáâãäåæçèéêëìíîïðòóôõö÷øúûüùýþÿñ]+$')
+  @Matches('^[a-z_.ßàáâãäåæçèéêëìíîïðòóôõö÷øúûüùýþÿñ]+$')
   @NotContains(' ')
   username: string;
 }

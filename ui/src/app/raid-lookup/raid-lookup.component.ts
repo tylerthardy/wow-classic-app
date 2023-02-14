@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { finalize } from 'rxjs';
 import { CharacterService } from '../common/services/character/character.service';
-import { IGetMultipleCharacterZoneRankingsResponse } from '../common/services/character/get-multiple-character-zone-rankings-response';
+import { IGetMultipleCharacterZoneRankingsResponse } from '../common/services/character/get-multiple-character-zone-rankings-response.interface';
 import { RankingMetric, ZoneRankingsQuery } from '../common/services/graphql';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';

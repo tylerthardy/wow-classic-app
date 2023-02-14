@@ -31,6 +31,14 @@ export class ToastService {
     });
   }
 
+  public warn(title: string, message: string, additionalOptions?: Partial<IndividualConfig>) {
+    this.toastr.warning(message, title, {
+      ...defaultOptions,
+      timeOut: 10000,
+      ...additionalOptions
+    });
+  }
+
   public error(title: string, error: any, additionalOptions?: Partial<IndividualConfig>) {
     let message: string;
     if (typeof error === 'string') {
