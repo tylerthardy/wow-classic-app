@@ -1,12 +1,10 @@
 <div class="flex-container">
   <app-card [collapsed]="false" header="Playground">
-    <app-raid-size-selection></app-raid-size-selection>
-    <app-raid-size-selection raid="wotlknaxx"></app-raid-size-selection>
-    <app-raid-size-selection [size10]="true"></app-raid-size-selection>
-    <app-raid-size-selection [size10]="true" [size25]="true"></app-raid-size-selection>
-    <app-raid-size-selection raid="wotlknaxx" [size10]="true" [size25]="true"></app-raid-size-selection>
-    <app-raid-size-selection raid="ulduar" [size25]="true"></app-raid-size-selection>
-    <app-raid-size-selection raid="wotlknaxx" [size10]="true"></app-raid-size-selection>
+    <app-raid-size-selection [(ngModel)]="valoo"></app-raid-size-selection>
+    <div *ngIf="valoo">
+      <ng-container *ngIf="valoo.size10 && valoo.raid">{{ valoo.raid }}10</ng-container>
+      <ng-container *ngIf="valoo.size25 && valoo.raid">{{ valoo.raid }}25</ng-container>
+    </div>
   </app-card>
 
   <app-card [collapsed]="true" header="VoA Raid Builder">
