@@ -1,8 +1,8 @@
+import { RaidAndSizeSelection } from '../../components/raid-size-selection/raid-size-selection.component';
 import { ItemData } from '../../item-data.interface';
-import { SoftresRaidSlug } from '../softres/softres-raid-slug';
 
 export interface Raid {
-  instanceSlug: SoftresRaidSlug;
+  raidAndSize: RaidAndSizeSelection;
   hardReserveItem?: ItemData;
   hardReserveRecipient?: string;
   softReserveCount?: number;

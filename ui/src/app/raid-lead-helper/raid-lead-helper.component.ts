@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { CardComponent } from '../common/components/card/card.component';
 import { ConfirmModalComponent } from '../common/components/confirm-modal/confirm-modal.component';
+import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-size-selection.component';
 import { ItemData } from '../common/item-data.interface';
 import { Raid } from '../common/services/raids/raid.interface';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
@@ -30,12 +31,8 @@ export class RaidLeadHelperComponent implements OnInit {
   @ViewChild('raidLookup') raidLookupRef!: RaidLookupComponent;
   @ViewChild('softresManager') softresManagerRef!: SoftresManagerComponent;
 
-  public raid: Raid | undefined = this.debug
-    ? {
-        instanceSlug: 'ulduar10',
-        softReserveCount: 1
-      }
-    : undefined;
+  public raidSelectionInput: RaidAndSizeSelection = new RaidAndSizeSelection();
+  public raid: Raid | undefined;
   public detailsButtons: RaidInformationButton[];
   public isRecopyAfterPaste: boolean = true;
 
@@ -73,7 +70,7 @@ export class RaidLeadHelperComponent implements OnInit {
   public onCreateRaidClick(): void {
     //TODO: Use forms
     const params: Partial<Raid> = {
-      instanceSlug: this.instanceInput,
+      raidAndSize: this.raidSelectionInput,
       hardReserveItem: this.hardReserveItemInput,
       hardReserveRecipient: this.hardReserveRecipientInput,
       softReserveCount: this.softReserveCountInput
@@ -81,12 +78,12 @@ export class RaidLeadHelperComponent implements OnInit {
 
     const errors: string[] = this.getFormErrors(params);
     if (errors.length > 0) {
-      alert(`Form data not valid: ${JSON.stringify(errors)}`);
+      this.toast.warn('Form data not valid', errors.map((error) => '- ' + error).join('\n'));
       return;
     }
 
     this.raid = {
-      instanceSlug: params.instanceSlug!,
+      raidAndSize: params.raidAndSize!,
       hardReserveItem: params.hardReserveItem,
       hardReserveRecipient: params.hardReserveRecipient,
       softReserveCount: params.softReserveCount
@@ -135,7 +132,7 @@ export class RaidLeadHelperComponent implements OnInit {
   // TODO: Copied from create-softres-modal -- use validators
   private getFormErrors(params: Partial<Raid>): string[] {
     const errors: string[] = [];
-    if (!params.instanceSlug) {
+    if (!params.raidAndSize?.hasRaidAndSize()) {
       errors.push('A raid must be selected');
     }
     if (params.hardReserveItem && !params.hardReserveRecipient) {

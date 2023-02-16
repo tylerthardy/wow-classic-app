@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SimpleModalComponent } from 'ngx-simple-modal';
+import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-size-selection.component';
 import { ItemData } from '../common/item-data.interface';
-import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { CreateSoftresModalData } from './create-softres-modal-data.interface';
 
 @Component({
@@ -13,7 +13,7 @@ export class CreateSoftresModalComponent
   extends SimpleModalComponent<CreateSoftresModalData, CreateSoftresModalData>
   implements CreateSoftresModalData
 {
-  instanceSlug!: SoftresRaidSlug;
+  raidAndSize!: RaidAndSizeSelection;
   hardReserveItem: ItemData | undefined = undefined;
   hardReserveRecipient: string | undefined = undefined;
   softReserveCount: number = 1;
@@ -30,7 +30,7 @@ export class CreateSoftresModalComponent
     }
 
     this.result = {
-      instanceSlug: this.instanceSlug,
+      raidAndSize: this.raidAndSize,
       hardReserveItem: this.hardReserveItem,
       hardReserveRecipient: this.hardReserveRecipient,
       softReserveCount: this.softReserveCount
@@ -40,7 +40,7 @@ export class CreateSoftresModalComponent
 
   private getFormErrors(): string[] {
     const errors: string[] = [];
-    if (!this.instanceSlug) {
+    if (!this.raidAndSize.hasRaidAndSize()) {
       errors.push('A raid must be selected');
     }
     if (this.hardReserveItem && !this.hardReserveRecipient) {

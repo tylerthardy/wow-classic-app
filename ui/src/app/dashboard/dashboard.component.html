@@ -1,11 +1,5 @@
 <div class="flex-container">
-  <app-card [collapsed]="false" header="Playground">
-    <app-raid-size-selection [(ngModel)]="valoo"></app-raid-size-selection>
-    <div *ngIf="valoo">
-      <ng-container *ngIf="valoo.size10 && valoo.raid">{{ valoo.raid }}10</ng-container>
-      <ng-container *ngIf="valoo.size25 && valoo.raid">{{ valoo.raid }}25</ng-container>
-    </div>
-  </app-card>
+  <app-card [collapsed]="false" header="Playground"> </app-card>
 
   <app-card [collapsed]="true" header="VoA Raid Builder">
     <app-voa-raid-builder></app-voa-raid-builder>

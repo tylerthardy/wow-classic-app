@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { finalize } from 'rxjs';
+import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-size-selection.component';
 import { CharacterService } from '../common/services/character/character.service';
 import { IGetCharacterZoneRankingsResponse } from '../common/services/character/get-character-zone-rankings-response.interface';
+import { RaidSize } from '../common/services/raids/raid-size.type';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';
 import { RegionServerService } from '../common/services/region-server.service';
@@ -15,7 +17,10 @@ import { PlayerLookupViewModel } from './player-lookup.viewmodel';
   styleUrls: ['./player-lookup.component.scss']
 })
 export class PlayerLookupComponent implements OnInit {
-  @Input() instanceSlug: SoftresRaidSlug = 'ulduar10';
+  @Input() raidAndSize: RaidAndSizeSelection = new RaidAndSizeSelection({
+    raid: 'ulduar',
+    size10: true
+  });
   characterName: string | undefined;
   zoneRankingsLoading: boolean = false;
   viewModel: PlayerLookupViewModel | undefined;
@@ -52,11 +57,16 @@ export class PlayerLookupComponent implements OnInit {
     this.viewModel = undefined;
 
     if (!this.regionServerService.regionServer.regionSlug || !this.regionServerService.regionServer.serverSlug) {
-      alert('choose your server at top of page'); // FIXME: Use toast, among other bullshit
+      this.toastService.warn('Invalid Server', 'Choose your server at top of page'); // FIXME: Use toast, among other bullshit
       return;
     }
 
-    const raidZoneAndSize: RaidZoneAndSize = this.raidService.getZoneAndSize(this.instanceSlug);
+    const instanceSlug: SoftresRaidSlug | undefined = this.raidAndSize.getSoftResSlug();
+    if (!instanceSlug) {
+      this.toastService.warn('Invalid raid', 'Choose a raid and size');
+      return;
+    }
+    const raidZoneAndSize: RaidZoneAndSize = this.raidService.getZoneAndSize(instanceSlug);
     this.zoneRankingsLoading = true;
 
     this.characterService
@@ -66,7 +76,7 @@ export class PlayerLookupComponent implements OnInit {
         serverRegion: this.regionServerService.regionServer.regionSlug,
         serverSlug: this.regionServerService.regionServer.serverSlug,
         zoneId: raidZoneAndSize.zoneId,
-        size: raidZoneAndSize.size
+        size: this.raidAndSize.getSize() as RaidSize
       })
       .pipe(finalize(() => (this.zoneRankingsLoading = false)))
       .subscribe({

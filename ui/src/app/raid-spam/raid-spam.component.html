@@ -1,8 +1,13 @@
 <div id="form">
-  <div id="raid">Raid:<app-raid-selection [(ngModel)]="raid.instanceSlug"></app-raid-selection></div>
-  <div>
+  <div id="raid">
+    Raid: <app-raid-size-selection selectionType="radio" [(ngModel)]="raid.raidAndSize"></app-raid-size-selection>
+
     Hard Reserve:
-    <app-item-selection [instance]="raid.instanceSlug" [(ngModel)]="raid.hardReserveItem"></app-item-selection>
+    <app-item-selection
+      *ngIf="raid.raidAndSize"
+      [instance]="raid.raidAndSize.getSoftResSlug()"
+      [(ngModel)]="raid.hardReserveItem"
+    ></app-item-selection>
   </div>
   <div id="soft-reserves">Soft Reserves: <input type="number" [(ngModel)]="raid.softReserveCount" /></div>
 </div>

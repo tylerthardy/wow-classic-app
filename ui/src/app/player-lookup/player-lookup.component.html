@@ -2,7 +2,7 @@
   Player Name:
   <input [(ngModel)]="characterName" (keypress)="onPlayerNameKeyPress($event)" />
   Raid:
-  <app-raid-selection [(ngModel)]="instanceSlug" [removeDuplicates]="true"></app-raid-selection>
+  <app-raid-size-selection selectionType="radio" [(ngModel)]="raidAndSize"></app-raid-size-selection>
   <button (click)="onSearchClick()">Search</button>
   <button (click)="onClearClick()">Clear</button>
 </div>

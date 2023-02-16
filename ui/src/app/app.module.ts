@@ -16,7 +16,7 @@ import { ConfirmModalComponent } from './common/components/confirm-modal/confirm
 import { GridComponent } from './common/components/grid/grid.component';
 import { ItemSelectionComponent } from './common/components/item-selection/item-selection.component';
 import { ParseNumberComponent } from './common/components/parse-number/parse-number.component';
-import { RaidSelectionComponent } from './common/components/raid-selection/raid-selection.component';
+import { RaidSizeSelectionComponent } from './common/components/raid-size-selection/raid-size-selection.component';
 import { ServerSelectionComponent } from './common/components/server-selection/server-selection.component';
 import { GlobalErrorHandler } from './common/global-error-handler';
 import { GraphQLModule } from './common/services/graphql/graphql.module';
@@ -35,7 +35,6 @@ import { SpecializationDataComponent } from './specialization-data/specializatio
 import { SpecializationIconComponent } from './specialization-icon/specialization-icon.component';
 import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.component';
 import { WowheadLinkComponent } from './wowhead-link/wowhead-link.component';
-import { RaidSizeSelectionComponent } from './common/components/raid-size-selection/raid-size-selection.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +47,6 @@ import { RaidSizeSelectionComponent } from './common/components/raid-size-select
     SpecializationDataComponent,
     SoftresManagerComponent,
     RaidLeadHelperComponent,
-    RaidSelectionComponent,
     CreateSoftresModalComponent,
     PlayerLookupComponent,
     SpecializationIconComponent,

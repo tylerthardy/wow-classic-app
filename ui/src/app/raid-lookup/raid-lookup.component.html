@@ -2,7 +2,7 @@
   <span>Import:</span>
   <textarea [(ngModel)]="importJson"></textarea>
   <span>Raid:</span>
-  <app-raid-selection [(ngModel)]="instanceInput" [removeDuplicates]="true"></app-raid-selection>
+  <app-raid-size-selection selectionType="radio" [(ngModel)]="raidAndSize"></app-raid-size-selection>
   <button (click)="onSearchClick()">Search</button>
   <button (click)="onClearClick()">Clear</button>
 </div>

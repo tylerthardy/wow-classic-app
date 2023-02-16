@@ -26,7 +26,7 @@ export class RaidInformationComponent implements OnInit {
   getInstanceImageUrl(): string {
     //FIXME: integrate into instance enum
     let id: number;
-    switch (this.raid.instanceSlug) {
+    switch (this.raid.raidAndSize.getSoftResSlug()) {
       case 'naxxdragons10p2':
       case 'naxxdragons25':
       case 'wotlknaxx10p2':
@@ -51,7 +51,7 @@ export class RaidInformationComponent implements OnInit {
 
   getInstanceName(): string {
     //FIXME: integrate into instance enum
-    switch (this.raid.instanceSlug) {
+    switch (this.raid.raidAndSize.getSoftResSlug()) {
       case 'naxxdragons10p2':
       case 'naxxdragons25':
         return 'Naxx / Sarth / Maly';
@@ -78,7 +78,6 @@ export class RaidInformationComponent implements OnInit {
   getInstanceSize(): number {
     //FIXME: Integrate into instance enum
     //FIXME: Only works for 10 & 25 sizes
-    const instanceSlug: string = this.raid.instanceSlug as string;
-    return instanceSlug.indexOf('25') >= 0 ? 25 : 10;
+    return this.raid.raidAndSize.getSize();
   }
 }

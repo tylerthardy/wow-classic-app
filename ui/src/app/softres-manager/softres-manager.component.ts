@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { Observable } from 'rxjs';
 import { ConfirmModalComponent } from '../common/components/confirm-modal/confirm-modal.component';
+import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-size-selection.component';
 import { Raid } from '../common/services/raids/raid.interface';
 import { Softres } from '../common/services/softres/http/common/softres.interface';
 import { CreateSoftresResponse } from '../common/services/softres/http/create-softres-response.interface';
@@ -105,7 +106,10 @@ export class SoftresManagerComponent implements OnInit {
       return;
     }
     const data: CreateSoftresModalData = {
-      instanceSlug: 'wotlknaxx10p2',
+      raidAndSize: new RaidAndSizeSelection({
+        raid: 'ulduar',
+        size10: true
+      }),
       softReserveCount: 1,
       ...this.raid
     };
@@ -128,7 +132,7 @@ export class SoftresManagerComponent implements OnInit {
   private createSoftres(modalData: CreateSoftresModalData): Observable<CreateSoftresResponse> {
     let createOptions: CreateSoftresOptions = {
       edition: 'wotlk',
-      instance: modalData.instanceSlug,
+      instance: modalData.raidAndSize.getSoftResSlug()!,
       faction: 'Alliance',
       discord: true,
       amount: 1,

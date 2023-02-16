@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { RaidData } from '../common/services/raids/raid-data.interface';
 import { Raid } from '../common/services/raids/raid.interface';
 import { raids } from '../common/services/raids/raids';
+import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { ToastService } from '../common/services/toast.service';
 import { HtmlCopyUtil } from '../common/utils/html-copy-util';
 
@@ -18,15 +19,22 @@ export class RaidSpamComponent implements OnInit {
   ngOnInit(): void {}
 
   get spamOutput(): string | undefined {
-    if (!this.raid.instanceSlug || !this.raid.softReserveCount) {
+    if (!this.raid.raidAndSize || !this.raid.softReserveCount) {
       return undefined;
     }
 
-    const instanceData: RaidData | undefined = raids.find((raid) => raid.softresSlug === this.raid.instanceSlug);
-    if (!instanceData) {
-      throw new Error('raid not found ' + this.raid.instanceSlug);
+    const raidSlug: SoftresRaidSlug | undefined = this.raid.raidAndSize.getSoftResSlug();
+    if (!raidSlug) {
+      return undefined;
     }
 
+    // FIXME: Raid enum refactor
+    const instanceData: RaidData | undefined = raids.find((raid) => raid.softresSlug === raidSlug);
+    if (!instanceData) {
+      throw new Error('raid not found ' + raidSlug);
+    }
+
+    // FIXME: Raid enum refactor
     const lfgRaidName: string = instanceData.name.replace(' ', '');
     const hardReserveText: string = this.raid.hardReserveItem
       ? `, ${this.raid.hardReserveItem.name} HR`

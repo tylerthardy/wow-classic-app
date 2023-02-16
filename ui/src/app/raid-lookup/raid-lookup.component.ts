@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { finalize } from 'rxjs';
+import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-size-selection.component';
 import { CharacterService } from '../common/services/character/character.service';
 import { IGetMultipleCharacterZoneRankingsResponse } from '../common/services/character/get-multiple-character-zone-rankings-response.interface';
 import { RankingMetric, ZoneRankingsQuery } from '../common/services/graphql';
@@ -19,8 +20,12 @@ import { RaidPlayer } from './raid-player.interface';
 })
 export class RaidLookupComponent implements OnInit {
   @Output() characterNameClicked: EventEmitter<string> = new EventEmitter<string>();
-  @Input() instanceInput: SoftresRaidSlug = 'ulduar10';
-  importJson: string | undefined;
+  @Input() raidAndSize: RaidAndSizeSelection = new RaidAndSizeSelection({
+    raid: 'ulduar',
+    size10: true,
+    size25: false
+  });
+  importJson: string | undefined = '[{"name":"Rentatank","role":"TANK"}]';
   raidRankingsLoading: boolean = false;
   viewModel: RaidLookupViewModel | undefined;
 
@@ -50,11 +55,21 @@ export class RaidLookupComponent implements OnInit {
 
     // FIXME: Jesus, look at this method
     if (!this.regionServerService.regionServer.regionSlug || !this.regionServerService.regionServer.serverSlug) {
-      alert('choose your server at top of page'); // FIXME: Use toast, among other bullshit
+      this.toastService.warn('Missing Server', 'Choose your server at top of page');
       return;
     }
 
-    const raidZoneAndSize: RaidZoneAndSize = this.raidService.getZoneAndSize(this.instanceInput);
+    if (!this.raidAndSize.hasRaidAndSize()) {
+      this.toastService.warn('Invalid Search', 'Select a raid instance and size');
+      return;
+    }
+
+    const raidSlugs: SoftresRaidSlug[] = this.raidAndSize.getSoftResSlugs();
+    if (raidSlugs.length === 0) {
+      this.toastService.error('Error', 'No raids found for provided data' + JSON.stringify(this.raidAndSize));
+      return;
+    }
+    const raidZoneAndSize: RaidZoneAndSize = this.raidService.getZoneAndSize(raidSlugs[0]);
 
     let players: RaidPlayer[];
     try {

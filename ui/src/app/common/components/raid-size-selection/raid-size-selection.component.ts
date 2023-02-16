@@ -2,30 +2,50 @@ import { AfterViewInit, Component, ElementRef, forwardRef, Input, OnInit, ViewCh
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { SoftresRaidSlug } from '../../services/softres/softres-raid-slug';
 
-export interface IRaidSizeSelection {
+export interface IRaidAndSizeSelection {
   raid?: string;
   size10?: boolean;
   size25?: boolean;
 }
 
-export class RaidSizeSelection implements IRaidSizeSelection {
+export class RaidAndSizeSelection implements IRaidAndSizeSelection {
   public raid?: string;
   public size10?: boolean;
   public size25?: boolean;
 
-  constructor(value: IRaidSizeSelection) {
+  constructor(value: IRaidAndSizeSelection = {}) {
     this.raid = value.raid;
     this.size10 = value.size10;
     this.size25 = value.size25;
   }
-
-  public hasRaidSelected(): boolean {
+  public hasRaidAndSize(): boolean {
     return !!this.raid && (this.size10 === true || this.size25 === true);
+  }
+
+  public getSoftResSlug(): SoftresRaidSlug | undefined {
+    const slugs: SoftresRaidSlug[] = this.getSoftResSlugs();
+    if (slugs.length === 0) {
+      return undefined;
+    }
+    if (slugs.length > 1) {
+      throw new Error("Can't get slug: More than 1 size selected");
+    }
+    return slugs[0];
+  }
+
+  public getSize(): number {
+    if (!this.size10 && !this.size25) {
+      throw new Error("Can't get size: No size selected");
+    }
+    if (this.size10 && this.size25) {
+      throw new Error("Can't get size: More than 1 size selected");
+    }
+    return this.size10 ? 10 : 25;
   }
 
   public getSoftResSlugs(): SoftresRaidSlug[] {
     const results: SoftresRaidSlug[] = [];
-    if (!this.hasRaidSelected()) {
+    if (!this.hasRaidAndSize()) {
       return results;
     }
     if (this.raid === 'ulduar') {
@@ -86,11 +106,7 @@ export class RaidSizeSelectionComponent implements OnInit, AfterViewInit, Contro
   @Input() selectionType: 'checkbox' | 'radio' = 'checkbox';
   uniqueId = generateUUID();
 
-  value: RaidSizeSelection = new RaidSizeSelection({
-    raid: 'wotlknaxx',
-    size10: true,
-    size25: false
-  });
+  value: RaidAndSizeSelection = new RaidAndSizeSelection();
 
   private onChangeCallback = (_: any) => {};
   private onTouchedCallback = () => {};
@@ -103,7 +119,7 @@ export class RaidSizeSelectionComponent implements OnInit, AfterViewInit, Contro
     this.setUI();
   }
 
-  writeValue(value: RaidSizeSelection): void {
+  writeValue(value: RaidAndSizeSelection): void {
     this.value = value;
     this.setUI();
   }
