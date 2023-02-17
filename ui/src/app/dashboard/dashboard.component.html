@@ -1,5 +1,7 @@
 <div class="flex-container">
-  <app-card [collapsed]="false" header="Playground"> </app-card>
+  <ng-container *ngIf="isDevelopment">
+    <app-card [collapsed]="false" header="Playground"></app-card>
+  </ng-container>
 
   <app-card [collapsed]="true" header="VoA Raid Builder">
     <app-voa-raid-builder></app-voa-raid-builder>

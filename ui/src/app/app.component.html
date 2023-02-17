@@ -1,6 +1,6 @@
 <div class="wrapper" [ngClass]="containerStyles[containerStyle].cssClass">
   <header>
-    <span>Classic Companion</span>
+    <span>Classic Companion - </span>
     <app-server-selection [(ngModel)]="regionServerService.regionServer"></app-server-selection>
     <button (click)="cycleContainerStyle()">{{ nextContainerStyle }}</button>
   </header>
