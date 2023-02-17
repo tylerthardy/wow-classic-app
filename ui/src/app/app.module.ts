@@ -18,14 +18,12 @@ import { ItemSelectionComponent } from './common/components/item-selection/item-
 import { ParseNumberComponent } from './common/components/parse-number/parse-number.component';
 import { RaidSizeSelectionComponent } from './common/components/raid-size-selection/raid-size-selection.component';
 import { ServerSelectionComponent } from './common/components/server-selection/server-selection.component';
+import { WowheadLinkComponent } from './common/components/wowhead-link/wowhead-link.component';
 import { GlobalErrorHandler } from './common/global-error-handler';
 import { GraphQLModule } from './common/services/graphql/graphql.module';
 import { CreateSoftresModalComponent } from './create-softres-modal/create-softres-modal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { GuildLogComponent } from './guild-log/guild-log.component';
-import { GuildLogsSummaryComponent } from './guild-logs-summary/guild-logs-summary.component';
 import { PlayerLookupComponent } from './player-lookup/player-lookup.component';
-import { PlayerRankingsComponent } from './player-rankings/player-rankings.component';
 import { RaidInformationComponent } from './raid-information/raid-information.component';
 import { RaidLeadHelperComponent } from './raid-lead-helper/raid-lead-helper.component';
 import { RaidLookupComponent } from './raid-lookup/raid-lookup.component';
@@ -34,14 +32,10 @@ import { SoftresManagerComponent } from './softres-manager/softres-manager.compo
 import { SpecializationDataComponent } from './specialization-data/specialization-data.component';
 import { SpecializationIconComponent } from './specialization-icon/specialization-icon.component';
 import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.component';
-import { WowheadLinkComponent } from './wowhead-link/wowhead-link.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PlayerRankingsComponent,
-    GuildLogComponent,
-    GuildLogsSummaryComponent,
     WowheadLinkComponent,
     DashboardComponent,
     SpecializationDataComponent,
