@@ -41,6 +41,11 @@ export class RaidLeadHelperComponent implements OnInit {
   public hardReserveRecipientInput: string | undefined;
   public softReserveCountInput: number = 1;
 
+  public raidSpamInput?: Raid;
+  public softresManagerInput?: Raid;
+  public playerLookupInput?: RaidAndSizeSelection;
+  public raidLookupInput?: RaidAndSizeSelection;
+
   constructor(private toast: ToastService, simpleModalService: SimpleModalService) {
     this.detailsButtons = [
       {
@@ -88,6 +93,19 @@ export class RaidLeadHelperComponent implements OnInit {
       hardReserveRecipient: params.hardReserveRecipient,
       softReserveCount: params.softReserveCount
     };
+
+    // Duplicate inputs due to protect this.raid from modified properties
+    // TODO: Separate these concepts. Too much
+    this.raidSpamInput = {
+      ...this.raid,
+      raidAndSize: this.raid.raidAndSize.duplicate()
+    };
+    this.softresManagerInput = {
+      ...this.raid,
+      raidAndSize: this.raid.raidAndSize.duplicate()
+    };
+    this.playerLookupInput = this.raid.raidAndSize.duplicate();
+    this.raidLookupInput = this.raid.raidAndSize.duplicate();
   }
 
   public onCheckPlayerClick(): void {

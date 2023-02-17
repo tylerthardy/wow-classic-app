@@ -66,6 +66,14 @@ export class RaidAndSizeSelection implements IRaidAndSizeSelection {
     }
     return results;
   }
+
+  public duplicate(): RaidAndSizeSelection {
+    return new RaidAndSizeSelection({
+      raid: this.raid,
+      size10: this.size10,
+      size25: this.size25
+    });
+  }
 }
 
 function generateUUID() {

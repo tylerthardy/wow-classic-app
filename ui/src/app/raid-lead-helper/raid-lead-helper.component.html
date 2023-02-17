@@ -34,21 +34,21 @@
   </div>
 
   <app-card #raidSpamCard header="Raid Spam">
-    <app-raid-spam #raidSpam [raid]="raid"></app-raid-spam>
+    <app-raid-spam #raidSpam [raid]="raidSpamInput!"></app-raid-spam>
   </app-card>
 
   <app-card id="player-lookup-card" #playerLookupCard header="Player Lookup">
-    <app-player-lookup #playerLookup [raidAndSize]="raid.raidAndSize"></app-player-lookup
+    <app-player-lookup #playerLookup [raidAndSize]="playerLookupInput!"></app-player-lookup
   ></app-card>
 
   <app-card #softresManagerCard header="Softres.it Manager">
-    <app-softres-manager #softresManager [raid]="raid"></app-softres-manager>
+    <app-softres-manager #softresManager [raid]="softresManagerInput"></app-softres-manager>
   </app-card>
 
   <app-card #raidLookupCard header="Raid Lookup" [collapsed]="true">
     <app-raid-lookup
       #raidLookup
-      [raidAndSize]="raid.raidAndSize"
+      [raidAndSize]="raidLookupInput!"
       (characterNameClicked)="onRaidCharacterNameClicked($event)"
     ></app-raid-lookup>
   </app-card>
