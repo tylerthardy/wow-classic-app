@@ -24,8 +24,14 @@ export class WowheadLinkComponent implements OnInit, OnChanges {
   }
 
   public get url() {
-    if (this.disableLink) return '#';
+    if (this.disableLink) return null;
     return `https://www.wowhead.com/wotlk/${this.type}=${this.id}`;
+  }
+
+  onClickUrl(event: Event) {
+    if (this.disableLink) {
+      event.preventDefault();
+    }
   }
 
   private refreshStyle(): void {

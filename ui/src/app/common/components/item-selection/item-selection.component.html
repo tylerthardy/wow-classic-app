@@ -15,7 +15,7 @@
     (blur)="onInputBlur()"
   />
   <div class="dropdown-content">
-    <ng-container *ngIf="itemChoices">
+    <ng-container *ngIf="itemChoices.length > 0">
       <span class="dropdown-item" *ngFor="let filteredItem of itemChoices" (click)="onItemNameClick(filteredItem)">
         <wowhead-link [id]="filteredItem.id" type="item" [disableLink]="true">{{
           filteredItem.name
