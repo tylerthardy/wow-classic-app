@@ -1,1 +1,3 @@
-export type RankingMetric = 'dps' | 'hps';
+// FIXME: Duplicated in api and ui
+export const RankingMetricValues = ['dps', 'hps'] as const;
+export type RankingMetric = (typeof RankingMetricValues)[number];

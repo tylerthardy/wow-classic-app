@@ -3,6 +3,7 @@ import { finalize } from 'rxjs';
 import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-size-selection.component';
 import { CharacterService } from '../common/services/character/character.service';
 import { IGetCharacterZoneRankingsResponse } from '../common/services/character/get-character-zone-rankings-response.interface';
+import { RankingMetric, RankingMetricValues } from '../common/services/graphql';
 import { RaidSize } from '../common/services/raids/raid-size.type';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';
@@ -21,7 +22,9 @@ export class PlayerLookupComponent implements OnInit {
     raid: 'ulduar',
     size10: true
   });
-  characterName: string | undefined;
+  characterNameInput: string | undefined;
+  rankingMetricValues = RankingMetricValues;
+  metricInput: RankingMetric = 'dps';
   zoneRankingsLoading: boolean = false;
   viewModel: PlayerLookupViewModel | undefined;
 
@@ -41,11 +44,11 @@ export class PlayerLookupComponent implements OnInit {
   }
 
   public onSearchClick(): void {
-    if (!this.characterName) {
+    if (!this.characterNameInput) {
       alert('a character name must be specified'); // FIXME: Use toast, among other bullshit
       return;
     }
-    this.searchPlayer(this.characterName);
+    this.searchPlayer(this.characterNameInput);
   }
 
   public onClearClick(): void {
@@ -53,7 +56,7 @@ export class PlayerLookupComponent implements OnInit {
   }
 
   public searchPlayer(name: string) {
-    this.characterName = name;
+    this.characterNameInput = name;
     this.viewModel = undefined;
 
     if (!this.regionServerService.regionServer.regionSlug || !this.regionServerService.regionServer.serverSlug) {
@@ -71,8 +74,8 @@ export class PlayerLookupComponent implements OnInit {
 
     this.characterService
       .getZoneRankings({
-        characterName: this.characterName,
-        metric: 'dps',
+        characterName: this.characterNameInput,
+        metric: this.metricInput,
         serverRegion: this.regionServerService.regionServer.regionSlug,
         serverSlug: this.regionServerService.regionServer.serverSlug,
         zoneId: raidZoneAndSize.zoneId,
@@ -87,7 +90,7 @@ export class PlayerLookupComponent implements OnInit {
             return;
           }
           if (error.status === 404) {
-            this.toastService.warn('Character Not Found', `${this.characterName} was not found on WarcraftLogs`);
+            this.toastService.warn('Character Not Found', `${this.characterNameInput} was not found on WarcraftLogs`);
             return;
           }
           throw error;

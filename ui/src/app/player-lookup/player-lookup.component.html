@@ -1,6 +1,10 @@
 <div id="search-form">
   Player Name:
-  <input [(ngModel)]="characterName" (keypress)="onPlayerNameKeyPress($event)" />
+  <input [(ngModel)]="characterNameInput" (keypress)="onPlayerNameKeyPress($event)" />
+  Metric:
+  <select [(ngModel)]="metricInput">
+    <option *ngFor="let rankingMetric of rankingMetricValues" [value]="rankingMetric">{{ rankingMetric }}</option>
+  </select>
   Raid:
   <app-raid-size-selection selectionType="radio" [(ngModel)]="raidAndSize"></app-raid-size-selection>
   <button (click)="onSearchClick()">Search</button>

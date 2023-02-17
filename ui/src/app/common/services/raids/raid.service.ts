@@ -8,6 +8,7 @@ import { RaidZoneAndSize } from './raid-zone-and-size.interface';
 export class RaidService {
   constructor() {}
 
+  // FIXME: Enum
   public getZoneAndSize(softresSlug: SoftresRaidSlug): RaidZoneAndSize {
     switch (softresSlug) {
       case 'wotlknaxx10p2':

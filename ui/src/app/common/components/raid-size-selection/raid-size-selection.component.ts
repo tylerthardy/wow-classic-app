@@ -64,6 +64,22 @@ export class RaidAndSizeSelection implements IRaidAndSizeSelection {
         results.push('wotlknaxx25');
       }
     }
+    if (this.raid === 'obsidiansanctum') {
+      if (this.size10) {
+        results.push('obsidiansanctum10p2');
+      }
+      if (this.size25) {
+        results.push('obsidiansanctum25');
+      }
+    }
+    if (this.raid === 'eyeofeternity') {
+      if (this.size10) {
+        results.push('eyeofeternity10p2');
+        if (this.size25) {
+          results.push('eyeofeternity25');
+        }
+      }
+    }
     return results;
   }
 
