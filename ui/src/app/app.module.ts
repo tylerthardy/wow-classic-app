@@ -20,7 +20,6 @@ import { RaidSizeSelectionComponent } from './common/components/raid-size-select
 import { ServerSelectionComponent } from './common/components/server-selection/server-selection.component';
 import { WowheadLinkComponent } from './common/components/wowhead-link/wowhead-link.component';
 import { GlobalErrorHandler } from './common/global-error-handler';
-import { GraphQLModule } from './common/services/graphql/graphql.module';
 import { CreateSoftresModalComponent } from './create-softres-modal/create-softres-modal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PlayerLookupComponent } from './player-lookup/player-lookup.component';
@@ -61,7 +60,6 @@ import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.com
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    GraphQLModule,
     HttpClientModule,
     Json2TreeModule,
     SafePipeModule,

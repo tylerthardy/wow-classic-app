@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AppConfig } from '../../../app.config';
-import { ZoneRankingsQuery } from '../graphql';
-import { IGetCharacterZoneRankingsResponse } from './get-character-zone-rankings-response.interface';
-import { IGetMultipleCharacterZoneRankingsResponse } from './get-multiple-character-zone-rankings-response.interface';
+import {
+  IGetCharacterZoneRankingsRequest,
+  IGetCharacterZoneRankingsResponse,
+  IGetMultipleCharacterZoneRankingsResponse
+} from '../../../../../models/api';
+import { AppConfig } from '../../app.config';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +14,14 @@ import { IGetMultipleCharacterZoneRankingsResponse } from './get-multiple-charac
 export class CharacterService {
   constructor(private config: AppConfig, private http: HttpClient) {}
 
-  public getZoneRankings(query: ZoneRankingsQuery): Observable<IGetCharacterZoneRankingsResponse> {
+  public getZoneRankings(query: IGetCharacterZoneRankingsRequest): Observable<IGetCharacterZoneRankingsResponse> {
     const url: string = `${this.config.apiUrl}/character`;
     return this.http.post<IGetCharacterZoneRankingsResponse>(url, query);
   }
 
-  public getMultipleZoneRankings(queries: ZoneRankingsQuery[]): Observable<IGetMultipleCharacterZoneRankingsResponse> {
+  public getMultipleZoneRankings(
+    queries: IGetCharacterZoneRankingsRequest[]
+  ): Observable<IGetMultipleCharacterZoneRankingsResponse> {
     const url: string = `${this.config.apiUrl}/character/multiple`;
     // FIXME: Use imported interface type
     const body = {

@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { finalize } from 'rxjs';
+import { IGetCharacterZoneRankingsRequest, IGetMultipleCharacterZoneRankingsResponse } from '../../../../models/api';
+import { RankingMetric } from '../../../../models/warcraft-logs';
 import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-size-selection.component';
-import { CharacterService } from '../common/services/character/character.service';
-import { IGetMultipleCharacterZoneRankingsResponse } from '../common/services/character/get-multiple-character-zone-rankings-response.interface';
-import { RankingMetric, ZoneRankingsQuery } from '../common/services/graphql';
+import { CharacterService } from '../common/services/character.service';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';
 import { RegionServerService } from '../common/services/region-server.service';
@@ -80,8 +80,8 @@ export class RaidLookupComponent implements OnInit {
       return;
     }
 
-    const queries: ZoneRankingsQuery[] = players.map((player) => {
-      const query: ZoneRankingsQuery = {
+    const queries: IGetCharacterZoneRankingsRequest[] = players.map((player) => {
+      const query: IGetCharacterZoneRankingsRequest = {
         characterName: player.name,
         metric: this.getMetricFromRole(player.role),
         serverRegion: 'us',

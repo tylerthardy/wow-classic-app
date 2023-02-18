@@ -1,5 +1,5 @@
+import { IGetMultipleCharacterZoneRankingsResponseItem } from '../../../../models/api';
 import { ColumnSpecification } from '../common/components/grid/grid.component';
-import { IGetMultipleCharacterZoneRankingsResponseItem } from '../common/services/character/get-multiple-character-zone-rankings-response.interface';
 import { ParseUtil } from '../common/utils';
 import { RaidPlayer } from './raid-player.interface';
 

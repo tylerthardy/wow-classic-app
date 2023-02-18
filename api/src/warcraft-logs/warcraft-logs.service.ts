@@ -1,9 +1,9 @@
 import { ApolloClient, ApolloQueryResult, gql, HttpLink, InMemoryCache, TypedDocumentNode } from '@apollo/client/core';
 import { Injectable } from '@nestjs/common';
 import fetch from 'cross-fetch';
-import { IGetCharacterZoneRankingsRequest } from '../character/requests';
-import { CharacterData } from './common';
-import { GetWclCharacterZoneRankingsResponse } from './service/get-wcl-character-zone-rankings-response.interface';
+import { IGetCharacterZoneRankingsRequest } from '../../../models/api';
+import { CharacterData } from '../../../models/warcraft-logs';
+import { GetWclCharacterZoneRankingsResponse } from './models/get-wcl-character-zone-rankings-response.interface';
 
 @Injectable()
 export class WarcraftLogsService {

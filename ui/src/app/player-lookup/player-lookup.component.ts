@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { finalize } from 'rxjs';
+import { IGetCharacterZoneRankingsResponse } from '../../../../models/api';
+import { RankingMetric, RankingMetricValues } from '../../../../models/warcraft-logs';
 import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-size-selection.component';
-import { CharacterService } from '../common/services/character/character.service';
-import { IGetCharacterZoneRankingsResponse } from '../common/services/character/get-character-zone-rankings-response.interface';
-import { RankingMetric, RankingMetricValues } from '../common/services/graphql';
+import { CharacterService } from '../common/services/character.service';
 import { RaidSize } from '../common/services/raids/raid-size.type';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';

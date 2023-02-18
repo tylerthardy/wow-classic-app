@@ -1,6 +1,5 @@
 import { IGetCharacterZoneRankingsResponseRanking } from './get-character-zone-rankings-response-ranking.interface';
 
-// FIXME: Duplicated from the API
 export interface IGetCharacterZoneRankingsResponse {
   characterName: string;
   warcraftLogsClassId?: number;

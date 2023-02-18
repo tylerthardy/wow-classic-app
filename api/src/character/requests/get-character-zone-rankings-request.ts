@@ -1,7 +1,7 @@
 import { IsIn, IsNumber, IsString } from 'class-validator';
+import { IGetCharacterZoneRankingsRequest } from '../../../../models/api';
+import { RaidSize, RaidSizeValues, RankingMetric, RankingMetricValues } from '../../../../models/warcraft-logs';
 import { IsWowUsername } from '../../common/validators/is-wow-username.validator';
-import { RaidSize, RaidSizeValues, RankingMetric, RankingMetricValues } from '../../warcraft-logs/common';
-import { IGetCharacterZoneRankingsRequest } from './get-character-zone-rankings-request.interface';
 
 export class GetCharacterZoneRankingsRequest implements IGetCharacterZoneRankingsRequest {
   @IsWowUsername()

@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { NotFoundError } from 'common-errors';
-import { GetWclCharacterZoneRankingsResponse } from '../warcraft-logs/service/get-wcl-character-zone-rankings-response.interface';
+import { GetWclCharacterZoneRankingsResponse } from '../warcraft-logs/models/get-wcl-character-zone-rankings-response.interface';
 import { WarcraftLogsService } from '../warcraft-logs/warcraft-logs.service';
 import { GetCharacterZoneRankingsRequest, GetMultipleCharacterZoneRankingsRequest } from './requests';
-import { GetCharacterZoneRankingsV2Response } from './responses/get-character-zone-rankings-response-v2';
+import { GetCharacterZoneRankingsResponse } from './responses/get-character-zone-rankings-response';
+import { GetMultipleCharacterZoneRankingsResponse } from './responses/get-multiple-character-zone-rankings-response';
 import { GetMultipleCharacterZoneRankingsResponseItem } from './responses/get-multiple-character-zone-rankings-response-item';
 
 @Injectable()
@@ -12,17 +13,17 @@ export class CharacterService {
 
   public async getCharacterZoneRankings(
     request: GetCharacterZoneRankingsRequest
-  ): Promise<GetCharacterZoneRankingsV2Response> {
+  ): Promise<GetCharacterZoneRankingsResponse> {
     const wclRankings = await this.getWclCharacterZoneRankings(request);
     if (!wclRankings || !wclRankings.name) {
       throw new NotFoundError('character not found');
     }
-    return new GetCharacterZoneRankingsV2Response(wclRankings);
+    return new GetCharacterZoneRankingsResponse(wclRankings);
   }
 
   public async getMultipleCharactersZoneRankings(
     request: GetMultipleCharacterZoneRankingsRequest
-  ): Promise<GetMultipleCharacterZoneRankingsResponseItem[]> {
+  ): Promise<GetMultipleCharacterZoneRankingsResponse> {
     type fuckery = {
       query: any;
       rankingData: any;
@@ -39,11 +40,11 @@ export class CharacterService {
       })
     );
 
-    const characters = mapForInput.map(
+    const characters: GetMultipleCharacterZoneRankingsResponseItem[] = mapForInput.map(
       (queryAndData) => new GetMultipleCharacterZoneRankingsResponseItem(queryAndData.query, queryAndData.rankingData)
     );
 
-    return characters;
+    return new GetMultipleCharacterZoneRankingsResponse(characters);
   }
 
   private async getWclCharacterZoneRankings(

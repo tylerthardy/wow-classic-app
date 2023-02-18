@@ -1,4 +1,3 @@
-// FIXME: Duplicated from the API
 export interface IGetMultipleCharacterZoneRankingsResponse {
   characters: IGetMultipleCharacterZoneRankingsResponseItem[];
 }

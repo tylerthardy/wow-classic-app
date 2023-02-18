@@ -1,7 +1,7 @@
-import { RankingMetric, ZoneEncounterRanking } from '../../warcraft-logs/common';
-import { GetWclCharacterZoneRankingsResponse } from '../../warcraft-logs/service/get-wcl-character-zone-rankings-response.interface';
+import { IGetMultipleCharacterZoneRankingsResponseItem } from '../../../../models/api';
+import { RankingMetric, ZoneEncounterRanking } from '../../../../models/warcraft-logs';
+import { GetWclCharacterZoneRankingsResponse } from '../../warcraft-logs/models/get-wcl-character-zone-rankings-response.interface';
 import { GetCharacterZoneRankingsRequest } from '../requests';
-import { IGetMultipleCharacterZoneRankingsResponseItem } from './get-multiple-character-zone-rankings-response.interface';
 
 export class GetMultipleCharacterZoneRankingsResponseItem implements IGetMultipleCharacterZoneRankingsResponseItem {
   public characterName: string;

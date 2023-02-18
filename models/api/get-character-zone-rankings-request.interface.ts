@@ -1,4 +1,4 @@
-import { RaidSize, RankingMetric } from '../../warcraft-logs/common';
+import { RaidSize, RankingMetric } from '../warcraft-logs/common';
 
 export interface IGetCharacterZoneRankingsRequest {
   characterName: string;
