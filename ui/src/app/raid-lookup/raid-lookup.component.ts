@@ -25,7 +25,7 @@ export class RaidLookupComponent implements OnInit {
     size10: true,
     size25: false
   });
-  importJson: string | undefined = '[{"name":"Rentatank","role":"TANK"}]';
+  importJson: string | undefined;
   raidRankingsLoading: boolean = false;
   viewModel: RaidLookupViewModel | undefined;
 
