@@ -71,6 +71,7 @@ export class WarcraftLogsService {
     const tokenParams = {};
     try {
       const accessToken: AccessToken = await client.getToken(tokenParams);
+      this.cachedToken = accessToken;
       return accessToken.token.access_token as string;
     } catch (error) {
       console.error('Access Token error', error.message);
