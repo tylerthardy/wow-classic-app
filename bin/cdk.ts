@@ -1,8 +1,11 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
+import { config } from 'dotenv';
 import 'source-map-support/register';
 import { ClassicCompanionApiStack } from '../lib/api-stack';
 import { ClassicCompanionUiStack } from '../lib/ui-stack';
+
+config();
 
 const app = new cdk.App();
 new ClassicCompanionApiStack(app, 'classic-companion-api', {

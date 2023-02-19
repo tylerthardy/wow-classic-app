@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { NotFoundError } from 'common-errors';
-import { GetWclCharacterZoneRankingsResponse } from '../warcraft-logs/service/get-wcl-character-zone-rankings-response.interface';
+import { GetWclCharacterZoneRankingsResponse } from '../warcraft-logs/responses/get-wcl-character-zone-rankings-response.interface';
 import { WarcraftLogsService } from '../warcraft-logs/warcraft-logs.service';
 import { GetCharacterZoneRankingsRequest, GetMultipleCharacterZoneRankingsRequest } from './requests';
 import { GetCharacterZoneRankingsV2Response } from './responses/get-character-zone-rankings-response-v2';

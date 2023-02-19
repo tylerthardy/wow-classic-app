@@ -1,5 +1,5 @@
 import { RankingMetric, ZoneEncounterRanking } from '../../warcraft-logs/common';
-import { GetWclCharacterZoneRankingsResponse } from '../../warcraft-logs/service/get-wcl-character-zone-rankings-response.interface';
+import { GetWclCharacterZoneRankingsResponse } from '../../warcraft-logs/responses/get-wcl-character-zone-rankings-response.interface';
 import { GetCharacterZoneRankingsRequest } from '../requests';
 import { IGetMultipleCharacterZoneRankingsResponseItem } from './get-multiple-character-zone-rankings-response.interface';
 

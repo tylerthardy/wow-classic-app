@@ -1,5 +1,5 @@
 import { ZoneEncounterRanking } from '../../warcraft-logs/common';
-import { GetWclCharacterZoneRankingsResponse } from '../../warcraft-logs/service/get-wcl-character-zone-rankings-response.interface';
+import { GetWclCharacterZoneRankingsResponse } from '../../warcraft-logs/responses/get-wcl-character-zone-rankings-response.interface';
 import { GetCharacterZoneRankingsResponseV2Ranking } from './get-character-zone-rankings-response-v2-ranking';
 import { IGetCharacterZoneRankingsResponseV2Ranking } from './get-character-zone-rankings-response-v2-ranking.interface';
 import { IGetCharacterZoneRankingsResponseV2 } from './get-character-zone-rankings-response-v2.interface';

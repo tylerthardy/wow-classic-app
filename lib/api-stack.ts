@@ -24,7 +24,11 @@ export class ClassicCompanionApiStack extends Stack {
       runtime: Runtime.NODEJS_16_X,
       layers: [lambdaLayer, insightsLayer],
       timeout: Duration.seconds(30),
-      memorySize: 512
+      memorySize: 512,
+      environment: {
+        WARCRAFT_LOGS_CLIENT_ID: process.env.WARCRAFT_LOGS_CLIENT_ID!,
+        WARCRAFT_LOGS_CLIENT_SECRET: process.env.WARCRAFT_LOGS_CLIENT_SECRET!
+      }
     });
 
     if (!handler.role) {
