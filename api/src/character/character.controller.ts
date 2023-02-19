@@ -28,8 +28,6 @@ export class CharacterController {
   public async getMultipleCharacterZoneRankings(
     @Body() request: GetMultipleCharacterZoneRankingsRequest
   ): Promise<IGetMultipleCharacterZoneRankingsResponse> {
-    return {
-      characters: await this.service.getMultipleCharactersZoneRankings(request)
-    };
+    return await this.service.getMultipleCharactersZoneRankings(request);
   }
 }

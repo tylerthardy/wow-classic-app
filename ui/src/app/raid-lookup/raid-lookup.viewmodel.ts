@@ -1,19 +1,21 @@
 import { ColumnSpecification } from '../common/components/grid/grid.component';
 import { IGetMultipleCharacterZoneRankingsResponseItem } from '../common/services/character/get-multiple-character-zone-rankings-response.interface';
 import { ParseUtil } from '../common/utils';
-import { RaidPlayer } from './raid-player.interface';
+
+export interface IRaidLookupViewModelErrorRow {
+  characterName: string;
+  metric: string;
+  errors: string;
+}
 
 export class RaidLookupViewModel {
   public raidBestPerformanceAverage: number;
   public raidMedianPerformance: number;
   public data: IGetMultipleCharacterZoneRankingsResponseItem[];
   public columns: ColumnSpecification<IGetMultipleCharacterZoneRankingsResponseItem>[];
+  public errorData: IRaidLookupViewModelErrorRow[];
 
-  constructor(
-    rankings: IGetMultipleCharacterZoneRankingsResponseItem[],
-    players: RaidPlayer[],
-    onClick?: (name: string) => void
-  ) {
+  constructor(rankings: IGetMultipleCharacterZoneRankingsResponseItem[], onClick?: (name: string) => void) {
     let raidBestPerformanceTotal: number = 0;
     let raidMedianPerformances: number[] = [];
 
@@ -99,18 +101,29 @@ export class RaidLookupViewModel {
       }
     ];
 
-    this.data = rankings;
+    this.data = rankings.filter((ranking) => !ranking.errors || ranking.errors.length === 0);
+    this.errorData = rankings
+      .filter((ranking) => ranking.errors && ranking.errors.length > 0)
+      .map((ranking) => ({
+        characterName: ranking.characterName,
+        metric: ranking.metric,
+        errors: JSON.stringify(ranking.errors)
+      }));
 
+    // TODO: Move this to the API
     this.data.forEach((datum) => {
       if (datum.bestPerformanceAverage) {
         raidBestPerformanceTotal += datum.bestPerformanceAverage;
       }
       if (datum.medianPerformanceAverage) {
         raidMedianPerformances.push(datum.medianPerformanceAverage);
-      } else {
-        raidMedianPerformances.push(0);
       }
     });
+    if (raidMedianPerformances.length != rankings.length) {
+      for (let i = 0; i < rankings.length - raidMedianPerformances.length; i++) {
+        raidMedianPerformances.push(0);
+      }
+    }
 
     this.raidBestPerformanceAverage = raidBestPerformanceTotal / rankings.length;
     this.raidMedianPerformance = Math.median(raidMedianPerformances);

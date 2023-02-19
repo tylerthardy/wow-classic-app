@@ -13,7 +13,7 @@ import fetch from 'cross-fetch';
 import { AccessToken, ClientCredentials, ModuleOptions } from 'simple-oauth2';
 import { IGetCharacterZoneRankingsRequest } from '../character/requests';
 import { CharacterData } from './common';
-import { GetWclCharacterZoneRankingsResponse } from './responses/get-wcl-character-zone-rankings-response.interface';
+import { IGetWclCharacterZoneRankingsResponse } from './responses/get-wcl-character-zone-rankings-response.interface';
 
 @Injectable()
 export class WarcraftLogsService {
@@ -79,7 +79,7 @@ export class WarcraftLogsService {
 
   public async getWclCharacterZoneRankings(
     request: IGetCharacterZoneRankingsRequest
-  ): Promise<GetWclCharacterZoneRankingsResponse> {
+  ): Promise<IGetWclCharacterZoneRankingsResponse> {
     const GET_CHARACTER_ZONE_RANKINGS: TypedDocumentNode<CharacterData, unknown> = gql`
           query {
             characterData {
@@ -105,6 +105,6 @@ export class WarcraftLogsService {
       query: GET_CHARACTER_ZONE_RANKINGS,
       fetchPolicy: 'network-only'
     });
-    return result.data.characterData.character as GetWclCharacterZoneRankingsResponse;
+    return result.data.characterData.character as IGetWclCharacterZoneRankingsResponse;
   }
 }

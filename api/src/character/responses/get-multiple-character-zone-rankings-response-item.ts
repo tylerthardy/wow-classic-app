@@ -1,5 +1,5 @@
 import { RankingMetric, ZoneEncounterRanking } from '../../warcraft-logs/common';
-import { GetWclCharacterZoneRankingsResponse } from '../../warcraft-logs/responses/get-wcl-character-zone-rankings-response.interface';
+import { IGetWclCharacterZoneRankingsResponse } from '../../warcraft-logs/responses/get-wcl-character-zone-rankings-response.interface';
 import { GetCharacterZoneRankingsRequest } from '../requests';
 import { IGetMultipleCharacterZoneRankingsResponseItem } from './get-multiple-character-zone-rankings-response.interface';
 
@@ -14,10 +14,16 @@ export class GetMultipleCharacterZoneRankingsResponseItem implements IGetMultipl
   public bestHardModeProgress?: number;
   public hardModes?: string[];
   public maxPossibleHardmodes?: number;
+  public errors?: any[];
 
-  constructor(query: GetCharacterZoneRankingsRequest, wclCharacterData: GetWclCharacterZoneRankingsResponse) {
+  constructor(
+    query: GetCharacterZoneRankingsRequest,
+    wclCharacterData: IGetWclCharacterZoneRankingsResponse,
+    errors: any[]
+  ) {
     this.characterName = query.characterName;
     this.metric = query.metric;
+    this.errors = errors;
     if (wclCharacterData) {
       this.warcraftLogsClassId = wclCharacterData.classID;
       this.bestPerformanceAverage = wclCharacterData.zoneRankings.bestPerformanceAverage;

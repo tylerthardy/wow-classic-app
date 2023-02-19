@@ -1,5 +1,5 @@
 import { Character, ZoneRankings } from '../common';
 
-export interface GetWclCharacterZoneRankingsResponse extends Character {
+export interface IGetWclCharacterZoneRankingsResponse extends Character {
   zoneRankings: ZoneRankings;
 }

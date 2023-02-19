@@ -2,6 +2,7 @@
   <header>
     <span>Classic Companion - </span>
     <app-server-selection [(ngModel)]="regionServerService.regionServer"></app-server-selection>
+    <button (click)="onDownloadButtonClick()">Download Addon</button>
     <button (click)="cycleContainerStyle()">{{ nextContainerStyle }}</button>
   </header>
   <div class="light-theme" id="main">

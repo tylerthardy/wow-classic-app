@@ -98,9 +98,7 @@ export class RaidLookupComponent implements OnInit {
       .pipe(finalize(() => (this.raidRankingsLoading = false)))
       .subscribe({
         next: (response: IGetMultipleCharacterZoneRankingsResponse) =>
-          (this.viewModel = new RaidLookupViewModel(response.characters, players, (value) =>
-            this.onCharacterNameClick(value)
-          ))
+          (this.viewModel = new RaidLookupViewModel(response.characters, (value) => this.onCharacterNameClick(value)))
       });
   }
 

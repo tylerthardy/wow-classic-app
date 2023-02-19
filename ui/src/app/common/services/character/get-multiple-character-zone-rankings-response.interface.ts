@@ -14,4 +14,5 @@ export interface IGetMultipleCharacterZoneRankingsResponseItem {
   bestHardModeProgress?: number;
   hardModes?: string[];
   maxPossibleHardmodes?: number;
+  errors?: any[];
 }

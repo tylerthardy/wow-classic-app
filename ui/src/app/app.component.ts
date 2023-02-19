@@ -35,6 +35,10 @@ export class AppComponent implements OnInit {
     return this.containerStyles[this.nextContainerStyleIndex].name;
   }
 
+  public onDownloadButtonClick(): void {
+    window.open('https://wowclassicapp-addon.s3.amazonaws.com/GroupMembersExporter.zip', '_blank');
+  }
+
   public cycleContainerStyle(): void {
     this.containerStyle = this.nextContainerStyleIndex;
   }

@@ -11,6 +11,12 @@
 
 <div *ngIf="viewModel">
   <app-grid [data]="viewModel.data" [columns]="viewModel.columns">
+    <tr *ngFor="let error of viewModel.errorData">
+      <td style="color: red">{{ error.characterName }}</td>
+      <td style="overflow: wrap" [attr.colspan]="viewModel.columns.length - 1">
+        Error looking up player: {{ error.errors }}
+      </td>
+    </tr>
     <tr>
       <td></td>
       <td></td>
