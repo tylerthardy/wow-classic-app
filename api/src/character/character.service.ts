@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { validate } from 'class-validator';
+import { validate, ValidationError } from 'class-validator';
 import { NotFoundError } from 'common-errors';
 import { IGetWclCharacterZoneRankingsResponse } from '../warcraft-logs/responses/get-wcl-character-zone-rankings-response.interface';
 import { WarcraftLogsService } from '../warcraft-logs/warcraft-logs.service';
@@ -26,7 +26,50 @@ export class CharacterService {
     return new GetCharacterZoneRankingsV2Response(wclRankings);
   }
 
-  private mapToCharacterRequest(character: IGetCharacterZoneRankingsRequest) {
+  public async getMultipleCharactersZoneRankings(
+    request: GetMultipleCharacterZoneRankingsRequest
+  ): Promise<IGetMultipleCharacterZoneRankingsResponse> {
+    const resultCharacters: GetMultipleCharacterZoneRankingsResponseItem[] = [];
+
+    const wclRequests: Promise<IGetWclCharacterZoneRankingsResponse>[] = [];
+
+    for (const character of request.characters) {
+      const validationErrors = await this.getCharacterValidationErrors(character);
+      if (validationErrors.length > 0) {
+        const errors = validationErrors.map((error) => error.constraints);
+        const responseItem = new GetMultipleCharacterZoneRankingsResponseItem(character, undefined, errors);
+        resultCharacters.push(responseItem);
+        continue;
+      }
+
+      try {
+        const wclRequest: Promise<IGetWclCharacterZoneRankingsResponse> = this.getWclCharacterZoneRankings(character);
+        wclRequests.push(wclRequest);
+      } catch (err) {
+        const errors = [err];
+        const responseItem = new GetMultipleCharacterZoneRankingsResponseItem(character, undefined, errors);
+        resultCharacters.push(responseItem);
+      }
+    }
+
+    const wclResults: PromiseSettledResult<IGetWclCharacterZoneRankingsResponse>[] = await Promise.allSettled(
+      wclRequests
+    );
+    for (const [i, wclResult] of wclResults.entries()) {
+      const characterRequest = request.characters[i];
+      const responseItem: GetMultipleCharacterZoneRankingsResponseItem =
+        wclResult.status === 'fulfilled'
+          ? new GetMultipleCharacterZoneRankingsResponseItem(characterRequest, wclResult.value, [])
+          : new GetMultipleCharacterZoneRankingsResponseItem(characterRequest, undefined, [wclResult.reason]);
+      resultCharacters.push(responseItem);
+    }
+
+    return {
+      characters: resultCharacters
+    };
+  }
+
+  private async getCharacterValidationErrors(character: IGetCharacterZoneRankingsRequest): Promise<ValidationError[]> {
     const request = new GetCharacterZoneRankingsRequest();
     request.characterName = character.characterName;
     request.metric = character.metric;
@@ -34,37 +77,8 @@ export class CharacterService {
     request.serverSlug = character.serverSlug;
     request.size = character.size;
     request.zoneId = character.zoneId;
-    return request;
-  }
-
-  public async getMultipleCharactersZoneRankings(
-    request: GetMultipleCharacterZoneRankingsRequest
-  ): Promise<IGetMultipleCharacterZoneRankingsResponse> {
-    const characters: GetMultipleCharacterZoneRankingsResponseItem[] = [];
-
-    for (const character of request.characters) {
-      let errors: any[] = [];
-      const characterRequest = this.mapToCharacterRequest(character);
-      const validationErrors = await validate(characterRequest);
-      if (validationErrors.length > 0) {
-        for (const validationError of validationErrors) {
-          errors.push(validationError.constraints);
-        }
-      }
-
-      let rankingData: IGetWclCharacterZoneRankingsResponse | undefined;
-      try {
-        rankingData = await this.getWclCharacterZoneRankings(characterRequest);
-      } catch (err) {
-        errors.push(err);
-      }
-      const responseItem = new GetMultipleCharacterZoneRankingsResponseItem(characterRequest, rankingData, errors);
-      characters.push(responseItem);
-    }
-
-    return {
-      characters: characters
-    };
+    const validationErrors = await validate(request);
+    return validationErrors;
   }
 
   private async getWclCharacterZoneRankings(
