@@ -34,6 +34,12 @@
             sizePx="20px"
           ></app-parse-number>
         </div>
+        <ng-container *ngIf="viewModel.hardModes">
+          <h4 style="flex: 1">Hard Modes</h4>
+          <div style="flex: 1; font-size: 20px" [attr.title]="viewModel.hardModes.join('\n')">
+            {{ viewModel.hardModes.length }}/{{ viewModel.maxPossibleHardmodes }}
+          </div>
+        </ng-container>
       </div>
     </div>
 

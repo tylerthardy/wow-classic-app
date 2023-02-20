@@ -6,23 +6,132 @@ import { specializations } from '../common/specialization/specializations';
 import { WowClass } from '../common/specialization/wow-class';
 import { ParseUtil } from '../common/utils';
 
-export interface PlayerLookupViewModelEncounterItem extends IGetCharacterZoneRankingsResponseRanking {
-  encounterNameDisplay: string;
-  bestPercentDisplay: ParseColumnDeprecated;
-  medianPercentDisplay: ParseColumnDeprecated;
-  rowStyle?: { [key: string]: any };
+export class PlayerLookupViewModelEncounterItem implements IGetCharacterZoneRankingsResponseRanking {
+  public encounterName: string;
+  public lockedIn: boolean;
+  public bestPercent?: number;
+  public bestSpec?: string;
+  public medianPercent?: number;
+  public highestAmount?: number;
+  public kills?: number;
+  public fastest?: number;
+  public highestDifficulty?: string;
+  public encounterNameDisplay: string;
+  public bestPercentDisplay: ParseColumnDeprecated;
+  public medianPercentDisplay: ParseColumnDeprecated;
+  public highestDifficultyDisplay: string;
+  public rowStyle?: { [key: string]: any };
+
+  constructor(warcraftLogsClassId: number | undefined, encounter: IGetCharacterZoneRankingsResponseRanking) {
+    this.encounterName = encounter.encounterName;
+    this.lockedIn = encounter.lockedIn;
+    this.bestPercent = encounter.bestPercent;
+    this.bestSpec = encounter.bestSpec;
+    this.medianPercent = encounter.medianPercent;
+    this.highestAmount = encounter.highestAmount;
+    this.kills = encounter.kills;
+    this.fastest = encounter.fastest;
+    this.highestDifficulty = encounter.highestDifficulty;
+    this.encounterNameDisplay = this.getEncounterNameDisplay(encounter);
+    this.bestPercentDisplay = {
+      value: encounter.bestPercent,
+      specialization: this.getSpecialization(warcraftLogsClassId, encounter.bestSpec)
+    };
+    this.medianPercentDisplay = {
+      value: encounter.medianPercent
+    };
+    (this.highestDifficultyDisplay = this.getHighestDifficultyDisplay(encounter.highestDifficulty)),
+      (this.rowStyle = !encounter.lockedIn
+        ? {
+            'font-weight': 'bold',
+            color: '#004000',
+            'background-color': '#dcf4d9'
+          }
+        : {});
+  }
+
+  private getEncounterNameDisplay(encounter: IGetCharacterZoneRankingsResponseRanking) {
+    const name: string = encounter.encounterName;
+    const modifiers: string[] = [];
+    if (!encounter.lockedIn) {
+      modifiers.push('🚀');
+    }
+    if (modifiers.length === 0) {
+      return name;
+    }
+    return name + ' ' + modifiers.join();
+  }
+
+  private getHighestDifficultyDisplay(highestDifficulty?: string) {
+    if (!highestDifficulty) return '';
+    return this.getDifficultyMedal(highestDifficulty) + ' ' + highestDifficulty;
+  }
+
+  // FIXME: Should this be in the API???
+  private getDifficultyMedal(difficultyName?: string): string {
+    if (!difficultyName) {
+      return '';
+    }
+    switch (difficultyName) {
+      case 'Hard Mode':
+      case '0 Lights':
+      case 'Steelbreaker':
+      case '3 Elders':
+        return '🥇';
+      case '1 Light':
+      case '2 Lights':
+      case '3 Lights':
+      case 'Runemaster':
+      case '2 Elders':
+      case '1 Elders':
+        return '🥈';
+      case 'Normal Mode':
+      case '4 Lights':
+      case 'Stormcaller':
+      case '0 Elders':
+        return '🥉';
+    }
+    return '';
+  }
+
+  // FIXME: Should be in the API
+  private getSpecialization(
+    warcraftLogsClassId: number | undefined,
+    specName: string | undefined
+  ): SpecializationData | undefined {
+    if (!specName || !warcraftLogsClassId) {
+      return undefined;
+    }
+
+    const wowClass: WowClass | undefined = WowClass.getClassByWarcraftLogsId(warcraftLogsClassId);
+    if (!wowClass) {
+      return undefined;
+    }
+
+    const specialization: SpecializationData | undefined = specializations.find(
+      (spec) => spec.className === wowClass.name && spec.specializationName === specName
+    );
+    if (!specialization) {
+      throw new Error(`specialization ${specName} not found for class id ${wowClass.id}`);
+    }
+
+    return specialization;
+  }
 }
 
 export class PlayerLookupViewModel {
   public characterName: string;
   public bestPerformanceAverage?: number;
   public medianPerformanceAverage?: number;
+  public hardModes?: string[];
+  public bestHardModeProgress?: number;
+  public maxPossibleHardmodes?: number;
 
   public encounters?: PlayerLookupViewModelEncounterItem[];
   public columns: ColumnSpecification<PlayerLookupViewModelEncounterItem>[] = [
     {
       label: 'Boss',
-      valueKey: 'encounterName',
+      valueKey: 'encounterNameDisplay',
       sortType: 'string'
     },
     {
@@ -58,7 +167,7 @@ export class PlayerLookupViewModel {
     },
     {
       label: 'Difficulty',
-      valueKey: 'highestDifficulty',
+      valueKey: 'highestDifficultyDisplay',
       sortType: 'string'
     },
     {
@@ -82,50 +191,13 @@ export class PlayerLookupViewModel {
     this.characterName = characterData.characterName;
     this.bestPerformanceAverage = characterData.bestPerformanceAverage;
     this.medianPerformanceAverage = characterData.medianPerformanceAverage;
+    this.hardModes = characterData.hardModes;
+    this.bestHardModeProgress = characterData.bestHardModeProgress;
+    this.maxPossibleHardmodes = characterData.maxPossibleHardmodes;
 
-    this.encounters = characterData.encounters?.map((encounter): PlayerLookupViewModelEncounterItem => {
-      return {
-        ...encounter,
-        encounterNameDisplay: encounter.encounterName + (!encounter.lockedIn ? ' 🚀' : ''),
-        bestPercentDisplay: {
-          value: encounter.bestPercent,
-          specialization: this.getSpecialization(characterData.warcraftLogsClassId, encounter.bestSpec)
-        },
-        medianPercentDisplay: {
-          value: encounter.medianPercent
-        },
-        rowStyle: !encounter.lockedIn
-          ? {
-              'font-weight': 'bold',
-              color: '#004000',
-              'background-color': '#dcf4d9'
-            }
-          : {}
-      };
-    });
-  }
-
-  // FIXME: Should be in the API
-  private getSpecialization(
-    warcraftLogsClassId: number | undefined,
-    specName: string | undefined
-  ): SpecializationData | undefined {
-    if (!specName || !warcraftLogsClassId) {
-      return undefined;
-    }
-
-    const wowClass: WowClass | undefined = WowClass.getClassByWarcraftLogsId(warcraftLogsClassId);
-    if (!wowClass) {
-      return undefined;
-    }
-
-    const specialization: SpecializationData | undefined = specializations.find(
-      (spec) => spec.className === wowClass.name && spec.specializationName === specName
+    this.encounters = characterData.encounters?.map(
+      (encounter: IGetCharacterZoneRankingsResponseRanking): PlayerLookupViewModelEncounterItem =>
+        new PlayerLookupViewModelEncounterItem(characterData.warcraftLogsClassId, encounter)
     );
-    if (!specialization) {
-      throw new Error(`specialization ${specName} not found for class id ${wowClass.id}`);
-    }
-
-    return specialization;
   }
 }

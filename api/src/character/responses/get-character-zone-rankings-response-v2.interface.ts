@@ -6,4 +6,7 @@ export interface IGetCharacterZoneRankingsResponseV2 {
   bestPerformanceAverage?: number;
   medianPerformanceAverage?: number;
   encounters?: IGetCharacterZoneRankingsResponseV2Ranking[];
+  hardModes?: string[];
+  bestHardModeProgress?: number;
+  maxPossibleHardmodes?: number;
 }
