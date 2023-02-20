@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   @ViewChild(ToastContainerDirective, { static: true })
   toastContainer!: ToastContainerDirective;
 
+  public isNavigationShown: boolean = false;
   public navigation = navigation;
   public containerStyle: number = 0;
   public containerStyles: ContainerStyle[] = [
@@ -33,6 +34,10 @@ export class AppComponent implements OnInit {
 
   public get nextContainerStyle(): string {
     return this.containerStyles[this.nextContainerStyleIndex].name;
+  }
+
+  public onHamburgerClick(): void {
+    this.isNavigationShown = !this.isNavigationShown;
   }
 
   public onDownloadButtonClick(): void {
