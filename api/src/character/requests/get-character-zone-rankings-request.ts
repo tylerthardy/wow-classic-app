@@ -1,4 +1,4 @@
-import { IsIn, IsNumber, IsString } from 'class-validator';
+import { IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
 import { IsWowUsername } from '../../common/validators/is-wow-username.validator';
 import { RaidSize, RaidSizeValues, RankingMetric, RankingMetricValues } from '../../warcraft-logs/common';
 import { IGetCharacterZoneRankingsRequest } from './get-character-zone-rankings-request.interface';
@@ -22,7 +22,8 @@ export class GetCharacterZoneRankingsRequest implements IGetCharacterZoneRanking
 
   // TODO: Enum eventually
   @IsString()
-  classFileName: string;
+  @IsOptional()
+  classFileName?: string;
 
   @IsIn(RaidSizeValues)
   size: RaidSize;

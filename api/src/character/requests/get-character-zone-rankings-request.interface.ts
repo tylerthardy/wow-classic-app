@@ -6,6 +6,6 @@ export interface IGetCharacterZoneRankingsRequest {
   serverRegion: string;
   zoneId: number;
   metric: RankingMetric;
-  classFileName: string;
+  classFileName?: string;
   size: RaidSize;
 }
