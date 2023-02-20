@@ -73,6 +73,7 @@ export class CharacterService {
     const request = new GetCharacterZoneRankingsRequest();
     request.characterName = character.characterName;
     request.metric = character.metric;
+    request.classFileName = character.classFileName;
     request.serverRegion = character.serverRegion;
     request.serverSlug = character.serverSlug;
     request.size = character.size;

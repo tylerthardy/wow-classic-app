@@ -53,6 +53,7 @@ export class PlayerLookupComponent implements OnInit {
 
   public onClearClick(): void {
     this.viewModel = undefined;
+    this.characterNameInput = undefined;
   }
 
   public searchPlayer(name: string) {

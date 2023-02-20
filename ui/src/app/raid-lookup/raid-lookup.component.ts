@@ -11,7 +11,7 @@ import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { ToastService } from '../common/services/toast.service';
 import { RaidLookupViewModel } from './raid-lookup.viewmodel';
 import { RaidPlayerRole } from './raid-player-role.type';
-import { RaidPlayer } from './raid-player.interface';
+import { JsonRaidPlayer as GmeExportPlayer } from './raid-player.interface';
 
 @Component({
   selector: 'app-raid-lookup',
@@ -71,7 +71,7 @@ export class RaidLookupComponent implements OnInit {
     }
     const raidZoneAndSize: RaidZoneAndSize = this.raidService.getZoneAndSize(raidSlugs[0]);
 
-    let players: RaidPlayer[];
+    let players: GmeExportPlayer[];
     try {
       players = JSON.parse(this.importJson);
     } catch (err: any) {
@@ -84,6 +84,7 @@ export class RaidLookupComponent implements OnInit {
       const query: ZoneRankingsQuery = {
         characterName: player.name,
         metric: this.getMetricFromRole(player.role),
+        classFileName: player.classFileName,
         serverRegion: 'us',
         serverSlug: 'benediction',
         zoneId: raidZoneAndSize.zoneId,
@@ -104,6 +105,7 @@ export class RaidLookupComponent implements OnInit {
 
   public onClearClick(): void {
     this.viewModel = undefined;
+    this.importJson = undefined;
   }
 
   private getMetricFromRole(role: RaidPlayerRole): RankingMetric {

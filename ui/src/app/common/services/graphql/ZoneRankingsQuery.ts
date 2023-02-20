@@ -7,5 +7,6 @@ export interface ZoneRankingsQuery {
   serverRegion: string;
   zoneId: number;
   metric: RankingMetric;
+  classFileName?: string;
   size: RaidSize;
 }

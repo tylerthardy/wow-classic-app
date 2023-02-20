@@ -20,6 +20,10 @@ export class GetCharacterZoneRankingsRequest implements IGetCharacterZoneRanking
   @IsIn(RankingMetricValues)
   metric: RankingMetric;
 
+  // TODO: Enum eventually
+  @IsString()
+  classFileName: string;
+
   @IsIn(RaidSizeValues)
   size: RaidSize;
 }

@@ -6,6 +6,7 @@ import { IGetMultipleCharacterZoneRankingsResponseItem } from './get-multiple-ch
 export class GetMultipleCharacterZoneRankingsResponseItem implements IGetMultipleCharacterZoneRankingsResponseItem {
   public characterName: string;
   public metric: RankingMetric;
+  public classFileName: string;
   public warcraftLogsClassId?: number;
   public bestPerformanceAverage?: number;
   public medianPerformanceAverage?: number;
@@ -23,6 +24,7 @@ export class GetMultipleCharacterZoneRankingsResponseItem implements IGetMultipl
   ) {
     this.characterName = query.characterName;
     this.metric = query.metric;
+    this.classFileName = query.classFileName;
     this.errors = errors;
     if (wclCharacterData) {
       this.warcraftLogsClassId = wclCharacterData.classID;

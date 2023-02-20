@@ -1,6 +1,7 @@
 import { RaidPlayerRole } from './raid-player-role.type';
 
-export interface RaidPlayer {
+export interface JsonRaidPlayer {
   name: string;
   role: RaidPlayerRole;
+  classFileName: string;
 }
