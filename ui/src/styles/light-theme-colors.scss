@@ -1,0 +1,36 @@
+// TODO: Use this instead https://medium.com/angular-in-depth/build-truly-dynamic-theme-with-css-variables-539516e95837
+$theme-color-1: '#666666';
+$theme-color-2: '#c7c7c7';
+$theme-color-3: '#cdcdcd';
+$theme-color-4: '#dbdbdb';
+$theme-color-5: '#e5e5e5';
+$font-color: 'black';
+$font-color-inverse: 'white';
+
+.light-theme {
+  color: $font-color;
+
+  .light-font-inverse {
+    color: $font-color-inverse;
+  }
+
+  .bg-color-1 {
+    background-color: $theme-color-1;
+  }
+  .bg-color-2 {
+    background-color: $theme-color-2;
+  }
+  .bg-color-3 {
+    background-color: $theme-color-3;
+  }
+  .bg-color-4 {
+    background-color: $theme-color-4;
+  }
+  .bg-color-5 {
+    background-color: $theme-color-5;
+  }
+
+  .border-color-2 {
+    border-color: $theme-color-2;
+  }
+}

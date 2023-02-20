@@ -1,4 +1,4 @@
-<div class="wrapper" [ngClass]="containerStyles[containerStyle].cssClass">
+<div class="wrapper" [ngClass]="containerStyles[containerStyle].cssClass" class="light-theme">
   <header>
     <button (click)="onHamburgerClick()">🍔</button>
     <span>WoW Classic App - </span>
@@ -7,7 +7,7 @@
     <button class="right" (click)="cycleContainerStyle()">{{ nextContainerStyle }}</button>
     <button class="right" (click)="onDownloadButtonClick()">Download Addon</button>
   </header>
-  <div class="light-theme" id="main">
+  <div id="main">
     <aside id="side-navigation" *ngIf="isNavigationShown">
       <div *ngFor="let nav of navigation">
         <a [routerLink]="nav.routerLink">{{ nav.title }}</a>
