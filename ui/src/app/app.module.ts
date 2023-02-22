@@ -1,10 +1,8 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-import { Json2TreeModule } from 'ngx-json-tree';
 import { SimpleModalModule } from 'ngx-simple-modal';
 import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 import { SafePipeModule } from 'safe-pipe';
@@ -63,7 +61,6 @@ import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.com
     AppRoutingModule,
     GraphQLModule,
     HttpClientModule,
-    Json2TreeModule,
     SafePipeModule,
     SimpleModalModule,
     ToastrModule.forRoot({
