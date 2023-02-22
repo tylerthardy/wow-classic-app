@@ -10,8 +10,8 @@ import { RaidService } from '../common/services/raids/raid.service';
 import { RegionServerService } from '../common/services/region-server.service';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { ToastService } from '../common/services/toast.service';
+import { CompactPlayerLookupViewModel } from './compact-player-lookup.viewmodel';
 import { PlayerLookupViewModel } from './player-lookup.viewmodel';
-import { TwoRaidPlayerLookupViewModel } from './two-raid-player-lookup.viewmodel';
 
 @Component({
   selector: 'app-player-lookup',
@@ -28,8 +28,8 @@ export class PlayerLookupComponent implements OnInit {
   metricInput: RankingMetric = 'dps';
   isLoading: boolean = false;
   viewModel: PlayerLookupViewModel | undefined;
-  twoRaidViewModel: TwoRaidPlayerLookupViewModel | undefined;
-  columnOrder: number = 1;
+  viewModel10: CompactPlayerLookupViewModel | undefined;
+  viewModel25: CompactPlayerLookupViewModel | undefined;
 
   constructor(
     private characterService: CharacterService,
@@ -56,14 +56,12 @@ export class PlayerLookupComponent implements OnInit {
 
   public onClearClick(): void {
     this.viewModel = undefined;
-    this.twoRaidViewModel = undefined;
-    this.characterNameInput = undefined;
+    this.clearViewModels();
   }
 
   public searchPlayer(name: string) {
     this.characterNameInput = name;
-    this.viewModel = undefined;
-    this.twoRaidViewModel = undefined;
+    this.clearViewModels();
 
     if (!this.regionServerService.regionServer.regionSlug || !this.regionServerService.regionServer.serverSlug) {
       this.toastService.warn('Invalid Server', 'Choose your server at top of page'); // FIXME: Use toast, among other bullshit
@@ -79,18 +77,17 @@ export class PlayerLookupComponent implements OnInit {
       this.raidService.getZoneAndSize(instanceSlug)
     );
 
-    if (zonesAndSizes.length > 1) {
+    if (zonesAndSizes.length === 1) {
+      this.performSingleRaidSearch(zonesAndSizes[0]);
+    } else {
       this.performMultipleRaidSearch(zonesAndSizes);
-      return;
     }
+  }
 
-    this.isLoading = true;
-    this.getSearchObservable(zonesAndSizes[0].zoneId, zonesAndSizes[0].size)
-      .pipe(finalize(() => (this.isLoading = false)))
-      .subscribe({
-        next: (result: IGetCharacterZoneRankingsResponse) => (this.viewModel = new PlayerLookupViewModel(result)),
-        error: (err) => this.handleError(err)
-      });
+  private clearViewModels() {
+    this.viewModel = undefined;
+    this.viewModel10 = undefined;
+    this.viewModel25 = undefined;
   }
 
   private handleError(error: any): void {
@@ -116,6 +113,16 @@ export class PlayerLookupComponent implements OnInit {
     });
   }
 
+  private performSingleRaidSearch(zoneAndSize: RaidZoneAndSize): void {
+    this.isLoading = true;
+    this.getSearchObservable(zoneAndSize.zoneId, zoneAndSize.size)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: (result: IGetCharacterZoneRankingsResponse) => (this.viewModel = new PlayerLookupViewModel(result)),
+        error: (err) => this.handleError(err)
+      });
+  }
+
   private performMultipleRaidSearch(zonesAndSizes: RaidZoneAndSize[]): void {
     const observables: Observable<IGetCharacterZoneRankingsResponse>[] = zonesAndSizes.map(
       (zoneAndSize: RaidZoneAndSize) => this.getSearchObservable(zoneAndSize.zoneId, zoneAndSize.size)
@@ -127,7 +134,8 @@ export class PlayerLookupComponent implements OnInit {
         next: (responses: IGetCharacterZoneRankingsResponse[]) => {
           const response10: IGetCharacterZoneRankingsResponse = responses.find((response) => response.size === 10)!;
           const response25: IGetCharacterZoneRankingsResponse = responses.find((response) => response.size === 25)!;
-          this.twoRaidViewModel = new TwoRaidPlayerLookupViewModel(response10, response25, this.columnOrder);
+          this.viewModel10 = new CompactPlayerLookupViewModel(response10);
+          this.viewModel25 = new CompactPlayerLookupViewModel(response25);
         },
         error: (err) => this.handleError(err)
       });

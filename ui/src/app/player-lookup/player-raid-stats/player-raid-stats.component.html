@@ -1,16 +1,36 @@
-<div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
-  <h4 style="flex: 1">Best Perf. Avg</h4>
-  <div style="flex: 1">
-    <app-parse-number *ngIf="best" [value]="best" sizePx="30px"></app-parse-number>
-  </div>
-  <h4 style="flex: 1">Median Perf. Avg</h4>
-  <div style="flex: 1">
-    <app-parse-number *ngIf="median" [value]="median" sizePx="20px"></app-parse-number>
-  </div>
-  <ng-container *ngIf="hardModes">
-    <h4 style="flex: 1">Hard Modes</h4>
-    <div style="flex: 1; font-size: 20px" [attr.title]="hardModes.join('\n')">
-      {{ hardModes.length }}/{{ hardModeCount }}
+<ng-container *ngIf="orientation === 'vertical'">
+  <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+    <h4 style="flex: 1">Best Perf. Avg</h4>
+    <div style="flex: 1">
+      <app-parse-number *ngIf="best" [value]="best" sizePx="30px"></app-parse-number>
     </div>
-  </ng-container>
-</div>
+    <h4 style="flex: 1">Median Perf. Avg</h4>
+    <div style="flex: 1">
+      <app-parse-number *ngIf="median" [value]="median" sizePx="20px"></app-parse-number>
+    </div>
+    <ng-container *ngIf="hardModes">
+      <h4 style="flex: 1">Hard Modes</h4>
+      <div style="flex: 1; font-size: 20px" [attr.title]="hardModes.join('\n')">
+        {{ hardModes.length }}/{{ hardModeCount }}
+      </div>
+    </ng-container>
+  </div>
+</ng-container>
+<ng-container *ngIf="orientation === 'horizontal'">
+  <div style="display: flex; flex-direction: row; justify-content: center; align-items: center">
+    <div style="flex: 1; text-align: center">
+      <strong>Best</strong>
+      <app-parse-number *ngIf="best" [value]="best" sizePx="20px"></app-parse-number>
+    </div>
+    <div style="flex: 1; text-align: center">
+      <strong>Median</strong>
+      <app-parse-number *ngIf="median" [value]="median" sizePx="20px"></app-parse-number>
+    </div>
+    <ng-container *ngIf="hardModes">
+      <div style="flex: 1; text-align: center" [attr.title]="hardModes.join('\n')">
+        <strong style="flex: 1">HMs</strong>
+        <div style="font-size: 20px">{{ hardModes.length }}/{{ hardModeCount }}</div>
+      </div>
+    </ng-container>
+  </div>
+</ng-container>

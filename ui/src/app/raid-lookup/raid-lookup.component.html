@@ -9,7 +9,7 @@
 
 <div class="loading-spinner large" *ngIf="raidRankingsLoading"></div>
 
-<div *ngIf="viewModel">
+<div *ngIf="viewModel" style="width: 50%">
   <app-grid [data]="viewModel.data" [columns]="viewModel.columns">
     <tr *ngFor="let error of viewModel.errorData">
       <td style="color: red">{{ error.characterName }}</td>

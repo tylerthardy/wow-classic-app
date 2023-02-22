@@ -10,6 +10,7 @@ export class PlayerRaidStatsComponent implements OnInit {
   @Input() median?: number;
   @Input() hardModes?: string[];
   @Input() hardModeCount?: number;
+  @Input() orientation: 'vertical' | 'horizontal' = 'vertical';
 
   constructor() {}
 
