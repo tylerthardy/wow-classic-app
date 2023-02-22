@@ -20,6 +20,11 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run deploy
+  out:
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - run: ls
 
   upload-artifact:
     runs-on: ubuntu-latest
