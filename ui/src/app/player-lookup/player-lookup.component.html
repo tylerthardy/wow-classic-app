@@ -16,31 +16,13 @@
 <ng-container *ngIf="viewModel && viewModel.encounters && !zoneRankingsLoading">
   <div style="display: flex">
     <div style="flex: 1; border: 1px black solid; border-right: 0">
-      <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
-        <h3 style="text-align: center">{{ viewModel.characterName }}</h3>
-        <h4 style="flex: 1">Best Perf. Avg</h4>
-        <div style="flex: 1">
-          <app-parse-number
-            *ngIf="viewModel.bestPerformanceAverage"
-            [value]="viewModel.bestPerformanceAverage"
-            sizePx="30px"
-          ></app-parse-number>
-        </div>
-        <h4 style="flex: 1">Median Perf. Avg</h4>
-        <div style="flex: 1">
-          <app-parse-number
-            *ngIf="viewModel.medianPerformanceAverage"
-            [value]="viewModel.medianPerformanceAverage"
-            sizePx="20px"
-          ></app-parse-number>
-        </div>
-        <ng-container *ngIf="viewModel.hardModes">
-          <h4 style="flex: 1">Hard Modes</h4>
-          <div style="flex: 1; font-size: 20px" [attr.title]="viewModel.hardModes.join('\n')">
-            {{ viewModel.hardModes.length }}/{{ viewModel.maxPossibleHardmodes }}
-          </div>
-        </ng-container>
-      </div>
+      <h3 style="text-align: center">{{ viewModel.characterName }}</h3>
+      <app-player-raid-stats
+        [best]="viewModel.bestPerformanceAverage"
+        [median]="viewModel.medianPerformanceAverage"
+        [hardModes]="viewModel.hardModes"
+        [hardModeCount]="viewModel.maxPossibleHardmodes"
+      ></app-player-raid-stats>
     </div>
 
     <div style="flex: 2; display: flex; flex-direction: column; justify-content: center; align-items: center">

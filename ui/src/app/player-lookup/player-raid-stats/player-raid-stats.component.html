@@ -1,0 +1,16 @@
+<div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+  <h4 style="flex: 1">Best Perf. Avg</h4>
+  <div style="flex: 1">
+    <app-parse-number *ngIf="best" [value]="best" sizePx="30px"></app-parse-number>
+  </div>
+  <h4 style="flex: 1">Median Perf. Avg</h4>
+  <div style="flex: 1">
+    <app-parse-number *ngIf="median" [value]="median" sizePx="20px"></app-parse-number>
+  </div>
+  <ng-container *ngIf="hardModes">
+    <h4 style="flex: 1">Hard Modes</h4>
+    <div style="flex: 1; font-size: 20px" [attr.title]="hardModes.join('\n')">
+      {{ hardModes.length }}/{{ hardModeCount }}
+    </div>
+  </ng-container>
+</div>
