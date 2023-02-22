@@ -106,6 +106,11 @@ export class WarcraftLogsService {
       query: GET_CHARACTER_ZONE_RANKINGS,
       fetchPolicy: 'network-only'
     });
-    return result.data.characterData.character as IGetWclCharacterZoneRankingsResponse;
+
+    // FIXME: Hacky. There should be more defined types
+    return {
+      ...result.data.characterData.character as IGetWclCharacterZoneRankingsResponse,
+      size: request.size
+    };
   }
 }

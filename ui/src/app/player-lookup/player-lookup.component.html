@@ -6,14 +6,15 @@
     <option *ngFor="let rankingMetric of rankingMetricValues" [value]="rankingMetric">{{ rankingMetric }}</option>
   </select>
   Raid:
-  <app-raid-size-selection selectionType="radio" [(ngModel)]="raidAndSize"></app-raid-size-selection>
+  <app-raid-size-selection selectionType="checkbox" [(ngModel)]="raidAndSize"></app-raid-size-selection>
+  Column Order:
+  <input [(ngModel)]="columnOrder" type="number" min="1" max="2" />
   <button (click)="onSearchClick()">Search</button>
   <button (click)="onClearClick()">Clear</button>
 </div>
 
-<div class="loading-spinner large" *ngIf="zoneRankingsLoading"></div>
-
-<ng-container *ngIf="viewModel && viewModel.encounters && !zoneRankingsLoading">
+<div class="loading-spinner large" *ngIf="isLoading"></div>
+<ng-container *ngIf="viewModel && !twoRaidViewModel && viewModel.encounters && !isLoading">
   <div style="display: flex">
     <div style="flex: 1; border: 1px black solid; border-right: 0">
       <h3 style="text-align: center">{{ viewModel.characterName }}</h3>
@@ -27,6 +28,39 @@
 
     <div style="flex: 2; display: flex; flex-direction: column; justify-content: center; align-items: center">
       <app-grid style="width: 100%" [data]="viewModel.encounters" [columns]="viewModel.columns"></app-grid>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="twoRaidViewModel">
+  <div style="display: flex; flex-direction: row">
+    <div style="flex: 1; border: 1px black solid; border-right: 0">
+      <h3 style="text-align: center">{{ twoRaidViewModel.characterName }}</h3>
+      <div style="flex: 1; display: flex; flex-direction: row; justify-content: space-around">
+        <span style="font-size: 25px">10</span>
+        <span style="font-size: 25px">25</span>
+      </div>
+      <div style="flex: 1; display: flex; flex-direction: row; justify-content: space-around">
+        <app-player-raid-stats
+          [best]="twoRaidViewModel.bestPerformanceAverage10"
+          [median]="twoRaidViewModel.medianPerformanceAverage10"
+          [hardModes]="twoRaidViewModel.hardModes10"
+          [hardModeCount]="twoRaidViewModel.maxPossibleHardmodes10"
+        ></app-player-raid-stats>
+        <app-player-raid-stats
+          [best]="twoRaidViewModel.bestPerformanceAverage25"
+          [median]="twoRaidViewModel.medianPerformanceAverage25"
+          [hardModes]="twoRaidViewModel.hardModes25"
+          [hardModeCount]="twoRaidViewModel.maxPossibleHardmodes25"
+        ></app-player-raid-stats>
+      </div>
+    </div>
+    <div style="flex: 2">
+      <app-grid
+        style="width: 100%"
+        [data]="twoRaidViewModel.encounters"
+        [columns]="twoRaidViewModel.columns"
+      ></app-grid>
     </div>
   </div>
 </ng-container>

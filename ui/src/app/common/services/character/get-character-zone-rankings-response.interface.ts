@@ -10,4 +10,5 @@ export interface IGetCharacterZoneRankingsResponse {
   hardModes?: string[];
   bestHardModeProgress?: number;
   maxPossibleHardmodes?: number;
+  size?: number;
 }

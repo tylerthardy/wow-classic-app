@@ -9,8 +9,9 @@ export class GlobalErrorHandler implements ErrorHandler {
 
   handleError(error: any): void {
     console.error(error);
+    const errorMessage: string = error.message ?? error;
     const toastService: ToastService = this.injector.get(ToastService);
-    toastService.error('Unhandled Error', error, {
+    toastService.error('Unhandled Error', errorMessage, {
       onActivateTick: true
     });
   }

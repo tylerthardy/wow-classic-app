@@ -156,6 +156,7 @@ export class RaidSizeSelectionComponent implements OnInit, AfterViewInit, Contro
 
   onSelectChange(event: any): void {
     this.value.raid = event.target.value;
+    this.onChangeCallback(this.value);
   }
 
   onInputChange(event: any): void {
@@ -172,10 +173,10 @@ export class RaidSizeSelectionComponent implements OnInit, AfterViewInit, Contro
         this.value.size25 = true;
       }
     } else {
-      if (element.id === 'size10') {
+      if (element.id === 'size10' + this.uniqueId) {
         this.value.size10 = element.checked;
       }
-      if (element.id === 'size25') {
+      if (element.id === 'size25' + this.uniqueId) {
         this.value.size25 = element.checked;
       }
     }

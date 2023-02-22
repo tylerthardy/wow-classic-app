@@ -14,12 +14,14 @@ export class GetCharacterZoneRankingsV2Response implements IGetCharacterZoneRank
   public hardModes?: string[];
   public bestHardModeProgress?: number;
   public maxPossibleHardmodes?: number;
+  public size?: number;
 
   constructor(wclCharacterData: IGetWclCharacterZoneRankingsResponse) {
     this.characterName = wclCharacterData.name;
     this.warcraftLogsClassId = wclCharacterData.classID;
     this.bestPerformanceAverage = wclCharacterData.zoneRankings.bestPerformanceAverage;
     this.medianPerformanceAverage = wclCharacterData.zoneRankings.medianPerformanceAverage;
+    this.size = wclCharacterData.size;
 
     const encounterRankings: ZoneEncounterRanking[] = ZoneRankingParser.filterUnrankedEncounters(
       wclCharacterData.zoneRankings.rankings
