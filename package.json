@@ -12,7 +12,7 @@
     "build:api": "cd api && npm run build",
     "build:api:prep": "cd api && npm install && npm run build:prep",
     "build:ui": "cd ui && npm install && npm run build",
-    "deploy": "npm run deploy:api && npm run deploy:ui",
+    "deploy": "npm run deploy:ui && npm run deploy:api",
     "deploy:api": "npm run build:api:prep && cdk deploy classic-companion-api",
     "deploy:ui": "npm run build:ui && cdk deploy classic-companion-ui"
   },
