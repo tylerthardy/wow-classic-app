@@ -1,10 +1,8 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-import { Json2TreeModule } from 'ngx-json-tree';
 import { SimpleModalModule } from 'ngx-simple-modal';
 import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 import { SafePipeModule } from 'safe-pipe';
@@ -20,7 +18,6 @@ import { RaidSizeSelectionComponent } from './common/components/raid-size-select
 import { ServerSelectionComponent } from './common/components/server-selection/server-selection.component';
 import { WowheadLinkComponent } from './common/components/wowhead-link/wowhead-link.component';
 import { GlobalErrorHandler } from './common/global-error-handler';
-import { GraphQLModule } from './common/services/graphql/graphql.module';
 import { CreateSoftresModalComponent } from './create-softres-modal/create-softres-modal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PlayerLookupComponent } from './player-lookup/player-lookup.component';
@@ -63,9 +60,7 @@ import { PlayerRaidStatsComponent } from './player-lookup/player-raid-stats/play
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    GraphQLModule,
     HttpClientModule,
-    Json2TreeModule,
     SafePipeModule,
     SimpleModalModule,
     ToastrModule.forRoot({

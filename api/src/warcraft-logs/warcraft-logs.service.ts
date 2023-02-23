@@ -24,6 +24,10 @@ export class WarcraftLogsService {
   constructor() {
     const authLink = setContext(async (_, { headers }) => {
       const token = await this.getToken();
+      if (!token) {
+        throw new Error('Unable to obtain WCL token; returned undefined');
+      }
+      console.log('Obtained WCL token: ' + token.length);
       return {
         headers: {
           ...headers,

@@ -9,12 +9,13 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "build:api": "cd api && npm run build",
-    "build:api:prep": "cd api && npm run build:prep",
-    "build:ui": "cd ui && npm run build",
-    "deploy": "npm run deploy:api && npm run deploy:ui",
-    "deploy:api": "npm run build:api:prep && cdk deploy classic-companion-api",
-    "deploy:ui": "npm run build:ui && cdk deploy classic-companion-ui"
+    "build:api": "cd api && npm install && npm run build",
+    "build:ui": "cd ui && npm install && npm run build",
+    "prep:api": "cd api && npm run prep",
+    "prep:ui": "",
+    "deploy:api": "npm run prep:api && cdk deploy classic-companion-api",
+    "deploy:ui": "npm run build:ui && cdk deploy classic-companion-ui",
+    "deploy": "npm run build:api && npm run build:ui && npm run deploy:api && npm run deploy:ui"
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",

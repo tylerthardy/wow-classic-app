@@ -23,7 +23,6 @@
     "apollo-angular": "^4.1.0",
     "fuse.js": "^6.6.2",
     "graphql": "^16.6.0",
-    "ngx-json-tree": "^1.0.1",
     "ngx-simple-modal": "^1.4.17",
     "ngx-toastr": "^15.2.2",
     "rxjs": "~7.5.0",

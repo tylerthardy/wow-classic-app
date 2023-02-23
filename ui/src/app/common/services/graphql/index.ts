@@ -6,7 +6,6 @@ export * from './CharacterRank';
 export * from './CharacterZoneRankings';
 export * from './EncounterRankingsQuery';
 export * from './EventDataType';
-export * from './graphql.module';
 export * from './GuildData';
 export * from './Metric';
 export * from './Report';
