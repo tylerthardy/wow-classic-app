@@ -11,12 +11,12 @@
     ><app-specialization-data></app-specialization-data
   ></app-card>
 
-  <app-card header="Player Lookup">
-    <app-player-lookup></app-player-lookup>
+  <app-card header="Player Lookup" id="dashboard-player-lookup">
+    <app-player-lookup #playerLookup></app-player-lookup>
   </app-card>
 
   <app-card header="Raid Lookup">
-    <app-raid-lookup></app-raid-lookup>
+    <app-raid-lookup (characterNameClicked)="onRaidCharacterNameClicked($event)"></app-raid-lookup>
   </app-card>
 
   <app-card header="Raid Lead Helper">

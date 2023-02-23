@@ -27,6 +27,13 @@ export class RaidLookupViewModel {
         onClick: onClick,
         style: {
           cursor: 'pointer'
+        },
+        tooltip: () => {
+          if (onClick) {
+            return 'Click to search player';
+          } else {
+            return undefined;
+          }
         }
       },
       {
