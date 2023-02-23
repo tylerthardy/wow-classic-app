@@ -24,6 +24,7 @@ export class WarcraftLogsService {
   constructor() {
     const authLink = setContext(async (_, { headers }) => {
       const token = await this.getToken();
+      console.log('obtained token: ' + token.length);
       return {
         headers: {
           ...headers,
