@@ -9,6 +9,8 @@ export class ClassicCompanionApiStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
+    this.validateEnvironmentVariables();
+
     const lambdaLayer = new LayerVersion(this, 'node-module-layer', {
       code: Code.fromAsset(path.resolve(__dirname, '../api/node-modules-layer')),
       compatibleRuntimes: [Runtime.NODEJS_16_X],
@@ -41,6 +43,15 @@ export class ClassicCompanionApiStack extends Stack {
     new LambdaRestApi(this, 'nestjs-api-gateway', {
       handler: handler
     });
+  }
+
+  private validateEnvironmentVariables(): void {
+    if (!process.env.WARCRAFT_LOGS_CLIENT_ID) {
+      throw new Error('WARCRAFT_LOGS_CLIENT_ID missing');
+    }
+    if (!process.env.WARCRAFT_LOGS_CLIENT_SECRET) {
+      throw new Error('WARCRAFT_LOGS_CLIENT_SECRET missing');
+    }
   }
 
   private getLambdaInsightsArn(region: string = 'us-east-1', version: number = 21): string {

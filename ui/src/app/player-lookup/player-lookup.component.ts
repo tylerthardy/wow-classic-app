@@ -134,8 +134,12 @@ export class PlayerLookupComponent implements OnInit {
         next: (responses: IGetCharacterZoneRankingsResponse[]) => {
           const response10: IGetCharacterZoneRankingsResponse = responses.find((response) => response.size === 10)!;
           const response25: IGetCharacterZoneRankingsResponse = responses.find((response) => response.size === 25)!;
-          this.viewModel10 = new CompactPlayerLookupViewModel(response10);
-          this.viewModel25 = new CompactPlayerLookupViewModel(response25);
+          if (response10) {
+            this.viewModel10 = new CompactPlayerLookupViewModel(response10);
+          }
+          if (response25) {
+            this.viewModel25 = new CompactPlayerLookupViewModel(response25);
+          }
         },
         error: (err) => this.handleError(err)
       });
