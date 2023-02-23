@@ -14,6 +14,9 @@ import { VoaSpecializationViewModel } from './voa-specialization.viewmodel';
 })
 export class VoaRaidBuilderComponent implements OnInit {
   public viewModels: VoaSpecializationViewModel[] = [];
+  public get totalCount(): number {
+    return this.viewModels.filter((vm) => vm.selected).length;
+  }
 
   private voa25specs: VoaSpec[] = [
     { class: 'Death Knight', spec: 'Blood', lfgClass: 'dk', lfgSpec: 'tank' },
