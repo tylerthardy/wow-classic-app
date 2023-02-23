@@ -1,12 +1,12 @@
 import { SpecializationData } from '../common/specialization/specialization-data.interface';
-import { VoaSpec } from './voa-spec.interface';
+import { IVoaSpec } from './voa-spec.interface';
 
 export class VoaSpecializationViewModel {
   public selected: boolean = false;
   public specialization: SpecializationData;
-  public voaSpec: VoaSpec;
+  public voaSpec: IVoaSpec;
 
-  constructor(voaSpec: VoaSpec, spec: SpecializationData) {
+  constructor(voaSpec: IVoaSpec, spec: SpecializationData) {
     this.specialization = spec;
     this.voaSpec = voaSpec;
   }

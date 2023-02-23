@@ -108,9 +108,11 @@ export class PlayerLookupViewModelEncounterItem implements IGetCharacterZoneRank
       return undefined;
     }
 
-    const specialization: SpecializationData | undefined = specializations.find(
-      (spec) => spec.className === wowClass.name && spec.specializationName === specName
-    );
+    const specialization: SpecializationData | undefined = specializations.find((spec) => {
+      const sanitizedEnumName: string = spec.specializationName.replace(' ', '').toLowerCase();
+      const sanitizedDataName: string = specName.toLowerCase();
+      return spec.className === wowClass.name && sanitizedEnumName === sanitizedDataName;
+    });
     if (!specialization) {
       throw new Error(`specialization ${specName} not found for class id ${wowClass.id}`);
     }
