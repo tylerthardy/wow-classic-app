@@ -16,6 +16,15 @@
   <div style="display: flex; width: 80%">
     <div style="flex: 1; border: 1px black solid; border-right: 0">
       <h3 style="text-align: center">{{ viewModel.characterName }}</h3>
+      <div *ngIf="viewModel?.warcraftLogsClassId" style="text-align: center">
+        Spec:
+        <app-class-spec-selection
+          [(ngModel)]="specFilter"
+          [classId]="viewModel!.warcraftLogsClassId"
+          (ngModelChange)="onSpecChanged($event)"
+          blankLabel="All"
+        ></app-class-spec-selection>
+      </div>
       <app-player-raid-stats
         [best]="viewModel.bestPerformanceAverage"
         [median]="viewModel.medianPerformanceAverage"

@@ -3,13 +3,14 @@ import { finalize, forkJoin, Observable } from 'rxjs';
 import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-size-selection.component';
 import { CharacterService } from '../common/services/character/character.service';
 import { IGetCharacterZoneRankingsResponse } from '../common/services/character/get-character-zone-rankings-response.interface';
-import { RankingMetric, RankingMetricValues } from '../common/services/graphql';
+import { RankingMetric, RankingMetricValues, ZoneRankingsQuery } from '../common/services/graphql';
 import { RaidSize } from '../common/services/raids/raid-size.type';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';
 import { RegionServerService } from '../common/services/region-server.service';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { ToastService } from '../common/services/toast.service';
+import { SpecializationData } from '../common/specialization/specialization-data.interface';
 import { CompactPlayerLookupViewModel } from './compact-player-lookup.viewmodel';
 import { PlayerLookupViewModel } from './player-lookup.viewmodel';
 
@@ -26,6 +27,7 @@ export class PlayerLookupComponent implements OnInit {
   characterNameInput: string | undefined;
   rankingMetricValues = RankingMetricValues;
   metricInput: RankingMetric = 'dps';
+  specFilter: SpecializationData | undefined;
   isLoading: boolean = false;
   viewModel: PlayerLookupViewModel | undefined;
   viewModel10: CompactPlayerLookupViewModel | undefined;
@@ -59,9 +61,16 @@ export class PlayerLookupComponent implements OnInit {
     this.clearViewModels();
   }
 
+  public onSpecChanged(spec: SpecializationData): void {
+    this.searchPlayer(this.characterNameInput!);
+  }
+
   public searchPlayer(name: string) {
-    this.characterNameInput = name;
+    if (this.viewModel?.characterName.toLowerCase() !== name.toLowerCase()) {
+      this.specFilter = undefined;
+    }
     this.clearViewModels();
+    this.characterNameInput = name;
 
     if (!this.regionServerService.regionServer.regionSlug || !this.regionServerService.regionServer.serverSlug) {
       this.toastService.warn('Invalid Server', 'Choose your server at top of page'); // FIXME: Use toast, among other bullshit
@@ -103,14 +112,18 @@ export class PlayerLookupComponent implements OnInit {
   }
 
   private getSearchObservable(zoneId: number, size: RaidSize): Observable<IGetCharacterZoneRankingsResponse> {
-    return this.characterService.getZoneRankings({
+    const request: ZoneRankingsQuery = {
       characterName: this.characterNameInput!,
       metric: this.metricInput!,
       serverRegion: this.regionServerService.regionServer.regionSlug!,
       serverSlug: this.regionServerService.regionServer.serverSlug!,
       zoneId: zoneId,
       size: size
-    });
+    };
+    if (this.specFilter) {
+      request.specName = this.specFilter.specializationName;
+    }
+    return this.characterService.getZoneRankings(request);
   }
 
   private performSingleRaidSearch(zoneAndSize: RaidZoneAndSize): void {

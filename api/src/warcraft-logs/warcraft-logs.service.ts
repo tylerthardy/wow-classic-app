@@ -85,6 +85,10 @@ export class WarcraftLogsService {
   public async getWclCharacterZoneRankings(
     request: IGetCharacterZoneRankingsRequest
   ): Promise<IGetWclCharacterZoneRankingsResponse> {
+    let additionalQueries: string = '';
+    if (request.specName) {
+      additionalQueries += `, specName: "${request.specName}"`;
+    }
     const GET_CHARACTER_ZONE_RANKINGS: TypedDocumentNode<CharacterData, unknown> = gql`
           query {
             characterData {
@@ -100,7 +104,7 @@ export class WarcraftLogsService {
                 server {
                   slug
                 }
-                zoneRankings(zoneID: ${request.zoneId}, metric: ${request.metric}, size: ${request.size})
+                zoneRankings(zoneID: ${request.zoneId}, metric: ${request.metric}, size: ${request.size}${additionalQueries})
               }
             }
           }
@@ -113,7 +117,7 @@ export class WarcraftLogsService {
 
     // FIXME: Hacky. There should be more defined types
     return {
-      ...result.data.characterData.character as IGetWclCharacterZoneRankingsResponse,
+      ...(result.data.characterData.character as IGetWclCharacterZoneRankingsResponse),
       size: request.size
     };
   }

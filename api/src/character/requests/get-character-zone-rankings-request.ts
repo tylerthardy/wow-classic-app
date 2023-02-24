@@ -20,6 +20,10 @@ export class GetCharacterZoneRankingsRequest implements IGetCharacterZoneRanking
   @IsIn(RankingMetricValues)
   metric: RankingMetric;
 
+  @IsString()
+  @IsOptional()
+  specName?: string;
+
   // TODO: Enum eventually
   @IsString()
   @IsOptional()

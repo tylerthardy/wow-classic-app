@@ -109,9 +109,9 @@ export class PlayerLookupViewModelEncounterItem implements IGetCharacterZoneRank
     }
 
     const specialization: SpecializationData | undefined = specializations.find((spec) => {
-      const sanitizedEnumName: string = spec.specializationName.replace(' ', '').toLowerCase();
-      const sanitizedDataName: string = specName.toLowerCase();
-      return spec.className === wowClass.name && sanitizedEnumName === sanitizedDataName;
+      const normalizedEnumName: string = spec.specializationName.replace(' ', '').toLowerCase();
+      const normalizedDataName: string = specName.toLowerCase();
+      return spec.className === wowClass.name && normalizedEnumName === normalizedDataName;
     });
     if (!specialization) {
       throw new Error(`specialization ${specName} not found for class id ${wowClass.id}`);
@@ -123,6 +123,7 @@ export class PlayerLookupViewModelEncounterItem implements IGetCharacterZoneRank
 
 export class PlayerLookupViewModel {
   public characterName: string;
+  public warcraftLogsClassId?: number;
   public bestPerformanceAverage?: number;
   public medianPerformanceAverage?: number;
   public hardModes?: string[];
@@ -191,6 +192,7 @@ export class PlayerLookupViewModel {
 
   constructor(characterData: IGetCharacterZoneRankingsResponse) {
     this.characterName = characterData.characterName;
+    this.warcraftLogsClassId = characterData.warcraftLogsClassId;
     this.bestPerformanceAverage = characterData.bestPerformanceAverage;
     this.medianPerformanceAverage = characterData.medianPerformanceAverage;
     this.hardModes = characterData.hardModes;

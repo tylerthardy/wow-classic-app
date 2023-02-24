@@ -1,0 +1,34 @@
+<input readonly (mouseenter)="onInputMouseEnter()" (mouseleave)="onInputMouseLeave()" />
+<div class="selected-spec">
+  <app-specialization-icon
+    *ngIf="selectedSpec"
+    style="margin-right: 4px"
+    [specialization]="selectedSpec"
+    sizePx="17px"
+  ></app-specialization-icon
+  >{{ selectedSpec?.specializationName ?? blankLabel }}
+</div>
+<div
+  class="dropdown-content"
+  [style.display]="isDropdownShown ? 'block' : 'none'"
+  (mouseenter)="onContentMouseEnter()"
+  (mouseleave)="onContentMouseLeave()"
+>
+  <ng-container *ngIf="specializations.length > 0">
+    <div *ngIf="!removeBlank" class="dropdown-item" style="height: 20px" (click)="onDropdownItemClick(undefined)">
+      {{ blankLabel }}
+    </div>
+    <div
+      class="dropdown-item"
+      *ngFor="let specialization of filteredSpecs"
+      (click)="onDropdownItemClick(specialization)"
+    >
+      <app-specialization-icon
+        style="margin-right: 2px"
+        [specialization]="specialization"
+        size="small"
+      ></app-specialization-icon>
+      {{ specialization.specializationName }}
+    </div>
+  </ng-container>
+</div>
