@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.7",
+    "@aws-sdk/client-dynamodb": "^3.279.0",
+    "@aws-sdk/lib-dynamodb": "^3.279.0",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^2.3.1",
     "@nestjs/core": "^8.0.0",

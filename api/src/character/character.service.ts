@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { validate, ValidationError } from 'class-validator';
 import { NotFoundError } from 'common-errors';
+import { PlayerTableService } from '../common/player-table/player-table.service';
 import { IGetWclCharacterZoneRankingsResponse } from '../warcraft-logs/responses/get-wcl-character-zone-rankings-response.interface';
 import { WarcraftLogsService } from '../warcraft-logs/warcraft-logs.service';
 import {
@@ -14,7 +15,7 @@ import { GetMultipleCharacterZoneRankingsResponseItem } from './responses/get-mu
 
 @Injectable()
 export class CharacterService {
-  constructor(private warcraftLogsService: WarcraftLogsService) {}
+  constructor(private warcraftLogsService: WarcraftLogsService, private playerTableService: PlayerTableService) {}
 
   public async getCharacterZoneRankings(
     request: GetCharacterZoneRankingsRequest
@@ -85,6 +86,13 @@ export class CharacterService {
   private async getWclCharacterZoneRankings(
     request: GetCharacterZoneRankingsRequest
   ): Promise<IGetWclCharacterZoneRankingsResponse> {
-    return await this.warcraftLogsService.getWclCharacterZoneRankings(request);
+    const characterRankings = await this.warcraftLogsService.getWclCharacterZoneRankings(request);
+
+    await this.playerTableService
+      .storeWclCharacterZoneRankings(request.serverRegion, request.serverSlug, request.characterName, characterRankings)
+      .then((response) => {
+        Logger.log(response);
+      });
+    return characterRankings;
   }
 }

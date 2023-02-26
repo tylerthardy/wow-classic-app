@@ -27,7 +27,6 @@ export class WarcraftLogsService {
       if (!token) {
         throw new Error('Unable to obtain WCL token; returned undefined');
       }
-      console.log('Obtained WCL token: ' + token.length);
       return {
         headers: {
           ...headers,
@@ -58,7 +57,9 @@ export class WarcraftLogsService {
 
   public async getToken(): Promise<string> {
     if (this.cachedToken) {
-      return this.cachedToken.token.access_token as string;
+      const token: string = this.cachedToken.token.access_token as string;
+      console.log('Returned WCL token from cache with length: ' + token.length);
+      return token;
     }
 
     const config: ModuleOptions<'client_id'> = {
@@ -76,7 +77,9 @@ export class WarcraftLogsService {
     try {
       const accessToken: AccessToken = await client.getToken(tokenParams);
       this.cachedToken = accessToken;
-      return accessToken.token.access_token as string;
+      const token: string = accessToken.token.access_token as string;
+      console.log('Obtained new WCL token with length: ' + token.length);
+      return token;
     } catch (error) {
       console.error('Access Token error', error.message);
     }
