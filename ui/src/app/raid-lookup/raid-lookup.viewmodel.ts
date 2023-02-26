@@ -1,5 +1,6 @@
 import { ColumnSpecification } from '../common/components/grid/grid.component';
 import { IGetMultipleCharacterZoneRankingsResponseItem } from '../common/services/character/get-multiple-character-zone-rankings-response.interface';
+import { WowClass } from '../common/specialization/wow-class';
 import { ParseUtil } from '../common/utils';
 
 export interface IRaidLookupViewModelErrorRow {
@@ -146,5 +147,12 @@ export class RaidLookupViewModel {
 
     this.raidBestPerformanceAverage = raidBestPerformanceTotal / rankings.length;
     this.raidMedianPerformance = Math.median(raidMedianPerformances);
+  }
+
+  public filterData(classFilter: WowClass | undefined): IGetMultipleCharacterZoneRankingsResponseItem[] {
+    if (!classFilter) {
+      return this.data;
+    }
+    return this.data.filter((d) => !d.classFileName || d.classFileName === classFilter.getClassFileName());
   }
 }

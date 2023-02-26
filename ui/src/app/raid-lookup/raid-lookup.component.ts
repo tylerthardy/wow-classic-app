@@ -9,6 +9,7 @@ import { RaidService } from '../common/services/raids/raid.service';
 import { RegionServerService } from '../common/services/region-server.service';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { ToastService } from '../common/services/toast.service';
+import { WowClass } from '../common/specialization/wow-class';
 import { RaidLookupViewModel } from './raid-lookup.viewmodel';
 import { RaidPlayerRole } from './raid-player-role.type';
 import { JsonRaidPlayer as GmeExportPlayer } from './raid-player.interface';
@@ -28,6 +29,7 @@ export class RaidLookupComponent implements OnInit {
   importJson: string | undefined;
   raidRankingsLoading: boolean = false;
   viewModel: RaidLookupViewModel | undefined;
+  classFilterInput: WowClass | undefined;
 
   constructor(
     private characterService: CharacterService,
@@ -108,6 +110,8 @@ export class RaidLookupComponent implements OnInit {
     this.viewModel = undefined;
     this.importJson = undefined;
   }
+
+  public onClassFilterChange(newValue: WowClass) {}
 
   private getMetricFromRole(role: RaidPlayerRole): RankingMetric {
     switch (role) {

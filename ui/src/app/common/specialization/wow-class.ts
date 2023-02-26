@@ -26,6 +26,10 @@ export class WowClass {
     return `https://wow.zamimg.com/images/wow/icons/large/classicon_${this.getSlugifiedName()}.jpg`;
   }
 
+  public getClassFileName(): string {
+    return this.getSlugifiedName().toUpperCase();
+  }
+
   public static DEATH_KNIGHT = new WowClass(6, 1, 'Death Knight');
   public static DRUID = new WowClass(11, 2, 'Druid');
   public static HUNTER = new WowClass(3, 3, 'Hunter');
