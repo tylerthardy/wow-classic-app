@@ -85,6 +85,7 @@ export class RaidLookupComponent implements OnInit {
         characterName: player.name,
         metric: this.getMetricFromRole(player.role),
         classFileName: player.classFileName,
+        role: player.role,
         serverRegion: 'us',
         serverSlug: 'benediction',
         zoneId: raidZoneAndSize.zoneId,

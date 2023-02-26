@@ -8,6 +8,7 @@ export interface ZoneRankingsQuery {
   zoneId: number;
   metric: RankingMetric;
   classFileName?: string;
+  role?: string;
   specName?: string;
   size: RaidSize;
 }

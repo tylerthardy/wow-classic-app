@@ -42,6 +42,11 @@ export class RaidLookupViewModel {
         sortType: 'string'
       },
       {
+        label: 'Role',
+        valueKey: 'role',
+        sortType: 'string'
+      },
+      {
         label: 'Metric',
         valueKey: 'metric',
         sortType: 'string',
@@ -120,6 +125,7 @@ export class RaidLookupViewModel {
         characterName: ranking.characterName,
         metric: ranking.metric,
         classFileName: ranking.classFileName,
+        role: ranking.role,
         errors: JSON.stringify(ranking.errors)
       }));
 

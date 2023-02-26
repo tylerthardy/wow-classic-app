@@ -5,6 +5,7 @@ export interface IGetMultipleCharacterZoneRankingsResponse {
 
 export interface IGetMultipleCharacterZoneRankingsResponseItem {
   characterName: string;
+  role?: string;
   metric: 'dps' | 'hps';
   classFileName: string;
   warcraftLogsClassId?: number;

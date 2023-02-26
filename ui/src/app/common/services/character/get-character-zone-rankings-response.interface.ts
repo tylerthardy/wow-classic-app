@@ -3,6 +3,7 @@ import { IGetCharacterZoneRankingsResponseRanking } from './get-character-zone-r
 // FIXME: Duplicated from the API
 export interface IGetCharacterZoneRankingsResponse {
   characterName: string;
+  role?: string;
   warcraftLogsClassId?: number;
   bestPerformanceAverage?: number;
   medianPerformanceAverage?: number;
