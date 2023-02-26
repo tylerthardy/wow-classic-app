@@ -1,0 +1,47 @@
+:host {
+  position: relative;
+  display: inline-block;
+}
+
+input {
+  cursor: default;
+}
+
+.dropdown-content {
+  width: 100%;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content .dropdown-item {
+  cursor: pointer;
+  color: black;
+  text-decoration: none;
+  display: block;
+  padding-left: 5px;
+  padding-bottom: 1px;
+  padding-top: 1px;
+  padding-right: 5px;
+}
+
+.dropdown-content .dropdown-item:hover {
+  background-color: #ddd;
+}
+
+.selected-spec {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  pointer-events: none;
+}
+
+input:focus {
+  color: black;
+}
+
+input:not(:focus) {
+  color: rgba(0, 0, 0, 0);
+}

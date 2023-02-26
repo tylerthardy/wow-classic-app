@@ -1,0 +1,19 @@
+<input readonly (mouseenter)="onInputMouseEnter()" (mouseleave)="onInputMouseLeave()" />
+<div class="selected-spec">
+  {{ selectedClass?.name ?? blankLabel }}
+</div>
+<div
+  class="dropdown-content"
+  [style.display]="isDropdownShown ? 'block' : 'none'"
+  (mouseenter)="onContentMouseEnter()"
+  (mouseleave)="onContentMouseLeave()"
+>
+  <ng-container *ngIf="wowClasses.length > 0">
+    <div *ngIf="!removeBlank" class="dropdown-item" style="height: 20px" (click)="onDropdownItemClick(undefined)">
+      {{ blankLabel }}
+    </div>
+    <div class="dropdown-item" *ngFor="let wowClass of wowClasses" (click)="onDropdownItemClick(wowClass)">
+      {{ wowClass.name }}
+    </div>
+  </ng-container>
+</div>

@@ -31,6 +31,7 @@ import { SpecializationIconComponent } from './specialization-icon/specializatio
 import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.component';
 import { PlayerRaidStatsComponent } from './player-lookup/player-raid-stats/player-raid-stats.component';
 import { ClassSpecSelectionComponent } from './common/components/class-spec-selection/class-spec-selection.component';
+import { ClassSelectionComponent } from './common/components/class-selection/class-selection.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { ClassSpecSelectionComponent } from './common/components/class-spec-sele
     ServerSelectionComponent,
     RaidSizeSelectionComponent,
     PlayerRaidStatsComponent,
-    ClassSpecSelectionComponent
+    ClassSpecSelectionComponent,
+    ClassSelectionComponent
   ],
   imports: [
     BrowserAnimationsModule,

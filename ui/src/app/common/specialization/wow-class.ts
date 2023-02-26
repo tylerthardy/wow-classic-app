@@ -130,4 +130,20 @@ export class WowClass {
     }
     return undefined;
   }
+
+  public static getAll(): WowClass[] {
+    return [
+      WowClass.DEATH_KNIGHT,
+      WowClass.DRUID,
+      WowClass.HUNTER,
+      WowClass.MAGE,
+      WowClass.MONK,
+      WowClass.PALADIN,
+      WowClass.PRIEST,
+      WowClass.ROGUE,
+      WowClass.SHAMAN,
+      WowClass.WARLOCK,
+      WowClass.WARRIOR
+    ];
+  }
 }
