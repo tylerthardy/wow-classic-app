@@ -9,13 +9,14 @@
 
 <div class="loading-spinner large" *ngIf="raidRankingsLoading"></div>
 
-<div *ngIf="viewModel" style="width: 50%">
+<div *ngIf="viewModel" style="width: 100%">
   Class Filter:
-  <app-class-selection
-    [(ngModel)]="classFilterInput"
-    (ngModelChange)="onClassFilterChange($event)"
-  ></app-class-selection>
-  <app-grid [data]="viewModel.filterData(classFilterInput)" [columns]="viewModel.columns">
+  <app-class-selection [(ngModel)]="classFilterInput"></app-class-selection>
+  Role Filter:
+  <app-dropdown [options]="roleFilterOptions" [(ngModel)]="roleFilterInput"></app-dropdown>
+</div>
+<div *ngIf="viewModel" style="width: 50%">
+  <app-grid [data]="viewModel.filterData(classFilterInput, roleFilterInput)" [columns]="viewModel.columns">
     <tr *ngFor="let error of viewModel.errorData">
       <td style="color: red">{{ error.characterName }}</td>
       <td style="overflow: wrap" [attr.colspan]="viewModel.columns.length - 1">

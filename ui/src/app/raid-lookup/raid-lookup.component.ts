@@ -30,6 +30,8 @@ export class RaidLookupComponent implements OnInit {
   raidRankingsLoading: boolean = false;
   viewModel: RaidLookupViewModel | undefined;
   classFilterInput: WowClass | undefined;
+  roleFilterInput: RaidPlayerRole | undefined;
+  roleFilterOptions: RaidPlayerRole[] = ['DAMAGER', 'HEALER', 'TANK'];
 
   constructor(
     private characterService: CharacterService,
@@ -110,8 +112,6 @@ export class RaidLookupComponent implements OnInit {
     this.viewModel = undefined;
     this.importJson = undefined;
   }
-
-  public onClassFilterChange(newValue: WowClass) {}
 
   private getMetricFromRole(role: RaidPlayerRole): RankingMetric {
     switch (role) {

@@ -32,6 +32,7 @@ import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.com
 import { PlayerRaidStatsComponent } from './player-lookup/player-raid-stats/player-raid-stats.component';
 import { ClassSpecSelectionComponent } from './common/components/class-spec-selection/class-spec-selection.component';
 import { ClassSelectionComponent } from './common/components/class-selection/class-selection.component';
+import { DropdownComponent } from './common/components/dropdown/dropdown.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { ClassSelectionComponent } from './common/components/class-selection/cla
     RaidSizeSelectionComponent,
     PlayerRaidStatsComponent,
     ClassSpecSelectionComponent,
-    ClassSelectionComponent
+    ClassSelectionComponent,
+    DropdownComponent
   ],
   imports: [
     BrowserAnimationsModule,

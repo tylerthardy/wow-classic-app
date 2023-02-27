@@ -2,6 +2,7 @@ import { ColumnSpecification } from '../common/components/grid/grid.component';
 import { IGetMultipleCharacterZoneRankingsResponseItem } from '../common/services/character/get-multiple-character-zone-rankings-response.interface';
 import { WowClass } from '../common/specialization/wow-class';
 import { ParseUtil } from '../common/utils';
+import { RaidPlayerRole } from './raid-player-role.type';
 
 export interface IRaidLookupViewModelErrorRow {
   characterName: string;
@@ -149,10 +150,22 @@ export class RaidLookupViewModel {
     this.raidMedianPerformance = Math.median(raidMedianPerformances);
   }
 
-  public filterData(classFilter: WowClass | undefined): IGetMultipleCharacterZoneRankingsResponseItem[] {
-    if (!classFilter) {
-      return this.data;
+  public filterData(
+    classFilter: WowClass | undefined,
+    roleFilter: RaidPlayerRole | undefined
+  ): IGetMultipleCharacterZoneRankingsResponseItem[] {
+    let resultingData: IGetMultipleCharacterZoneRankingsResponseItem[] = Object.assign([], this.data);
+    if (!classFilter && !roleFilter) {
+      return resultingData;
     }
-    return this.data.filter((d) => !d.classFileName || d.classFileName === classFilter.getClassFileName());
+    if (classFilter) {
+      resultingData = resultingData.filter(
+        (d) => !d.classFileName || d.classFileName === classFilter.getClassFileName()
+      );
+    }
+    if (roleFilter) {
+      resultingData = resultingData.filter((d) => !d.role || d.role === roleFilter);
+    }
+    return resultingData;
   }
 }
