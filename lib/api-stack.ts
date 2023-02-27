@@ -4,16 +4,20 @@ import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb';
 import { ManagedPolicy } from 'aws-cdk-lib/aws-iam';
 import { Code, Function, ILayerVersion, LayerVersion, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { Construct } from 'constructs';
+import { Environment } from './common/environment';
 import path = require('path');
 
-export class ClassicCompanionApiStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
+export class WcaApiStack extends Stack {
+  private deployEnvironment: Environment;
+  constructor(scope: Construct, id: string, deployEnvironment: Environment, props?: StackProps) {
     super(scope, id, props);
+
+    this.deployEnvironment = deployEnvironment;
 
     this.validateEnvironmentVariables();
 
     const lambdaLayer = this.createLambdaLayer();
-    const insightsLayer = LayerVersion.fromLayerVersionArn(this, `lambda-insights-layer`, this.getLambdaInsightsArn());
+    const insightsLayer = LayerVersion.fromLayerVersionArn(this, 'lambda-insights-layer', this.getLambdaInsightsArn());
     const handlerLambda = this.createHandlerLambda([lambdaLayer, insightsLayer]);
     if (!handlerLambda.role) {
       throw new Error('no implicit role for handler lambda');

@@ -2,10 +2,11 @@ import { RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { Construct } from 'constructs';
+import { Environment } from './common/environment';
 import path = require('path');
 
-export class ClassicCompanionUiStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
+export class WcaUiStack extends Stack {
+  constructor(scope: Construct, id: string, deployEnvironment: Environment, props?: StackProps) {
     super(scope, id, props);
 
     const websiteBucket = new Bucket(this, 'ui-bucket', {
