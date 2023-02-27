@@ -7,7 +7,7 @@ export interface ParseColumnDeprecated {
   specialization?: SpecializationData;
 }
 export interface ColumnFormat<T> {
-  type: 'number' | 'string' | 'parse' | 'date' | 'custom';
+  type: 'number' | 'string' | 'parse' | 'date' | 'wcl-link' | 'custom';
   formatParams?: any;
   customFormat?: (rowValue: T) => string;
   transform?: (rowValue: T) => any;

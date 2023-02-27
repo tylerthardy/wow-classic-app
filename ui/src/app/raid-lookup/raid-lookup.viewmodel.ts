@@ -23,6 +23,14 @@ export class RaidLookupViewModel {
 
     this.columns = [
       {
+        label: 'WL',
+        valueKey: 'characterName',
+        sortType: 'string',
+        format: {
+          type: 'wcl-link'
+        }
+      },
+      {
         label: 'Player',
         valueKey: 'characterName',
         sortType: 'string',

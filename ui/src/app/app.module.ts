@@ -33,6 +33,7 @@ import { PlayerRaidStatsComponent } from './player-lookup/player-raid-stats/play
 import { ClassSpecSelectionComponent } from './common/components/class-spec-selection/class-spec-selection.component';
 import { ClassSelectionComponent } from './common/components/class-selection/class-selection.component';
 import { DropdownComponent } from './common/components/dropdown/dropdown.component';
+import { WclLinkIconComponent } from './common/components/wcl-link-icon/wcl-link-icon.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { DropdownComponent } from './common/components/dropdown/dropdown.compone
     PlayerRaidStatsComponent,
     ClassSpecSelectionComponent,
     ClassSelectionComponent,
-    DropdownComponent
+    DropdownComponent,
+    WclLinkIconComponent
   ],
   imports: [
     BrowserAnimationsModule,

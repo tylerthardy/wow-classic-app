@@ -19,6 +19,9 @@
       <ng-container *ngFor="let cellValue of [getCellValue(dataRow, column)]">
         <ng-container *ngIf="column.format">
           <ng-container [ngSwitch]="column.format.type">
+            <ng-container *ngSwitchCase="'wcl-link'">
+              <app-wcl-link-icon size="small" [characterName]="cellValue"></app-wcl-link-icon>
+            </ng-container>
             <ng-container *ngSwitchCase="'parse'">
               <app-parse-number
                 *ngIf="cellValue"

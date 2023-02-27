@@ -31,6 +31,9 @@
         [hardModes]="viewModel.hardModes"
         [hardModeCount]="viewModel.maxPossibleHardmodes"
       ></app-player-raid-stats>
+      <div style="flex: 1; text-align: center; margin-top: 10px">
+        <app-wcl-link-icon size="large" [characterName]="viewModel.characterName"></app-wcl-link-icon>
+      </div>
     </div>
     <app-grid style="flex: 2" [data]="viewModel.encounters" [columns]="viewModel.columns"></app-grid>
   </div>
