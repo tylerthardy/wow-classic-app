@@ -23,7 +23,9 @@ export class ZoneRankingParser {
       .filter(
         (ranking) =>
           ranking.totalKills > 0 &&
-          (ranking.bestAmount > 20000000 || HARD_MODE_OVERRIDE_ENCOUNTER_ID_LOOKUP[ranking.encounter.id])
+          (ranking.bestAmount > 20000000 ||
+            ranking.fastestKill < 0 ||
+            HARD_MODE_OVERRIDE_ENCOUNTER_ID_LOOKUP[ranking.encounter.id])
       )
       .map((ranking) => ranking.encounter.name);
   }

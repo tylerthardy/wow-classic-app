@@ -14,7 +14,8 @@ export class GetCharacterZoneRankingsResponseV2Ranking implements IGetCharacterZ
   public highestDifficulty?: string;
 
   constructor(encounterRanking: ZoneEncounterRanking) {
-    const [highestAmount, difficulty] = this.parseDifficultyLevelAndAmount(encounterRanking.bestAmount);
+    const difficulty: DifficultyLevel = this.getDifficulty(encounterRanking.bestAmount, encounterRanking.fastestKill);
+    const adjustedHighest: number = this.subtractDifficultyDps(difficulty, encounterRanking.bestAmount);
     const adjustedFastest: number = this.subtractDifficultyTime(difficulty, encounterRanking.fastestKill);
     const bestPercent: number = Math.floor(encounterRanking.rankPercent);
     const medianPercent: number = Math.floor(encounterRanking.medianPercent);
@@ -25,7 +26,7 @@ export class GetCharacterZoneRankingsResponseV2Ranking implements IGetCharacterZ
       this.bestPercent = bestPercent;
       this.bestSpec = encounterRanking.bestSpec;
       this.medianPercent = medianPercent;
-      this.highestAmount = highestAmount;
+      this.highestAmount = adjustedHighest;
       this.kills = encounterRanking.totalKills;
       this.fastest = adjustedFastest;
 
@@ -33,38 +34,48 @@ export class GetCharacterZoneRankingsResponseV2Ranking implements IGetCharacterZ
     }
   }
 
-  private parseDifficultyLevelAndAmount(fullDps: number): [number, DifficultyLevel] {
-    let dps: number = fullDps;
-    let difficulty: DifficultyLevel = 0;
-    if (fullDps >= 80000000) {
-      dps = fullDps - 80000000;
-      difficulty = 4;
-    } else if (fullDps >= 60000000) {
-      dps = fullDps - 60000000;
-      difficulty = 3;
-    } else if (fullDps >= 40000000) {
-      dps = fullDps - 40000000;
-      difficulty = 2;
-    } else if (fullDps >= 20000000) {
-      dps = fullDps - 20000000;
-      difficulty = 1;
+  private getDifficulty(fullDps: number, fullTime: number): DifficultyLevel {
+    if (fullDps >= 80000000 || fullTime < -60000000) {
+      return 4;
+    } else if (fullDps >= 60000000 || fullTime < -40000000) {
+      return 3;
+    } else if (fullDps >= 40000000 || fullTime < -20000000) {
+      return 2;
+    } else if (fullDps >= 20000000 || fullTime < 0) {
+      return 1;
+    } else {
+      return 0;
     }
-
-    return [dps, difficulty];
   }
 
-  private subtractDifficultyTime(difficulty: DifficultyLevel, time: number) {
-    if (difficulty === 4) {
-      return 80000000 + time;
+  private subtractDifficultyDps(difficulty: DifficultyLevel, dps: number): number {
+    if (difficulty === 4 && dps >= 80000000) {
+      return dps - 80000000;
     }
-    if (difficulty === 3) {
-      return 60000000 + time;
+    if (difficulty === 3 && dps >= 60000000) {
+      return dps - 60000000;
     }
-    if (difficulty === 2) {
-      return 40000000 + time;
+    if (difficulty === 2 && dps >= 40000000) {
+      return dps - 40000000;
     }
-    if (difficulty === 1) {
-      return 20000000 + time;
+    if (difficulty === 1 && dps >= 20000000) {
+      return dps - 20000000;
+    }
+    return dps;
+  }
+
+  private subtractDifficultyTime(difficulty: DifficultyLevel, time: number): number {
+    if (difficulty === 4 && time < -60000000) {
+      return time + 80000000;
+    }
+    if (difficulty === 3 && time < -40000000) {
+      return time + 60000000;
+    }
+    if (difficulty === 2 && time < -20000000) {
+      return time + 40000000;
+    }
+    if (difficulty === 1 && time < 0) {
+      return time + 20000000;
     }
     return time;
   }
