@@ -1,0 +1,34 @@
+.light-theme {
+  app-card .header {
+    background-color: #c7c7c7;
+    color: #000000;
+    border: 1px solid #c7c7c7;
+  }
+  app-card .header:hover {
+    background-color: #f3f3f3;
+  }
+  app-card .body {
+    background-color: #e5e5e5;
+    color: #000000;
+    border-left: 1px solid #c7c7c7;
+    border-right: 1px solid #c7c7c7;
+    border-bottom: 1px solid #c7c7c7;
+  }
+}
+.dark-theme {
+  app-card .header {
+    background-color: #464646;
+    color: #d5d5d5;
+    border: 1px solid #1c1c1c;
+  }
+  app-card .header:hover {
+    background-color: #5a5a5a;
+  }
+  app-card .body {
+    background-color: #343434;
+    color: #d5d5d5;
+    border-left: 1px solid #1c1c1c;
+    border-right: 1px solid #1c1c1c;
+    border-bottom: 1px solid #1c1c1c;
+  }
+}

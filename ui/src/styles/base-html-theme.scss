@@ -1,0 +1,44 @@
+// Table
+.light-theme {
+  table,
+  th,
+  td {
+    border: 1px solid #000000;
+  }
+  tr {
+    background-color: #f1f1f1;
+  }
+}
+.dark-theme {
+  table,
+  th,
+  td {
+    border: 1px solid #000000;
+  }
+  tr {
+    background-color: #282828;
+  }
+}
+
+// Button
+.light-theme {
+  button,
+  input,
+  textarea,
+  select {
+    border: solid 1px #1c1c1c;
+  }
+}
+.dark-theme {
+  button,
+  input,
+  textarea,
+  select {
+    background-color: #2e2e2e;
+    border: solid 1px #1c1c1c;
+    color: #d5d5d5;
+  }
+  button {
+    background-color: #4c4c4c !important;
+  }
+}

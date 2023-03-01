@@ -8,6 +8,7 @@ import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.int
 import { RaidService } from '../common/services/raids/raid.service';
 import { RegionServerService } from '../common/services/region-server.service';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
+import { ThemeService } from '../common/services/theme/theme.service';
 import { ToastService } from '../common/services/toast.service';
 import { WowClass } from '../common/specialization/wow-class';
 import { RaidLookupViewModel } from './raid-lookup.viewmodel';
@@ -37,7 +38,8 @@ export class RaidLookupComponent implements OnInit {
     private characterService: CharacterService,
     private raidService: RaidService,
     private regionServerService: RegionServerService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private themeService: ThemeService
   ) {}
 
   ngOnInit(): void {}
@@ -104,7 +106,9 @@ export class RaidLookupComponent implements OnInit {
       .pipe(finalize(() => (this.raidRankingsLoading = false)))
       .subscribe({
         next: (response: IGetMultipleCharacterZoneRankingsResponse) =>
-          (this.viewModel = new RaidLookupViewModel(response.characters, (value) => this.onCharacterNameClick(value)))
+          (this.viewModel = new RaidLookupViewModel(response.characters, this.themeService.theme, (value) =>
+            this.onCharacterNameClick(value)
+          ))
       });
   }
 

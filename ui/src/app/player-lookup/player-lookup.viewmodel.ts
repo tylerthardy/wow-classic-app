@@ -1,6 +1,7 @@
 import { ColumnSpecification, ParseColumnDeprecated } from '../common/components/grid/grid.component';
 import { IGetCharacterZoneRankingsResponseRanking } from '../common/services/character/get-character-zone-rankings-response-ranking.interface';
 import { IGetCharacterZoneRankingsResponse } from '../common/services/character/get-character-zone-rankings-response.interface';
+import { Theme } from '../common/services/theme/theme.type';
 import { SpecializationData } from '../common/specialization/specialization-data.interface';
 import { specializations } from '../common/specialization/specializations';
 import { WowClass } from '../common/specialization/wow-class';
@@ -22,7 +23,11 @@ export class PlayerLookupViewModelEncounterItem implements IGetCharacterZoneRank
   public highestDifficultyDisplay: string;
   public rowStyle?: { [key: string]: any };
 
-  constructor(warcraftLogsClassId: number | undefined, encounter: IGetCharacterZoneRankingsResponseRanking) {
+  constructor(
+    warcraftLogsClassId: number | undefined,
+    encounter: IGetCharacterZoneRankingsResponseRanking,
+    theme: Theme
+  ) {
     this.encounterName = encounter.encounterName;
     this.lockedIn = encounter.lockedIn;
     this.bestPercent = encounter.bestPercent;
@@ -44,8 +49,8 @@ export class PlayerLookupViewModelEncounterItem implements IGetCharacterZoneRank
       (this.rowStyle = !encounter.lockedIn
         ? {
             'font-weight': 'bold',
-            color: '#004000',
-            'background-color': '#dcf4d9'
+            color: theme === 'light' ? '#004000' : '#dcf4d9',
+            'background-color': theme === 'light' ? '#dcf4d9' : '#2b3829'
           }
         : {});
   }
@@ -131,66 +136,9 @@ export class PlayerLookupViewModel {
   public maxPossibleHardmodes?: number;
 
   public encounters?: PlayerLookupViewModelEncounterItem[];
-  public columns: ColumnSpecification<PlayerLookupViewModelEncounterItem>[] = [
-    {
-      label: 'Boss',
-      valueKey: 'encounterNameDisplay',
-      sortType: 'string'
-    },
-    {
-      label: 'Best %',
-      valueKey: 'bestPercentDisplay',
-      sortType: 'parse',
-      format: {
-        type: 'parse'
-      },
-      style: (rowValue) => {
-        return { 'background-color': ParseUtil.getParseWarningColor(rowValue.bestPercentDisplay.value) };
-      }
-    },
-    {
-      label: 'Med',
-      valueKey: 'medianPercentDisplay',
-      sortType: 'parse',
-      format: {
-        type: 'parse'
-      },
-      style: (rowValue) => {
-        return { 'background-color': ParseUtil.getParseWarningColor(rowValue.medianPercentDisplay.value) };
-      }
-    },
-    {
-      label: 'Highest DPS',
-      valueKey: 'highestAmount',
-      sortType: 'number',
-      format: {
-        type: 'number',
-        formatParams: '1.1-1'
-      }
-    },
-    {
-      label: 'Difficulty',
-      valueKey: 'highestDifficultyDisplay',
-      sortType: 'string'
-    },
-    {
-      label: 'Kills',
-      valueKey: 'kills',
-      sortType: 'number',
-      format: { type: 'number' }
-    },
-    {
-      label: 'Fastest',
-      valueKey: 'fastest',
-      sortType: 'number',
-      format: {
-        type: 'date',
-        formatParams: 'm:ss'
-      }
-    }
-  ];
+  public columns: ColumnSpecification<PlayerLookupViewModelEncounterItem>[];
 
-  constructor(characterData: IGetCharacterZoneRankingsResponse) {
+  constructor(characterData: IGetCharacterZoneRankingsResponse, theme: Theme) {
     this.characterName = characterData.characterName;
     this.warcraftLogsClassId = characterData.warcraftLogsClassId;
     this.bestPerformanceAverage = characterData.bestPerformanceAverage;
@@ -198,10 +146,72 @@ export class PlayerLookupViewModel {
     this.hardModes = characterData.hardModes;
     this.bestHardModeProgress = characterData.bestHardModeProgress;
     this.maxPossibleHardmodes = characterData.maxPossibleHardmodes;
+    this.columns = this.getPlayerColumns(theme);
 
     this.encounters = characterData.encounters?.map(
       (encounter: IGetCharacterZoneRankingsResponseRanking): PlayerLookupViewModelEncounterItem =>
-        new PlayerLookupViewModelEncounterItem(characterData.warcraftLogsClassId, encounter)
+        new PlayerLookupViewModelEncounterItem(characterData.warcraftLogsClassId, encounter, theme)
     );
+  }
+
+  private getPlayerColumns(theme: Theme): ColumnSpecification<PlayerLookupViewModelEncounterItem>[] {
+    return [
+      {
+        label: 'Boss',
+        valueKey: 'encounterNameDisplay',
+        sortType: 'string'
+      },
+      {
+        label: 'Best %',
+        valueKey: 'bestPercentDisplay',
+        sortType: 'parse',
+        format: {
+          type: 'parse'
+        },
+        style: (rowValue) => {
+          return { 'background-color': ParseUtil.getParseWarningColor(rowValue.bestPercentDisplay.value, theme) };
+        }
+      },
+      {
+        label: 'Med',
+        valueKey: 'medianPercentDisplay',
+        sortType: 'parse',
+        format: {
+          type: 'parse'
+        },
+        style: (rowValue) => {
+          return { 'background-color': ParseUtil.getParseWarningColor(rowValue.medianPercentDisplay.value, theme) };
+        }
+      },
+      {
+        label: 'Highest DPS',
+        valueKey: 'highestAmount',
+        sortType: 'number',
+        format: {
+          type: 'number',
+          formatParams: '1.1-1'
+        }
+      },
+      {
+        label: 'Difficulty',
+        valueKey: 'highestDifficultyDisplay',
+        sortType: 'string'
+      },
+      {
+        label: 'Kills',
+        valueKey: 'kills',
+        sortType: 'number',
+        format: { type: 'number' }
+      },
+      {
+        label: 'Fastest',
+        valueKey: 'fastest',
+        sortType: 'number',
+        format: {
+          type: 'date',
+          formatParams: 'm:ss'
+        }
+      }
+    ];
   }
 }

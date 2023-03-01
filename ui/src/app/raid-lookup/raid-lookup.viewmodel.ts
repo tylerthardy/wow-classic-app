@@ -1,5 +1,6 @@
 import { ColumnSpecification } from '../common/components/grid/grid.component';
 import { IGetMultipleCharacterZoneRankingsResponseItem } from '../common/services/character/get-multiple-character-zone-rankings-response.interface';
+import { Theme } from '../common/services/theme/theme.type';
 import { WowClass } from '../common/specialization/wow-class';
 import { ParseUtil } from '../common/utils';
 import { RaidPlayerRole } from './raid-player-role.type';
@@ -17,7 +18,11 @@ export class RaidLookupViewModel {
   public columns: ColumnSpecification<IGetMultipleCharacterZoneRankingsResponseItem>[];
   public errorData: IRaidLookupViewModelErrorRow[];
 
-  constructor(rankings: IGetMultipleCharacterZoneRankingsResponseItem[], onClick?: (name: string) => void) {
+  constructor(
+    rankings: IGetMultipleCharacterZoneRankingsResponseItem[],
+    theme: Theme,
+    onClick?: (name: string) => void
+  ) {
     let raidBestPerformanceTotal: number = 0;
     let raidMedianPerformances: number[] = [];
 
@@ -75,7 +80,7 @@ export class RaidLookupViewModel {
           return { value: rowValue.bestPerformanceAverage };
         },
         style: (rowValue) => {
-          return { 'background-color': ParseUtil.getParseWarningColor(rowValue.bestPerformanceAverage) };
+          return { 'background-color': ParseUtil.getParseWarningColor(rowValue.bestPerformanceAverage, theme) };
         }
       },
       {
@@ -89,7 +94,7 @@ export class RaidLookupViewModel {
           return { value: rowValue.medianPerformanceAverage };
         },
         style: (rowValue) => {
-          return { 'background-color': ParseUtil.getParseWarningColor(rowValue.medianPerformanceAverage) };
+          return { 'background-color': ParseUtil.getParseWarningColor(rowValue.medianPerformanceAverage, theme) };
         }
       },
       {

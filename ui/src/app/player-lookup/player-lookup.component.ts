@@ -9,6 +9,7 @@ import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.int
 import { RaidService } from '../common/services/raids/raid.service';
 import { RegionServerService } from '../common/services/region-server.service';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
+import { ThemeService } from '../common/services/theme/theme.service';
 import { ToastService } from '../common/services/toast.service';
 import { SpecializationData } from '../common/specialization/specialization-data.interface';
 import { CompactPlayerLookupViewModel } from './compact-player-lookup.viewmodel';
@@ -37,7 +38,8 @@ export class PlayerLookupComponent implements OnInit {
     private characterService: CharacterService,
     private raidService: RaidService,
     private toastService: ToastService,
-    public regionServerService: RegionServerService
+    public regionServerService: RegionServerService,
+    private themeService: ThemeService
   ) {}
 
   ngOnInit(): void {}
@@ -131,7 +133,8 @@ export class PlayerLookupComponent implements OnInit {
     this.getSearchObservable(zoneAndSize.zoneId, zoneAndSize.size)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
-        next: (result: IGetCharacterZoneRankingsResponse) => (this.viewModel = new PlayerLookupViewModel(result)),
+        next: (result: IGetCharacterZoneRankingsResponse) =>
+          (this.viewModel = new PlayerLookupViewModel(result, this.themeService.theme)),
         error: (err) => this.handleError(err)
       });
   }
@@ -148,10 +151,10 @@ export class PlayerLookupComponent implements OnInit {
           const response10: IGetCharacterZoneRankingsResponse = responses.find((response) => response.size === 10)!;
           const response25: IGetCharacterZoneRankingsResponse = responses.find((response) => response.size === 25)!;
           if (response10) {
-            this.viewModel10 = new CompactPlayerLookupViewModel(response10);
+            this.viewModel10 = new CompactPlayerLookupViewModel(response10, this.themeService.theme);
           }
           if (response25) {
-            this.viewModel25 = new CompactPlayerLookupViewModel(response25);
+            this.viewModel25 = new CompactPlayerLookupViewModel(response25, this.themeService.theme);
           }
         },
         error: (err) => this.handleError(err)

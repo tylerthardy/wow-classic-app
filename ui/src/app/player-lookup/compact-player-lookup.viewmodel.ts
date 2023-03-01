@@ -1,16 +1,17 @@
 import { DatePipe } from '@angular/common';
 import { ColumnSpecification } from '../common/components/grid/grid.component';
 import { IGetCharacterZoneRankingsResponse } from '../common/services/character/get-character-zone-rankings-response.interface';
+import { Theme } from '../common/services/theme/theme.type';
 import { ParseUtil } from '../common/utils';
 import { PlayerLookupViewModel, PlayerLookupViewModelEncounterItem } from './player-lookup.viewmodel';
 
 export class CompactPlayerLookupViewModel extends PlayerLookupViewModel {
-  constructor(characterData: IGetCharacterZoneRankingsResponse) {
-    super(characterData);
-    this.columns = this.getColumns();
+  constructor(characterData: IGetCharacterZoneRankingsResponse, theme: Theme) {
+    super(characterData, theme);
+    this.columns = this.getCompactColumns(theme);
   }
 
-  private getColumns(): ColumnSpecification<PlayerLookupViewModelEncounterItem>[] {
+  private getCompactColumns(theme: Theme): ColumnSpecification<PlayerLookupViewModelEncounterItem>[] {
     return [
       {
         label: 'Boss',
@@ -25,7 +26,7 @@ export class CompactPlayerLookupViewModel extends PlayerLookupViewModel {
           type: 'parse'
         },
         style: (rowValue) => {
-          return { 'background-color': ParseUtil.getParseWarningColor(rowValue.bestPercentDisplay.value) };
+          return { 'background-color': ParseUtil.getParseWarningColor(rowValue.bestPercentDisplay.value, theme) };
         }
       },
       {
@@ -36,7 +37,7 @@ export class CompactPlayerLookupViewModel extends PlayerLookupViewModel {
           type: 'parse'
         },
         style: (rowValue) => {
-          return { 'background-color': ParseUtil.getParseWarningColor(rowValue.medianPercentDisplay.value) };
+          return { 'background-color': ParseUtil.getParseWarningColor(rowValue.medianPercentDisplay.value, theme) };
         }
       },
       {

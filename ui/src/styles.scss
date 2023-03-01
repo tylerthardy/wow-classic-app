@@ -9,7 +9,10 @@ body {
 }
 
 // Global styles
-@import "ngx-toastr/toastr";
+@import './styles/card-theme.scss';
+@import './styles/base-html-theme.scss';
+
+@import 'ngx-toastr/toastr';
 .custom-toast-top-right {
   position: absolute !important;
   top: 10px !important;
@@ -27,16 +30,15 @@ body {
   max-width: 1280px;
 }
 
-@import "../node_modules/ngx-simple-modal/styles/simple-modal.scss";
+@import '../node_modules/ngx-simple-modal/styles/simple-modal.scss';
 .modal-content {
   border-radius: 0;
 }
 
-@import "./styles/item-quality.scss";
+@import './styles/item-quality.scss';
 table,
 th,
 td {
-  border: 1px solid black;
   border-collapse: collapse;
 }
 th,
@@ -61,8 +63,8 @@ button {
 }
 
 .emoji {
-  font-family: "Twemoji Mozilla", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji",
-    "EmojiOne Color", "Android Emoji", sans-serif;
+  font-family: 'Twemoji Mozilla', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji',
+    'EmojiOne Color', 'Android Emoji', sans-serif;
 }
 
 .loading-spinner {

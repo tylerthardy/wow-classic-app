@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr';
 import { RegionServerService } from './common/services/region-server.service';
+import { ThemeService } from './common/services/theme/theme.service';
 import { navigation } from './navigation';
 
 export interface ContainerStyle {
@@ -26,7 +27,11 @@ export class AppComponent implements OnInit {
     { name: 'Full', cssClass: { 'full-container': true } }
   ];
 
-  constructor(private toastrService: ToastrService, public regionServerService: RegionServerService) {}
+  constructor(
+    private toastrService: ToastrService,
+    public regionServerService: RegionServerService,
+    public themeService: ThemeService
+  ) {}
 
   ngOnInit() {
     this.toastrService.overlayContainer = this.toastContainer;
@@ -42,6 +47,10 @@ export class AppComponent implements OnInit {
 
   public onDownloadButtonClick(): void {
     window.open('https://wowclassicapp-addon.s3.amazonaws.com/GroupMembersExporter.zip', '_blank');
+  }
+
+  public onToggleThemeClick(): void {
+    this.themeService.toggleTheme();
   }
 
   public cycleContainerStyle(): void {

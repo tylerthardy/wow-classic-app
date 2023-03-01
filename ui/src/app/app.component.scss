@@ -2,6 +2,17 @@
   height: 100%;
 }
 
+.full-wrapper {
+  width: 100%;
+  height: 100%;
+}
+.light-theme.full-wrapper {
+  background-color: #a9a9a9;
+}
+.dark-theme.full-wrapper {
+  background-color: #000000;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -22,12 +33,18 @@
 header {
   padding: 5px;
   flex: 0 0 20px;
-  background-color: #666666;
-  color: white;
 
   button.right {
     float: right;
   }
+}
+.light-theme header {
+  background-color: #666666;
+  color: white;
+}
+.dark-theme header {
+  background-color: #464646;
+  color: white;
 }
 
 #main {
@@ -41,10 +58,16 @@ header {
     padding: 1rem;
     background-color: #e1e1e1;
   }
-  #content {
-    flex: auto;
-    padding: 1rem;
-    background-color: #cdcdcd;
-    overflow-y: scroll;
-  }
+}
+
+#content {
+  flex: auto;
+  padding: 1rem;
+  overflow-y: scroll;
+}
+.light-theme #content {
+  background-color: #cdcdcd;
+}
+.dark-theme #content {
+  background-color: #2c2c2c;
 }

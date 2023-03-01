@@ -1,23 +1,28 @@
-<div class="wrapper" [ngClass]="containerStyles[containerStyle].cssClass">
-  <header>
-    <button (click)="onHamburgerClick()">🍔</button>
-    <span>WoW Classic App - </span>
-    <app-server-selection [(ngModel)]="regionServerService.regionServer"></app-server-selection>
-    <!-- buttons sorted up to down render right to left -->
-    <button class="right" (click)="cycleContainerStyle()">{{ nextContainerStyle }}</button>
-    <button class="right" (click)="onDownloadButtonClick()">Download Addon</button>
-  </header>
-  <div class="light-theme" id="main">
-    <aside id="side-navigation" *ngIf="isNavigationShown">
-      <div *ngFor="let nav of navigation">
-        <a [routerLink]="nav.routerLink">{{ nav.title }}</a>
-      </div>
-    </aside>
-    <section id="content">
-      <router-outlet></router-outlet>
-    </section>
-  </div>
-  <!-- <footer>Footer</footer> -->
+<div class="full-wrapper" [ngClass]="themeService.getThemeClass()">
+  <div class="wrapper" [ngClass]="containerStyles[containerStyle].cssClass">
+    <header>
+      <button (click)="onHamburgerClick()">🍔</button>
+      <span>WoW Classic App - </span>
+      <app-server-selection [(ngModel)]="regionServerService.regionServer"></app-server-selection>
+      <!-- buttons sorted up to down render right to left -->
+      <button class="right emoji" (click)="onToggleThemeClick()">
+        {{ themeService.theme === 'light' ? '🌞' : '🌙' }}
+      </button>
+      <button class="right" (click)="cycleContainerStyle()">{{ nextContainerStyle }}</button>
+      <button class="right" (click)="onDownloadButtonClick()">Download Addon</button>
+    </header>
+    <div id="main">
+      <aside id="side-navigation" *ngIf="isNavigationShown">
+        <div *ngFor="let nav of navigation">
+          <a [routerLink]="nav.routerLink">{{ nav.title }}</a>
+        </div>
+      </aside>
+      <section id="content">
+        <router-outlet></router-outlet>
+      </section>
+    </div>
+    <!-- <footer>Footer</footer> -->
 
-  <div class="custom-toast-container" toastContainer></div>
+    <div class="custom-toast-container" toastContainer></div>
+  </div>
 </div>
