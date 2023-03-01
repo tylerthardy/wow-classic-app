@@ -12,6 +12,7 @@ body {
 @import './styles/card-theme.scss';
 @import './styles/base-html-theme.scss';
 @import './styles/dropdown-theme.scss';
+@import './styles/icons-theme.scss';
 
 @import 'ngx-toastr/toastr';
 .custom-toast-top-right {
@@ -57,6 +58,7 @@ button {
 }
 .toggle-btn.enabled {
   background-color: #eccf99;
+  color: #000000;
 }
 .button-bar {
   margin-top: 5px;

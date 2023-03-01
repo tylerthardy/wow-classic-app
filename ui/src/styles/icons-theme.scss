@@ -1,0 +1,17 @@
+// SVG
+.light-theme {
+  svg {
+    fill: #000000;
+  }
+  svg g#copy {
+    fill: #000000;
+  }
+}
+.dark-theme {
+  svg {
+    fill: #d5d5d5;
+  }
+  svg g#copy {
+    fill: #d5d5d5;
+  }
+}
