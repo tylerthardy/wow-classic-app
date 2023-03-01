@@ -17,8 +17,8 @@ validateEnvironmentVariables();
 const app = new cdk.App();
 const environment: Environment = process.env.ENVIRONMENT as Environment;
 
-new WcaApiStack(app, 'wca-api', environment, {});
-new WcaUiStack(app, 'wca-ui', environment, {});
+new WcaApiStack(app, 'wca-api', environment, { stackName: `${environment}-wca-api` });
+new WcaUiStack(app, 'wca-ui', environment, { stackName: `${environment}-wca-ui` });
 
 // Below is regarding the last param to the Stacks
 /* If you don't specify 'env', this stack will be environment-agnostic.

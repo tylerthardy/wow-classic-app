@@ -9,6 +9,7 @@ import path = require('path');
 
 export class WcaApiStack extends Stack {
   private deployEnvironment: Environment;
+
   constructor(scope: Construct, id: string, deployEnvironment: Environment, props?: StackProps) {
     super(scope, id, props);
 
@@ -32,7 +33,7 @@ export class WcaApiStack extends Stack {
     });
     handlerLambda.addEnvironment('DYNAMO_PLAYER_TABLE_NAME', playerTable.tableName);
 
-    const apiGateway = new LambdaRestApi(this, 'nestjs-api-gateway', {
+    const apiGateway = new LambdaRestApi(this, `${this.deployEnvironment}-wca-api`, {
       handler: handlerLambda
     });
 
@@ -50,7 +51,7 @@ export class WcaApiStack extends Stack {
   }
 
   private createHandlerLambda(layers: ILayerVersion[]): Function {
-    const lambda = new Function(this, 'nestjs-handler', {
+    const lambda = new Function(this, `${this.deployEnvironment}-wca-nestjs`, {
       code: Code.fromAsset(path.resolve(__dirname, '../api/dist')),
       handler: 'lambda.handler',
       runtime: Runtime.NODEJS_16_X,
@@ -66,7 +67,7 @@ export class WcaApiStack extends Stack {
   }
 
   private createLambdaLayer(): LayerVersion {
-    return new LayerVersion(this, 'node-module-layer', {
+    return new LayerVersion(this, `${this.deployEnvironment}-wca-node-module-layer`, {
       code: Code.fromAsset(path.resolve(__dirname, '../api/node-modules-layer')),
       compatibleRuntimes: [Runtime.NODEJS_16_X],
       description: 'Api Handler Dependencies'

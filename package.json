@@ -13,9 +13,16 @@
     "build:ui": "cd ui && npm install && npm run build",
     "prep:api": "cd api && npm run prep",
     "prep:ui": "",
-    "deploy:api": "npm run prep:api && cdk deploy classic-companion-api",
-    "deploy:ui": "npm run build:ui && cdk deploy classic-companion-ui",
-    "deploy": "npm run build:api && npm run build:ui && npm run deploy:api && npm run deploy:ui"
+    "deploy:api": "npm run prep:api && cdk deploy wca-api",
+    "deploy:ui": "cdk deploy wca-ui",
+    "deploy": "npm run build:api && npm run build:ui && npm run deploy:api && npm run deploy:ui",
+    "build:api:dev": "cd api && npm install && npm run build",
+    "build:ui:dev": "cd ui && npm install && npm run build -- --configuration=dev",
+    "prep:api:dev": "cd api && npm run prep",
+    "prep:ui:dev": "",
+    "deploy:api:dev": "npm run prep:api:dev && cdk deploy wca-api",
+    "deploy:ui:dev": "cdk deploy wca-ui",
+    "deploy:dev": "npm run build:api:dev && npm run build:ui:dev && npm run deploy:api:dev && npm run deploy:ui:dev"
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",

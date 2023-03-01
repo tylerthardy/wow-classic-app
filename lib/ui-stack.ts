@@ -9,8 +9,8 @@ export class WcaUiStack extends Stack {
   constructor(scope: Construct, id: string, deployEnvironment: Environment, props?: StackProps) {
     super(scope, id, props);
 
-    const websiteBucket = new Bucket(this, 'ui-bucket', {
-      bucketName: 'wowclassicapp-ui',
+    const websiteBucket = new Bucket(this, `${deployEnvironment}-wca-ui`, {
+      bucketName: `${deployEnvironment}-wca-ui`,
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'error.html',
       publicReadAccess: true,
@@ -23,7 +23,7 @@ export class WcaUiStack extends Stack {
       }
     });
 
-    new BucketDeployment(this, 'wowclassicapp-ui-bucket-deployment', {
+    new BucketDeployment(this, `${deployEnvironment}-wca-ui-deployment`, {
       sources: [Source.asset(path.resolve(__dirname, '../ui/dist/classic-companion'))],
       destinationBucket: websiteBucket
     });
