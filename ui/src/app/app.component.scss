@@ -53,10 +53,22 @@ header {
 
   display: flex;
   flex-direction: row;
-  #side-navigation {
-    flex: 0 0 150px;
-    padding: 1rem;
-    background-color: #e1e1e1;
+}
+
+#side-navigation {
+  flex: 0 0 150px;
+  padding: 1rem;
+}
+.light-theme #side-navigation {
+  background-color: #e5e5e5;
+}
+.dark-theme #side-navigation {
+  background-color: #343434;
+  a {
+    color: #9abee7;
+  }
+  a:visited {
+    color: #cf9ae7;
   }
 }
 
