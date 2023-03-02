@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { finalize, forkJoin, Observable } from 'rxjs';
-import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-size-selection.component';
+import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
 import { CharacterService } from '../common/services/character/character.service';
 import { IGetCharacterZoneRankingsResponse } from '../common/services/character/get-character-zone-rankings-response.interface';
 import { RankingMetric, RankingMetricValues, ZoneRankingsQuery } from '../common/services/graphql';

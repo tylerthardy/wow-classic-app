@@ -4,6 +4,7 @@ import { Raid } from '../common/services/raids/raid.interface';
 import { raids } from '../common/services/raids/raids';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { ToastService } from '../common/services/toast.service';
+import { MathUtil } from '../common/utils';
 import { HtmlCopyUtil } from '../common/utils/html-copy-util';
 
 @Component({
@@ -13,6 +14,9 @@ import { HtmlCopyUtil } from '../common/utils/html-copy-util';
 })
 export class RaidSpamComponent implements OnInit {
   @Input() raid: Partial<Raid> = {};
+  public useCustomMessage: boolean = false;
+  public customMessage: string | undefined;
+  uniqueId = MathUtil.generateUUID();
 
   constructor(private toast: ToastService) {}
 
@@ -54,7 +58,22 @@ export class RaidSpamComponent implements OnInit {
     this.toast.info('Copied!', 'Raid spam copied to clipboard');
   }
 
+  public onCustomMessageCheckboxChange(event: any): void {
+    if (!event.target) return;
+    let element: HTMLInputElement = event.target as HTMLInputElement;
+    this.useCustomMessage = element.checked;
+  }
+
   public copyOutput(): void {
-    HtmlCopyUtil.copyInputValueById('spam-output');
+    if (this.useCustomMessage) {
+      HtmlCopyUtil.copyInputValueById('custom-message-' + this.uniqueId);
+    } else {
+      HtmlCopyUtil.copyInputValueById('generated-message-' + this.uniqueId);
+    }
+  }
+
+  public storeSpam(message: string): void {
+    this.useCustomMessage = true;
+    this.customMessage = message;
   }
 }

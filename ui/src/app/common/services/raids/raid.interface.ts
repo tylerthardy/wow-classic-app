@@ -1,4 +1,4 @@
-import { RaidAndSizeSelection } from '../../components/raid-size-selection/raid-size-selection.component';
+import { RaidAndSizeSelection } from '../../components/raid-size-selection/raid-and-size-selection';
 import { ItemData } from '../../item-data.interface';
 
 export interface Raid {

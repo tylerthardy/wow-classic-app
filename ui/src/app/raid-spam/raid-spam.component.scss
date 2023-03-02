@@ -8,11 +8,11 @@
 #output {
   width: 100%;
 }
-#spam-output-container {
+#message-container {
   display: flex;
   flex-direction: row;
   align-items: center;
-  #spam-output {
+  .message {
     flex-grow: 1;
   }
 }

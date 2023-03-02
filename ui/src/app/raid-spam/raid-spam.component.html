@@ -10,8 +10,26 @@
     ></app-item-selection>
   </div>
   <div id="soft-reserves">Soft Reserves: <input type="number" [(ngModel)]="raid.softReserveCount" /></div>
+  <label [for]="'custom-message-checkbox-' + uniqueId">Use Custom Message</label>
+  <input
+    [id]="'custom-message-checkbox-' + uniqueId"
+    [name]="'custom-message-checkbox-' + uniqueId"
+    type="checkbox"
+    (change)="onCustomMessageCheckboxChange($event)"
+  />
 </div>
-<div id="spam-output-container">
+<div id="message-container">
   <app-copy-icon (click)="onCopyClick()"></app-copy-icon>
-  Output:<input id="spam-output" [value]="spamOutput || 'Fill out form'" />
+  <ng-container *ngIf="!useCustomMessage">
+    Output:<input
+      readonly
+      disabled
+      [id]="'generated-message-' + uniqueId"
+      class="message"
+      [value]="spamOutput || 'Fill out form'"
+    />
+  </ng-container>
+  <ng-container *ngIf="useCustomMessage">
+    Output:<input [id]="'custom-message-' + uniqueId" class="message" [(ngModel)]="customMessage" />
+  </ng-container>
 </div>

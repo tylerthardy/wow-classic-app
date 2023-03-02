@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SimpleModalComponent } from 'ngx-simple-modal';
-import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-size-selection.component';
+import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
 import { ItemData } from '../common/item-data.interface';
 import { CreateSoftresModalData } from './create-softres-modal-data.interface';
 

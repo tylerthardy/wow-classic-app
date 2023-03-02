@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { CardComponent } from '../common/components/card/card.component';
 import { ConfirmModalComponent } from '../common/components/confirm-modal/confirm-modal.component';
-import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-size-selection.component';
+import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
 import { ItemData } from '../common/item-data.interface';
 import { Raid } from '../common/services/raids/raid.interface';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
