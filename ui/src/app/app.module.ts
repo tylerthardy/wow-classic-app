@@ -34,6 +34,7 @@ import { ClassSpecSelectionComponent } from './common/components/class-spec-sele
 import { ClassSelectionComponent } from './common/components/class-selection/class-selection.component';
 import { DropdownComponent } from './common/components/dropdown/dropdown.component';
 import { WclLinkIconComponent } from './common/components/wcl-link-icon/wcl-link-icon.component';
+import { CopyIconComponent } from './common/components/icons/copy-icon/copy-icon.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { WclLinkIconComponent } from './common/components/wcl-link-icon/wcl-link
     ClassSpecSelectionComponent,
     ClassSelectionComponent,
     DropdownComponent,
-    WclLinkIconComponent
+    WclLinkIconComponent,
+    CopyIconComponent
   ],
   imports: [
     BrowserAnimationsModule,
