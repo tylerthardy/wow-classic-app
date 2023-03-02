@@ -9,7 +9,7 @@ import { CreateSoftresResponse } from '../common/services/softres/http/create-so
 import { CreateSoftresOptions } from '../common/services/softres/options/create-softres-options.interface';
 import { CreateSoftresWithHardReserveOptions } from '../common/services/softres/options/create-softres-with-hard-reserve-options.interface';
 import { SoftresService } from '../common/services/softres/softres.service';
-import { ToastService } from '../common/services/toast.service';
+import { ToastService } from '../common/services/toast/toast.service';
 import { HtmlCopyUtil } from '../common/utils/html-copy-util';
 import { CreateSoftresModalData } from '../create-softres-modal/create-softres-modal-data.interface';
 import { CreateSoftresModalComponent } from '../create-softres-modal/create-softres-modal.component';

@@ -3,7 +3,7 @@ import { RaidData } from '../common/services/raids/raid-data.interface';
 import { Raid } from '../common/services/raids/raid.interface';
 import { raids } from '../common/services/raids/raids';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
-import { ToastService } from '../common/services/toast.service';
+import { ToastService } from '../common/services/toast/toast.service';
 import { MathUtil } from '../common/utils';
 import { HtmlCopyUtil } from '../common/utils/html-copy-util';
 
@@ -14,6 +14,7 @@ import { HtmlCopyUtil } from '../common/utils/html-copy-util';
 })
 export class RaidSpamComponent implements OnInit {
   @Input() raid: Partial<Raid> = {};
+  @Input() hideRaidInputFields: boolean = false;
   public useCustomMessage: boolean = false;
   public customMessage: string | undefined;
   uniqueId = MathUtil.generateUUID();
@@ -72,7 +73,7 @@ export class RaidSpamComponent implements OnInit {
     }
   }
 
-  public storeSpam(message: string): void {
+  public setCustomMessage(message: string): void {
     this.useCustomMessage = true;
     this.customMessage = message;
   }

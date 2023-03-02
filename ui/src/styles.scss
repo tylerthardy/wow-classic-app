@@ -15,6 +15,7 @@ body {
 @import './styles/icons-theme.scss';
 
 @import 'ngx-toastr/toastr';
+@import './app/common/services/toast/toast-styles.scss';
 .custom-toast-top-right {
   position: absolute !important;
   top: 10px !important;

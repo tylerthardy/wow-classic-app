@@ -21,7 +21,6 @@
   <div class="button-bar">
     <button class="chunky-btn" (click)="onCheckPlayerClick()">Check Player</button>
     <button class="chunky-btn" (click)="onCheckRaidClick()">Check Raid</button>
-    <button class="chunky-btn" (click)="onCopySpamClick()">Copy Spam</button>
     <button class="chunky-btn" (click)="onCreateSoftresClick()">Create Softres</button>
     <button
       class="chunky-btn"
@@ -31,10 +30,12 @@
     >
       Recopy After Paste
     </button>
+    <button class="chunky-btn" style="float: right" (click)="onStoreClipboard()">Store Clipboard to Spam</button>
+    <button style="float: right" class="chunky-btn" (click)="onCopySpamClick()">Copy Spam</button>
   </div>
 
   <app-card #raidSpamCard header="Raid Spam">
-    <app-raid-spam #raidSpam [raid]="raidSpamInput!"></app-raid-spam>
+    <app-raid-spam #raidSpam [raid]="raidSpamInput!" [hideRaidInputFields]="true"></app-raid-spam>
   </app-card>
 
   <app-card id="player-lookup-card" #playerLookupCard header="Player Lookup">

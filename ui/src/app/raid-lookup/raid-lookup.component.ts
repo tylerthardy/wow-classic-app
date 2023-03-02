@@ -9,7 +9,7 @@ import { RaidService } from '../common/services/raids/raid.service';
 import { RegionServerService } from '../common/services/region-server.service';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { ThemeService } from '../common/services/theme/theme.service';
-import { ToastService } from '../common/services/toast.service';
+import { ToastService } from '../common/services/toast/toast.service';
 import { WowClass } from '../common/specialization/wow-class';
 import { RaidLookupViewModel } from './raid-lookup.viewmodel';
 import { RaidPlayerRole } from './raid-player-role.type';
@@ -46,7 +46,10 @@ export class RaidLookupComponent implements OnInit {
 
   public onSearchClick(): void {
     if (!this.importJson) {
-      alert('JSON is required in the import field');
+      this.toastService.warn(
+        'Data Required',
+        'Fill the Import textbox with data from the GME addon. You can download GME in the menu at the top right.'
+      );
       return;
     }
     this.searchRaid(this.importJson);
@@ -57,6 +60,16 @@ export class RaidLookupComponent implements OnInit {
   }
 
   public searchRaid(json: string): void {
+    try {
+      JSON.parse(json);
+    } catch (err) {
+      this.toastService.warn(
+        'Invalid Data',
+        'The data on clipboard is not valid json. Copy from the GME addon and try again.'
+      );
+      return;
+    }
+
     this.importJson = json;
 
     // FIXME: Jesus, look at this method
@@ -77,14 +90,7 @@ export class RaidLookupComponent implements OnInit {
     }
     const raidZoneAndSize: RaidZoneAndSize = this.raidService.getZoneAndSize(raidSlugs[0]);
 
-    let players: GmeExportPlayer[];
-    try {
-      players = JSON.parse(this.importJson);
-    } catch (err: any) {
-      const error = err as Error;
-      this.toastService.error('Error while parsing players json', error.toString());
-      return;
-    }
+    let players: GmeExportPlayer[] = JSON.parse(this.importJson);
 
     const queries: ZoneRankingsQuery[] = players.map((player) => {
       const query: ZoneRankingsQuery = {

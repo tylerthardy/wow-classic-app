@@ -6,7 +6,7 @@ import { RaidAndSizeSelection } from '../common/components/raid-size-selection/r
 import { ItemData } from '../common/item-data.interface';
 import { Raid } from '../common/services/raids/raid.interface';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
-import { ToastService } from '../common/services/toast.service';
+import { ToastService } from '../common/services/toast/toast.service';
 import { PlayerLookupComponent } from '../player-lookup/player-lookup.component';
 import { RaidInformationButton } from '../raid-information/raid-information.component';
 import { RaidLookupComponent } from '../raid-lookup/raid-lookup.component';
@@ -129,6 +129,11 @@ export class RaidLeadHelperComponent implements OnInit {
   }
   public onCreateSoftresClick(): void {
     this.softresManagerRef.create();
+  }
+  public onStoreClipboard(): void {
+    navigator.clipboard.readText().then((result) => {
+      this.raidSpamRef.setCustomMessage(result);
+    });
   }
   public onToggleRecopyAfterPaste(): void {
     this.isRecopyAfterPaste = !this.isRecopyAfterPaste;

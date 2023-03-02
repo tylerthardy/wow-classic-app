@@ -10,7 +10,7 @@ import { RaidService } from '../common/services/raids/raid.service';
 import { RegionServerService } from '../common/services/region-server.service';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { ThemeService } from '../common/services/theme/theme.service';
-import { ToastService } from '../common/services/toast.service';
+import { ToastService } from '../common/services/toast/toast.service';
 import { SpecializationData } from '../common/specialization/specialization-data.interface';
 import { CompactPlayerLookupViewModel } from './compact-player-lookup.viewmodel';
 import { PlayerLookupViewModel } from './player-lookup.viewmodel';

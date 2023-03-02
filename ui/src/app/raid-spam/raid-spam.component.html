@@ -1,22 +1,27 @@
 <div id="form">
-  <div id="raid">
-    Raid: <app-raid-size-selection selectionType="radio" [(ngModel)]="raid.raidAndSize"></app-raid-size-selection>
-
-    Hard Reserve:
-    <app-item-selection
-      *ngIf="raid.raidAndSize"
-      [instance]="raid.raidAndSize.getSoftResSlug()"
-      [(ngModel)]="raid.hardReserveItem"
-    ></app-item-selection>
+  <ng-container *ngIf="hideRaidInputFields">
+    <div>
+      Raid: <app-raid-size-selection selectionType="radio" [(ngModel)]="raid.raidAndSize"></app-raid-size-selection>
+    </div>
+    <div>
+      Hard Reserve:
+      <app-item-selection
+        *ngIf="raid.raidAndSize"
+        [instance]="raid.raidAndSize.getSoftResSlug()"
+        [(ngModel)]="raid.hardReserveItem"
+      ></app-item-selection>
+    </div>
+    <div>Soft Reserves: <input type="number" [(ngModel)]="raid.softReserveCount" /></div>
+  </ng-container>
+  <div>
+    <input
+      [id]="'custom-message-checkbox-' + uniqueId"
+      [name]="'custom-message-checkbox-' + uniqueId"
+      type="checkbox"
+      [(ngModel)]="useCustomMessage"
+    />
+    <label [for]="'custom-message-checkbox-' + uniqueId">Use Custom Message</label>
   </div>
-  <div id="soft-reserves">Soft Reserves: <input type="number" [(ngModel)]="raid.softReserveCount" /></div>
-  <label [for]="'custom-message-checkbox-' + uniqueId">Use Custom Message</label>
-  <input
-    [id]="'custom-message-checkbox-' + uniqueId"
-    [name]="'custom-message-checkbox-' + uniqueId"
-    type="checkbox"
-    (change)="onCustomMessageCheckboxChange($event)"
-  />
 </div>
 <div id="message-container">
   <app-copy-icon (click)="onCopyClick()"></app-copy-icon>

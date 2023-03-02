@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastService } from '../common/services/toast.service';
+import { ToastService } from '../common/services/toast/toast.service';
 import { SpecializationData } from '../common/specialization/specialization-data.interface';
 import { specializations } from '../common/specialization/specializations';
 import { WowClass } from '../common/specialization/wow-class';
