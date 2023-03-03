@@ -1,5 +1,5 @@
 <div id="form">
-  <ng-container *ngIf="hideRaidInputFields">
+  <ng-container *ngIf="!hideRaidInputFields">
     <div>
       Raid: <app-raid-size-selection selectionType="radio" [(ngModel)]="raid.raidAndSize"></app-raid-size-selection>
     </div>
