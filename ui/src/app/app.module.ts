@@ -35,6 +35,7 @@ import { ClassSelectionComponent } from './common/components/class-selection/cla
 import { DropdownComponent } from './common/components/dropdown/dropdown.component';
 import { WclLinkIconComponent } from './common/components/wcl-link-icon/wcl-link-icon.component';
 import { CopyIconComponent } from './common/components/icons/copy-icon/copy-icon.component';
+import { PlayerComparisonComponent } from './player-comparison/player-comparison.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { CopyIconComponent } from './common/components/icons/copy-icon/copy-icon
     ClassSelectionComponent,
     DropdownComponent,
     WclLinkIconComponent,
-    CopyIconComponent
+    CopyIconComponent,
+    PlayerComparisonComponent
   ],
   imports: [
     BrowserAnimationsModule,

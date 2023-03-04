@@ -15,7 +15,7 @@ export interface ColumnFormat<T> {
 export type SortType = 'number' | 'string' | 'parse';
 export type SortDirection = 'asc' | 'desc' | 'none';
 export interface ColumnSpecification<T> {
-  label: string;
+  label: string | (() => string);
   valueKey: keyof T;
   format?: ColumnFormat<T>;
   transform?: (rowValue: T) => any;
@@ -59,12 +59,20 @@ export class GridComponent implements OnInit, OnChanges {
     this.sortColumn(columnId);
   }
 
-  // FIXME: Should have a generic
+  // FIXME: Should have a generic? T instead of any?
   onClickCell(dataRow: any, column: ColumnSpecification<any>): void {
     if (!column.onClick) {
       return;
     }
     column.onClick(dataRow[column.valueKey]);
+  }
+
+  // FIXME: Should have a generic? T instead of any?
+  getColumnLabel(column: ColumnSpecification<any>) {
+    if (typeof column.label === 'function') {
+      return column.label();
+    }
+    return column.label;
   }
 
   // TODO: Signature "dataRow: any, column: ColumnSpecification<any>" is repeated - indicates a class, method, or pattern

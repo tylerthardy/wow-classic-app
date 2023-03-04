@@ -1,0 +1,22 @@
+<div class="search-form">
+  Player 1:
+  <input [(ngModel)]="player1NameInput" (keypress)="onPlayerNameKeyPress($event)" />
+  Player 2:
+  <input [(ngModel)]="player2NameInput" (keypress)="onPlayerNameKeyPress($event)" />
+  Metric:
+  <select [(ngModel)]="metricInput">
+    <option *ngFor="let rankingMetric of rankingMetricValues" [value]="rankingMetric">{{ rankingMetric }}</option>
+  </select>
+  Raid:
+  <app-raid-size-selection selectionType="radio" [(ngModel)]="raidAndSize"></app-raid-size-selection>
+  <button (click)="onSearchClick()">Search</button>
+  <button (click)="onClearClick()">Clear</button>
+</div>
+
+<div class="loading-spinner large" *ngIf="isLoading"></div>
+<ng-container *ngIf="viewModel && viewModel.encounters && !isLoading"> </ng-container>
+<ng-container *ngIf="viewModel && viewModel.encounters && !isLoading">
+  <div style="display: flex; width: 80%">
+    <app-grid style="flex: 2" [data]="viewModel.encounters" [columns]="viewModel.columns"></app-grid>
+  </div>
+</ng-container>

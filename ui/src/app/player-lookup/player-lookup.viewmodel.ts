@@ -49,8 +49,8 @@ export class PlayerLookupViewModelEncounterItem implements IGetCharacterZoneRank
       (this.rowStyle = !encounter.lockedIn
         ? {
             'font-weight': 'bold',
-            color: theme === 'light' ? '#004000' : '#dcf4d9',
-            'background-color': theme === 'light' ? '#dcf4d9' : '#2b3829'
+            color: ParseUtil.getNotLockedInColor(),
+            'background-color': ParseUtil.getNotLockedInBackgroundColor()
           }
         : {});
   }

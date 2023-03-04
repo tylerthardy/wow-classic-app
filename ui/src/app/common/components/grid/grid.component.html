@@ -1,7 +1,7 @@
 <table>
   <tr>
     <th *ngFor="let column of columns; let i = index" (click)="onClickColumnSort(i)">
-      {{ column.label }}
+      {{ getColumnLabel(column) }}
       <ng-container *ngIf="i === sortedColumnId">
         <ng-container *ngIf="sortDirection === 'asc'">🔼</ng-container>
         <ng-container *ngIf="sortDirection === 'desc'">🔽</ng-container>

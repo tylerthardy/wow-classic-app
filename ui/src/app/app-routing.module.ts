@@ -1,7 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { PlayerComparisonComponent } from './player-comparison/player-comparison.component';
 import { RaidLeadHelperComponent } from './raid-lead-helper/raid-lead-helper.component';
+
+export const navigation = [
+  {
+    title: 'Dashboard',
+    routerLink: ['dashboard']
+  },
+  {
+    title: 'Raid Lead Helper',
+    routerLink: ['raid-lead-helper']
+  },
+  {
+    title: 'Player Comparison',
+    routerLink: ['player-comparison']
+  }
+];
 
 export const routes: Routes = [
   {
@@ -16,6 +32,10 @@ export const routes: Routes = [
   {
     path: 'raid-lead-helper',
     component: RaidLeadHelperComponent
+  },
+  {
+    path: 'player-comparison',
+    component: PlayerComparisonComponent
   }
 ];
 

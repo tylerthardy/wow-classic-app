@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr';
+import { navigation } from './app-routing.module';
 import { RegionServerService } from './common/services/region-server.service';
 import { ThemeService } from './common/services/theme/theme.service';
-import { navigation } from './navigation';
 
 export interface ContainerStyle {
   name: 'Left' | 'Middle' | 'Full';

@@ -38,7 +38,7 @@ export class PlayerLookupComponent implements OnInit {
     private characterService: CharacterService,
     private raidService: RaidService,
     private toastService: ToastService,
-    public regionServerService: RegionServerService,
+    private regionServerService: RegionServerService,
     private themeService: ThemeService
   ) {}
 
@@ -52,7 +52,7 @@ export class PlayerLookupComponent implements OnInit {
 
   public onSearchClick(): void {
     if (!this.characterNameInput) {
-      alert('a character name must be specified'); // FIXME: Use toast, among other bullshit
+      this.toastService.warn('Invalid Character', 'A character name must be specified');
       return;
     }
     this.searchPlayer(this.characterNameInput);
@@ -75,7 +75,7 @@ export class PlayerLookupComponent implements OnInit {
     this.characterNameInput = name;
 
     if (!this.regionServerService.regionServer.regionSlug || !this.regionServerService.regionServer.serverSlug) {
-      this.toastService.warn('Invalid Server', 'Choose your server at top of page'); // FIXME: Use toast, among other bullshit
+      this.toastService.warn('Invalid Server', 'Choose your server at top of page');
       return;
     }
 
