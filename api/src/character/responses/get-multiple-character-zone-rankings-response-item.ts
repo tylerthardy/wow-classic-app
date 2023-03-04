@@ -29,7 +29,7 @@ export class GetMultipleCharacterZoneRankingsResponseItem implements IGetMultipl
     this.classFileName = query.classFileName;
     this.role = query.role;
     this.errors = errors;
-    if (wclCharacterData.zoneRankings) {
+    if (wclCharacterData && wclCharacterData.zoneRankings) {
       this.warcraftLogsClassId = wclCharacterData.classID;
       this.bestPerformanceAverage = wclCharacterData.zoneRankings.bestPerformanceAverage;
       this.medianPerformanceAverage = wclCharacterData.zoneRankings.medianPerformanceAverage;
