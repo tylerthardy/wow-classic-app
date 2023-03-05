@@ -1,5 +1,5 @@
+import { IGetCharacterZoneRankingsResponseRanking } from '../../../../models';
 import { ColumnSpecification, ParseColumnDeprecated } from '../common/components/grid/grid.component';
-import { IGetCharacterZoneRankingsResponseRanking } from '../common/services/character/get-character-zone-rankings-response-ranking.interface';
 import { IGetCharacterZoneRankingsResponse } from '../common/services/character/get-character-zone-rankings-response.interface';
 import { Theme } from '../common/services/theme/theme.type';
 import { SpecializationData } from '../common/specialization/specialization-data.interface';

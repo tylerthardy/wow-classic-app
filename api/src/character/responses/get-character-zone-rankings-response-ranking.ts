@@ -1,6 +1,6 @@
+import { IGetCharacterZoneRankingsResponseRanking } from '../../../../models';
 import { DifficultyLevel } from '../../common/models/difficulty-level.type';
 import { ZoneEncounterRanking } from '../../warcraft-logs/common';
-import { IGetCharacterZoneRankingsResponseRanking } from './get-character-zone-rankings-response-ranking.interface';
 
 export class GetCharacterZoneRankingsResponseRanking implements IGetCharacterZoneRankingsResponseRanking {
   public encounterName: string;

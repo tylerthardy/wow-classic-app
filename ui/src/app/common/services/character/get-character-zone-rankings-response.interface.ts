@@ -1,4 +1,4 @@
-import { IGetCharacterZoneRankingsResponseRanking } from './get-character-zone-rankings-response-ranking.interface';
+import { IGetCharacterZoneRankingsResponseRanking } from '../../../../../../models';
 
 // FIXME: Duplicated from the API
 export interface IGetCharacterZoneRankingsResponse {

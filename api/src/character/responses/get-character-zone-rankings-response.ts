@@ -1,8 +1,8 @@
+import { IGetCharacterZoneRankingsResponseRanking } from '../../../../models';
 import { ZoneEncounterRanking } from '../../warcraft-logs/common';
 import { IGetWclCharacterZoneRankingsResponse } from '../../warcraft-logs/responses/get-wcl-character-zone-rankings-response.interface';
 import { ZoneRankingParser } from '../common/zone-ranking-parser';
 import { GetCharacterZoneRankingsResponseRanking } from './get-character-zone-rankings-response-ranking';
-import { IGetCharacterZoneRankingsResponseRanking } from './get-character-zone-rankings-response-ranking.interface';
 import { IGetCharacterZoneRankingsResponse } from './get-character-zone-rankings-response.interface';
 
 export class GetCharacterZoneRankingsResponse implements IGetCharacterZoneRankingsResponse {
