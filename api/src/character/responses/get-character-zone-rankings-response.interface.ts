@@ -1,13 +1,13 @@
-import { IGetCharacterZoneRankingsResponseV2Ranking } from './get-character-zone-rankings-response-v2-ranking.interface';
+import { IGetCharacterZoneRankingsResponseRanking } from './get-character-zone-rankings-response-ranking.interface';
 
 // FIXME: Duplicated in the UI
-export interface IGetCharacterZoneRankingsResponseV2 {
+export interface IGetCharacterZoneRankingsResponse {
   characterName: string;
   role?: string;
   warcraftLogsClassId?: number;
   bestPerformanceAverage?: number;
   medianPerformanceAverage?: number;
-  encounters?: IGetCharacterZoneRankingsResponseV2Ranking[];
+  encounters?: IGetCharacterZoneRankingsResponseRanking[];
   hardModes?: string[];
   bestHardModeProgress?: number;
   maxPossibleHardmodes?: number;

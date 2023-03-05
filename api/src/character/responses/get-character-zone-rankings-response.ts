@@ -1,16 +1,16 @@
 import { ZoneEncounterRanking } from '../../warcraft-logs/common';
 import { IGetWclCharacterZoneRankingsResponse } from '../../warcraft-logs/responses/get-wcl-character-zone-rankings-response.interface';
 import { ZoneRankingParser } from '../common/zone-ranking-parser';
-import { GetCharacterZoneRankingsResponseV2Ranking } from './get-character-zone-rankings-response-v2-ranking';
-import { IGetCharacterZoneRankingsResponseV2Ranking } from './get-character-zone-rankings-response-v2-ranking.interface';
-import { IGetCharacterZoneRankingsResponseV2 } from './get-character-zone-rankings-response-v2.interface';
+import { GetCharacterZoneRankingsResponseRanking } from './get-character-zone-rankings-response-ranking';
+import { IGetCharacterZoneRankingsResponseRanking } from './get-character-zone-rankings-response-ranking.interface';
+import { IGetCharacterZoneRankingsResponse } from './get-character-zone-rankings-response.interface';
 
-export class GetCharacterZoneRankingsV2Response implements IGetCharacterZoneRankingsResponseV2 {
+export class GetCharacterZoneRankingsResponse implements IGetCharacterZoneRankingsResponse {
   public characterName: string;
   public warcraftLogsClassId?: number;
   public bestPerformanceAverage?: number;
   public medianPerformanceAverage?: number;
-  public encounters?: IGetCharacterZoneRankingsResponseV2Ranking[];
+  public encounters?: IGetCharacterZoneRankingsResponseRanking[];
   public hardModes?: string[];
   public bestHardModeProgress?: number;
   public maxPossibleHardmodes?: number;
@@ -26,7 +26,7 @@ export class GetCharacterZoneRankingsV2Response implements IGetCharacterZoneRank
     const encounterRankings: ZoneEncounterRanking[] = ZoneRankingParser.filterUnrankedEncounters(
       wclCharacterData.zoneRankings.rankings
     );
-    this.encounters = encounterRankings.map((ranking) => new GetCharacterZoneRankingsResponseV2Ranking(ranking));
+    this.encounters = encounterRankings.map((ranking) => new GetCharacterZoneRankingsResponseRanking(ranking));
 
     const hardModes: string[] = ZoneRankingParser.getHardModes(encounterRankings);
     this.bestHardModeProgress = hardModes.length;
