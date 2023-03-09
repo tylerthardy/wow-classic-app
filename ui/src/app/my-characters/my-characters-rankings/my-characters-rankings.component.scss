@@ -1,0 +1,11 @@
+app-grid {
+  th,
+  td {
+    max-width: 50px;
+  }
+
+  th > div {
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}

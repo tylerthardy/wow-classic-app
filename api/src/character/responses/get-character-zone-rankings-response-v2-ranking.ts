@@ -4,6 +4,7 @@ import { IGetCharacterZoneRankingsResponseV2Ranking } from './get-character-zone
 
 export class GetCharacterZoneRankingsResponseV2Ranking implements IGetCharacterZoneRankingsResponseV2Ranking {
   public encounterName: string;
+  public encounterId: number;
   public lockedIn: boolean;
   public bestPercent?: number;
   public bestSpec?: string;
@@ -21,6 +22,7 @@ export class GetCharacterZoneRankingsResponseV2Ranking implements IGetCharacterZ
     const medianPercent: number = Math.floor(encounterRanking.medianPercent);
 
     this.encounterName = encounterRanking.encounter.name;
+    this.encounterId = encounterRanking.encounter.id;
     this.lockedIn = encounterRanking.lockedIn;
     if (encounterRanking.totalKills > 0) {
       this.bestPercent = bestPercent;

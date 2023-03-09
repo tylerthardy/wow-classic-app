@@ -1,6 +1,7 @@
 // FIXME: Duplicated from the API
 export interface IGetCharacterZoneRankingsResponseRanking {
   encounterName: string;
+  encounterId: number;
   lockedIn: boolean;
   bestPercent?: number;
   bestSpec?: string;

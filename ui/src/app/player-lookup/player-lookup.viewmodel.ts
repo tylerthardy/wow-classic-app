@@ -7,7 +7,7 @@ import { specializations } from '../common/specialization/specializations';
 import { WowClass } from '../common/specialization/wow-class';
 import { ParseUtil } from '../common/utils';
 
-export class PlayerLookupViewModelEncounterItem implements IGetCharacterZoneRankingsResponseRanking {
+export class PlayerLookupViewModelEncounterItem {
   public encounterName: string;
   public lockedIn: boolean;
   public bestPercent?: number;
@@ -119,7 +119,7 @@ export class PlayerLookupViewModelEncounterItem implements IGetCharacterZoneRank
       return spec.className === wowClass.name && normalizedEnumName === normalizedDataName;
     });
     if (!specialization) {
-      throw new Error(`specialization ${specName} not found for class id ${wowClass.id}`);
+      throw new Error(`specialization ${specName} not found for class id ${warcraftLogsClassId}`);
     }
 
     return specialization;

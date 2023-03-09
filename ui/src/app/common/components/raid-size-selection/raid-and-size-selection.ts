@@ -1,3 +1,4 @@
+import { RaidSize } from '../../services/raids/raid-size.type';
 import { SoftresRaidSlug } from '../../services/softres/softres-raid-slug';
 import { IRaidAndSizeSelection } from './raid-and-size-selection.interface';
 
@@ -26,7 +27,7 @@ export class RaidAndSizeSelection implements IRaidAndSizeSelection {
     return slugs[0];
   }
 
-  public getSize(): number {
+  public getSize(): RaidSize {
     if (!this.size10 && !this.size25) {
       throw new Error("Can't get size: No size selected");
     }

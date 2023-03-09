@@ -1,4 +1,4 @@
-import { ZoneEncounterRanking } from '../../warcraft-logs/common';
+import { RankingMetric, ZoneEncounterRanking } from '../../warcraft-logs/common';
 import { IGetWclCharacterZoneRankingsResponse } from '../../warcraft-logs/responses/get-wcl-character-zone-rankings-response.interface';
 import { ZoneRankingParser } from '../common/zone-ranking-parser';
 import { GetCharacterZoneRankingsResponseV2Ranking } from './get-character-zone-rankings-response-v2-ranking';
@@ -7,6 +7,7 @@ import { IGetCharacterZoneRankingsResponseV2 } from './get-character-zone-rankin
 
 export class GetCharacterZoneRankingsV2Response implements IGetCharacterZoneRankingsResponseV2 {
   public characterName: string;
+  public metric: RankingMetric;
   public warcraftLogsClassId?: number;
   public bestPerformanceAverage?: number;
   public medianPerformanceAverage?: number;
@@ -18,6 +19,7 @@ export class GetCharacterZoneRankingsV2Response implements IGetCharacterZoneRank
 
   constructor(wclCharacterData: IGetWclCharacterZoneRankingsResponse) {
     this.characterName = wclCharacterData.name;
+    this.metric = wclCharacterData.zoneRankings.metric;
     this.warcraftLogsClassId = wclCharacterData.classID;
     this.bestPerformanceAverage = wclCharacterData.zoneRankings.bestPerformanceAverage;
     this.medianPerformanceAverage = wclCharacterData.zoneRankings.medianPerformanceAverage;

@@ -1,11 +1,9 @@
 <table>
   <tr>
     <th *ngFor="let column of columns; let i = index" (click)="onClickColumnSort(i)">
-      {{ getColumnLabel(column) }}
-      <ng-container *ngIf="i === sortedColumnId">
-        <ng-container *ngIf="sortDirection === 'asc'">🔼</ng-container>
-        <ng-container *ngIf="sortDirection === 'desc'">🔽</ng-container>
-      </ng-container>
+      <div>
+        {{ getColumnLabel(column, i) }}
+      </div>
     </th>
   </tr>
   <tr *ngFor="let dataRow of sortedData" [ngStyle]="dataRow.rowStyle">
