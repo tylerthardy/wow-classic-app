@@ -25,6 +25,7 @@ import { WowheadLinkComponent } from './common/components/wowhead-link/wowhead-l
 import { GlobalErrorHandler } from './common/global-error-handler';
 import { CreateSoftresModalComponent } from './create-softres-modal/create-softres-modal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { MyCharactersRankingsComponent } from './my-characters/my-characters-rankings/my-characters-rankings.component';
 import { MyCharactersComponent } from './my-characters/my-characters.component';
 import { PlayerComparisonComponent } from './player-comparison/player-comparison.component';
 import { PlayerLookupComponent } from './player-lookup/player-lookup.component';
@@ -37,7 +38,6 @@ import { SoftresManagerComponent } from './softres-manager/softres-manager.compo
 import { SpecializationDataComponent } from './specialization-data/specialization-data.component';
 import { SpecializationIconComponent } from './specialization-icon/specialization-icon.component';
 import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.component';
-import { MyCharactersRankingsComponent } from './my-characters/my-characters-rankings/my-characters-rankings.component';
 
 @NgModule({
   declarations: [

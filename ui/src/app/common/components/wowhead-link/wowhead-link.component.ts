@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 declare var $WowheadPower: any;
 
 @Component({
@@ -10,6 +10,7 @@ export class WowheadLinkComponent implements OnInit, OnChanges {
   @Input() type!: 'spell' | 'item';
   @Input() id!: number;
   @Input() disableLink: boolean = false;
+  @ViewChild('anchorTag') anchorElement!: ElementRef<HTMLAnchorElement>;
 
   constructor() {}
 
@@ -35,6 +36,14 @@ export class WowheadLinkComponent implements OnInit, OnChanges {
   }
 
   private refreshStyle(): void {
+    if (this.anchorElement) {
+      // Reset class list because old item quality classes will linger
+      this.anchorElement.nativeElement.className = '';
+      // Reset the inner HTML because WowheadPower replaces them with the item name
+      this.anchorElement.nativeElement.innerHTML = '<div class="loading-spinner"></div>';
+      // Remove background attribute because background image will linger
+      this.anchorElement.nativeElement.style.removeProperty('background-image');
+    }
     setTimeout(() => $WowheadPower.refreshLinks(), 1);
   }
 }

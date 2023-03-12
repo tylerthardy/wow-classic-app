@@ -1,3 +1,28 @@
+<app-card header="Characters">
+  <textarea [(ngModel)]="wseInput"></textarea><button (click)="onWseImportClick()">Import Character</button>
+  <div *ngFor="let character of myCharacters; let i = index">
+    <input type="radio" name="character" [(ngModel)]="selectedCharacterIndex" [value]="i" /> {{ character.name }}
+  </div>
+</app-card>
+
 <app-card header="Rankings">
   <app-my-characters-rankings [myCharacters]="myCharacters"></app-my-characters-rankings>
 </app-card>
+
+<table>
+  <tr *ngFor="let item of gear.items; let i = index">
+    <td>
+      {{
+        !myCharacters[selectedCharacterIndex].gear.items[i]
+          ? '&nbsp;'
+          : item.id === myCharacters[selectedCharacterIndex].gear.items[i].id
+          ? '✅'
+          : '❌'
+      }}
+    </td>
+    <td><wowhead-link [id]="item.id" type="item"></wowhead-link></td>
+    <td *ngIf="myCharacters[selectedCharacterIndex].gear.items[i]">
+      <wowhead-link [id]="myCharacters[selectedCharacterIndex].gear.items[i].id" type="item"></wowhead-link>
+    </td>
+  </tr>
+</table>

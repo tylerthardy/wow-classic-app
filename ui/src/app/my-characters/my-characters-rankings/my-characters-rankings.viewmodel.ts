@@ -4,9 +4,8 @@ import { RankingMetric } from '../../common/services/graphql';
 import { Theme } from '../../common/services/theme/theme.type';
 import { ParseUtil } from '../../common/utils';
 import { PlayerLookupViewModelEncounterItem } from '../../player-lookup/player-lookup.viewmodel';
-import { ICharacter } from '../character.interface';
 
-class ViewModelCharacter implements ICharacter {
+class ViewModelCharacter {
   public name: string;
   public metric: RankingMetric;
   public encounterById: { [key: number]: PlayerLookupViewModelEncounterItem } = {};
