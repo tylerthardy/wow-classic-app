@@ -1,5 +1,13 @@
-import { SpecializationData } from './specialization-data.interface';
+export interface SpecializationData {
+  className: string;
+  specializationName: string;
+  role: string;
+  isWarcraftLogsOnly?: boolean;
+  iconUrl?: string;
+  hitRatingCap?: number;
+}
 
+// FIXME: Duplicated from UI
 export const specializations: SpecializationData[] = [
   {
     className: 'Death Knight',
