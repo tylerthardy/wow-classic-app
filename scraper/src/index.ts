@@ -31,17 +31,17 @@ specs.forEach(async (spec) => {
   const phase: number = 2;
   const extractor = new GearExtractor(spec, phase);
   let gearUrl: string | undefined;
-  let data: IGearPlannerData | undefined;
+  let sets: { [key: string]: IGearPlannerData } | undefined;
   let classSlug: string | undefined;
   let specNameSlug: string | undefined;
   let filename: string | undefined;
   try {
     gearUrl = extractor.getSpecGearUrl();
-    data = await extractor.extractGearDataFromPage(gearUrl);
+    sets = await extractor.extractGearDataFromPage(gearUrl);
     classSlug = spec.className.replace(' ', '-').toLowerCase();
     specNameSlug = spec.specializationName.replace(' ', '-').toLowerCase();
     filename = `${outputPath}/${classSlug}-${specNameSlug}.json`;
-    fs.writeFileSync(filename, JSON.stringify(data));
+    fs.writeFileSync(filename, JSON.stringify(sets));
   } catch (err) {
     console.error('error during spec data parsing', {
       gearUrl,
