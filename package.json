@@ -32,5 +32,11 @@
     "aws-cdk-lib": "2.63.2",
     "constructs": "^10.0.0",
     "source-map-support": "^0.5.21"
-  }
+  },
+  "workspaces": [
+    "api",
+    "core",
+    "ui",
+    "scraper"
+  ]
 }

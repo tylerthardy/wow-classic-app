@@ -1,5 +1,5 @@
+import { SpecializationData } from 'classic-companion-core';
 import got from 'got';
-import { SpecializationData } from './common/specializations';
 import { IGearPlannerData } from './gear-planner-data.interface';
 import { WowheadParseFunction } from './wowhead-parse-function';
 

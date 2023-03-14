@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { SpecializationData } from '../../specialization/specialization-data.interface';
+import { SpecializationData } from 'classic-companion-core';
 
 // FIXME: Deprecate
 export interface ParseColumnDeprecated {

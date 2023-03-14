@@ -21,6 +21,7 @@
     "@angular/router": "^14.0.0",
     "@apollo/client": "^3.7.7",
     "apollo-angular": "^4.1.0",
+    "classic-companion-core": "*",
     "fuse.js": "^6.6.2",
     "graphql": "^16.6.0",
     "ngx-simple-modal": "^1.4.17",

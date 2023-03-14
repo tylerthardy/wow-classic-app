@@ -1,9 +1,8 @@
+import { SpecializationData, specializations } from 'classic-companion-core';
 import { ColumnSpecification, ParseColumnDeprecated } from '../common/components/grid/grid.component';
 import { IGetCharacterZoneRankingsResponseRanking } from '../common/services/character/get-character-zone-rankings-response-ranking.interface';
 import { IGetCharacterZoneRankingsResponse } from '../common/services/character/get-character-zone-rankings-response.interface';
 import { Theme } from '../common/services/theme/theme.type';
-import { SpecializationData } from '../common/specialization/specialization-data.interface';
-import { specializations } from '../common/specialization/specializations';
 import { WowClass } from '../common/specialization/wow-class';
 import { ParseUtil } from '../common/utils';
 

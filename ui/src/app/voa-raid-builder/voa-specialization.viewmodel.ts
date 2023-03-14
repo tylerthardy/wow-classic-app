@@ -1,4 +1,4 @@
-import { SpecializationData } from '../common/specialization/specialization-data.interface';
+import { SpecializationData } from 'classic-companion-core';
 import { IVoaSpec } from './voa-spec.interface';
 
 export class VoaSpecializationViewModel {

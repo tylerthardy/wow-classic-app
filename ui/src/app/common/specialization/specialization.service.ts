@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
+import { SpecializationData, specializations } from 'classic-companion-core';
 import { GetSpecializationsOptions } from './get-specializations-options.interface';
-import { SpecializationData } from './specialization-data.interface';
-import { specializations } from './specializations';
 
 export interface Class {}
 

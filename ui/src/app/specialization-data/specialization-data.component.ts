@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SpecializationData } from 'classic-companion-core';
 import { LocalStorageService } from '../common/services/local-storage.service';
-import { SpecializationData } from '../common/specialization/specialization-data.interface';
 import { SpecializationService } from '../common/specialization/specialization.service';
 
 @Component({

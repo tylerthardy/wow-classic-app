@@ -1,6 +1,6 @@
 // import { Command } from 'commander';
+import { specializations } from 'classic-companion-core';
 import * as fs from 'fs';
-import { specializations } from './common/specializations';
 import { GearExtractor } from './gear-extractor';
 import { IGearPlannerData } from './gear-planner-data.interface';
 

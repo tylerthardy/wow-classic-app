@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SpecializationData, specializations } from 'classic-companion-core';
 import { ToastService } from '../common/services/toast/toast.service';
-import { SpecializationData } from '../common/specialization/specialization-data.interface';
-import { specializations } from '../common/specialization/specializations';
 import { WowClass } from '../common/specialization/wow-class';
 import { HtmlCopyUtil } from '../common/utils/html-copy-util';
 import { RaidPlayerRole } from '../raid-lookup/raid-player-role.type';
@@ -47,7 +46,7 @@ export class VoaRaidBuilderComponent implements OnInit {
     { class: 'Paladin', spec: 'Retribution', lfgClass: 'pally', lfgSpec: 'ret', role: 'DAMAGER' },
     { class: 'Paladin', spec: 'Holy', lfgClass: 'pally', lfgSpec: 'holy', role: 'HEALER' },
     { class: 'Priest', spec: 'Heal', lfgClass: 'priest', lfgSpec: 'heal', role: 'HEALER' },
-    { class: 'Priest', spec: 'Shadow', lfgClass: 'priest', lfgSpec: 'dps', role: 'DAMAGER' },
+    { class: 'Priest', spec: 'Shadow', lfgClass: 'priest', lfgSpec: 'shadow', role: 'DAMAGER' },
     { class: 'Rogue', spec: 'DPS', lfgClass: 'rogue', lfgSpec: '', role: 'DAMAGER' },
     { class: 'Shaman', spec: 'Elemental', lfgClass: 'sham', lfgSpec: 'ele', role: 'DAMAGER' },
     { class: 'Shaman', spec: 'Enhancement', lfgClass: 'sham', lfgSpec: 'enh', role: 'DAMAGER' },
