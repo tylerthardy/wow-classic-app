@@ -51,6 +51,15 @@ export class WowheadLinkComponent implements OnInit, OnChanges {
       // Remove background attribute because background image will linger
       this.anchorElement.nativeElement.style.removeProperty('background-image');
     }
-    setTimeout(() => $WowheadPower.refreshLinks(), 1);
+
+    // refreshLinks is performed on the window, so all links are refreshed.
+    // We reset the refreshHandle so only the last gets ran, because Angular change detection is faster than a 1ms timeout.
+    clearTimeout(WowheadLinkComponent.refreshHandle);
+    WowheadLinkComponent.refreshHandle = setTimeout(() => {
+      console.log('refreshing');
+      $WowheadPower.refreshLinks();
+    }, 1);
   }
+
+  private static refreshHandle: NodeJS.Timeout;
 }
