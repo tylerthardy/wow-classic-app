@@ -13,7 +13,7 @@
   </div>
 </app-card>
 
-<app-card header="Gear">
+<app-card header="Gear" *ngIf="myCharacters.length > 0">
   <div style="display: flex; flex-direction: row">
     <span style="margin-right: 10px">Compare Gear to Set:</span>
     <app-dropdown
@@ -72,6 +72,6 @@
   </table>
 </app-card>
 
-<app-card header="Rankings">
+<app-card header="Rankings" *ngIf="myCharacters.length > 0">
   <app-my-characters-rankings [myCharacters]="myCharacters"></app-my-characters-rankings>
 </app-card>

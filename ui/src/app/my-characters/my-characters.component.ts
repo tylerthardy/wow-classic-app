@@ -76,7 +76,7 @@ export class MyCharactersComponent {
               specName: result.specialization.name
             });
             const length = this.myCharacters.push(newCharacter);
-            this.selectedCharacterIndex = length - 1;
+            this.setSelectedCharacter(length - 1);
             this.storeCharacters();
           }
         });
@@ -85,6 +85,9 @@ export class MyCharactersComponent {
 
   public loadCharacterGearSets(): void {
     const character: Character = this.myCharacters[this.selectedCharacterIndex];
+    if (!character) {
+      return;
+    }
     this.specializationService.getBis(new Specialization(character.specialization)).subscribe((sets) => {
       this.compareSets = sets;
       this.compareSetsNames = Object.keys(sets);
@@ -152,6 +155,10 @@ export class MyCharactersComponent {
     }
 
     return myItem.id === targetItem.id;
+  }
+
+  private setSelectedCharacter(characterIndex: number) {
+    this.selectedCharacterIndex = characterIndex;
   }
 
   private eitherItemMatchesTarget(
