@@ -1,0 +1,23 @@
+export enum GEAR_PLANNER_SLOTS {
+  // gearPlannerSlotNumber is 1 indexed
+  EMPTY_0_INDEX,
+  HEAD,
+  NECK,
+  SHOULDERS,
+  SHIRT,
+  CHEST,
+  WAIST,
+  LEGS,
+  FEET,
+  WRIST,
+  HANDS,
+  FINGER1,
+  FINGER2,
+  TRINKET1,
+  TRINKET2,
+  BACK,
+  MAINHAND,
+  OFFHAND,
+  RANGED,
+  TABARD
+}

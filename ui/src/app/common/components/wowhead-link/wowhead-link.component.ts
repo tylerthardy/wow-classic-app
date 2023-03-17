@@ -10,6 +10,7 @@ export class WowheadLinkComponent implements OnInit, OnChanges {
   @Input() type!: 'spell' | 'item';
   @Input() id!: number;
   @Input() disableLink: boolean = false;
+  @Input() hideLabel: boolean = false;
   @ViewChild('anchorTag') anchorElement!: ElementRef<HTMLAnchorElement>;
 
   constructor() {}
@@ -33,6 +34,12 @@ export class WowheadLinkComponent implements OnInit, OnChanges {
     if (this.disableLink) {
       event.preventDefault();
     }
+  }
+
+  public getItemAnchorClasses(): { [cssStyle: string]: boolean } {
+    return {
+      'hide-label': this.hideLabel
+    };
   }
 
   private refreshStyle(): void {

@@ -200,10 +200,16 @@ export class GridComponent implements OnInit, OnChanges {
 
   // FIXME: Should have a generic
   private static sortNumber(data: any[], property: keyof any, direction: 'asc' | 'desc'): any[] {
+    const normalizeProperty = function (value: any) {
+      if (!value) {
+        value = 0;
+      }
+      return value;
+    };
     if (direction === 'asc') {
-      return data.sort((a, b) => a[property] - b[property]);
+      return data.sort((a, b) => normalizeProperty(a[property]) - normalizeProperty(b[property]));
     } else {
-      return data.sort((a, b) => b[property] - a[property]);
+      return data.sort((a, b) => normalizeProperty(b[property]) - normalizeProperty(a[property]));
     }
   }
 

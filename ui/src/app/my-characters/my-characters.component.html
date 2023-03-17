@@ -1,28 +1,77 @@
 <app-card header="Characters">
   <textarea [(ngModel)]="wseInput"></textarea><button (click)="onWseImportClick()">Import Character</button>
   <div *ngFor="let character of myCharacters; let i = index">
-    <input type="radio" name="character" [(ngModel)]="selectedCharacterIndex" [value]="i" /> {{ character.name }}
+    <input
+      type="radio"
+      name="character"
+      [(ngModel)]="selectedCharacterIndex"
+      [value]="i"
+      (change)="onSelectedCharacterChange($event)"
+    />
+    {{ character.name }} <button (click)="onDeleteCharacterClick(i)">❌</button>
+    <button (click)="onEditCharacterClick(i)">📝</button>
   </div>
+</app-card>
+
+<app-card header="Gear">
+  <div style="display: flex; flex-direction: row">
+    <span style="margin-right: 10px">Compare Gear to Set:</span>
+    <app-dropdown
+      *ngIf="compareSets"
+      [options]="compareSets"
+      [removeBlank]="true"
+      labelPropertyName="name"
+      style="flex: auto"
+      [(ngModel)]="selectedSet"
+    ></app-dropdown>
+  </div>
+  <table *ngIf="selectedSet" style="margin-top: 10px">
+    <tr>
+      <th>?</th>
+      <th>Selected Set</th>
+      <th>Mine</th>
+      <th>Selected Gems</th>
+      <th>My Gems</th>
+    </tr>
+    <tr *ngFor="let slotIndex of SLOT_INDICES">
+      <td>{{ hasItem(slotIndex) ? '✅' : '❌' }}</td>
+      <td>
+        <ng-container *ngIf="selectedSet.gear.items[slotIndex]"
+          ><wowhead-link [id]="selectedSet.gear.items[slotIndex]!.id" type="item"></wowhead-link
+        ></ng-container>
+      </td>
+      <td>
+        <ng-container *ngIf="myCharacters[selectedCharacterIndex].gear.items[slotIndex]">
+          <wowhead-link
+            [id]="myCharacters[selectedCharacterIndex].gear.items[slotIndex]!.id"
+            type="item"
+          ></wowhead-link>
+        </ng-container>
+      </td>
+      <td>
+        <ng-container *ngIf="selectedSet.gear.items[slotIndex]">
+          <wowhead-link
+            *ngFor="let gem of selectedSet.gear.items[slotIndex]!.gems"
+            [id]="gem!"
+            [hideLabel]="true"
+            type="item"
+          ></wowhead-link>
+        </ng-container>
+      </td>
+      <td>
+        <ng-container *ngIf="myCharacters[selectedCharacterIndex].gear.items[slotIndex]">
+          <wowhead-link
+            *ngFor="let gem of myCharacters[selectedCharacterIndex].gear.items[slotIndex]!.gems"
+            [id]="gem!"
+            [hideLabel]="true"
+            type="item"
+          ></wowhead-link>
+        </ng-container>
+      </td>
+    </tr>
+  </table>
 </app-card>
 
 <app-card header="Rankings">
   <app-my-characters-rankings [myCharacters]="myCharacters"></app-my-characters-rankings>
 </app-card>
-
-<table>
-  <tr *ngFor="let item of gear.items; let i = index">
-    <td>
-      {{
-        !myCharacters[selectedCharacterIndex].gear.items[i]
-          ? '&nbsp;'
-          : item.id === myCharacters[selectedCharacterIndex].gear.items[i].id
-          ? '✅'
-          : '❌'
-      }}
-    </td>
-    <td><wowhead-link [id]="item.id" type="item"></wowhead-link></td>
-    <td *ngIf="myCharacters[selectedCharacterIndex].gear.items[i]">
-      <wowhead-link [id]="myCharacters[selectedCharacterIndex].gear.items[i].id" type="item"></wowhead-link>
-    </td>
-  </tr>
-</table>

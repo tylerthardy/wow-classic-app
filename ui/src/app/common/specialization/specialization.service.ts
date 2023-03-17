@@ -1,6 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SpecializationData, specializations } from 'classic-companion-core';
-import { GetSpecializationsOptions } from './get-specializations-options.interface';
+import { GetSpecializationBisResponse, Specialization } from 'classic-companion-core';
+import { Observable } from 'rxjs';
+import { AppConfig } from '../../app.config';
 
 export interface Class {}
 
@@ -8,13 +10,13 @@ export interface Class {}
   providedIn: 'root'
 })
 export class SpecializationService {
-  constructor() {}
+  constructor(private config: AppConfig, private http: HttpClient) {}
 
-  getSpecializations(options: GetSpecializationsOptions): SpecializationData[] {
-    let filteredSpecializations: SpecializationData[] = Object.assign([], specializations);
-    if (options.omitWarcraftLogsSpecs) {
-      filteredSpecializations = specializations.filter((spec) => !spec.isWarcraftLogsOnly);
-    }
-    return filteredSpecializations;
+  public getBis(specialization: Specialization): Observable<GetSpecializationBisResponse> {
+    const wowClass = specialization.getClassKebab();
+    const role = specialization.role.toLowerCase();
+    const spec = specialization.getSpecKebab();
+    const url: string = `${this.config.apiUrl}/specialization/${wowClass}/${spec}/${role}/bis`;
+    return this.http.get<GetSpecializationBisResponse>(url);
   }
 }

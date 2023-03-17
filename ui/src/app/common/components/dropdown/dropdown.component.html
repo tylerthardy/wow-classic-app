@@ -1,6 +1,6 @@
 <input readonly (mouseenter)="onInputMouseEnter()" (mouseleave)="onInputMouseLeave()" />
-<div class="selected-spec">
-  {{ selection ?? blankLabel }}
+<div class="selected-value">
+  {{ getDropdownItemLabel(selection) ?? blankLabel }}
 </div>
 <div
   class="dropdown-content"
@@ -13,7 +13,7 @@
       {{ blankLabel }}
     </div>
     <div class="dropdown-item" *ngFor="let option of options" (click)="onDropdownItemClick(option)">
-      {{ option }}
+      {{ getDropdownItemLabel(option) }}
     </div>
   </ng-container>
 </div>

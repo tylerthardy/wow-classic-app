@@ -5,20 +5,20 @@ import { IGetCharacterZoneRankingsRequest } from './get-character-zone-rankings-
 
 export class GetCharacterZoneRankingsRequest implements IGetCharacterZoneRankingsRequest {
   @IsWowUsername()
-  characterName: string;
+  characterName!: string;
 
   @IsString()
-  serverSlug: string;
+  serverSlug!: string;
 
   @IsString()
-  serverRegion: string;
+  serverRegion!: string;
 
   // TODO: Enum eventually
   @IsNumber()
-  zoneId: number;
+  zoneId!: number;
 
   @IsIn(RankingMetricValues)
-  metric: RankingMetric;
+  metric!: RankingMetric;
 
   @IsString()
   @IsOptional()
@@ -36,5 +36,5 @@ export class GetCharacterZoneRankingsRequest implements IGetCharacterZoneRanking
   role?: string;
 
   @IsIn(RaidSizeValues)
-  size: RaidSize;
+  size!: RaidSize;
 }

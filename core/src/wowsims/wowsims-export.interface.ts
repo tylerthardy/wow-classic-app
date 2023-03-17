@@ -1,6 +1,6 @@
 export interface IWowSimsExportItem {
   id: number;
-  gems: number[];
+  gems: (number | null)[];
   enchant?: number;
 }
 
@@ -14,7 +14,7 @@ export interface IWowSimsExport {
   race: string; //'Dwarf';
   name: string; //'Perterter';
   gear: {
-    items: IWowSimsExportItem[];
+    items: (IWowSimsExportItem | null)[];
     // [
     //   { enchant: 3820; gems: [41285, 39998]; id: 46172 },
     //   { id: 44661; gems: [40026] },

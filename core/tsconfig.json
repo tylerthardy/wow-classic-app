@@ -5,7 +5,17 @@
     "declaration": true,
     "outDir": "./dist",
     "skipLibCheck": true,
-    "rootDir": "./src"
+    "declarationMap": true,
+    "rootDir": "./src",
+    "strict": true,
+    "strictPropertyInitialization": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noImplicitReturns": true,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "../node_modules"]

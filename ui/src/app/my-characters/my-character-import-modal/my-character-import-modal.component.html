@@ -1,0 +1,23 @@
+<div class="modal-content" [ngClass]="themeService.getThemeClass()">
+  <div class="modal-header">
+    <h4>Complete Imported Character Data</h4>
+  </div>
+  <div class="modal-body">
+    <div>Name: <input [(ngModel)]="name" /></div>
+    <div>Default Metric: <app-dropdown [options]="metricOptions" [(ngModel)]="metric"></app-dropdown></div>
+    <div>
+      Class: <app-class-selection [(ngModel)]="wowClass" (change)="onClassChange($event)"></app-class-selection>
+    </div>
+    <div *ngIf="wowClass">
+      Spec:
+      <app-class-spec-selection
+        [classId]="wowClass.warcraftLogsId"
+        [(ngModel)]="specialization"
+      ></app-class-spec-selection>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger" (click)="close()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="confirm()">OK</button>
+  </div>
+</div>

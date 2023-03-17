@@ -1,9 +1,8 @@
-import { SpecializationData, specializations } from 'classic-companion-core';
+import { SpecializationData, specializations, WowClass } from 'classic-companion-core';
 import { ColumnSpecification, ParseColumnDeprecated } from '../common/components/grid/grid.component';
 import { IGetCharacterZoneRankingsResponseRanking } from '../common/services/character/get-character-zone-rankings-response-ranking.interface';
 import { IGetCharacterZoneRankingsResponse } from '../common/services/character/get-character-zone-rankings-response.interface';
 import { Theme } from '../common/services/theme/theme.type';
-import { WowClass } from '../common/specialization/wow-class';
 import { ParseUtil } from '../common/utils';
 
 export class PlayerLookupViewModelEncounterItem {
@@ -113,7 +112,7 @@ export class PlayerLookupViewModelEncounterItem {
     }
 
     const specialization: SpecializationData | undefined = specializations.find((spec) => {
-      const normalizedEnumName: string = spec.specializationName.replace(' ', '').toLowerCase();
+      const normalizedEnumName: string = spec.name.replace(' ', '').toLowerCase();
       const normalizedDataName: string = specName.toLowerCase();
       return spec.className === wowClass.name && normalizedEnumName === normalizedDataName;
     });

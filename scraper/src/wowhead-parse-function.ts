@@ -1,4 +1,4 @@
-import { IGearPlannerData } from './gear-planner-data.interface';
+import { IGearPlannerData } from 'classic-companion-core';
 
 class WH {
   public static maxLevel: number = 80;

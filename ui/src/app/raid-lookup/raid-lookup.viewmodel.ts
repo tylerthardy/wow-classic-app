@@ -1,7 +1,7 @@
+import { WowClass } from 'classic-companion-core';
 import { ColumnSpecification } from '../common/components/grid/grid.component';
 import { IGetMultipleCharacterZoneRankingsResponseItem } from '../common/services/character/get-multiple-character-zone-rankings-response.interface';
 import { Theme } from '../common/services/theme/theme.type';
-import { WowClass } from '../common/specialization/wow-class';
 import { ParseUtil } from '../common/utils';
 import { RaidPlayerRole } from './raid-player-role.type';
 

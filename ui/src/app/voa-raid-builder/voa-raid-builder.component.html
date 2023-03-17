@@ -1,7 +1,7 @@
 <div class="container" (click)="onContainerClick()">
   <div *ngFor="let viewModel of viewModels" (click)="viewModel.toggle()" [ngClass]="{ selected: viewModel.selected }">
     <app-specialization-icon size="small" [specialization]="viewModel.specialization"></app-specialization-icon>
-    <span>&nbsp;{{ viewModel.specialization.className }} {{ viewModel.specialization.specializationName }}</span>
+    <span>&nbsp;{{ viewModel.specialization.className }} {{ viewModel.specialization.name }}</span>
   </div>
 </div>
 <div>

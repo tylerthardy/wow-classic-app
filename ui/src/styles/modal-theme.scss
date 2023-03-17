@@ -1,0 +1,21 @@
+.light-theme.modal-content {
+  background-color: white;
+
+  .modal-header {
+    border-bottom-color: #cecece;
+  }
+  .modal-footer {
+    border-top-color: #cecece;
+  }
+}
+
+.dark-theme.modal-content {
+  background-color: #424242;
+
+  .modal-header {
+    border-bottom-color: #111111;
+  }
+  .modal-footer {
+    border-top-color: #111111;
+  }
+}

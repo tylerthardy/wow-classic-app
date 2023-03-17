@@ -1,17 +1,16 @@
 import { DynamoDBClient, DynamoDBClientConfig } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, PutCommand, PutCommandOutput } from '@aws-sdk/lib-dynamodb';
 import { Injectable, Logger } from '@nestjs/common';
+import { AppConfig } from '../../app-config';
 import { IGetWclCharacterZoneRankingsResponse } from '../../warcraft-logs/responses/get-wcl-character-zone-rankings-response.interface';
 
 @Injectable()
 export class PlayerTableService {
-  private tableName: string = process.env.DYNAMO_PLAYER_TABLE_NAME;
+  private tableName: string;
   private documentClient: DynamoDBDocumentClient;
 
-  constructor() {
-    if (!process.env.DYNAMO_PLAYER_TABLE_NAME) {
-      throw new Error('Environment variable DYNAMO_PLAYER_TABLE_NAME is undefined or null');
-    }
+  constructor(appConfig: AppConfig) {
+    this.tableName = appConfig.dynamoPlayerTableName;
     const configuration: DynamoDBClientConfig = {};
     const ddbClient = new DynamoDBClient(configuration);
     this.documentClient = DynamoDBDocumentClient.from(ddbClient);

@@ -1,8 +1,14 @@
 // import { Command } from 'commander';
-import { specializations } from 'classic-companion-core';
+import {
+  IGearPlannerData,
+  IWowSimsExport,
+  Specialization,
+  SpecializationData,
+  specializations
+} from 'classic-companion-core';
 import * as fs from 'fs';
 import { GearExtractor } from './gear-extractor';
-import { IGearPlannerData } from './gear-planner-data.interface';
+import { TypescriptGenerator } from './typescript-generator';
 
 //add the following line
 // const program = new Command();
@@ -25,28 +31,43 @@ import { IGearPlannerData } from './gear-planner-data.interface';
 
 // program.parse();
 
-const outputPath: string = './out';
-const specs = specializations.filter((spec) => !spec.isWarcraftLogsOnly);
-specs.forEach(async (spec) => {
-  const phase: number = 2;
-  const extractor = new GearExtractor(spec, phase);
-  let gearUrl: string | undefined;
-  let sets: { [key: string]: IGearPlannerData } | undefined;
-  let classSlug: string | undefined;
-  let specNameSlug: string | undefined;
-  let filename: string | undefined;
-  try {
-    gearUrl = extractor.getSpecGearUrl();
-    sets = await extractor.extractGearDataFromPage(gearUrl);
-    classSlug = spec.className.replace(' ', '-').toLowerCase();
-    specNameSlug = spec.specializationName.replace(' ', '-').toLowerCase();
-    filename = `${outputPath}/${classSlug}-${specNameSlug}.json`;
-    fs.writeFileSync(filename, JSON.stringify(sets));
-  } catch (err) {
-    console.error('error during spec data parsing', {
-      gearUrl,
-      spec,
-      err
-    });
+(async () => {
+  const outputPath: string = '../api/src/specialization/specialization-bis-data';
+  const typescriptFileName: string = 'specialization-bis';
+  const specs: SpecializationData[] = specializations.filter((spec) => !spec.isWarcraftLogsOnly);
+  const processedSpecs: Specialization[] = [];
+
+  for (const specData of specs) {
+    const phase: number = 2;
+    const spec: Specialization = new Specialization(specData);
+    let gearUrl: string | undefined;
+    let sets: { [key: string]: IGearPlannerData } | undefined;
+    let path: string | undefined;
+    let output: IWowSimsExport[];
+    try {
+      // get spec sets
+      const extractor = new GearExtractor(spec, phase);
+      gearUrl = extractor.getSpecGearUrl();
+      sets = await extractor.extractGearDataFromPage(gearUrl);
+      // transform if necessary
+      output = extractor.convertGearPlannerSetsToWowSims(sets);
+      // write sets json
+      const filename: string = spec.getClassSpecRoleKebab();
+      path = `${outputPath}/${filename}.json`;
+      fs.writeFileSync(path, JSON.stringify(output));
+      // collect written specs
+      processedSpecs.push(spec);
+    } catch (err) {
+      console.error('error during spec data parsing', {
+        gearUrl,
+        spec,
+        err
+      });
+    }
   }
-});
+
+  fs.writeFileSync(
+    `${outputPath}/${typescriptFileName}.ts`,
+    TypescriptGenerator.generateGearExportJsonReferencedClassString(processedSpecs)
+  );
+})();

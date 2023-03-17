@@ -1,8 +1,7 @@
 export interface SpecializationData {
   className: string;
-  specializationName: string;
+  name: string;
   role: string;
   isWarcraftLogsOnly?: boolean;
   iconUrl?: string;
-  hitRatingCap?: number;
 }

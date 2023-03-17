@@ -25,6 +25,7 @@ import { WowheadLinkComponent } from './common/components/wowhead-link/wowhead-l
 import { GlobalErrorHandler } from './common/global-error-handler';
 import { CreateSoftresModalComponent } from './create-softres-modal/create-softres-modal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { MyCharacterImportModalComponent } from './my-characters/my-character-import-modal/my-character-import-modal.component';
 import { MyCharactersRankingsComponent } from './my-characters/my-characters-rankings/my-characters-rankings.component';
 import { MyCharactersComponent } from './my-characters/my-characters.component';
 import { PlayerComparisonComponent } from './player-comparison/player-comparison.component';
@@ -69,7 +70,8 @@ import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.com
     CopyIconComponent,
     PlayerComparisonComponent,
     MyCharactersComponent,
-    MyCharactersRankingsComponent
+    MyCharactersRankingsComponent,
+    MyCharacterImportModalComponent
   ],
   imports: [
     BrowserAnimationsModule,

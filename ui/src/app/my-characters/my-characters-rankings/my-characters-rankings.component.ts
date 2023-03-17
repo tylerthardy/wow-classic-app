@@ -8,7 +8,7 @@ import { RaidService } from '../../common/services/raids/raid.service';
 import { RegionServerService } from '../../common/services/region-server.service';
 import { SoftresRaidSlug } from '../../common/services/softres/softres-raid-slug';
 import { ThemeService } from '../../common/services/theme/theme.service';
-import { ICharacter } from '../character.interface';
+import { Character } from '../character';
 import { MyCharactersRankingsViewModel } from './my-characters-rankings.viewmodel';
 
 @Component({
@@ -18,7 +18,7 @@ import { MyCharactersRankingsViewModel } from './my-characters-rankings.viewmode
   encapsulation: ViewEncapsulation.None
 })
 export class MyCharactersRankingsComponent implements OnInit {
-  @Input() myCharacters!: ICharacter[];
+  @Input() myCharacters!: Character[];
   public viewModel: MyCharactersRankingsViewModel | undefined;
   public raidAndSize: RaidAndSizeSelection = new RaidAndSizeSelection({
     raid: 'ulduar',

@@ -123,7 +123,7 @@ export class PlayerLookupComponent implements OnInit {
       size: size
     };
     if (this.specFilter) {
-      request.specName = this.specFilter.specializationName;
+      request.specName = this.specFilter.name;
     }
     return this.characterService.getZoneRankings(request);
   }
