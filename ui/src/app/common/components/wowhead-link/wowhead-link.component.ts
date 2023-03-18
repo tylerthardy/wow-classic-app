@@ -56,7 +56,6 @@ export class WowheadLinkComponent implements OnInit, OnChanges {
     // We reset the refreshHandle so only the last gets ran, because Angular change detection is faster than a 1ms timeout.
     clearTimeout(WowheadLinkComponent.refreshHandle);
     WowheadLinkComponent.refreshHandle = setTimeout(() => {
-      console.log('refreshing');
       $WowheadPower.refreshLinks();
     }, 1);
   }

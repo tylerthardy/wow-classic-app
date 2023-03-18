@@ -7,7 +7,8 @@ import {
   WOWSIMS_EXPORT_SLOTS
 } from 'classic-companion-core';
 import { SimpleModalService } from 'ngx-simple-modal';
-import myGear from '../common/gear/my-character.json';
+import { allItemsById } from '../all-items-by-id';
+import { ItemData } from '../common/item-data.interface';
 import { LocalStorageService } from '../common/services/local-storage.service';
 import { ToastService } from '../common/services/toast/toast.service';
 import { SpecializationService } from '../common/specialization/specialization.service';
@@ -24,16 +25,22 @@ import { IStoredCharacter } from './stored-character.interface';
   styleUrls: ['./my-characters.component.scss']
 })
 export class MyCharactersComponent {
-  public myGear = myGear.Current.gear as any;
   public compareSets?: IWowSimsExport[];
   public compareSetsNames: string[] = [];
-  public selectedSet?: IWowSimsExport;
-
+  public slotItemMetadata: { [slot: number]: ItemData | undefined } = {};
   public wseInput?: string;
   public selectedCharacterIndex: number = 0;
   public SLOT_INDICES: number[] = Array.from(Array(17), (_, i) => i);
-
   public myCharacters: Character[] = [];
+
+  get selectedSet(): IWowSimsExport | undefined {
+    return this._selectedSet;
+  }
+  set selectedSet(value: IWowSimsExport | undefined) {
+    this._selectedSet = value;
+    this.slotItemMetadata = this.getSetSlotMetadata(value);
+  }
+  private _selectedSet?: IWowSimsExport;
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -50,7 +57,6 @@ export class MyCharactersComponent {
       return;
     }
     const wowSimsImport: IWowSimsExport = JSON.parse(this.wseInput);
-    this.myGear = wowSimsImport.gear;
 
     let matchedCharacter: Character | undefined = this.myCharacters.find(
       (c) => c.name.toLowerCase() === wowSimsImport.name.toLowerCase()
@@ -159,6 +165,32 @@ export class MyCharactersComponent {
 
   private setSelectedCharacter(characterIndex: number) {
     this.selectedCharacterIndex = characterIndex;
+  }
+
+  private getSetSlotMetadata(set: IWowSimsExport | undefined): { [slot: number]: ItemData | undefined } {
+    if (!set) {
+      return {};
+    }
+    const metadata: { [slot: number]: ItemData | undefined } = {};
+    set.gear.items.forEach((item, slot) => {
+      if (!item || !item.id) {
+        return;
+      }
+      metadata[slot] = this.getItemMetadata(item.id);
+    });
+    return metadata;
+  }
+
+  private getItemMetadata(id: number): ItemData | undefined {
+    const foundItems: ItemData[] | undefined = allItemsById[id];
+    if (!foundItems) {
+      console.error('could not find item for id: ' + id);
+      return undefined;
+    }
+    if (foundItems.length > 1) {
+      console.warn(`${foundItems.length} items found for id ${id}, returning first`);
+    }
+    return foundItems[0];
   }
 
   private eitherItemMatchesTarget(

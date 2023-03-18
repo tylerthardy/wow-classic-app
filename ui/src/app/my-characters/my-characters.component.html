@@ -32,6 +32,8 @@
       <th>Mine</th>
       <th>Selected Gems</th>
       <th>My Gems</th>
+      <th>Instance</th>
+      <th>Encounter</th>
     </tr>
     <tr *ngFor="let slotIndex of SLOT_INDICES">
       <td>{{ hasItem(slotIndex) ? '✅' : '❌' }}</td>
@@ -68,6 +70,8 @@
           ></wowhead-link>
         </ng-container>
       </td>
+      <td>{{ slotItemMetadata[slotIndex]?.instance }}</td>
+      <td>{{ slotItemMetadata[slotIndex]?.from }}</td>
     </tr>
   </table>
 </app-card>
