@@ -83,18 +83,6 @@ export class MyCharactersComponent {
     }
   }
 
-  public loadCharacterGearSets(): void {
-    const character: Character = this.myCharacters[this.selectedCharacterIndex];
-    if (!character) {
-      return;
-    }
-    this.specializationService.getBis(new Specialization(character.specialization)).subscribe((sets) => {
-      this.compareSets = sets;
-      this.compareSetsNames = Object.keys(sets);
-      this.selectedSet = this.compareSets[0];
-    });
-  }
-
   public onSelectedCharacterChange(changeEvent: Event) {
     const inputTarget: HTMLInputElement | null = changeEvent.target as HTMLInputElement;
     if (!inputTarget) {
@@ -155,6 +143,18 @@ export class MyCharactersComponent {
     }
 
     return myItem.id === targetItem.id;
+  }
+
+  private loadCharacterGearSets(): void {
+    const character: Character = this.myCharacters[this.selectedCharacterIndex];
+    if (!character) {
+      return;
+    }
+    this.specializationService.getBis(new Specialization(character.specialization)).subscribe((sets) => {
+      this.compareSets = sets;
+      this.compareSetsNames = Object.keys(sets);
+      this.selectedSet = this.compareSets[0];
+    });
   }
 
   private setSelectedCharacter(characterIndex: number) {

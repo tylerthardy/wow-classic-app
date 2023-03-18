@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { SpecializationData } from 'classic-companion-core';
 
 // FIXME: Deprecate
@@ -29,7 +29,8 @@ export interface ColumnSpecification<T> {
 @Component({
   selector: 'app-grid',
   templateUrl: './grid.component.html',
-  styleUrls: ['./grid.component.scss']
+  styleUrls: ['./grid.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridComponent implements OnInit, OnChanges {
   @Input() data!: any[]; // FIXME: Should have a generic

@@ -15,6 +15,7 @@ export class RaidLookupViewModel {
   public raidBestPerformanceAverage: number;
   public raidMedianPerformance: number;
   public data: IGetMultipleCharacterZoneRankingsResponseItem[];
+  public filteredData: IGetMultipleCharacterZoneRankingsResponseItem[] = [];
   public columns: ColumnSpecification<IGetMultipleCharacterZoneRankingsResponseItem>[];
   public errorData: IRaidLookupViewModelErrorRow[];
 
@@ -163,7 +164,11 @@ export class RaidLookupViewModel {
     this.raidMedianPerformance = Math.median(raidMedianPerformances);
   }
 
-  public filterData(
+  public filterData(classFilter: WowClass | undefined, roleFilter: RaidPlayerRole | undefined): void {
+    this.filteredData = this.getFilteredData(classFilter, roleFilter);
+  }
+
+  private getFilteredData(
     classFilter: WowClass | undefined,
     roleFilter: RaidPlayerRole | undefined
   ): IGetMultipleCharacterZoneRankingsResponseItem[] {

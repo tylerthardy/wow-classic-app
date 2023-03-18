@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { WowClass } from 'classic-companion-core';
 import { finalize } from 'rxjs';
 import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
@@ -13,14 +13,14 @@ import { ThemeService } from '../common/services/theme/theme.service';
 import { ToastService } from '../common/services/toast/toast.service';
 import { RaidLookupViewModel } from './raid-lookup.viewmodel';
 import { RaidPlayerRole } from './raid-player-role.type';
-import { JsonRaidPlayer as GmeExportPlayer } from './raid-player.interface';
+import { JsonRaidPlayer } from './raid-player.interface';
 
 @Component({
   selector: 'app-raid-lookup',
   templateUrl: './raid-lookup.component.html',
   styleUrls: ['./raid-lookup.component.scss']
 })
-export class RaidLookupComponent implements OnInit {
+export class RaidLookupComponent implements OnInit, OnChanges {
   @Output() characterNameClicked: EventEmitter<string> = new EventEmitter<string>();
   @Input() raidAndSize: RaidAndSizeSelection = new RaidAndSizeSelection({
     raid: 'ulduar',
@@ -44,6 +44,12 @@ export class RaidLookupComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['classFilterInput'] || changes['roleFilterInput']) {
+      this.viewModel?.filterData(this.classFilterInput, this.roleFilterInput);
+    }
+  }
+
   public onSearchClick(): void {
     if (!this.importJson) {
       this.toastService.warn(
@@ -60,8 +66,9 @@ export class RaidLookupComponent implements OnInit {
   }
 
   public searchRaid(json: string): void {
+    let players: JsonRaidPlayer[];
     try {
-      JSON.parse(json);
+      players = JSON.parse(json);
     } catch (err) {
       this.toastService.warn(
         'Invalid Data',
@@ -90,8 +97,6 @@ export class RaidLookupComponent implements OnInit {
     }
     const raidZoneAndSize: RaidZoneAndSize = this.raidService.getZoneAndSize(raidSlugs[0]);
 
-    let players: GmeExportPlayer[] = JSON.parse(this.importJson);
-
     const queries: ZoneRankingsQuery[] = players.map((player) => {
       const query: ZoneRankingsQuery = {
         characterName: player.name,
@@ -111,10 +116,12 @@ export class RaidLookupComponent implements OnInit {
       .getMultipleZoneRankings(queries)
       .pipe(finalize(() => (this.raidRankingsLoading = false)))
       .subscribe({
-        next: (response: IGetMultipleCharacterZoneRankingsResponse) =>
-          (this.viewModel = new RaidLookupViewModel(response.characters, this.themeService.theme, (value) =>
+        next: (response: IGetMultipleCharacterZoneRankingsResponse) => {
+          this.viewModel = new RaidLookupViewModel(response.characters, this.themeService.theme, (value) =>
             this.onCharacterNameClick(value)
-          ))
+          );
+          this.viewModel.filterData(this.classFilterInput, this.roleFilterInput);
+        }
       });
   }
 
