@@ -1,56 +1,58 @@
-<div *ngIf="!raid">
-  <div>
-    Raid: <app-raid-size-selection selectionType="radio" [(ngModel)]="raidSelectionInput"></app-raid-size-selection>
+<app-card>
+  <div *ngIf="!raid">
+    <div>
+      Raid: <app-raid-size-selection selectionType="radio" [(ngModel)]="raidSelectionInput"></app-raid-size-selection>
+    </div>
+    <div>
+      Hard Reserve:
+      <app-item-selection
+        [instance]="raidSelectionInput.getSoftResSlug()"
+        [(ngModel)]="hardReserveItemInput"
+      ></app-item-selection>
+    </div>
+    <div>Recipient: <input [(ngModel)]="hardReserveRecipientInput" /></div>
+    <div>
+      Soft Reserve Count:
+      <input type="number" [(ngModel)]="softReserveCountInput" />
+    </div>
+    <button (click)="onCreateRaidClick()">Create Raid</button>
   </div>
-  <div>
-    Hard Reserve:
-    <app-item-selection
-      [instance]="raidSelectionInput.getSoftResSlug()"
-      [(ngModel)]="hardReserveItemInput"
-    ></app-item-selection>
-  </div>
-  <div>Recipient: <input [(ngModel)]="hardReserveRecipientInput" /></div>
-  <div>
-    Soft Reserve Count:
-    <input type="number" [(ngModel)]="softReserveCountInput" />
-  </div>
-  <button (click)="onCreateRaidClick()">Create Raid</button>
-</div>
-<ng-container *ngIf="raid">
-  <app-raid-information [raid]="raid" [buttons]="detailsButtons"></app-raid-information>
-  <div class="button-bar">
-    <button class="chunky-btn" (click)="onCheckPlayerClick()">Check Player</button>
-    <button class="chunky-btn" (click)="onCheckRaidClick()">Check Raid</button>
-    <button class="chunky-btn" (click)="onCreateSoftresClick()">Create Softres</button>
-    <button
-      class="chunky-btn"
-      style="float: right"
-      [class]="isRecopyAfterPaste ? 'toggle-btn enabled' : 'toggle-btn'"
-      (click)="onToggleRecopyAfterPaste()"
-    >
-      Recopy After Paste
-    </button>
-    <button class="chunky-btn" style="float: right" (click)="onStoreClipboard()">Store Clipboard to Spam</button>
-    <button style="float: right" class="chunky-btn" (click)="onCopySpamClick()">Copy Spam</button>
-  </div>
+  <ng-container *ngIf="raid">
+    <app-raid-information [raid]="raid" [buttons]="detailsButtons"></app-raid-information>
+    <div class="button-bar">
+      <button class="chunky-btn" (click)="onCheckPlayerClick()">Check Player</button>
+      <button class="chunky-btn" (click)="onCheckRaidClick()">Check Raid</button>
+      <button class="chunky-btn" (click)="onCreateSoftresClick()">Create Softres</button>
+      <button
+        class="chunky-btn"
+        style="float: right"
+        [class]="isRecopyAfterPaste ? 'toggle-btn enabled' : 'toggle-btn'"
+        (click)="onToggleRecopyAfterPaste()"
+      >
+        Recopy After Paste
+      </button>
+      <button class="chunky-btn" style="float: right" (click)="onStoreClipboard()">Store Clipboard to Spam</button>
+      <button style="float: right" class="chunky-btn" (click)="onCopySpamClick()">Copy Spam</button>
+    </div>
 
-  <app-card #raidSpamCard header="Raid Spam">
-    <app-raid-spam #raidSpam [raid]="raidSpamInput!" [hideRaidInputFields]="true"></app-raid-spam>
-  </app-card>
+    <app-card #raidSpamCard header="Raid Spam">
+      <app-raid-spam #raidSpam [raid]="raidSpamInput!" [hideRaidInputFields]="true"></app-raid-spam>
+    </app-card>
 
-  <app-card id="player-lookup-card" #playerLookupCard header="Player Lookup">
-    <app-player-lookup #playerLookup [raidAndSize]="playerLookupInput!"></app-player-lookup
-  ></app-card>
+    <app-card id="player-lookup-card" #playerLookupCard header="Player Lookup">
+      <app-player-lookup #playerLookup [raidAndSize]="playerLookupInput!"></app-player-lookup
+    ></app-card>
 
-  <app-card #softresManagerCard header="Softres.it Manager">
-    <app-softres-manager #softresManager [raid]="softresManagerInput"></app-softres-manager>
-  </app-card>
+    <app-card #softresManagerCard header="Softres.it Manager">
+      <app-softres-manager #softresManager [raid]="softresManagerInput"></app-softres-manager>
+    </app-card>
 
-  <app-card #raidLookupCard header="Raid Lookup" [collapsed]="true">
-    <app-raid-lookup
-      #raidLookup
-      [raidAndSize]="raidLookupInput!"
-      (characterNameClicked)="onRaidCharacterNameClicked($event)"
-    ></app-raid-lookup>
-  </app-card>
-</ng-container>
+    <app-card #raidLookupCard header="Raid Lookup" [collapsed]="true">
+      <app-raid-lookup
+        #raidLookup
+        [raidAndSize]="raidLookupInput!"
+        (characterNameClicked)="onRaidCharacterNameClicked($event)"
+      ></app-raid-lookup>
+    </app-card>
+  </ng-container>
+</app-card>
