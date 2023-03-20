@@ -1,7 +1,7 @@
 // Styles specific to index.html
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap');
 * {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Noto Sans', sans-serif;
 }
 body {
   height: 100vh;
@@ -63,7 +63,6 @@ td {
 }
 
 button {
-  height: 21px;
   cursor: pointer;
   margin-right: 5px;
 }
@@ -93,11 +92,18 @@ select {
   display: inline-block;
   width: 10px;
   height: 10px;
-  border: 2px solid rgba(0, 0, 0, 0.3);
+  border: 2px solid;
   border-radius: 50%;
-  border-top-color: #000000;
   animation: spin 1s ease-in-out infinite;
   -webkit-animation: spin 1s ease-in-out infinite;
+}
+.light-theme .loading-spinner {
+  border-color: #0000004d;
+  border-top-color: #000000ff;
+}
+.dark-theme .loading-spinner {
+  border-color: #ffffff4d;
+  border-top-color: #ffffffff;
 }
 
 .loading-spinner.large {

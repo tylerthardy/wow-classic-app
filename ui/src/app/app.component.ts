@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr';
 import { navigation } from './app-routing.module';
+import { LocalStorageService } from './common/services/local-storage.service';
 import { RegionServerService } from './common/services/region-server.service';
 import { ThemeService } from './common/services/theme/theme.service';
 
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private toastrService: ToastrService,
+    public localStorageService: LocalStorageService,
     public regionServerService: RegionServerService,
     public themeService: ThemeService
   ) {}
@@ -55,6 +57,10 @@ export class AppComponent implements OnInit {
 
   public onToggleThemeClick(): void {
     this.themeService.toggleTheme();
+  }
+
+  public onGettingStartedClick(): void {
+    this.localStorageService.store('gettingStarted', 'hidden', false);
   }
 
   public cycleContainerStyle(): void {

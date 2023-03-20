@@ -47,8 +47,8 @@ export class PlayerLookupViewModelEncounterItem {
       (this.rowStyle = !encounter.lockedIn
         ? {
             'font-weight': 'bold',
-            color: ParseUtil.getNotLockedInColor(),
-            'background-color': ParseUtil.getNotLockedInBackgroundColor()
+            color: ParseUtil.getNotLockedInColor(theme),
+            'background-color': ParseUtil.getNotLockedInBackgroundColor(theme)
           }
         : {});
   }

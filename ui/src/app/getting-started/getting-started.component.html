@@ -1,0 +1,31 @@
+<app-card *ngIf="!localStorageService.get('gettingStarted', 'hidden')" style="margin-bottom: 20px">
+  <h2>
+    Getting Started!
+    <button style="position: relative; top: -10px; float: right" (click)="onCloseButtonClick()">✖</button>
+  </h2>
+  <div>You can view this helper again by clicking the ? icon in the top right corner</div>
+  <div style="display: flex; flex-direction: row; flex-wrap: wrap">
+    <div style="flex: 1; min-width: 200px">
+      <h3>Download the Addon</h3>
+      <button (click)="onDownloadButtonClick()">Click Here to Download</button>
+    </div>
+    <div style="flex: 1; min-width: 200px">
+      <h3>Set Your Server</h3>
+      <app-server-selection [(ngModel)]="regionServerService.regionServer"></app-server-selection>
+    </div>
+    <div style="flex: 2; min-width: 200px">
+      <h3>Use the Addon with Site</h3>
+      <ol>
+        <li>
+          <a
+            href="https://www.wowhead.com/guide/addons-how-to-install-and-maintain-1998#installing-installing-the-addon"
+            >Install the Addon</a
+          >
+        </li>
+        <li>Open the Blizzard LFG UI (default I key)</li>
+        <li>Copy from any of the new Text Boxes in the UI</li>
+        <li>Paste into Player Lookup or Raid Lookup & Search</li>
+      </ol>
+    </div>
+  </div>
+</app-card>

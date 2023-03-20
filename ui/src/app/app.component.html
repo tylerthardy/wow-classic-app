@@ -8,6 +8,7 @@
         <app-svg-icon class="svg-button" iconName="discord" size="18px" (click)="onDiscordClick()"></app-svg-icon>
         <button (click)="onDownloadButtonClick()">Download Addon</button>
         <!-- <button (click)="cycleContainerStyle()">{{ nextContainerStyle }}</button> -->
+        <button class="emoji" (click)="onGettingStartedClick()">❔</button>
         <button class="emoji" (click)="onToggleThemeClick()">
           {{ themeService.theme === 'light' ? '🌞' : '🌙' }}
         </button>
@@ -20,6 +21,7 @@
         </div>
       </aside>
       <section id="content">
+        <app-getting-started></app-getting-started>
         <router-outlet></router-outlet>
       </section>
     </div>

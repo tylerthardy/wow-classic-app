@@ -42,6 +42,7 @@ import { SpecializationDataComponent } from './specialization-data/specializatio
 import { SpecializationIconComponent } from './specialization-icon/specialization-icon.component';
 import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.component';
 import { SvgIconComponent } from './common/components/svg-icon/svg-icon.component';
+import { GettingStartedComponent } from './getting-started/getting-started.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { SvgIconComponent } from './common/components/svg-icon/svg-icon.componen
     MyCharactersRankingsComponent,
     MyCharacterImportModalComponent,
     MyCharacterGearCompareComponent,
-    SvgIconComponent
+    SvgIconComponent,
+    GettingStartedComponent
   ],
   imports: [
     BrowserAnimationsModule,

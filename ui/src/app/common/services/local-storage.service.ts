@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class LocalStorageService {
-  // TODO: Potential alternative for observables: https://www.npmjs.com/package/ngx-webstorage
+  // TODO: Potential alternative to use observables for changing localStorage values: https://www.npmjs.com/package/ngx-webstorage
   constructor() {}
 
   public store(group: string, key: string, value: any): void {
