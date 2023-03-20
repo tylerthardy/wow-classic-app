@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { MyCharactersComponent } from './my-characters/my-characters.component';
 import { PlayerComparisonComponent } from './player-comparison/player-comparison.component';
 import { RaidLeadHelperComponent } from './raid-lead-helper/raid-lead-helper.component';
 
@@ -17,11 +16,11 @@ export const navigation = [
   {
     title: 'Player Comparison',
     routerLink: ['player-comparison']
-  },
-  {
-    title: 'My Characters',
-    routerLink: ['my-characters']
   }
+  // {
+  //   title: 'My Characters',
+  //   routerLink: ['my-characters']
+  // }
 ];
 
 export const routes: Routes = [
@@ -41,11 +40,11 @@ export const routes: Routes = [
   {
     path: 'player-comparison',
     component: PlayerComparisonComponent
-  },
-  {
-    path: 'my-characters',
-    component: MyCharactersComponent
   }
+  // {
+  //   path: 'my-characters',
+  //   component: MyCharactersComponent
+  // }
 ];
 
 @NgModule({
