@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GetSpecializationBisResponse, Specialization } from 'classic-companion-core';
 import { Observable, of, tap } from 'rxjs';
-import { AppConfig } from '../../app.config';
+import { AppConfig } from '../../../app.config';
 
 export interface Class {}
 

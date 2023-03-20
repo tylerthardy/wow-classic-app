@@ -13,6 +13,16 @@
   background-color: #000000;
 }
 
+.header-button-bar {
+  float: right;
+}
+
+.svg-button {
+  position: relative;
+  top: 4px;
+  cursor: pointer;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;

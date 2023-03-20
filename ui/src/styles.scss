@@ -60,6 +60,7 @@ td {
 }
 
 button {
+  height: 21px;
   cursor: pointer;
   margin-right: 5px;
 }
@@ -73,6 +74,11 @@ button {
 .button-bar {
   margin-top: 5px;
   margin-bottom: 5px;
+}
+input,
+textarea,
+select {
+  margin-right: 5px;
 }
 
 .emoji {

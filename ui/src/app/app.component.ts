@@ -49,6 +49,10 @@ export class AppComponent implements OnInit {
     window.open('https://wowclassicapp-addon.s3.amazonaws.com/GroupMembersExporter.zip', '_blank');
   }
 
+  public onDiscordClick(): void {
+    window.open('https://discord.gg/dJ8YvKn8AR', '_blank');
+  }
+
   public onToggleThemeClick(): void {
     this.themeService.toggleTheme();
   }

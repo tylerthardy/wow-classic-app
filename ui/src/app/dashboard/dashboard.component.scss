@@ -7,6 +7,11 @@
   min-width: 310px;
   margin-left: 10px;
 }
+@media screen and (max-width: 600px) {
+  .right-container {
+    display: none;
+  }
+}
 
 app-card:first-child {
   margin-top: 0;

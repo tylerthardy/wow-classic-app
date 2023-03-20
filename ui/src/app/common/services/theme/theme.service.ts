@@ -11,8 +11,8 @@ export class ThemeService {
     const theme: Theme = this.localStorageService.get('theme', 'userTheme');
     if (theme) {
       this.theme = theme;
-      this.setHtmlTheme();
     }
+    this.setHtmlTheme();
   }
 
   public getThemeClass(): { [key: string]: any } {
