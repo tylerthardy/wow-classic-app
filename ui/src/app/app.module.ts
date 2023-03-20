@@ -23,8 +23,10 @@ import { ServerSelectionComponent } from './common/components/server-selection/s
 import { WclLinkIconComponent } from './common/components/wcl-link-icon/wcl-link-icon.component';
 import { WowheadLinkComponent } from './common/components/wowhead-link/wowhead-link.component';
 import { GlobalErrorHandler } from './common/global-error-handler';
+import { KonamiModule } from './common/konami/konami.module';
 import { CreateSoftresModalComponent } from './create-softres-modal/create-softres-modal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { MyCharacterGearCompareComponent } from './my-characters/my-character-gear-compare/my-character-gear-compare.component';
 import { MyCharacterImportModalComponent } from './my-characters/my-character-import-modal/my-character-import-modal.component';
 import { MyCharactersRankingsComponent } from './my-characters/my-characters-rankings/my-characters-rankings.component';
 import { MyCharactersComponent } from './my-characters/my-characters.component';
@@ -39,7 +41,6 @@ import { SoftresManagerComponent } from './softres-manager/softres-manager.compo
 import { SpecializationDataComponent } from './specialization-data/specialization-data.component';
 import { SpecializationIconComponent } from './specialization-icon/specialization-icon.component';
 import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.component';
-import { MyCharacterGearCompareComponent } from './my-characters/my-character-gear-compare/my-character-gear-compare.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { MyCharacterGearCompareComponent } from './my-characters/my-character-ge
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
+    KonamiModule,
     SafePipeModule,
     SimpleModalModule,
     ToastrModule.forRoot({
