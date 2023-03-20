@@ -1,0 +1,47 @@
+<span *ngIf="!myGear || !compareGear">My Gear or Compared Gear is not defined. Select them to show comparison.</span>
+<table *ngIf="compareGear && myGear" style="margin-top: 10px">
+  <tr>
+    <th>?</th>
+    <th>Selected Set</th>
+    <th>Mine</th>
+    <th>Selected Gems</th>
+    <th>My Gems</th>
+    <th>Instance</th>
+    <th>Encounter</th>
+  </tr>
+  <tr *ngFor="let slotIndex of SLOT_INDICES">
+    <td>{{ hasItem(slotIndex) ? '✅' : '❌' }}</td>
+    <td>
+      <ng-container *ngIf="compareGear.items[slotIndex]"
+        ><wowhead-link [id]="compareGear.items[slotIndex]!.id" type="item"></wowhead-link
+      ></ng-container>
+    </td>
+    <td>
+      <ng-container *ngIf="myGear.items[slotIndex]">
+        <wowhead-link [id]="myGear!.items[slotIndex]!.id" type="item"></wowhead-link>
+      </ng-container>
+    </td>
+    <td>
+      <ng-container *ngIf="compareGear.items[slotIndex]">
+        <wowhead-link
+          *ngFor="let gem of compareGear.items[slotIndex]!.gems"
+          [id]="gem!"
+          [hideLabel]="true"
+          type="item"
+        ></wowhead-link>
+      </ng-container>
+    </td>
+    <td>
+      <ng-container *ngIf="myGear.items[slotIndex]">
+        <wowhead-link
+          *ngFor="let gem of myGear!.items[slotIndex]!.gems"
+          [id]="gem!"
+          [hideLabel]="true"
+          type="item"
+        ></wowhead-link>
+      </ng-container>
+    </td>
+    <td>{{ slotItemMetadata[slotIndex]?.instance }}</td>
+    <td>{{ slotItemMetadata[slotIndex]?.from }}</td>
+  </tr>
+</table>

@@ -1,14 +1,6 @@
 import { Component } from '@angular/core';
-import {
-  IWowSimsExport,
-  IWowSimsExportItem,
-  Specialization,
-  WowClass,
-  WOWSIMS_EXPORT_SLOTS
-} from 'classic-companion-core';
+import { IWowSimsExport, Specialization, WowClass } from 'classic-companion-core';
 import { SimpleModalService } from 'ngx-simple-modal';
-import { allItemsById } from '../all-items-by-id';
-import { ItemData } from '../common/item-data.interface';
 import { LocalStorageService } from '../common/services/local-storage.service';
 import { ToastService } from '../common/services/toast/toast.service';
 import { SpecializationService } from '../common/specialization/specialization.service';
@@ -26,21 +18,10 @@ import { IStoredCharacter } from './stored-character.interface';
 })
 export class MyCharactersComponent {
   public compareSets?: IWowSimsExport[];
-  public compareSetsNames: string[] = [];
-  public slotItemMetadata: { [slot: number]: ItemData | undefined } = {};
   public wseInput?: string;
   public selectedCharacterIndex: number = 0;
-  public SLOT_INDICES: number[] = Array.from(Array(17), (_, i) => i);
   public myCharacters: Character[] = [];
-
-  get selectedSet(): IWowSimsExport | undefined {
-    return this._selectedSet;
-  }
-  set selectedSet(value: IWowSimsExport | undefined) {
-    this._selectedSet = value;
-    this.slotItemMetadata = this.getSetSlotMetadata(value);
-  }
-  private _selectedSet?: IWowSimsExport;
+  public selectedSet?: IWowSimsExport;
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -123,34 +104,6 @@ export class MyCharactersComponent {
       });
   }
 
-  public hasItem(slot: number): boolean {
-    // FIXME: "myGear" could be a class. Would clean up a lot of this logic all around
-    const myGear: {
-      items: (IWowSimsExportItem | null)[];
-    } = this.myCharacters[this.selectedCharacterIndex].gear;
-    const myItem: IWowSimsExportItem | null | undefined = myGear.items[slot];
-    const targetItem: IWowSimsExportItem | null | undefined = this.selectedSet?.gear.items[slot];
-    if (!myItem || !targetItem) {
-      return false;
-    }
-    if (slot === WOWSIMS_EXPORT_SLOTS.TRINKET1 || slot === WOWSIMS_EXPORT_SLOTS.TRINKET2) {
-      return this.eitherItemMatchesTarget(
-        targetItem,
-        myGear.items[WOWSIMS_EXPORT_SLOTS.TRINKET1],
-        myGear.items[WOWSIMS_EXPORT_SLOTS.TRINKET2]
-      );
-    }
-    if (slot === WOWSIMS_EXPORT_SLOTS.FINGER1 || slot === WOWSIMS_EXPORT_SLOTS.FINGER2) {
-      return this.eitherItemMatchesTarget(
-        targetItem,
-        myGear.items[WOWSIMS_EXPORT_SLOTS.FINGER1],
-        myGear.items[WOWSIMS_EXPORT_SLOTS.FINGER2]
-      );
-    }
-
-    return myItem.id === targetItem.id;
-  }
-
   private loadCharacterGearSets(): void {
     const character: Character = this.myCharacters[this.selectedCharacterIndex];
     if (!character) {
@@ -158,50 +111,12 @@ export class MyCharactersComponent {
     }
     this.specializationService.getBis(new Specialization(character.specialization)).subscribe((sets) => {
       this.compareSets = sets;
-      this.compareSetsNames = Object.keys(sets);
       this.selectedSet = this.compareSets[0];
     });
   }
 
   private setSelectedCharacter(characterIndex: number) {
     this.selectedCharacterIndex = characterIndex;
-  }
-
-  private getSetSlotMetadata(set: IWowSimsExport | undefined): { [slot: number]: ItemData | undefined } {
-    if (!set) {
-      return {};
-    }
-    const metadata: { [slot: number]: ItemData | undefined } = {};
-    set.gear.items.forEach((item, slot) => {
-      if (!item || !item.id) {
-        return;
-      }
-      metadata[slot] = this.getItemMetadata(item.id);
-    });
-    return metadata;
-  }
-
-  private getItemMetadata(id: number): ItemData | undefined {
-    const foundItems: ItemData[] | undefined = allItemsById[id];
-    if (!foundItems) {
-      console.error('could not find item for id: ' + id);
-      return undefined;
-    }
-    if (foundItems.length > 1) {
-      console.warn(`${foundItems.length} items found for id ${id}, returning first`);
-    }
-    return foundItems[0];
-  }
-
-  private eitherItemMatchesTarget(
-    targetItem: IWowSimsExportItem | null | undefined,
-    myItem1: IWowSimsExportItem | null | undefined,
-    myItem2: IWowSimsExportItem | null | undefined
-  ): boolean {
-    if (!targetItem) {
-      return true;
-    }
-    return targetItem.id === myItem1?.id || targetItem.id === myItem2?.id;
   }
 
   private loadCharacters(): void {

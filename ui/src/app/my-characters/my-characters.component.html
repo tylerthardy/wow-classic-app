@@ -25,55 +25,10 @@
       [(ngModel)]="selectedSet"
     ></app-dropdown>
   </div>
-  <table *ngIf="selectedSet" style="margin-top: 10px">
-    <tr>
-      <th>?</th>
-      <th>Selected Set</th>
-      <th>Mine</th>
-      <th>Selected Gems</th>
-      <th>My Gems</th>
-      <th>Instance</th>
-      <th>Encounter</th>
-    </tr>
-    <tr *ngFor="let slotIndex of SLOT_INDICES">
-      <td>{{ hasItem(slotIndex) ? '✅' : '❌' }}</td>
-      <td>
-        <ng-container *ngIf="selectedSet.gear.items[slotIndex]"
-          ><wowhead-link [id]="selectedSet.gear.items[slotIndex]!.id" type="item"></wowhead-link
-        ></ng-container>
-      </td>
-      <td>
-        <ng-container *ngIf="myCharacters[selectedCharacterIndex].gear.items[slotIndex]">
-          <wowhead-link
-            [id]="myCharacters[selectedCharacterIndex].gear.items[slotIndex]!.id"
-            type="item"
-          ></wowhead-link>
-        </ng-container>
-      </td>
-      <td>
-        <ng-container *ngIf="selectedSet.gear.items[slotIndex]">
-          <wowhead-link
-            *ngFor="let gem of selectedSet.gear.items[slotIndex]!.gems"
-            [id]="gem!"
-            [hideLabel]="true"
-            type="item"
-          ></wowhead-link>
-        </ng-container>
-      </td>
-      <td>
-        <ng-container *ngIf="myCharacters[selectedCharacterIndex].gear.items[slotIndex]">
-          <wowhead-link
-            *ngFor="let gem of myCharacters[selectedCharacterIndex].gear.items[slotIndex]!.gems"
-            [id]="gem!"
-            [hideLabel]="true"
-            type="item"
-          ></wowhead-link>
-        </ng-container>
-      </td>
-      <td>{{ slotItemMetadata[slotIndex]?.instance }}</td>
-      <td>{{ slotItemMetadata[slotIndex]?.from }}</td>
-    </tr>
-  </table>
+  <app-my-character-gear-compare
+    [compareGear]="selectedSet?.gear"
+    [myGear]="myCharacters[selectedCharacterIndex].gear"
+  ></app-my-character-gear-compare>
 </app-card>
 
 <app-card header="Rankings" *ngIf="myCharacters.length > 0">
