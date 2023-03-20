@@ -1,4 +1,4 @@
-import { Component, ElementRef, forwardRef, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -18,6 +18,8 @@ export class DropdownComponent<T> implements ControlValueAccessor, OnInit {
   @Input() blankLabel: string | undefined;
   @Input() removeBlank: boolean = false;
   @Input() options: T[] = [];
+  @Input() labelPropertyName?: string;
+  @Output() change: EventEmitter<T> = new EventEmitter<T>();
   public selection: T | undefined;
   public isDropdownShown: boolean = false;
 
@@ -42,6 +44,7 @@ export class DropdownComponent<T> implements ControlValueAccessor, OnInit {
     this.selection = selectedValue;
     this.isDropdownShown = false;
     this.onChangeCallback(selectedValue);
+    this.change.emit(selectedValue);
   }
 
   public onInputMouseEnter(): void {
@@ -58,5 +61,14 @@ export class DropdownComponent<T> implements ControlValueAccessor, OnInit {
 
   public onContentMouseLeave(): void {
     this.isDropdownShown = false;
+  }
+
+  public getDropdownItemLabel(option?: T): string | undefined {
+    if (!option) {
+      return undefined;
+    }
+    // FIXME: Hacky
+    const label: string = this.labelPropertyName ? (option as any)[this.labelPropertyName] : option;
+    return label;
   }
 }

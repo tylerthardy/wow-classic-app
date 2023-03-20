@@ -1,8 +1,6 @@
 import { Component, ElementRef, forwardRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { SpecializationData } from '../../specialization/specialization-data.interface';
-import { specializations } from '../../specialization/specializations';
-import { WowClass } from '../../specialization/wow-class';
+import { SpecializationData, specializations, WowClass } from 'classic-companion-core';
 
 @Component({
   selector: 'app-class-spec-selection',

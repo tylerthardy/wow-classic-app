@@ -1,17 +1,17 @@
-<div class="flex-container">
+<div class="flex-container" (konami)="onKonami()">
   <ng-container *ngIf="isDevelopment">
     <app-card [collapsed]="false" header="Playground">
       <app-class-selection></app-class-selection>
     </app-card>
   </ng-container>
 
-  <app-card [collapsed]="true" header="VoA Raid Builder">
+  <app-card [collapsed]="true" header="VoA Raid Builder" *ngIf="konamiMode">
     <app-voa-raid-builder></app-voa-raid-builder>
   </app-card>
 
-  <app-card [collapsed]="true" header="Specialization Data"
-    ><app-specialization-data></app-specialization-data
-  ></app-card>
+  <app-card [collapsed]="true" header="Specialization Data" *ngIf="konamiMode">
+    <app-specialization-data></app-specialization-data>
+  </app-card>
 
   <app-card header="Player Lookup" id="dashboard-player-lookup">
     <app-player-lookup #playerLookup></app-player-lookup>

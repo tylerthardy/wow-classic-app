@@ -1,0 +1,36 @@
+<app-card header="Characters">
+  <textarea [(ngModel)]="wseInput"></textarea><button (click)="onWseImportClick()">Import Character</button>
+  <div *ngFor="let character of myCharacters; let i = index">
+    <input
+      type="radio"
+      name="character"
+      [(ngModel)]="selectedCharacterIndex"
+      [value]="i"
+      (change)="onSelectedCharacterChange($event)"
+    />
+    {{ character.name }} <button (click)="onDeleteCharacterClick(i)">❌</button>
+    <button (click)="onEditCharacterClick(i)">📝</button>
+  </div>
+</app-card>
+
+<app-card header="Gear" *ngIf="myCharacters.length > 0">
+  <div style="display: flex; flex-direction: row">
+    <span style="margin-right: 10px">Compare Gear to Set:</span>
+    <app-dropdown
+      *ngIf="compareSets"
+      [options]="compareSets"
+      [removeBlank]="true"
+      labelPropertyName="name"
+      style="flex: auto"
+      [(ngModel)]="selectedSet"
+    ></app-dropdown>
+  </div>
+  <app-my-character-gear-compare
+    [compareGear]="selectedSet?.gear"
+    [myGear]="myCharacters[selectedCharacterIndex].gear"
+  ></app-my-character-gear-compare>
+</app-card>
+
+<app-card header="Rankings" *ngIf="myCharacters.length > 0">
+  <app-my-characters-rankings [myCharacters]="myCharacters"></app-my-characters-rankings>
+</app-card>

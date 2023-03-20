@@ -9,13 +9,14 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "build:api": "cd api && npm install && npm run build",
-    "build:ui": "cd ui && npm install && npm run build",
-    "prep:api": "cd api && npm run prep",
+    "build:core": "cd core && npm run build",
+    "build:api": "cd api && npm run build",
+    "build:ui": "cd ui && npm run build",
+    "prep:api": "bash ./prep-api-layer.sh",
     "prep:ui": "",
-    "deploy:api": "npm run prep:api && cdk deploy classic-companion-api",
-    "deploy:ui": "npm run build:ui && cdk deploy classic-companion-ui",
-    "deploy": "npm run build:api && npm run build:ui && npm run deploy:api && npm run deploy:ui"
+    "deploy:api": "npm run build:core && npm run prep:api && cdk deploy classic-companion-api",
+    "deploy:ui": "npm run build:core && npm run build:ui && cdk deploy classic-companion-ui",
+    "deploy": "npm install && npm run build:api && npm run build:ui && npm run deploy:api && npm run deploy:ui"
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",
@@ -32,5 +33,11 @@
     "aws-cdk-lib": "2.63.2",
     "constructs": "^10.0.0",
     "source-map-support": "^0.5.21"
-  }
+  },
+  "workspaces": [
+    "api",
+    "core",
+    "ui",
+    "scraper"
+  ]
 }

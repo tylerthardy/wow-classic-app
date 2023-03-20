@@ -1,6 +1,6 @@
-import { Component, ElementRef, forwardRef, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { WowClass } from '../../specialization/wow-class';
+import { WowClass } from 'classic-companion-core';
 
 @Component({
   selector: 'app-class-selection',
@@ -18,6 +18,7 @@ export class ClassSelectionComponent implements ControlValueAccessor, OnInit {
   selectedItemRef!: ElementRef;
   @Input() blankLabel: string | undefined;
   @Input() removeBlank: boolean = false;
+  @Output() change: EventEmitter<WowClass | undefined> = new EventEmitter();
   public selectedClass: WowClass | undefined;
   public wowClasses: WowClass[] = WowClass.getAll();
   public isDropdownShown: boolean = false;
@@ -41,6 +42,7 @@ export class ClassSelectionComponent implements ControlValueAccessor, OnInit {
 
   public onDropdownItemClick(wowClass: WowClass | undefined) {
     this.selectedClass = wowClass;
+    this.change.emit(this.selectedClass);
     this.isDropdownShown = false;
     this.onChangeCallback(wowClass);
   }

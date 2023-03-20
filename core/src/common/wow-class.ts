@@ -1,8 +1,4 @@
-export type Specializations = { [specName: string]: Specialization };
-export interface Specialization {
-  iconUrl: string;
-  role: WowRole;
-}
+import { paramCase } from 'change-case';
 
 export type WowRole = 'DPS' | 'Tank' | 'Healer';
 
@@ -15,6 +11,10 @@ export class WowClass {
     this.id = id;
     this.warcraftLogsId = warcraftLogsId;
     this.name = name;
+  }
+
+  public getKebab(): string {
+    return paramCase(this.name);
   }
 
   public getSlugifiedName(): string {
@@ -42,9 +42,13 @@ export class WowClass {
   public static WARLOCK = new WowClass(9, 10, 'Warlock');
   public static WARRIOR = new WowClass(1, 11, 'Warrior');
 
+  public static getClassByKebab(classKebab: string): WowClass | undefined {
+    return WowClass.getAll().find((wowClass) => wowClass.getKebab() === classKebab);
+  }
+
   public static getClassByName(name: string): WowClass | undefined {
     if (!name) {
-      throw new Error('invalid class name');
+      throw new Error('invalid class name: ' + name);
     }
     switch (name) {
       case WowClass.DEATH_KNIGHT.name:

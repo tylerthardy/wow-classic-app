@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SpecializationData } from '../common/specialization/specialization-data.interface';
+import { SpecializationData } from 'classic-companion-core';
 
 @Component({
   selector: 'app-specialization-icon',

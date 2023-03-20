@@ -9,6 +9,7 @@ import { PlayerLookupComponent } from '../player-lookup/player-lookup.component'
 })
 export class DashboardComponent implements OnInit {
   public isDevelopment: boolean = !environment.production;
+  public konamiMode: boolean = false;
   @ViewChild('playerLookup') playerLookupRef!: PlayerLookupComponent;
 
   constructor() {}
@@ -18,5 +19,9 @@ export class DashboardComponent implements OnInit {
   public onRaidCharacterNameClicked(characterName: string): void {
     this.playerLookupRef.searchPlayer(characterName);
     document.getElementById('dashboard-player-lookup')?.scrollIntoView();
+  }
+
+  public onKonami(): void {
+    this.konamiMode = !this.konamiMode;
   }
 }

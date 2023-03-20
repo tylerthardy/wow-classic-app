@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { SpecializationData } from 'classic-companion-core';
 import { finalize, forkJoin, Observable } from 'rxjs';
 import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
 import { CharacterService } from '../common/services/character/character.service';
@@ -11,7 +12,6 @@ import { RegionServerService } from '../common/services/region-server.service';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { ThemeService } from '../common/services/theme/theme.service';
 import { ToastService } from '../common/services/toast/toast.service';
-import { SpecializationData } from '../common/specialization/specialization-data.interface';
 import { CompactPlayerLookupViewModel } from './compact-player-lookup.viewmodel';
 import { PlayerLookupViewModel } from './player-lookup.viewmodel';
 
@@ -123,7 +123,7 @@ export class PlayerLookupComponent implements OnInit {
       size: size
     };
     if (this.specFilter) {
-      request.specName = this.specFilter.specializationName;
+      request.specName = this.specFilter.name;
     }
     return this.characterService.getZoneRankings(request);
   }

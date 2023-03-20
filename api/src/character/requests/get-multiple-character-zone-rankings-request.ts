@@ -7,5 +7,5 @@ export class GetMultipleCharacterZoneRankingsRequest implements IGetMultipleChar
   @IsArray()
   @ArrayMinSize(1)
   @Type(() => GetCharacterZoneRankingsRequest)
-  characters: GetCharacterZoneRankingsRequest[];
+  characters!: GetCharacterZoneRankingsRequest[];
 }

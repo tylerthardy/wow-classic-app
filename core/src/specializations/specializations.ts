@@ -3,235 +3,235 @@ import { SpecializationData } from './specialization-data.interface';
 export const specializations: SpecializationData[] = [
   {
     className: 'Death Knight',
-    specializationName: 'Blood',
+    name: 'Blood',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_bloodpresence.jpg',
     role: 'Tank'
   },
   {
     className: 'Death Knight',
-    specializationName: 'Runeblade',
+    name: 'Runeblade',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_darkconviction.jpg',
     role: 'Tank',
     isWarcraftLogsOnly: true
   },
   {
     className: 'Death Knight',
-    specializationName: 'Lichborne',
+    name: 'Lichborne',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_raisedead.jpg',
     role: 'Tank',
     isWarcraftLogsOnly: true
   },
   {
     className: 'Death Knight',
-    specializationName: 'Frost',
+    name: 'Frost',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_frostpresence.jpg',
     role: 'DPS'
   },
   {
     className: 'Death Knight',
-    specializationName: 'Unholy',
+    name: 'Unholy',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_unholypresence.jpg',
     role: 'DPS'
   },
   {
     className: 'Druid',
-    specializationName: 'Balance',
+    name: 'Balance',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_starfall.jpg',
     role: 'DPS'
   },
   {
     className: 'Druid',
-    specializationName: 'Feral',
+    name: 'Feral',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/ability_racial_bearform.jpg',
     role: 'Tank'
   },
   {
     className: 'Druid',
-    specializationName: 'Guardian',
+    name: 'Guardian',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/ability_racial_bearform.jpg',
     role: 'Tank',
     isWarcraftLogsOnly: true
   },
   {
     className: 'Druid',
-    specializationName: 'Warden',
+    name: 'Warden',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_predatoryinstincts.jpg',
     role: 'Tank',
     isWarcraftLogsOnly: true
   },
   {
     className: 'Druid',
-    specializationName: 'Feral',
+    name: 'Feral',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_catform.jpg',
     role: 'DPS'
   },
   {
     className: 'Druid',
-    specializationName: 'Restoration',
+    name: 'Restoration',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_healingtouch.jpg',
     role: 'Healer'
   },
   {
     className: 'Hunter',
-    specializationName: 'Beast Mastery',
+    name: 'Beast Mastery',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_beasttaming.jpg',
     role: 'DPS'
   },
   {
     className: 'Hunter',
-    specializationName: 'Marksmanship',
+    name: 'Marksmanship',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/ability_marksmanship.jpg',
     role: 'DPS'
   },
   {
     className: 'Hunter',
-    specializationName: 'Survival',
+    name: 'Survival',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_swiftstrike.jpg',
     role: 'DPS'
   },
   {
     className: 'Mage',
-    specializationName: 'Arcane',
+    name: 'Arcane',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_magicalsentry.jpg',
     role: 'DPS'
   },
   {
     className: 'Mage',
-    specializationName: 'Fire',
+    name: 'Fire',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_firebolt02.jpg',
     role: 'DPS'
   },
   {
     className: 'Mage',
-    specializationName: 'Frost',
+    name: 'Frost',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_frost_frostbolt02.jpg',
     role: 'DPS'
   },
   {
     className: 'Paladin',
-    specializationName: 'Holy',
+    name: 'Holy',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_holybolt.jpg',
     role: 'Healer'
   },
   {
     className: 'Paladin',
-    specializationName: 'Protection',
+    name: 'Protection',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_devotionaura.jpg',
     role: 'Tank'
   },
   {
     className: 'Paladin',
-    specializationName: 'Justicar',
+    name: 'Justicar',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_divineintervention.jpg',
     role: 'Tank',
     isWarcraftLogsOnly: true
   },
   {
     className: 'Paladin',
-    specializationName: 'Retribution',
+    name: 'Retribution',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_auraoflight.jpg',
     role: 'DPS'
   },
   {
     className: 'Priest',
-    specializationName: 'Discipline',
+    name: 'Discipline',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_wordfortitude.jpg',
     role: 'Healer'
   },
   {
     className: 'Priest',
-    specializationName: 'Holy',
+    name: 'Holy',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_guardianspirit.jpg',
     role: 'Healer'
   },
   {
     className: 'Priest',
-    specializationName: 'Shadow',
+    name: 'Shadow',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_shadowwordpain.jpg',
     role: 'DPS'
   },
   {
     className: 'Rogue',
-    specializationName: 'Assassination',
+    name: 'Assassination',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_eviscerate.jpg',
     role: 'DPS'
   },
   {
     className: 'Rogue',
-    specializationName: 'Combat',
+    name: 'Combat',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/ability_backstab.jpg',
     role: 'DPS'
   },
   {
     className: 'Rogue',
-    specializationName: 'Subtlety',
+    name: 'Subtlety',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/ability_stealth.jpg',
     role: 'DPS'
   },
   {
     className: 'Shaman',
-    specializationName: 'Elemental',
+    name: 'Elemental',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_lightning.jpg',
     role: 'DPS'
   },
   {
     className: 'Shaman',
-    specializationName: 'Enhancement',
+    name: 'Enhancement',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_lightningshield.jpg',
     role: 'DPS'
   },
   {
     className: 'Shaman',
-    specializationName: 'Restoration',
+    name: 'Restoration',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_magicimmunity.jpg',
-    role: ''
+    role: 'Healer'
   },
   {
     className: 'Warlock',
-    specializationName: 'Affliction',
+    name: 'Affliction',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_deathcoil.jpg',
     role: 'DPS'
   },
   {
     className: 'Warlock',
-    specializationName: 'Demonology',
+    name: 'Demonology',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_metamorphosis.jpg',
     role: 'DPS'
   },
   {
     className: 'Warlock',
-    specializationName: 'Destruction',
+    name: 'Destruction',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_rainoffire.jpg',
     role: 'DPS'
   },
   {
     className: 'Warrior',
-    specializationName: 'Arms',
+    name: 'Arms',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_savageblow.jpg',
     role: 'DPS'
   },
   {
     className: 'Warrior',
-    specializationName: 'Fury',
+    name: 'Fury',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_innerrage.jpg',
     role: 'DPS'
   },
   {
     className: 'Warrior',
-    specializationName: 'Protection',
+    name: 'Protection',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/inv_shield_06.jpg',
     role: 'Tank'
   },
   {
     className: 'Warrior',
-    specializationName: 'Champion',
+    name: 'Champion',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/shield_draenorcrafted_d_02_c_horde.jpg',
     role: 'Tank',
     isWarcraftLogsOnly: true
   },
   {
     className: 'Warrior',
-    specializationName: 'Gladiator',
+    name: 'Gladiator',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_warrior_gladiatorstance.jpg',
     role: 'Tank',
     isWarcraftLogsOnly: true

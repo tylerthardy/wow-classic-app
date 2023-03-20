@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SpecializationData, specializations, WowClass } from 'classic-companion-core';
 import { ToastService } from '../common/services/toast/toast.service';
-import { SpecializationData } from '../common/specialization/specialization-data.interface';
-import { specializations } from '../common/specialization/specializations';
-import { WowClass } from '../common/specialization/wow-class';
 import { HtmlCopyUtil } from '../common/utils/html-copy-util';
 import { RaidPlayerRole } from '../raid-lookup/raid-player-role.type';
 import { IVoaSpec } from './voa-spec.interface';
@@ -47,7 +45,7 @@ export class VoaRaidBuilderComponent implements OnInit {
     { class: 'Paladin', spec: 'Retribution', lfgClass: 'pally', lfgSpec: 'ret', role: 'DAMAGER' },
     { class: 'Paladin', spec: 'Holy', lfgClass: 'pally', lfgSpec: 'holy', role: 'HEALER' },
     { class: 'Priest', spec: 'Heal', lfgClass: 'priest', lfgSpec: 'heal', role: 'HEALER' },
-    { class: 'Priest', spec: 'Shadow', lfgClass: 'priest', lfgSpec: 'dps', role: 'DAMAGER' },
+    { class: 'Priest', spec: 'Shadow', lfgClass: 'priest', lfgSpec: 'shadow', role: 'DAMAGER' },
     { class: 'Rogue', spec: 'DPS', lfgClass: 'rogue', lfgSpec: '', role: 'DAMAGER' },
     { class: 'Shaman', spec: 'Elemental', lfgClass: 'sham', lfgSpec: 'ele', role: 'DAMAGER' },
     { class: 'Shaman', spec: 'Enhancement', lfgClass: 'sham', lfgSpec: 'enh', role: 'DAMAGER' },
@@ -132,12 +130,12 @@ export class VoaRaidBuilderComponent implements OnInit {
         return new VoaSpecializationViewModel(voaSpec, {
           className: voaSpec.class,
           role: voaSpec.spec,
-          specializationName: voaSpec.spec,
+          name: voaSpec.spec,
           iconUrl: wowClass.getClassIconUrl()
         });
       }
       const foundSpec: SpecializationData | undefined = specializations.find(
-        (spec) => spec.className === voaSpec.class && voaSpec.spec === spec.specializationName
+        (spec) => spec.className === voaSpec.class && voaSpec.spec === spec.name
       );
       if (!foundSpec) {
         throw new Error(`could not find spec ${voaSpec.class} for class ${voaSpec.spec}`);

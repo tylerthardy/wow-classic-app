@@ -1,0 +1,7 @@
+<div class="button-bar">
+  <app-raid-size-selection selectionType="radio" [(ngModel)]="raidAndSize"></app-raid-size-selection>
+  <button (click)="onSearchClick()">Search</button>
+</div>
+<div class="loading-spinner large" *ngIf="isLoading"></div>
+<div *ngIf="!viewModel && !isLoading">No data yet</div>
+<app-grid *ngIf="viewModel" [data]="viewModel.characters" [columns]="viewModel.columns" sortArrowSide="left"></app-grid>

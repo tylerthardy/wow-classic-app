@@ -7,7 +7,14 @@
   <span *ngIf="!id">1-Shot</span>
 </ng-container>
 <ng-container *ngIf="type === 'item'">
-  <a *ngIf="id > 1" [href]="url" [attr.data-wowhead]="'item=' + id" (click)="onClickUrl($event)">
+  <a
+    #anchorTag
+    *ngIf="id > 1"
+    [ngClass]="getItemAnchorClasses()"
+    [href]="url"
+    [attr.data-wowhead]="'item=' + id"
+    (click)="onClickUrl($event)"
+  >
     <div class="loading-spinner"></div>
   </a>
 </ng-container>

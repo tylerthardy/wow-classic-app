@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { SpecializationData } from '../../specialization/specialization-data.interface';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { SpecializationData } from 'classic-companion-core';
 
 // FIXME: Deprecate
 export interface ParseColumnDeprecated {
@@ -12,7 +12,7 @@ export interface ColumnFormat<T> {
   customFormat?: (rowValue: T) => string;
   transform?: (rowValue: T) => any;
 }
-export type SortType = 'number' | 'string' | 'parse';
+export type SortType = 'number' | 'string' | 'parse' | 'custom';
 export type SortDirection = 'asc' | 'desc' | 'none';
 export interface ColumnSpecification<T> {
   label: string | (() => string);
@@ -21,6 +21,7 @@ export interface ColumnSpecification<T> {
   transform?: (rowValue: T) => any;
   tooltip?: string | ((rowValue: T) => string | undefined);
   sortType?: SortType;
+  customSort?: (a: T, b: T) => number;
   onClick?: (value: any) => void;
   style?: { [key: string]: any } | ((rowValue: T) => { [key: string]: any });
 }
@@ -28,12 +29,14 @@ export interface ColumnSpecification<T> {
 @Component({
   selector: 'app-grid',
   templateUrl: './grid.component.html',
-  styleUrls: ['./grid.component.scss']
+  styleUrls: ['./grid.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridComponent implements OnInit, OnChanges {
   @Input() data!: any[]; // FIXME: Should have a generic
   sortedData!: any[]; // FIXME: Should have a generic
   @Input() columns!: ColumnSpecification<any>[];
+  @Input() sortArrowSide: 'left' | 'right' = 'right';
   sortedColumnId: number | undefined;
   sortDirection: SortDirection = 'none';
 
@@ -49,7 +52,12 @@ export class GridComponent implements OnInit, OnChanges {
       if (this.sortedColumnId) {
         const sortColumn: ColumnSpecification<any> = this.columns[this.sortedColumnId];
         if (sortColumn.sortType) {
-          this.sortedData = this.sortData(sortColumn.valueKey, sortColumn.sortType, this.sortDirection!);
+          this.sortedData = this.sortData(
+            sortColumn.valueKey,
+            sortColumn.sortType,
+            this.sortDirection!,
+            sortColumn.customSort
+          );
         }
       }
     }
@@ -68,11 +76,22 @@ export class GridComponent implements OnInit, OnChanges {
   }
 
   // FIXME: Should have a generic? T instead of any?
-  getColumnLabel(column: ColumnSpecification<any>) {
-    if (typeof column.label === 'function') {
-      return column.label();
+  getColumnLabel(column: ColumnSpecification<any>, columnIndex: number) {
+    let label = '';
+    if (this.sortArrowSide === 'left' && columnIndex == this.sortedColumnId) {
+      label += this.getSortArrow();
     }
-    return column.label;
+
+    if (typeof column.label === 'function') {
+      label += column.label();
+    } else {
+      label += column.label;
+    }
+
+    if (this.sortArrowSide == 'right' && columnIndex == this.sortedColumnId) {
+      label += this.getSortArrow();
+    }
+    return label;
   }
 
   // TODO: Signature "dataRow: any, column: ColumnSpecification<any>" is repeated - indicates a class, method, or pattern
@@ -110,13 +129,23 @@ export class GridComponent implements OnInit, OnChanges {
     return column.format.customFormat(dataRow);
   }
 
+  private getSortArrow(): string {
+    if (this.sortDirection === 'asc') {
+      return '🔼';
+    }
+    if (this.sortDirection === 'desc') {
+      return '🔽';
+    }
+    return '';
+  }
+
   private sortColumn(columnId: number): void {
     const column: ColumnSpecification<any> = this.columns[columnId]; // FIXME: Should have a generic
     if (!column.sortType) {
       return;
     }
     this.setSort(columnId);
-    this.sortedData = this.sortData(column.valueKey, column.sortType, this.sortDirection!);
+    this.sortedData = this.sortData(column.valueKey, column.sortType, this.sortDirection!, column.customSort);
   }
 
   private setSort(columnId: number) {
@@ -138,7 +167,12 @@ export class GridComponent implements OnInit, OnChanges {
   }
 
   // FIXME: Should have a generic
-  private sortData(property: keyof any, sortType: SortType, direction: SortDirection): any[] {
+  private sortData(
+    property: keyof any,
+    sortType: SortType,
+    direction: SortDirection,
+    customSort?: (a: any, b: any) => number
+  ): any[] {
     if (direction === 'none') {
       return Object.assign([], this.data);
     }
@@ -149,15 +183,34 @@ export class GridComponent implements OnInit, OnChanges {
         return GridComponent.sortString(this.sortedData, property, direction);
       case 'parse':
         return GridComponent.sortParse(this.sortedData, property, direction);
+      case 'custom':
+        if (!customSort) {
+          throw new Error('custom sort column without custom sort function');
+        }
+        return GridComponent.sortCustom(this.sortedData, customSort, direction);
+    }
+  }
+  static sortCustom(data: any[], customSort: (a: any, b: any) => number, direction: string): any[] {
+    const sorted: any[] = data.sort(customSort);
+    if (direction === 'asc') {
+      return sorted;
+    } else {
+      return sorted.reverse();
     }
   }
 
   // FIXME: Should have a generic
   private static sortNumber(data: any[], property: keyof any, direction: 'asc' | 'desc'): any[] {
+    const normalizeProperty = function (value: any) {
+      if (!value) {
+        value = 0;
+      }
+      return value;
+    };
     if (direction === 'asc') {
-      return data.sort((a, b) => a[property] - b[property]);
+      return data.sort((a, b) => normalizeProperty(a[property]) - normalizeProperty(b[property]));
     } else {
-      return data.sort((a, b) => b[property] - a[property]);
+      return data.sort((a, b) => normalizeProperty(b[property]) - normalizeProperty(a[property]));
     }
   }
 

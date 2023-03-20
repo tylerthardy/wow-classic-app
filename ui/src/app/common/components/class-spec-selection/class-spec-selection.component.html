@@ -6,7 +6,7 @@
     [specialization]="selectedSpec"
     sizePx="17px"
   ></app-specialization-icon
-  >{{ selectedSpec?.specializationName ?? blankLabel }}
+  >{{ selectedSpec?.name ?? blankLabel }}
 </div>
 <div
   class="dropdown-content"
@@ -28,7 +28,7 @@
         [specialization]="specialization"
         size="small"
       ></app-specialization-icon>
-      {{ specialization.specializationName }}
+      {{ specialization.name }}
     </div>
   </ng-container>
 </div>

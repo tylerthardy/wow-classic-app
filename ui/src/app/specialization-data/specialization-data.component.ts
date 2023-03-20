@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Specialization, SpecializationData } from 'classic-companion-core';
 import { LocalStorageService } from '../common/services/local-storage.service';
-import { SpecializationData } from '../common/specialization/specialization-data.interface';
-import { SpecializationService } from '../common/specialization/specialization.service';
 
 @Component({
   selector: 'app-specialization-data',
@@ -14,8 +13,8 @@ export class SpecializationDataComponent implements OnInit {
   selectedSpecialization: SpecializationData | undefined;
   showSettings: boolean = false;
 
-  constructor(specializationService: SpecializationService, private localStorageService: LocalStorageService) {
-    this.specializations = specializationService.getSpecializations({
+  constructor(private localStorageService: LocalStorageService) {
+    this.specializations = Specialization.getAllData({
       omitWarcraftLogsSpecs: true
     });
   }
@@ -70,7 +69,7 @@ export class SpecializationDataComponent implements OnInit {
 
   private getPhaseBisUrl(specialization: SpecializationData, phaseNumber: number): string {
     const classSlug: string = specialization.className.replace(' ', '-').toLowerCase();
-    const specNameSlug: string = specialization.specializationName.replace(' ', '-').toLowerCase();
+    const specNameSlug: string = specialization.name.replace(' ', '-').toLowerCase();
     const roleSlug: string = specialization.role.toLowerCase();
 
     const url: string = `https://www.wowhead.com/wotlk/guide/classes/${classSlug}/${specNameSlug}/${roleSlug}-bis-gear-pve-phase-${phaseNumber}`;
@@ -79,7 +78,7 @@ export class SpecializationDataComponent implements OnInit {
 
   private getStatPriorityUrl(specialization: SpecializationData): string {
     const classSlug: string = specialization.className.replace(' ', '-').toLowerCase();
-    const specNameSlug: string = specialization.specializationName.replace(' ', '-').toLowerCase();
+    const specNameSlug: string = specialization.name.replace(' ', '-').toLowerCase();
     const roleSlug: string = specialization.role.toLowerCase();
 
     const url: string = `https://www.wowhead.com/wotlk/guide/classes/${classSlug}/${specNameSlug}/${roleSlug}-stat-priority-attributes-pve`;

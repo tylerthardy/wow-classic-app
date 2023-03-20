@@ -7,7 +7,7 @@ import { IGetMultipleCharacterZoneRankingsResponseItem } from './get-multiple-ch
 export class GetMultipleCharacterZoneRankingsResponseItem implements IGetMultipleCharacterZoneRankingsResponseItem {
   public characterName: string;
   public metric: RankingMetric;
-  public classFileName: string;
+  public classFileName?: string;
   public role?: string;
   public warcraftLogsClassId?: number;
   public bestPerformanceAverage?: number;
@@ -21,7 +21,7 @@ export class GetMultipleCharacterZoneRankingsResponseItem implements IGetMultipl
 
   constructor(
     query: GetCharacterZoneRankingsRequest,
-    wclCharacterData: IGetWclCharacterZoneRankingsResponse,
+    wclCharacterData: IGetWclCharacterZoneRankingsResponse | undefined,
     errors: any[]
   ) {
     this.characterName = query.characterName;

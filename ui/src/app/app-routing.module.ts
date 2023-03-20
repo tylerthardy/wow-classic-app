@@ -17,6 +17,10 @@ export const navigation = [
     title: 'Player Comparison',
     routerLink: ['player-comparison']
   }
+  // {
+  //   title: 'My Characters',
+  //   routerLink: ['my-characters']
+  // }
 ];
 
 export const routes: Routes = [
@@ -37,6 +41,10 @@ export const routes: Routes = [
     path: 'player-comparison',
     component: PlayerComparisonComponent
   }
+  // {
+  //   path: 'my-characters',
+  //   component: MyCharactersComponent
+  // }
 ];
 
 @NgModule({

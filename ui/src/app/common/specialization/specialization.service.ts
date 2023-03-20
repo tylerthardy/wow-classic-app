@@ -1,7 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GetSpecializationsOptions } from './get-specializations-options.interface';
-import { SpecializationData } from './specialization-data.interface';
-import { specializations } from './specializations';
+import { GetSpecializationBisResponse, Specialization } from 'classic-companion-core';
+import { Observable, of, tap } from 'rxjs';
+import { AppConfig } from '../../app.config';
 
 export interface Class {}
 
@@ -9,13 +10,22 @@ export interface Class {}
   providedIn: 'root'
 })
 export class SpecializationService {
-  constructor() {}
+  private cachedSets: { [specKebab: string]: GetSpecializationBisResponse } = {};
 
-  getSpecializations(options: GetSpecializationsOptions): SpecializationData[] {
-    let filteredSpecializations: SpecializationData[] = Object.assign([], specializations);
-    if (options.omitWarcraftLogsSpecs) {
-      filteredSpecializations = specializations.filter((spec) => !spec.isWarcraftLogsOnly);
+  constructor(private config: AppConfig, private http: HttpClient) {}
+
+  public getBis(specialization: Specialization): Observable<GetSpecializationBisResponse> {
+    const spec = specialization.getSpecKebab();
+    if (this.cachedSets[spec]) {
+      return of(this.cachedSets[spec]);
     }
-    return filteredSpecializations;
+    const wowClass = specialization.getClassKebab();
+    const role = specialization.role.toLowerCase();
+    const url: string = `${this.config.apiUrl}/specialization/${wowClass}/${spec}/${role}/bis`;
+    return this.http.get<GetSpecializationBisResponse>(url).pipe(
+      tap((response) => {
+        this.cachedSets[spec] = response;
+      })
+    );
   }
 }

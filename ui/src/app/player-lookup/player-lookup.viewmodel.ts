@@ -1,13 +1,11 @@
+import { SpecializationData, specializations, WowClass } from 'classic-companion-core';
 import { ColumnSpecification, ParseColumnDeprecated } from '../common/components/grid/grid.component';
 import { IGetCharacterZoneRankingsResponseRanking } from '../common/services/character/get-character-zone-rankings-response-ranking.interface';
 import { IGetCharacterZoneRankingsResponse } from '../common/services/character/get-character-zone-rankings-response.interface';
 import { Theme } from '../common/services/theme/theme.type';
-import { SpecializationData } from '../common/specialization/specialization-data.interface';
-import { specializations } from '../common/specialization/specializations';
-import { WowClass } from '../common/specialization/wow-class';
 import { ParseUtil } from '../common/utils';
 
-export class PlayerLookupViewModelEncounterItem implements IGetCharacterZoneRankingsResponseRanking {
+export class PlayerLookupViewModelEncounterItem {
   public encounterName: string;
   public lockedIn: boolean;
   public bestPercent?: number;
@@ -114,12 +112,12 @@ export class PlayerLookupViewModelEncounterItem implements IGetCharacterZoneRank
     }
 
     const specialization: SpecializationData | undefined = specializations.find((spec) => {
-      const normalizedEnumName: string = spec.specializationName.replace(' ', '').toLowerCase();
+      const normalizedEnumName: string = spec.name.replace(' ', '').toLowerCase();
       const normalizedDataName: string = specName.toLowerCase();
       return spec.className === wowClass.name && normalizedEnumName === normalizedDataName;
     });
     if (!specialization) {
-      throw new Error(`specialization ${specName} not found for class id ${wowClass.id}`);
+      throw new Error(`specialization ${specName} not found for class id ${warcraftLogsClassId}`);
     }
 
     return specialization;
