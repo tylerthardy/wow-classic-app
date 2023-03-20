@@ -8,6 +8,14 @@ body {
   font-size: 12px;
 }
 
+//TODO: Use this same logic for page-wide theming, versus the .light .dark style used
+[data-color-scheme='dark'] {
+  color-scheme: dark;
+}
+[data-color-scheme='light'] {
+  color-scheme: light;
+}
+
 // Global styles
 @import './styles/card-theme.scss';
 @import './styles/base-html-theme.scss';
