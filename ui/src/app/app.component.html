@@ -2,12 +2,12 @@
   <div class="wrapper" [ngClass]="containerStyles[containerStyle].cssClass">
     <header>
       <app-svg-icon class="svg-button" iconName="hamburger" size="18px" (click)="onHamburgerClick()"></app-svg-icon>
-      <span style="margin-right: 10px">WoW Classic App</span>
+      <span style="margin-right: 10px; font-size: 16px">WoW Classic App</span>
       <app-server-selection [(ngModel)]="regionServerService.regionServer"></app-server-selection>
       <div class="header-button-bar">
         <app-svg-icon class="svg-button" iconName="discord" size="18px" (click)="onDiscordClick()"></app-svg-icon>
         <button (click)="onDownloadButtonClick()">Download Addon</button>
-        <button (click)="cycleContainerStyle()">{{ nextContainerStyle }}</button>
+        <!-- <button (click)="cycleContainerStyle()">{{ nextContainerStyle }}</button> -->
         <button class="emoji" (click)="onToggleThemeClick()">
           {{ themeService.theme === 'light' ? '🌞' : '🌙' }}
         </button>

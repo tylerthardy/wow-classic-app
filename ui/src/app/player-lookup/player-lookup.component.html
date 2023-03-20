@@ -13,7 +13,7 @@
 
 <div class="loading-spinner large" *ngIf="isLoading"></div>
 <ng-container *ngIf="viewModel && viewModel.encounters && !isLoading">
-  <div style="display: flex; width: 80%">
+  <div style="display: flex">
     <div style="flex: 1; border: 1px black solid; border-right: 0">
       <h3 style="text-align: center">{{ viewModel.characterName }}</h3>
       <div *ngIf="viewModel?.warcraftLogsClassId" style="text-align: center">

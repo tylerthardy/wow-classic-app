@@ -36,6 +36,12 @@
   select {
     border: solid 1px #1c1c1c;
   }
+  button {
+    background-color: #f0f0f0;
+  }
+  button:hover {
+    background-color: #e4e4e4;
+  }
 }
 .dark-theme {
   button,
@@ -48,5 +54,8 @@
   }
   button {
     background-color: #4c4c4c;
+  }
+  button:hover {
+    background-color: #636363;
   }
 }
