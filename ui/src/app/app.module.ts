@@ -3,6 +3,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AdsenseModule } from 'ng2-adsense';
 import { SimpleModalModule } from 'ngx-simple-modal';
 import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 import { SafePipeModule } from 'safe-pipe';
@@ -20,12 +21,14 @@ import { ItemSelectionComponent } from './common/components/item-selection/item-
 import { ParseNumberComponent } from './common/components/parse-number/parse-number.component';
 import { RaidSizeSelectionComponent } from './common/components/raid-size-selection/raid-size-selection.component';
 import { ServerSelectionComponent } from './common/components/server-selection/server-selection.component';
+import { SvgIconComponent } from './common/components/svg-icon/svg-icon.component';
 import { WclLinkIconComponent } from './common/components/wcl-link-icon/wcl-link-icon.component';
 import { WowheadLinkComponent } from './common/components/wowhead-link/wowhead-link.component';
 import { GlobalErrorHandler } from './common/global-error-handler';
 import { KonamiModule } from './common/konami/konami.module';
 import { CreateSoftresModalComponent } from './create-softres-modal/create-softres-modal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { GettingStartedComponent } from './getting-started/getting-started.component';
 import { MyCharacterGearCompareComponent } from './my-characters/my-character-gear-compare/my-character-gear-compare.component';
 import { MyCharacterImportModalComponent } from './my-characters/my-character-import-modal/my-character-import-modal.component';
 import { MyCharactersRankingsComponent } from './my-characters/my-characters-rankings/my-characters-rankings.component';
@@ -41,8 +44,6 @@ import { SoftresManagerComponent } from './softres-manager/softres-manager.compo
 import { SpecializationDataComponent } from './specialization-data/specialization-data.component';
 import { SpecializationIconComponent } from './specialization-icon/specialization-icon.component';
 import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.component';
-import { SvgIconComponent } from './common/components/svg-icon/svg-icon.component';
-import { GettingStartedComponent } from './getting-started/getting-started.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +90,12 @@ import { GettingStartedComponent } from './getting-started/getting-started.compo
     KonamiModule,
     SafePipeModule,
     SimpleModalModule,
+    AdsenseModule.forRoot({
+      adClient: 'ca-pub-7060933792284068', //replace with your client from google adsense
+      adSlot: 8056599129, //replace with your slot from google adsense
+      adFormat: 'auto',
+      fullWidthResponsive: true
+    }),
     ToastrModule.forRoot({
       positionClass: 'inline',
       countDuplicates: true,

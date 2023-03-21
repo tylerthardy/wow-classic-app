@@ -14,7 +14,16 @@ export class DashboardComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    var dashboardContainer = document.getElementsByClassName('dashboard-container')[0] as HTMLDivElement;
+    const observerDashboard = new MutationObserver(function (mutations, observer) {
+      dashboardContainer.style.height = '';
+    });
+    observerDashboard.observe(dashboardContainer, {
+      attributes: true,
+      attributeFilter: ['style']
+    });
+  }
 
   public onRaidCharacterNameClicked(characterName: string): void {
     this.playerLookupRef.searchPlayer(characterName);

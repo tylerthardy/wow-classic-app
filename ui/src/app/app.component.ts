@@ -37,6 +37,23 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.toastrService.overlayContainer = this.toastContainer;
+
+    var fullWrapper = document.getElementsByClassName('full-wrapper')[0] as HTMLDivElement;
+    var wrapper = document.getElementsByClassName('wrapper')[0] as HTMLDivElement;
+    const observerFullWrapper = new MutationObserver(function (mutations, observer) {
+      fullWrapper.style.height = '';
+    });
+    const observerWrapper = new MutationObserver(function (mutations, observer) {
+      wrapper.style.height = '';
+    });
+    observerFullWrapper.observe(fullWrapper, {
+      attributes: true,
+      attributeFilter: ['style']
+    });
+    observerWrapper.observe(wrapper, {
+      attributes: true,
+      attributeFilter: ['style']
+    });
   }
 
   public get nextContainerStyle(): string {
