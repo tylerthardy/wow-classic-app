@@ -1,4 +1,5 @@
 import { WowClass } from 'classic-companion-core';
+import TimeAgo from 'javascript-time-ago';
 import { ColumnSpecification } from '../common/components/grid/grid.component';
 import { IGetMultipleCharacterZoneRankingsResponseItem } from '../common/services/character/get-multiple-character-zone-rankings-response.interface';
 import { Theme } from '../common/services/theme/theme.type';
@@ -26,6 +27,7 @@ export class RaidLookupViewModel {
   ) {
     let raidBestPerformanceTotal: number = 0;
     let raidMedianPerformances: number[] = [];
+    const timeAgo = new TimeAgo('en-US');
 
     this.columns = [
       {
@@ -130,6 +132,27 @@ export class RaidLookupViewModel {
             return undefined;
           }
           return rowValue.hardModes.join('\n');
+        }
+      },
+      {
+        label: 'Last Updated',
+        valueKey: 'lastUpdated',
+        sortType: 'number',
+        format: {
+          // TODO: Extract a date formatter
+          type: 'custom',
+          customFormat: (rowValue) => {
+            if (!rowValue.lastUpdated) {
+              return '';
+            }
+            return timeAgo.format(rowValue.lastUpdated, 'twitter-now');
+          }
+        },
+        tooltip: (rowValue) => {
+          if (!rowValue.lastUpdated) {
+            return '';
+          }
+          return timeAgo.format(rowValue.lastUpdated);
         }
       }
     ];

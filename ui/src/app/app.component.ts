@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en';
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr';
 import { navigation } from './app-routing.module';
 import { LocalStorageService } from './common/services/local-storage.service';
@@ -36,6 +38,9 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    // FIXME: Initialize somewhere higher?
+    TimeAgo.addDefaultLocale(en);
+
     this.toastrService.overlayContainer = this.toastContainer;
 
     var fullWrapper = document.getElementsByClassName('full-wrapper')[0] as HTMLDivElement;

@@ -24,6 +24,7 @@
     "classic-companion-core": "*",
     "fuse.js": "^6.6.2",
     "graphql": "^16.6.0",
+    "javascript-time-ago": "^2.5.9",
     "ng2-adsense": "^11.0.0",
     "ngx-simple-modal": "^1.4.17",
     "ngx-toastr": "^15.2.2",
