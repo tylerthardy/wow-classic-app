@@ -21,10 +21,10 @@ export class ClassicCompanionApiStack extends Stack {
     handlerLambda.role!.addManagedPolicy(
       ManagedPolicy.fromAwsManagedPolicyName('CloudWatchLambdaInsightsExecutionRolePolicy')
     );
-    const playerTable = new Table(this, 'player', {
-      partitionKey: { name: 'regionServer', type: AttributeType.STRING },
+    const playerTable = new Table(this, 'player-1679377599', {
       billingMode: BillingMode.PAY_PER_REQUEST,
-      sortKey: { name: 'characterName', type: AttributeType.STRING }
+      partitionKey: { name: 'regionServerCharacterName', type: AttributeType.STRING },
+      sortKey: { name: 'zoneAndSize', type: AttributeType.STRING }
     });
     handlerLambda.addEnvironment('DYNAMO_PLAYER_TABLE_NAME', playerTable.tableName);
 

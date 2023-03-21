@@ -30,43 +30,43 @@ export class CharacterService {
   public async getMultipleCharactersZoneRankings(
     request: GetMultipleCharacterZoneRankingsRequest
   ): Promise<IGetMultipleCharacterZoneRankingsResponse> {
-    const resultCharacters: GetMultipleCharacterZoneRankingsResponseItem[] = [];
-
-    const wclRequests: Promise<IGetWclCharacterZoneRankingsResponse>[] = [];
+    const responseCharacters: GetMultipleCharacterZoneRankingsResponseItem[] = [];
+    const characterRequests: Promise<IGetWclCharacterZoneRankingsResponse>[] = [];
 
     for (const character of request.characters) {
       const validationErrors = await this.getCharacterValidationErrors(character);
       if (validationErrors.length > 0) {
         const errors = validationErrors.map((error) => error.constraints);
         const responseItem = new GetMultipleCharacterZoneRankingsResponseItem(character, undefined, errors);
-        resultCharacters.push(responseItem);
+        responseCharacters.push(responseItem);
         continue;
       }
 
       try {
-        const wclRequest: Promise<IGetWclCharacterZoneRankingsResponse> = this.getWclCharacterZoneRankings(character);
-        wclRequests.push(wclRequest);
+        const characterRequest: Promise<IGetWclCharacterZoneRankingsResponse> =
+          this.getWclCharacterZoneRankingsWithCache(character);
+        characterRequests.push(characterRequest);
       } catch (err) {
         const errors = [err];
         const responseItem = new GetMultipleCharacterZoneRankingsResponseItem(character, undefined, errors);
-        resultCharacters.push(responseItem);
+        responseCharacters.push(responseItem);
       }
     }
 
-    const wclResults: PromiseSettledResult<IGetWclCharacterZoneRankingsResponse>[] = await Promise.allSettled(
-      wclRequests
+    const zoneRankingResults: PromiseSettledResult<IGetWclCharacterZoneRankingsResponse>[] = await Promise.allSettled(
+      characterRequests
     );
-    for (const [i, wclResult] of wclResults.entries()) {
+    for (const [i, wclResult] of zoneRankingResults.entries()) {
       const characterRequest = request.characters[i];
       const responseItem: GetMultipleCharacterZoneRankingsResponseItem =
         wclResult.status === 'fulfilled'
           ? new GetMultipleCharacterZoneRankingsResponseItem(characterRequest, wclResult.value, [])
           : new GetMultipleCharacterZoneRankingsResponseItem(characterRequest, undefined, [wclResult.reason]);
-      resultCharacters.push(responseItem);
+      responseCharacters.push(responseItem);
     }
 
     return {
-      characters: resultCharacters
+      characters: responseCharacters
     };
   }
 
@@ -83,16 +83,57 @@ export class CharacterService {
     return validationErrors;
   }
 
+  private async getWclCharacterZoneRankingsWithCache(
+    request: GetCharacterZoneRankingsRequest
+  ): Promise<IGetWclCharacterZoneRankingsResponse> {
+    const cacheLookupResponse: IGetWclCharacterZoneRankingsResponse | undefined =
+      await this.getCachedCharacterZoneRankings(request);
+    if (cacheLookupResponse) {
+      Logger.log('found cached response for ' + request.characterName);
+      return cacheLookupResponse;
+    }
+    const wclRequest: Promise<IGetWclCharacterZoneRankingsResponse> = this.getWclCharacterZoneRankings(request);
+    return wclRequest;
+  }
+
   private async getWclCharacterZoneRankings(
     request: GetCharacterZoneRankingsRequest
   ): Promise<IGetWclCharacterZoneRankingsResponse> {
     const characterRankings = await this.warcraftLogsService.getWclCharacterZoneRankings(request);
 
     await this.playerTableService
-      .storeWclCharacterZoneRankings(request.serverRegion, request.serverSlug, request.characterName, characterRankings)
+      .storeWclCharacterZoneRankings(
+        request.serverRegion,
+        request.serverSlug,
+        request.characterName,
+        request.zoneId,
+        request.size,
+        characterRankings
+      )
       .then((response) => {
         Logger.log(response);
       });
     return characterRankings;
+  }
+
+  private async getCachedCharacterZoneRankings(
+    request: GetCharacterZoneRankingsRequest
+  ): Promise<IGetWclCharacterZoneRankingsResponse | undefined> {
+    try {
+      const cachedRankings: IGetWclCharacterZoneRankingsResponse =
+        await this.playerTableService.getCachedCharacterZoneRankings(
+          request.serverRegion,
+          request.serverSlug,
+          request.characterName,
+          request.zoneId,
+          request.size
+        );
+      return cachedRankings;
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        return undefined;
+      }
+      throw error;
+    }
   }
 }
