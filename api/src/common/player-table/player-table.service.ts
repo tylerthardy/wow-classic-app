@@ -24,6 +24,7 @@ export class PlayerTableService {
     characterName: string,
     zoneId: number,
     size: number,
+    lastUpdated: number,
     wclResponse: IGetWclCharacterZoneRankingsResponse
   ): Promise<PutCommandOutput> {
     Logger.log('storing wcl character zone rankings');
@@ -31,7 +32,7 @@ export class PlayerTableService {
     const zoneAndSize: string = this.getZoneAndSize(zoneId, size);
     const putCommand = new PutCommand({
       TableName: this.tableName,
-      Item: { regionServerCharacterName, zoneAndSize, timestamp: Date.now().valueOf(), wclResponse }
+      Item: { regionServerCharacterName, zoneAndSize, timestamp: lastUpdated, wclResponse }
     });
     const putResult: PutCommandOutput = await this.documentClient.send(putCommand);
     return putResult;
@@ -76,10 +77,12 @@ export class PlayerTableService {
     if (queryResult.Items.length > 1) {
       throw new InvalidOperationError('more than one character not found');
     }
-    const response: IGetWclCharacterZoneRankingsResponse = unmarshall(queryResult.Items[0])[
+    const response: any = unmarshall(queryResult.Items[0]);
+    const result: IGetWclCharacterZoneRankingsResponse = response[
       'wclResponse'
     ] as IGetWclCharacterZoneRankingsResponse;
-    return response;
+    result.lastUpdated = response['timestamp'];
+    return result;
   }
 
   private getRegionServerCharacterName(region: string, server: string, characterName: string): string {

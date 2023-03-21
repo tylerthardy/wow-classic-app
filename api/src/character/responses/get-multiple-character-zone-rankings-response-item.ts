@@ -4,9 +4,11 @@ import { ZoneRankingParser } from '../common/zone-ranking-parser';
 import { GetCharacterZoneRankingsRequest } from '../requests';
 import { IGetMultipleCharacterZoneRankingsResponseItem } from './get-multiple-character-zone-rankings-response.interface';
 
+// FIXME: Clean up these models. Maybe separate wcl concepts from things like lastUpdated, metric, characterName. Also size gets passed through.
 export class GetMultipleCharacterZoneRankingsResponseItem implements IGetMultipleCharacterZoneRankingsResponseItem {
   public characterName: string;
   public metric: RankingMetric;
+  public lastUpdated?: number;
   public classFileName?: string;
   public role?: string;
   public warcraftLogsClassId?: number;
@@ -30,6 +32,7 @@ export class GetMultipleCharacterZoneRankingsResponseItem implements IGetMultipl
     this.role = query.role;
     this.errors = errors;
     if (wclCharacterData && wclCharacterData.zoneRankings) {
+      this.lastUpdated = wclCharacterData.lastUpdated;
       this.warcraftLogsClassId = wclCharacterData.classID;
       this.bestPerformanceAverage = wclCharacterData.zoneRankings.bestPerformanceAverage;
       this.medianPerformanceAverage = wclCharacterData.zoneRankings.medianPerformanceAverage;

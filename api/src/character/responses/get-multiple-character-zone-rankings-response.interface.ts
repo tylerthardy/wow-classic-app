@@ -7,6 +7,7 @@ export interface IGetMultipleCharacterZoneRankingsResponse {
 export interface IGetMultipleCharacterZoneRankingsResponseItem {
   characterName: string;
   metric: RankingMetric;
+  lastUpdated?: number;
   warcraftLogsClassId?: number;
   bestPerformanceAverage?: number;
   medianPerformanceAverage?: number;

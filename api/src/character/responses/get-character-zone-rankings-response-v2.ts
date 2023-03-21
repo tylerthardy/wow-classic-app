@@ -5,9 +5,11 @@ import { GetCharacterZoneRankingsResponseV2Ranking } from './get-character-zone-
 import { IGetCharacterZoneRankingsResponseV2Ranking } from './get-character-zone-rankings-response-v2-ranking.interface';
 import { IGetCharacterZoneRankingsResponseV2 } from './get-character-zone-rankings-response-v2.interface';
 
+// FIXME: Clean up these models. Maybe separate wcl concepts from things like lastUpdated, metric, characterName. Also size gets passed through.
 export class GetCharacterZoneRankingsV2Response implements IGetCharacterZoneRankingsResponseV2 {
   public characterName: string;
   public metric: RankingMetric;
+  public lastUpdated: number;
   public warcraftLogsClassId?: number;
   public bestPerformanceAverage?: number;
   public medianPerformanceAverage?: number;
@@ -20,6 +22,7 @@ export class GetCharacterZoneRankingsV2Response implements IGetCharacterZoneRank
   constructor(wclCharacterData: IGetWclCharacterZoneRankingsResponse) {
     this.characterName = wclCharacterData.name;
     this.metric = wclCharacterData.zoneRankings.metric;
+    this.lastUpdated = wclCharacterData.lastUpdated;
     this.warcraftLogsClassId = wclCharacterData.classID;
     this.bestPerformanceAverage = wclCharacterData.zoneRankings.bestPerformanceAverage;
     this.medianPerformanceAverage = wclCharacterData.zoneRankings.medianPerformanceAverage;

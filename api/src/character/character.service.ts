@@ -15,6 +15,8 @@ import { GetMultipleCharacterZoneRankingsResponseItem } from './responses/get-mu
 
 @Injectable()
 export class CharacterService {
+  private bypassCache: boolean = false;
+
   constructor(private warcraftLogsService: WarcraftLogsService, private playerTableService: PlayerTableService) {}
 
   public async getCharacterZoneRankings(
@@ -86,11 +88,13 @@ export class CharacterService {
   private async getWclCharacterZoneRankingsWithCache(
     request: GetCharacterZoneRankingsRequest
   ): Promise<IGetWclCharacterZoneRankingsResponse> {
-    const cacheLookupResponse: IGetWclCharacterZoneRankingsResponse | undefined =
-      await this.getCachedCharacterZoneRankings(request);
-    if (cacheLookupResponse) {
-      Logger.log('found cached response for ' + request.characterName);
-      return cacheLookupResponse;
+    if (!this.bypassCache) {
+      const cacheLookupResponse: IGetWclCharacterZoneRankingsResponse | undefined =
+        await this.getCachedCharacterZoneRankings(request);
+      if (cacheLookupResponse) {
+        Logger.log('found cached response for ' + request.characterName);
+        return cacheLookupResponse;
+      }
     }
     const wclRequest: Promise<IGetWclCharacterZoneRankingsResponse> = this.getWclCharacterZoneRankings(request);
     return wclRequest;
@@ -101,6 +105,8 @@ export class CharacterService {
   ): Promise<IGetWclCharacterZoneRankingsResponse> {
     const characterRankings = await this.warcraftLogsService.getWclCharacterZoneRankings(request);
 
+    const lastUpdated = Date.now().valueOf();
+    characterRankings.lastUpdated = lastUpdated;
     await this.playerTableService
       .storeWclCharacterZoneRankings(
         request.serverRegion,
@@ -108,6 +114,7 @@ export class CharacterService {
         request.characterName,
         request.zoneId,
         request.size,
+        lastUpdated,
         characterRankings
       )
       .then((response) => {
