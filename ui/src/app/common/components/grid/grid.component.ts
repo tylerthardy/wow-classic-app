@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { SpecializationData } from 'classic-companion-core';
+import TimeAgo from 'javascript-time-ago';
 
 // FIXME: Deprecate
 export interface ParseColumnDeprecated {
@@ -7,7 +8,9 @@ export interface ParseColumnDeprecated {
   specialization?: SpecializationData;
 }
 export interface ColumnFormat<T> {
-  type: 'number' | 'string' | 'parse' | 'date' | 'wcl-link' | 'custom';
+  // FIXME: These are getting very specific
+  type: 'number' | 'string' | 'last-updated' | 'parse' | 'date' | 'wcl-link' | 'custom';
+  // FIXME: Use real types for formatParams
   formatParams?: any;
   customFormat?: (rowValue: T) => string;
   transform?: (rowValue: T) => any;
@@ -39,8 +42,11 @@ export class GridComponent implements OnInit, OnChanges {
   @Input() sortArrowSide: 'left' | 'right' = 'right';
   sortedColumnId: number | undefined;
   sortDirection: SortDirection = 'none';
+  private timeAgo: TimeAgo;
 
-  constructor() {}
+  constructor() {
+    this.timeAgo = new TimeAgo('en-US');
+  }
 
   ngOnInit(): void {
     this.sortedData = Object.assign([], this.data);
@@ -67,9 +73,25 @@ export class GridComponent implements OnInit, OnChanges {
     this.sortColumn(columnId);
   }
 
+  getLastUpdatedValue(lastUpdated: number | undefined): string {
+    if (lastUpdated === undefined) {
+      return '';
+    }
+    return this.timeAgo.format(lastUpdated, 'twitter-now');
+  }
+
+  // FIXME: Should have a generic? T instead of any?
+  onClickLastUpdatedRefresh(dataRow: any, column: ColumnSpecification<any>): void {
+    if (!column.onClick) {
+      return;
+    }
+    dataRow.lastUpdatedChanging = true;
+    column.onClick(dataRow);
+  }
+
   // FIXME: Should have a generic? T instead of any?
   onClickCell(dataRow: any, column: ColumnSpecification<any>): void {
-    if (!column.onClick) {
+    if (!column.onClick || column.format?.type === 'last-updated') {
       return;
     }
     column.onClick(dataRow[column.valueKey]);

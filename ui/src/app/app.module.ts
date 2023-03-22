@@ -44,6 +44,7 @@ import { SoftresManagerComponent } from './softres-manager/softres-manager.compo
 import { SpecializationDataComponent } from './specialization-data/specialization-data.component';
 import { SpecializationIconComponent } from './specialization-icon/specialization-icon.component';
 import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.component';
+import { RaidLookupV2Component } from './raid-lookup-v2/raid-lookup-v2.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +80,8 @@ import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.com
     MyCharacterImportModalComponent,
     MyCharacterGearCompareComponent,
     SvgIconComponent,
-    GettingStartedComponent
+    GettingStartedComponent,
+    RaidLookupV2Component
   ],
   imports: [
     BrowserAnimationsModule,

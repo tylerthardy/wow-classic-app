@@ -5,6 +5,7 @@ import { IGetCharacterZoneRankingsResponseRanking } from './get-character-zone-r
 export interface IGetCharacterZoneRankingsResponse {
   characterName: string;
   metric: RankingMetric;
+  lastUpdated: number;
   role?: string;
   warcraftLogsClassId?: number;
   bestPerformanceAverage?: number;

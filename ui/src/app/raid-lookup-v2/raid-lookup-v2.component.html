@@ -8,6 +8,8 @@
 </div>
 
 <div class="loading-spinner large" *ngIf="raidRankingsLoading"></div>
+<app-grid *ngIf="characters.length > 0" [data]="characters" [columns]="columns"></app-grid>
+<!-- 
 
 <div *ngIf="viewModel" style="width: 100%">
   Class Filter:
@@ -15,7 +17,7 @@
   Role Filter:
   <app-dropdown [options]="roleFilterOptions" [(ngModel)]="roleFilterInput"></app-dropdown>
 </div>
-<div *ngIf="viewModel">
+<div *ngIf="viewModel" style="width: 50%">
   <app-grid [data]="viewModel.filteredData" [columns]="viewModel.columns">
     <tr *ngFor="let error of viewModel.errorData">
       <td style="color: red">{{ error.characterName }}</td>
@@ -40,4 +42,4 @@
       <td></td>
     </tr>
   </app-grid>
-</div>
+</div> -->

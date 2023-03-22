@@ -2,7 +2,8 @@
   <div class="left-container">
     <ng-container *ngIf="isDevelopment">
       <app-card [collapsed]="false" header="Playground">
-        <app-class-selection></app-class-selection>
+        <div class="loading-spinner"></div>
+        <app-svg-icon style="position: relative; top: 3px" iconName="refresh" size="20px"></app-svg-icon>
       </app-card>
     </ng-container>
 
@@ -20,6 +21,10 @@
 
     <app-card header="Raid Lookup">
       <app-raid-lookup (characterNameClicked)="onRaidCharacterNameClicked($event)"></app-raid-lookup>
+    </app-card>
+
+    <app-card header="Raid Lookup V2">
+      <app-raid-lookup-v2></app-raid-lookup-v2>
     </app-card>
   </div>
   <div class="right-container">

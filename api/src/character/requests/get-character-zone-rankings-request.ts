@@ -17,6 +17,9 @@ export class GetCharacterZoneRankingsRequest implements IGetCharacterZoneRanking
   @IsNumber()
   zoneId!: number;
 
+  @IsIn(RaidSizeValues)
+  size!: RaidSize;
+
   @IsIn(RankingMetricValues)
   metric!: RankingMetric;
 
@@ -34,7 +37,4 @@ export class GetCharacterZoneRankingsRequest implements IGetCharacterZoneRanking
   @IsString()
   @IsOptional()
   role?: string;
-
-  @IsIn(RaidSizeValues)
-  size!: RaidSize;
 }
