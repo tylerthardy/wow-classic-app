@@ -35,23 +35,22 @@ export class CharacterService {
     const responseCharacters: GetMultipleCharacterZoneRankingsResponseItem[] = [];
     const characterRequests: Promise<IGetWclCharacterZoneRankingsResponse>[] = [];
 
-    for (const character of request.characters) {
+    for (const [i, character] of request.characters.entries()) {
       const validationErrors = await this.getCharacterValidationErrors(character);
       if (validationErrors.length > 0) {
         const errors = validationErrors.map((error) => error.constraints);
         const responseItem = new GetMultipleCharacterZoneRankingsResponseItem(character, undefined, errors);
-        responseCharacters.push(responseItem);
-        continue;
-      }
-
-      try {
-        const characterRequest: Promise<IGetWclCharacterZoneRankingsResponse> =
-          this.getWclCharacterZoneRankingsWithCache(character);
-        characterRequests.push(characterRequest);
-      } catch (err) {
-        const errors = [err];
-        const responseItem = new GetMultipleCharacterZoneRankingsResponseItem(character, undefined, errors);
-        responseCharacters.push(responseItem);
+        responseCharacters[i] = responseItem;
+      } else {
+        try {
+          const characterRequest: Promise<IGetWclCharacterZoneRankingsResponse> =
+            this.getWclCharacterZoneRankingsWithCache(character);
+          characterRequests[i] = characterRequest;
+        } catch (err) {
+          const errors = [err];
+          const responseItem = new GetMultipleCharacterZoneRankingsResponseItem(character, undefined, errors);
+          responseCharacters[i] = responseItem;
+        }
       }
     }
 
@@ -59,12 +58,16 @@ export class CharacterService {
       characterRequests
     );
     for (const [i, wclResult] of zoneRankingResults.entries()) {
+      if (wclResult.status === 'fulfilled' && !wclResult.value) {
+        // If there's no result value, it was an empty request
+        continue;
+      }
       const characterRequest = request.characters[i];
       const responseItem: GetMultipleCharacterZoneRankingsResponseItem =
         wclResult.status === 'fulfilled'
           ? new GetMultipleCharacterZoneRankingsResponseItem(characterRequest, wclResult.value, [])
           : new GetMultipleCharacterZoneRankingsResponseItem(characterRequest, undefined, [wclResult.reason]);
-      responseCharacters.push(responseItem);
+      responseCharacters[i] = responseItem;
     }
 
     return {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { WowClass } from 'classic-companion-core';
 import { finalize } from 'rxjs';
 import { ColumnSpecification } from '../common/components/grid/grid.component';
@@ -24,7 +24,7 @@ import { RaidLookupCharacter } from './raid-lookup-character';
   templateUrl: './raid-lookup-v2.component.html',
   styleUrls: ['./raid-lookup-v2.component.scss']
 })
-export class RaidLookupV2Component implements OnInit, OnChanges {
+export class RaidLookupV2Component implements OnInit {
   @Output() public characterNameClicked: EventEmitter<string> = new EventEmitter<string>();
   @Input() public raidAndSize: RaidAndSizeSelection = new RaidAndSizeSelection({
     raid: 'ulduar',
@@ -37,6 +37,8 @@ export class RaidLookupV2Component implements OnInit, OnChanges {
   protected roleFilterOptions: RaidPlayerRole[] = ['DAMAGER', 'HEALER', 'TANK'];
 
   protected characters: RaidLookupCharacter[] = [];
+  protected filteredCharacters: RaidLookupCharacter[] = [];
+  protected erroredCharacters: RaidLookupCharacter[] = [];
   protected raidRankingsLoading: boolean = false;
   protected columns!: ColumnSpecification<RaidLookupCharacter>[];
 
@@ -52,10 +54,8 @@ export class RaidLookupV2Component implements OnInit, OnChanges {
     this.columns = this.getColumns(this.themeService.theme);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    // if (changes['classFilterInput'] || changes['roleFilterInput']) {
-    //   this.viewModel?.filterData(this.classFilterInput, this.roleFilterInput);
-    // }
+  protected onFilterChanged(): void {
+    this.filterData(this.classFilterInput, this.roleFilterInput);
   }
 
   protected onSearchClick(): void {
@@ -71,6 +71,7 @@ export class RaidLookupV2Component implements OnInit, OnChanges {
 
   protected onClearClick(): void {
     this.importJson = undefined;
+    this.clearCharacterData();
   }
 
   protected onCharacterNameClick(characterName: string): void {
@@ -111,7 +112,8 @@ export class RaidLookupV2Component implements OnInit, OnChanges {
     const raidZoneAndSize: RaidZoneAndSize = this.raidService.getZoneAndSize(raidSlugs[0]);
     // FIXME: END: These should be simple methods on the object
 
-    this.characters = [];
+    this.clearCharacterData();
+
     let queries: ZoneRankingsQuery[] = [];
     for (let importedCharacter of importedCharacters) {
       const raidCharacter: RaidLookupCharacter = new RaidLookupCharacter(importedCharacter, raidZoneAndSize);
@@ -144,9 +146,40 @@ export class RaidLookupV2Component implements OnInit, OnChanges {
             const character = this.characters[i];
             character.updateRankingData(rankingData);
           }
-          this.characters = [...this.characters];
+          this.filterData(this.classFilterInput, this.roleFilterInput);
         }
       });
+  }
+
+  private clearCharacterData(): void {
+    this.characters = [];
+    this.filteredCharacters = [];
+    this.erroredCharacters = [];
+  }
+
+  private filterData(classFilter: WowClass | undefined, roleFilter: RaidPlayerRole | undefined): void {
+    this.filteredCharacters = this.getFilteredData(classFilter, roleFilter);
+    this.erroredCharacters = this.getErroredData();
+  }
+
+  private getFilteredData(
+    classFilter: WowClass | undefined,
+    roleFilter: RaidPlayerRole | undefined
+  ): RaidLookupCharacter[] {
+    let resultingData: RaidLookupCharacter[] = Object.assign([], this.characters);
+    if (classFilter) {
+      resultingData = resultingData.filter(
+        (d) => !d.classFileName || d.classFileName === classFilter.getClassFileName()
+      );
+    }
+    if (roleFilter) {
+      resultingData = resultingData.filter((d) => !d.role || d.role === roleFilter);
+    }
+    return resultingData.filter((d) => !d.errors || d.errors.length === 0);
+  }
+
+  private getErroredData(): RaidLookupCharacter[] {
+    return this.characters.filter((d) => d.errors && d.errors.length > 0);
   }
 
   private onLastUpdatedRefreshClick(character: RaidLookupCharacter): void {
@@ -161,15 +194,11 @@ export class RaidLookupV2Component implements OnInit, OnChanges {
     };
     this.characterService
       .getZoneRankings(query)
-      .pipe(
-        finalize(() => {
-          character.lastUpdatedChanging = false;
-          this.characters = [...this.characters];
-        })
-      )
+      .pipe(finalize(() => (character.lastUpdatedChanging = false)))
       .subscribe({
         next: (response: IGetCharacterZoneRankingsResponse) => {
           character.updateSingleRankingData(response);
+          this.filterData(this.classFilterInput, this.roleFilterInput);
         }
       });
   }

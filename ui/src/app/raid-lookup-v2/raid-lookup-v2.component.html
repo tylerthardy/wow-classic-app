@@ -7,39 +7,39 @@
   <button (click)="onClearClick()">Clear</button>
 </div>
 
-<div class="loading-spinner large" *ngIf="raidRankingsLoading"></div>
-<app-grid *ngIf="characters.length > 0" [data]="characters" [columns]="columns"></app-grid>
-<!-- 
+<ng-container *ngIf="characters.length > 0">
+  <div style="width: 100%; margin-top: 10px; margin-bottom: 10px">
+    Class Filter:
+    <app-class-selection [(ngModel)]="classFilterInput" (ngModelChange)="onFilterChanged()"></app-class-selection>
+    Role Filter:
+    <app-dropdown
+      [options]="roleFilterOptions"
+      [(ngModel)]="roleFilterInput"
+      (ngModelChange)="onFilterChanged()"
+    ></app-dropdown>
+  </div>
 
-<div *ngIf="viewModel" style="width: 100%">
-  Class Filter:
-  <app-class-selection [(ngModel)]="classFilterInput"></app-class-selection>
-  Role Filter:
-  <app-dropdown [options]="roleFilterOptions" [(ngModel)]="roleFilterInput"></app-dropdown>
-</div>
-<div *ngIf="viewModel" style="width: 50%">
-  <app-grid [data]="viewModel.filteredData" [columns]="viewModel.columns">
-    <tr *ngFor="let error of viewModel.errorData">
-      <td style="color: red">{{ error.characterName }}</td>
-      <td style="overflow: wrap" [attr.colspan]="viewModel.columns.length - 1">
-        Error looking up player: {{ error.errors }}
-      </td>
-    </tr>
+  <app-grid [data]="filteredCharacters" [columns]="columns">
     <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td>
-        <app-parse-number [value]="viewModel.raidBestPerformanceAverage"></app-parse-number>
+      <td *ngIf="raidRankingsLoading" [attr.colspan]="columns.length" style="text-align: center">
+        <div class="loading-spinner large" *ngIf="raidRankingsLoading"></div>
       </td>
-      <td>
-        <app-parse-number [value]="viewModel.raidMedianPerformance"></app-parse-number>
+      <td
+        *ngIf="filteredCharacters.length === 0 && !raidRankingsLoading"
+        [attr.colspan]="columns.length"
+        style="text-align: center"
+      >
+        No Characters Meet Filter Criteria
       </td>
-      <td></td>
-      <td></td>
-      <td></td>
     </tr>
+    <ng-container *ngIf="!roleFilterInput && !classFilterInput">
+      <tr *ngFor="let errorCharacter of erroredCharacters">
+        <td></td>
+        <td style="color: red">{{ errorCharacter.characterName }}</td>
+        <td style="overflow: wrap" [attr.colspan]="columns.length - 2">
+          Error looking up player: {{ errorCharacter.getErrorsString() }}
+        </td>
+      </tr>
+    </ng-container>
   </app-grid>
-</div> -->
+</ng-container>

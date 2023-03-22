@@ -63,6 +63,10 @@ export class RaidLookupCharacter implements JsonRaidPlayer, IGetMultipleCharacte
     this.errors = [];
   }
 
+  public getErrorsString(): string {
+    return JSON.stringify(this.errors);
+  }
+
   // TODO: Move this out to an enum
   private getMetricFromRole(role: RaidPlayerRole): RankingMetric {
     switch (role) {

@@ -18,14 +18,16 @@
         <ng-container *ngIf="column.format">
           <ng-container [ngSwitch]="column.format.type">
             <ng-container *ngSwitchCase="'last-updated'">
-              {{ getLastUpdatedValue(cellValue) }}
-              <span
-                class="refresh-icon"
-                [ngClass]="{ rotating: dataRow.lastUpdatedChanging }"
-                (click)="onClickLastUpdatedRefresh(dataRow, column)"
-              >
-                ↻
-              </span>
+              <ng-container *ngIf="cellValue">
+                {{ getLastUpdatedValue(cellValue) }}
+                <span
+                  class="refresh-icon"
+                  [ngClass]="{ rotating: dataRow.lastUpdatedChanging }"
+                  (click)="onClickLastUpdatedRefresh(dataRow, column)"
+                >
+                  ↻
+                </span>
+              </ng-container>
             </ng-container>
             <ng-container *ngSwitchCase="'wcl-link'">
               <app-wcl-link-icon size="small" [characterName]="cellValue"></app-wcl-link-icon>
