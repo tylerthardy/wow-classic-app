@@ -19,11 +19,11 @@
       <app-player-lookup #playerLookup></app-player-lookup>
     </app-card>
 
-    <app-card header="Raid Lookup">
+    <app-card header="Raid Lookup V1" *ngIf="konamiMode">
       <app-raid-lookup (characterNameClicked)="onRaidCharacterNameClicked($event)"></app-raid-lookup>
     </app-card>
 
-    <app-card header="Raid Lookup V2">
+    <app-card header="Raid Lookup">
       <app-raid-lookup-v2></app-raid-lookup-v2>
     </app-card>
   </div>
