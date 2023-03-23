@@ -112,7 +112,7 @@ import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.com
   providers: [
     {
       provide: AppConfig,
-      useValue: new AppConfig()
+      useClass: AppConfig
     },
     {
       provide: ErrorHandler,
