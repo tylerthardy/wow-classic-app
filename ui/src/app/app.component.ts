@@ -3,6 +3,7 @@ import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr';
 import { navigation } from './app-routing.module';
+import { AppConfig } from './app.config';
 import { LocalStorageService } from './common/services/local-storage.service';
 import { RegionServerService } from './common/services/region-server.service';
 import { ThemeService } from './common/services/theme/theme.service';
@@ -31,6 +32,7 @@ export class AppComponent implements OnInit {
   ];
 
   constructor(
+    private appConfig: AppConfig,
     private toastrService: ToastrService,
     public localStorageService: LocalStorageService,
     public regionServerService: RegionServerService,
@@ -70,11 +72,11 @@ export class AppComponent implements OnInit {
   }
 
   public onDownloadButtonClick(): void {
-    window.open('https://wowclassicapp-addon.s3.amazonaws.com/GroupMembersExporter.zip', '_blank');
+    window.open(this.appConfig.addonDownloadUrl, '_blank');
   }
 
   public onDiscordClick(): void {
-    window.open('https://discord.gg/dJ8YvKn8AR', '_blank');
+    window.open(this.appConfig.discordUrl, '_blank');
   }
 
   public onToggleThemeClick(): void {

@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { MaintenanceAuthGuard } from './common/guards/maintenance.auth-guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { PlayerComparisonComponent } from './player-comparison/player-comparison.component';
 
 export const navigation = [
@@ -25,25 +27,35 @@ export const navigation = [
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full'
+    canActivate: [MaintenanceAuthGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      },
+      {
+        path: 'dashboard',
+        component: DashboardComponent
+      },
+      // {
+      //   path: 'raid-lead-helper',
+      //   component: RaidLeadHelperComponent
+      // },
+      {
+        path: 'player-comparison',
+        component: PlayerComparisonComponent
+      }
+      // {
+      //   path: 'my-characters',
+      //   component: MyCharactersComponent
+      // }
+    ]
   },
   {
-    path: 'dashboard',
-    component: DashboardComponent
-  },
-  // {
-  //   path: 'raid-lead-helper',
-  //   component: RaidLeadHelperComponent
-  // },
-  {
-    path: 'player-comparison',
-    component: PlayerComparisonComponent
+    path: 'maintenance',
+    component: MaintenanceComponent
   }
-  // {
-  //   path: 'my-characters',
-  //   component: MyCharactersComponent
-  // }
 ];
 
 @NgModule({
