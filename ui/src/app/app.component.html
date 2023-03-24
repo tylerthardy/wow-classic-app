@@ -12,6 +12,10 @@
         <button class="emoji" (click)="onToggleThemeClick()">
           {{ themeService.theme === 'light' ? '🌞' : '🌙' }}
         </button>
+        <button *ngIf="!authService.isLoggedIn" (click)="onLoginButtonClick()">Login</button>
+        <app-dropdown [options]="['a', 'b']" style="display: inline-block" *ngIf="authService.isLoggedIn"
+          >Logged In</app-dropdown
+        >
       </div>
     </header>
     <div id="main">

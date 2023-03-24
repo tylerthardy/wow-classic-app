@@ -1,12 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
+import { SimpleModalService } from 'ngx-simple-modal';
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr';
 import { navigation } from './app-routing.module';
-import { AppConfig } from './app.config';
+import { SignInModalComponent } from './auth/sign-in-modal/sign-in-modal.component';
+import { AuthService } from './common/services/auth/auth.service';
 import { LocalStorageService } from './common/services/local-storage.service';
 import { RegionServerService } from './common/services/region-server.service';
 import { ThemeService } from './common/services/theme/theme.service';
+import { AppConfig } from './config/app.config';
 
 export interface ContainerStyle {
   name: 'Left' | 'Middle' | 'Full';
@@ -32,11 +35,13 @@ export class AppComponent implements OnInit {
   ];
 
   constructor(
-    private appConfig: AppConfig,
-    private toastrService: ToastrService,
+    public authService: AuthService,
     public localStorageService: LocalStorageService,
     public regionServerService: RegionServerService,
-    public themeService: ThemeService
+    public themeService: ThemeService,
+    private simpleModalService: SimpleModalService,
+    private appConfig: AppConfig,
+    private toastrService: ToastrService
   ) {}
 
   ngOnInit() {
@@ -85,6 +90,12 @@ export class AppComponent implements OnInit {
 
   public onGettingStartedClick(): void {
     this.localStorageService.store('gettingStarted', 'hidden', false);
+  }
+
+  public onLoginButtonClick(): void {
+    this.simpleModalService.addModal(SignInModalComponent, {}).subscribe((result) => {
+      console.log(result);
+    });
   }
 
   public cycleContainerStyle(): void {

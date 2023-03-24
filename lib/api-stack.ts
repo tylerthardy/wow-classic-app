@@ -1,5 +1,6 @@
 import { Duration, Stack, StackProps } from 'aws-cdk-lib';
-import { LambdaRestApi } from 'aws-cdk-lib/aws-apigateway';
+import { AuthorizationType, CognitoUserPoolsAuthorizer, LambdaRestApi } from 'aws-cdk-lib/aws-apigateway';
+import { UserPool } from 'aws-cdk-lib/aws-cognito';
 import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb';
 import { ManagedPolicy } from 'aws-cdk-lib/aws-iam';
 import { Code, Function, ILayerVersion, LayerVersion, Runtime } from 'aws-cdk-lib/aws-lambda';
@@ -7,10 +8,15 @@ import { Construct } from 'constructs';
 import path = require('path');
 
 export class ClassicCompanionApiStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, userpool: UserPool, props?: StackProps) {
     super(scope, id, props);
-
     this.validateEnvironmentVariables();
+
+    const playerTable = new Table(this, 'player-1679377599', {
+      billingMode: BillingMode.PAY_PER_REQUEST,
+      partitionKey: { name: 'regionServerCharacterName', type: AttributeType.STRING },
+      sortKey: { name: 'zoneAndSize', type: AttributeType.STRING }
+    });
 
     const lambdaLayer = this.createLambdaLayer();
     const insightsLayer = LayerVersion.fromLayerVersionArn(this, `lambda-insights-layer`, this.getLambdaInsightsArn());
@@ -21,19 +27,20 @@ export class ClassicCompanionApiStack extends Stack {
     handlerLambda.role!.addManagedPolicy(
       ManagedPolicy.fromAwsManagedPolicyName('CloudWatchLambdaInsightsExecutionRolePolicy')
     );
-    const playerTable = new Table(this, 'player-1679377599', {
-      billingMode: BillingMode.PAY_PER_REQUEST,
-      partitionKey: { name: 'regionServerCharacterName', type: AttributeType.STRING },
-      sortKey: { name: 'zoneAndSize', type: AttributeType.STRING }
-    });
     handlerLambda.addEnvironment('DYNAMO_PLAYER_TABLE_NAME', playerTable.tableName);
-
-    const apiGateway = new LambdaRestApi(this, 'nestjs-api-gateway', {
-      handler: handlerLambda
-    });
-
     // Allow API to write to player table
     playerTable.grantReadWriteData(handlerLambda);
+
+    const authorizer = new CognitoUserPoolsAuthorizer(this, 'api-authorizer', {
+      cognitoUserPools: [userpool]
+    });
+    const apiGateway = new LambdaRestApi(this, 'nestjs-api-gateway', {
+      handler: handlerLambda,
+      defaultMethodOptions: {
+        authorizationType: AuthorizationType.COGNITO,
+        authorizer
+      }
+    });
   }
 
   private validateEnvironmentVariables(): void {

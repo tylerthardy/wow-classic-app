@@ -1,6 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdsenseModule } from 'ng2-adsense';
@@ -9,7 +9,8 @@ import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 import { SafePipeModule } from 'safe-pipe';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AppConfig } from './app.config';
+import { SignInModalComponent } from './auth/sign-in-modal/sign-in-modal.component';
+import { SignUpModalComponent } from './auth/sign-up-modal/sign-up-modal.component';
 import { CardComponent } from './common/components/card/card.component';
 import { ClassSelectionComponent } from './common/components/class-selection/class-selection.component';
 import { ClassSpecSelectionComponent } from './common/components/class-spec-selection/class-spec-selection.component';
@@ -27,6 +28,7 @@ import { WowheadLinkComponent } from './common/components/wowhead-link/wowhead-l
 import { GlobalErrorHandler } from './common/global-error-handler';
 import { MaintenanceAuthGuard } from './common/guards/maintenance.auth-guard';
 import { KonamiModule } from './common/konami/konami.module';
+import { AppConfig } from './config/app.config';
 import { CreateSoftresModalComponent } from './create-softres-modal/create-softres-modal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { GettingStartedComponent } from './getting-started/getting-started.component';
@@ -84,20 +86,23 @@ import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.com
     SvgIconComponent,
     GettingStartedComponent,
     RaidLookupV2Component,
-    MaintenanceComponent
+    MaintenanceComponent,
+    SignUpModalComponent,
+    SignInModalComponent
   ],
   imports: [
     BrowserAnimationsModule,
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
     KonamiModule,
     SafePipeModule,
     SimpleModalModule,
     AdsenseModule.forRoot({
-      adClient: 'ca-pub-7060933792284068', //replace with your client from google adsense
-      adSlot: 8056599129, //replace with your slot from google adsense
+      adClient: 'ca-pub-7060933792284068',
+      adSlot: 8056599129,
       adFormat: 'auto',
       fullWidthResponsive: true
     }),
@@ -112,7 +117,7 @@ import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.com
   providers: [
     {
       provide: AppConfig,
-      useValue: new AppConfig()
+      useClass: AppConfig
     },
     {
       provide: ErrorHandler,

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AppConfig } from '../app.config';
+import { AppConfig } from '../config/app.config';
 
 @Component({
   selector: 'app-maintenance',

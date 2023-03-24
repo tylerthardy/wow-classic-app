@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AppConfig } from '../../../app.config';
+import { AppConfig } from '../../../config/app.config';
 import { ZoneRankingsQuery } from '../graphql';
 import { IGetCharacterZoneRankingsResponse } from './get-character-zone-rankings-response.interface';
 import { IGetMultipleCharacterZoneRankingsResponse } from './get-multiple-character-zone-rankings-response.interface';

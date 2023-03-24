@@ -3,12 +3,14 @@ import * as cdk from 'aws-cdk-lib';
 import { config } from 'dotenv';
 import 'source-map-support/register';
 import { ClassicCompanionApiStack } from '../lib/api-stack';
+import { ClassicCompanionAuthStack } from '../lib/auth-stack';
 import { ClassicCompanionUiStack } from '../lib/ui-stack';
 
 config();
 
 const app = new cdk.App();
-new ClassicCompanionApiStack(app, 'classic-companion-api', {
+const authStack = new ClassicCompanionAuthStack(app, 'classic-companion-auth', {});
+new ClassicCompanionApiStack(app, 'classic-companion-api', authStack.userpool, {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */

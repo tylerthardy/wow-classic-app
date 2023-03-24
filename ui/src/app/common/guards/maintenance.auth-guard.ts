@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AppConfig } from '../../app.config';
+import { AppConfig } from '../../config/app.config';
 
 @Injectable()
 export class MaintenanceAuthGuard implements CanActivate {

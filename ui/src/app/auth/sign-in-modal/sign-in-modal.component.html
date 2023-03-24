@@ -1,0 +1,36 @@
+<div class="modal-content" [ngClass]="themeService.getThemeClass()">
+  <form (submit)="onSignIn(signInForm)" #signInForm="ngForm">
+    <div class="modal-header">
+      <h4>Sign In</h4>
+    </div>
+    <div class="modal-body">
+      <label for="email"><b>Email address</b></label>
+      <input
+        name="email"
+        ngModel
+        type="email"
+        #emailInput="ngModel"
+        [(ngModel)]="email_address"
+        email
+        placeholder="Enter Username"
+        required
+      />
+
+      <label for="password"><b>Password</b></label>
+      <input
+        [(ngModel)]="password"
+        ngModel
+        type="password"
+        minlength="8"
+        #passwordInput="ngModel"
+        required
+        name="password"
+        placeholder="Enter Password"
+      />
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-danger" (click)="close()">Cancel</button>
+      <button type="submit">Login</button>
+    </div>
+  </form>
+</div>
