@@ -4,8 +4,9 @@ import en from 'javascript-time-ago/locale/en';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr';
 import { navigation } from './app-routing.module';
+import { AuthService } from './auth/auth.service';
 import { SignInModalComponent } from './auth/sign-in-modal/sign-in-modal.component';
-import { AuthService } from './common/services/auth/auth.service';
+import { ConfirmModalComponent } from './common/components/confirm-modal/confirm-modal.component';
 import { LocalStorageService } from './common/services/local-storage.service';
 import { RegionServerService } from './common/services/region-server.service';
 import { ThemeService } from './common/services/theme/theme.service';
@@ -95,6 +96,14 @@ export class AppComponent implements OnInit {
   public onLoginButtonClick(): void {
     this.simpleModalService.addModal(SignInModalComponent, {}).subscribe((result) => {
       console.log(result);
+    });
+  }
+
+  public onLogoutButtonClick(): void {
+    this.simpleModalService.addModal(ConfirmModalComponent).subscribe((confirmed) => {
+      if (confirmed) {
+        this.authService.signOut();
+      }
     });
   }
 

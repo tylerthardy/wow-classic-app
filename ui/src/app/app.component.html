@@ -13,9 +13,8 @@
           {{ themeService.theme === 'light' ? '🌞' : '🌙' }}
         </button>
         <button *ngIf="!authService.isLoggedIn" (click)="onLoginButtonClick()">Login</button>
-        <app-dropdown [options]="['a', 'b']" style="display: inline-block" *ngIf="authService.isLoggedIn"
-          >Logged In</app-dropdown
-        >
+        <span style="display: inline-block" *ngIf="authService.isLoggedIn">Logged In</span>
+        <button *ngIf="authService.isLoggedIn" (click)="onLogoutButtonClick()">Logout</button>
       </div>
     </header>
     <div id="main">
