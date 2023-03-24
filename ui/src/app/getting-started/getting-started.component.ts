@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalStorageService } from '../common/services/local-storage.service';
 import { RegionServerService } from '../common/services/region-server.service';
+import { AppConfig } from '../config/app.config';
 
 @Component({
   selector: 'app-getting-started',
@@ -8,7 +9,15 @@ import { RegionServerService } from '../common/services/region-server.service';
   styleUrls: ['./getting-started.component.scss']
 })
 export class GettingStartedComponent implements OnInit {
-  constructor(public localStorageService: LocalStorageService, public regionServerService: RegionServerService) {}
+  public maintenanceHide: boolean = false;
+
+  constructor(
+    public localStorageService: LocalStorageService,
+    public regionServerService: RegionServerService,
+    appConfig: AppConfig
+  ) {
+    this.maintenanceHide = appConfig.maintenance;
+  }
 
   ngOnInit(): void {}
 

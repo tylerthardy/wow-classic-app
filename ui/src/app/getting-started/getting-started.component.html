@@ -1,4 +1,4 @@
-<app-card *ngIf="!localStorageService.get('gettingStarted', 'hidden')" style="margin-bottom: 20px">
+<app-card *ngIf="!localStorageService.get('gettingStarted', 'hidden') && !maintenanceHide" style="margin-bottom: 20px">
   <h2>
     Getting Started!
     <button style="position: relative; top: -10px; float: right" (click)="onCloseButtonClick()">✖</button>
