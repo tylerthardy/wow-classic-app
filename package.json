@@ -14,9 +14,10 @@
     "build:ui": "cd ui && npm run build",
     "prep:api": "bash ./prep-api-layer.sh",
     "prep:ui": "",
+    "deploy:auth": "cdk deploy classic-companion-auth",
     "deploy:api": "npm run build:core && npm run build:api && npm run prep:api && cdk deploy classic-companion-api",
     "deploy:ui": "npm run build:core && npm run build:ui && cdk deploy classic-companion-ui",
-    "deploy": "npm install && npm run build:api && npm run build:ui && npm run deploy:api && npm run deploy:ui"
+    "deploy": "npm install && npm run build:api && npm run build:ui && npm run deploy:auth && npm run deploy:api && npm run deploy:ui"
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",
