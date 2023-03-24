@@ -21,21 +21,19 @@ export class SignInModalComponent extends SimpleModalComponent<any, CognitoUserS
   public onSignInFormSubmit(form: NgForm) {
     // if (form.valid) {
     this.isLoading = true;
-    setTimeout(() => {
-      const authCallbacks: IAuthenticationCallback = {
-        onSuccess: (result: CognitoUserSession) => {
-          this.result = result;
-          this.close();
-        },
-        onFailure: (err) => {
-          this.isLoading = false;
-        },
-        newPasswordRequired: (userAttributes, requiredAttributes) => {
-          throw new Error("new password required, but it shouldn't be");
-        }
-      };
-      this.authService.signIn(this.email_address, this.password, authCallbacks);
-    }, 100000);
+    const authCallbacks: IAuthenticationCallback = {
+      onSuccess: (result: CognitoUserSession) => {
+        this.result = result;
+        this.close();
+      },
+      onFailure: (err) => {
+        this.isLoading = false;
+      },
+      newPasswordRequired: (userAttributes, requiredAttributes) => {
+        throw new Error("new password required, but it shouldn't be");
+      }
+    };
+    this.authService.signIn(this.email_address, this.password, authCallbacks);
     // }
   }
 
