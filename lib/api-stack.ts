@@ -1,5 +1,5 @@
 import { Duration, Stack, StackProps } from 'aws-cdk-lib';
-import { AuthorizationType, CognitoUserPoolsAuthorizer, LambdaRestApi } from 'aws-cdk-lib/aws-apigateway';
+import { AuthorizationType, CognitoUserPoolsAuthorizer, Cors, LambdaRestApi } from 'aws-cdk-lib/aws-apigateway';
 import { UserPool } from 'aws-cdk-lib/aws-cognito';
 import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb';
 import { ManagedPolicy } from 'aws-cdk-lib/aws-iam';
@@ -39,7 +39,8 @@ export class ClassicCompanionApiStack extends Stack {
       defaultMethodOptions: {
         authorizationType: AuthorizationType.COGNITO,
         authorizer
-      }
+      },
+      defaultCorsPreflightOptions: { allowOrigins: Cors.ALL_ORIGINS }
     });
   }
 
