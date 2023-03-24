@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { CognitoUserSession } from 'amazon-cognito-identity-js';
+import { CognitoUserSession, IAuthenticationCallback } from 'amazon-cognito-identity-js';
 import { SimpleModalComponent } from 'ngx-simple-modal';
 import { ThemeService } from '../../common/services/theme/theme.service';
 import { AuthService } from '../auth.service';
 
 @Component({
-  templateUrl: 'sign-in-modal.component.html'
+  templateUrl: 'sign-in-modal.component.html',
+  styleUrls: ['sign-in-modal.component.scss']
 })
 export class SignInModalComponent extends SimpleModalComponent<any, CognitoUserSession> {
   isLoading: boolean = false;
@@ -17,19 +18,27 @@ export class SignInModalComponent extends SimpleModalComponent<any, CognitoUserS
     super();
   }
 
-  onSignIn(form: NgForm) {
+  public onSignInFormSubmit(form: NgForm) {
     if (form.valid) {
       this.isLoading = true;
-      this.authService.signIn(this.email_address, this.password, {
-        onSuccess: (result) => {
+      const authCallbacks: IAuthenticationCallback = {
+        onSuccess: (result: CognitoUserSession) => {
+          this.result = result;
           this.close();
         },
         onFailure: (err) => {
-          alert(err.message || JSON.stringify(err));
           this.isLoading = false;
         },
-        newPasswordRequired: (userAttributes, requiredAttributes) => {}
-      });
+        newPasswordRequired: (userAttributes, requiredAttributes) => {
+          const password = 'Potato123';
+          this.authService.setNewPassword(password, userAttributes, authCallbacks);
+        }
+      };
+      this.authService.signIn(this.email_address, this.password, authCallbacks);
     }
+  }
+
+  public onForgotPasswordClick(): void {
+    this.authService.resetPassword(this.email_address);
   }
 }

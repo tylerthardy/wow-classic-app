@@ -26,14 +26,53 @@ export class AuthService {
     this.userpool = new CognitoUserPool(poolData);
   }
 
+  public setNewPassword(password: string, userAttributes: any, authCallbacks: IAuthenticationCallback) {
+    const cognitoUser: CognitoUser | null = this.userpool.getCurrentUser();
+    if (!cognitoUser) {
+      throw new Error('no cognito user');
+    }
+    // the api doesn't accept this field back
+    delete userAttributes.email_verified;
+    // store userAttributes on global variable
+    cognitoUser.completeNewPasswordChallenge(password, userAttributes, authCallbacks);
+  }
+
+  public resetPassword(username: string): void {
+    const cognitoUser: CognitoUser = new CognitoUser({
+      Username: username,
+      Pool: this.userpool
+    });
+    cognitoUser.forgotPassword({
+      onSuccess: (success: string) => {
+        alert('password reset');
+      },
+      onFailure: (err: Error) => {
+        alert(err);
+      },
+      inputVerificationCode(data: any) {
+        console.log(data);
+
+        // this is optional, and likely won't be implemented as in AWS's example (i.e, prompt to get info)
+        var verificationCode = prompt('Please input verification code ', '');
+        if (!verificationCode) {
+          return;
+        }
+        var newPassword = prompt('Enter new password ', '');
+        if (!newPassword) {
+          return;
+        }
+        cognitoUser.confirmPassword(verificationCode, newPassword, this);
+      }
+    });
+  }
+
   public signIn(emailAddress: string, password: string, resultCallbacks?: IAuthenticationCallback): void {
     let authenticationDetails = new AuthenticationDetails({
       Username: emailAddress,
       Password: password
     });
 
-    let userData = { Username: emailAddress, Pool: this.userpool };
-    var cognitoUser = new CognitoUser(userData);
+    var cognitoUser = new CognitoUser({ Username: emailAddress, Pool: this.userpool });
     let authCallbacks: IAuthenticationCallback = {
       onSuccess: (result: CognitoUserSession) => {
         this.setUser(result);
@@ -41,21 +80,40 @@ export class AuthService {
       },
       onFailure: (err) => {
         alert(err.message || JSON.stringify(err));
+        if (err.message === 'Password reset required for the user') {
+          this.resetPassword(emailAddress);
+          return;
+        }
         resultCallbacks?.onFailure(err);
       },
       newPasswordRequired: (userAttributes, requiredAttributes) => {
-        // User was signed up by an admin and must provide new
-        // password and required attributes, if any, to complete
-        // authentication.
-
-        // the api doesn't accept this field back
-        delete userAttributes.email_verified;
-
-        // store userAttributes on global variable
-        cognitoUser.completeNewPasswordChallenge('Potato123', userAttributes, authCallbacks);
-
         if (resultCallbacks?.newPasswordRequired) {
           resultCallbacks.newPasswordRequired(userAttributes, requiredAttributes);
+        }
+      },
+      customChallenge(challengeParameters) {
+        if (resultCallbacks?.customChallenge) {
+          resultCallbacks.customChallenge(challengeParameters);
+        }
+      },
+      mfaRequired(challengeName, challengeParameters) {
+        if (resultCallbacks?.mfaRequired) {
+          resultCallbacks.mfaRequired(challengeName, challengeParameters);
+        }
+      },
+      mfaSetup(challengeName, challengeParameters) {
+        if (resultCallbacks?.mfaSetup) {
+          resultCallbacks.mfaSetup(challengeName, challengeParameters);
+        }
+      },
+      selectMFAType(challengeName, challengeParameters) {
+        if (resultCallbacks?.selectMFAType) {
+          resultCallbacks.selectMFAType(challengeName, challengeParameters);
+        }
+      },
+      totpRequired(challengeName, challengeParameters) {
+        if (resultCallbacks?.totpRequired) {
+          resultCallbacks.totpRequired(challengeName, challengeParameters);
         }
       }
     };

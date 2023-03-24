@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SimpleModalComponent } from 'ngx-simple-modal';
+import { ThemeService } from '../../services/theme/theme.service';
 import { ConfirmModalOptions } from './confirm-modal-options.interface';
 
 @Component({
@@ -13,7 +14,7 @@ export class ConfirmModalComponent
   title!: string;
   message!: string;
 
-  constructor() {
+  constructor(public themeService: ThemeService) {
     super();
   }
   confirm() {
