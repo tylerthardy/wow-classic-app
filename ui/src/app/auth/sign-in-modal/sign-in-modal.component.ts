@@ -19,8 +19,9 @@ export class SignInModalComponent extends SimpleModalComponent<any, CognitoUserS
   }
 
   public onSignInFormSubmit(form: NgForm) {
-    if (form.valid) {
-      this.isLoading = true;
+    // if (form.valid) {
+    this.isLoading = true;
+    setTimeout(() => {
       const authCallbacks: IAuthenticationCallback = {
         onSuccess: (result: CognitoUserSession) => {
           this.result = result;
@@ -30,12 +31,12 @@ export class SignInModalComponent extends SimpleModalComponent<any, CognitoUserS
           this.isLoading = false;
         },
         newPasswordRequired: (userAttributes, requiredAttributes) => {
-          const password = 'Potato123';
-          this.authService.setNewPassword(password, userAttributes, authCallbacks);
+          throw new Error("new password required, but it shouldn't be");
         }
       };
       this.authService.signIn(this.email_address, this.password, authCallbacks);
-    }
+    }, 100000);
+    // }
   }
 
   public onForgotPasswordClick(): void {

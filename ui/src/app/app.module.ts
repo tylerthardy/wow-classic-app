@@ -9,8 +9,8 @@ import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 import { SafePipeModule } from 'safe-pipe';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { RegisterModalComponent } from './auth/register-modal/register-modal.component';
 import { SignInModalComponent } from './auth/sign-in-modal/sign-in-modal.component';
-import { SignUpModalComponent } from './auth/sign-up-modal/sign-up-modal.component';
 import { CardComponent } from './common/components/card/card.component';
 import { ClassSelectionComponent } from './common/components/class-selection/class-selection.component';
 import { ClassSpecSelectionComponent } from './common/components/class-spec-selection/class-spec-selection.component';
@@ -87,7 +87,7 @@ import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.com
     GettingStartedComponent,
     RaidLookupV2Component,
     MaintenanceComponent,
-    SignUpModalComponent,
+    RegisterModalComponent,
     SignInModalComponent
   ],
   imports: [

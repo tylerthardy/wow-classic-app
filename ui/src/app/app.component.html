@@ -12,9 +12,12 @@
         <button class="emoji" (click)="onToggleThemeClick()">
           {{ themeService.theme === 'light' ? '🌞' : '🌙' }}
         </button>
-        <button *ngIf="!authService.user" (click)="onLoginButtonClick()">Login</button>
+        <button *ngIf="!authService.user" (click)="onRegisterButtonClick()">
+          Register <span class="free-emphasis">Free!</span>
+        </button>
+        <button *ngIf="!authService.user" (click)="onSignInButtonClick()">Sign In</button>
         <span style="display: inline-block" *ngIf="authService.user">{{ authService.user.name }}</span>
-        <button *ngIf="authService.user" (click)="onLogoutButtonClick()">Logout</button>
+        <button *ngIf="authService.user" (click)="onSignOutButtonClick()">Sign Out</button>
       </div>
     </header>
     <div id="main">

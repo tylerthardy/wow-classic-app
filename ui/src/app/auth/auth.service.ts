@@ -2,14 +2,18 @@ import { Injectable } from '@angular/core';
 import {
   AuthenticationDetails,
   CognitoUser,
+  CognitoUserAttribute,
   CognitoUserPool,
   CognitoUserSession,
   IAuthenticationCallback,
-  ICognitoUserPoolData
+  ICognitoUserPoolData,
+  ISignUpResult,
+  NodeCallback
 } from 'amazon-cognito-identity-js';
 import { AppConfig } from '../config/app.config';
 import { ApplicationUser } from './application-user';
 
+// FIXME: Give this entire service a pass over. There's some alerting that should only be done by consumers. This service should console.error, but nothing else. Or maybe it shoudl throw errors.
 @Injectable({
   providedIn: 'root'
 })
@@ -24,6 +28,36 @@ export class AuthService {
     };
 
     this.userpool = new CognitoUserPool(poolData);
+    this.getCurrentUserSession();
+  }
+
+  public signUp(
+    email: string,
+    password: string,
+    attributes: { [key: string]: any },
+    callback?: NodeCallback<Error, ISignUpResult>
+  ): void {
+    var attributeList = [];
+
+    for (let key in attributes) {
+      let attrData = {
+        Name: key,
+        Value: attributes[key]
+      };
+      let attribute = new CognitoUserAttribute(attrData);
+      attributeList.push(attribute);
+    }
+    this.userpool.signUp(email, password, attributeList, [], (err, result) => {
+      if (err) {
+        console.error('auth service signUp error', err.message || JSON.stringify(err));
+      }
+      if (!result) {
+        console.error('auth service signUp empty result');
+      }
+      if (callback) {
+        callback(err, result);
+      }
+    });
   }
 
   public setNewPassword(password: string, userAttributes: any, authCallbacks: IAuthenticationCallback) {
@@ -130,6 +164,7 @@ export class AuthService {
   }
 
   public async getToken(): Promise<string | undefined> {
+    // FIXME: Could be refactored to use the getCurrentUserSession ... probably
     if (this.isLoggedIn) {
       const cognitoUser = this.userpool.getCurrentUser();
       if (cognitoUser != null) {
@@ -165,6 +200,26 @@ export class AuthService {
       });
     }
     return isAuth;
+  }
+
+  private getCurrentUserSession(callback?: (err: any, session: CognitoUserSession) => void): void {
+    const cognitoUser = this.userpool.getCurrentUser();
+    if (!cognitoUser) {
+      console.warn('no cognito user, not logged in');
+      return;
+    }
+    cognitoUser.getSession((err: any, session: CognitoUserSession) => {
+      if (err) {
+        alert(err.message || JSON.stringify(err));
+      } else if (!session) {
+        alert(err.message || JSON.stringify(err));
+      } else {
+        this.setUser(session);
+      }
+      if (callback) {
+        callback(err, session);
+      }
+    });
   }
 
   private setUser(session: CognitoUserSession | undefined) {

@@ -5,6 +5,7 @@ import { SimpleModalService } from 'ngx-simple-modal';
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr';
 import { navigation } from './app-routing.module';
 import { AuthService } from './auth/auth.service';
+import { RegisterModalComponent } from './auth/register-modal/register-modal.component';
 import { SignInModalComponent } from './auth/sign-in-modal/sign-in-modal.component';
 import { ConfirmModalComponent } from './common/components/confirm-modal/confirm-modal.component';
 import { LocalStorageService } from './common/services/local-storage.service';
@@ -93,18 +94,29 @@ export class AppComponent implements OnInit {
     this.localStorageService.store('gettingStarted', 'hidden', false);
   }
 
-  public onLoginButtonClick(): void {
+  public onRegisterButtonClick(): void {
+    this.simpleModalService.addModal(RegisterModalComponent, {}).subscribe((result) => {
+      console.log(result);
+    });
+  }
+
+  public onSignInButtonClick(): void {
     this.simpleModalService.addModal(SignInModalComponent, {}).subscribe((result) => {
       console.log(result);
     });
   }
 
-  public onLogoutButtonClick(): void {
-    this.simpleModalService.addModal(ConfirmModalComponent).subscribe((confirmed) => {
-      if (confirmed) {
-        this.authService.signOut();
-      }
-    });
+  public onSignOutButtonClick(): void {
+    this.simpleModalService
+      .addModal(ConfirmModalComponent, {
+        title: 'Sign Out',
+        message: 'Are you sure you want to sign out?'
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.authService.signOut();
+        }
+      });
   }
 
   public cycleContainerStyle(): void {
