@@ -27,7 +27,7 @@
       <app-raid-lookup-v2></app-raid-lookup-v2>
     </app-card>
   </div>
-  <div class="right-container">
+  <div class="right-container" *ngIf="appConfig.advertisements">
     <ng2-adsense [fullWidthResponsive]="true"></ng2-adsense>
   </div>
 </div>

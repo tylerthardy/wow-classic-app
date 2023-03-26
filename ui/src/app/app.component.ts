@@ -11,6 +11,7 @@ import { ConfirmModalComponent } from './common/components/confirm-modal/confirm
 import { LocalStorageService } from './common/services/local-storage.service';
 import { RegionServerService } from './common/services/region-server.service';
 import { ThemeService } from './common/services/theme/theme.service';
+import { ToastService } from './common/services/toast/toast.service';
 import { AppConfig } from './config/app.config';
 
 export interface ContainerStyle {
@@ -43,7 +44,8 @@ export class AppComponent implements OnInit {
     public themeService: ThemeService,
     private simpleModalService: SimpleModalService,
     private appConfig: AppConfig,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -96,13 +98,15 @@ export class AppComponent implements OnInit {
 
   public onRegisterButtonClick(): void {
     this.simpleModalService.addModal(RegisterModalComponent, {}).subscribe((result) => {
-      console.log(result);
+      if (result) {
+        this.toastService.success('Account Created', 'Sign in with your username & password to get started');
+      }
     });
   }
 
   public onSignInButtonClick(): void {
     this.simpleModalService.addModal(SignInModalComponent, {}).subscribe((result) => {
-      console.log(result);
+      this.toastService.info('Signed In', 'Welcome!');
     });
   }
 

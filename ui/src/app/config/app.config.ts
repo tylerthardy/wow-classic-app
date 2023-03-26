@@ -7,6 +7,7 @@ import { CognitoConfig } from './cognito-config.interface';
 export class AppConfig {
   public apiUrl: string;
   public discordUrl: string;
+  public advertisements: boolean;
   public get maintenance(): boolean {
     if (this.localStorageService.get('maintenance', 'bypass')) {
       return false;
@@ -24,6 +25,7 @@ export class AppConfig {
     this.apiUrl = environment.apiUrl;
     this.discordUrl = environment.discordUrl;
     this._maintenance = environment.maintenance;
+    this.advertisements = environment.advertisements;
     this.addonDownloadUrl = environment.addonDownloadUrl;
     this.cognito = environment.cognito;
   }

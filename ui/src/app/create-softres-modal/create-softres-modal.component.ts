@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { SimpleModalComponent } from 'ngx-simple-modal';
 import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
 import { ItemData } from '../common/item-data.interface';
+import { ThemeService } from '../common/services/theme/theme.service';
 import { CreateSoftresModalData } from './create-softres-modal-data.interface';
 
 @Component({
@@ -18,7 +19,7 @@ export class CreateSoftresModalComponent
   hardReserveRecipient: string | undefined = undefined;
   softReserveCount: number = 1;
 
-  constructor() {
+  constructor(public themeService: ThemeService) {
     super();
   }
 

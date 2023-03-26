@@ -1,5 +1,5 @@
-import { HttpClientModule } from '@angular/common/http';
-import { ErrorHandler, NgModule } from '@angular/core';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ErrorHandler, Injector, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -9,6 +9,7 @@ import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 import { SafePipeModule } from 'safe-pipe';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AuthService } from './auth/auth.service';
 import { RegisterModalComponent } from './auth/register-modal/register-modal.component';
 import { SignInModalComponent } from './auth/sign-in-modal/sign-in-modal.component';
 import { CardComponent } from './common/components/card/card.component';
@@ -26,6 +27,7 @@ import { SvgIconComponent } from './common/components/svg-icon/svg-icon.componen
 import { WclLinkIconComponent } from './common/components/wcl-link-icon/wcl-link-icon.component';
 import { WowheadLinkComponent } from './common/components/wowhead-link/wowhead-link.component';
 import { GlobalErrorHandler } from './common/global-error-handler';
+import { GlobalHttpInterceptor } from './common/global-http-interceptor';
 import { MaintenanceAuthGuard } from './common/guards/maintenance.auth-guard';
 import { KonamiModule } from './common/konami/konami.module';
 import { AppConfig } from './config/app.config';
@@ -122,6 +124,12 @@ import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.com
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: GlobalHttpInterceptor,
+      multi: true,
+      deps: [AppConfig, AuthService, Injector]
     },
     MaintenanceAuthGuard
   ],

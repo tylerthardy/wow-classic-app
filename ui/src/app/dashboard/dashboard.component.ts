@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { environment } from '../../environments/environment';
+import { AppConfig } from '../config/app.config';
 import { PlayerLookupComponent } from '../player-lookup/player-lookup.component';
 
 @Component({
@@ -12,7 +13,7 @@ export class DashboardComponent implements OnInit {
   public konamiMode: boolean = false;
   @ViewChild('playerLookup') playerLookupRef!: PlayerLookupComponent;
 
-  constructor() {}
+  constructor(public appConfig: AppConfig) {}
 
   ngOnInit(): void {
     var dashboardContainer = document.getElementsByClassName('dashboard-container')[0] as HTMLDivElement;

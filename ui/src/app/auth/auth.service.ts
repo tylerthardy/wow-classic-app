@@ -165,41 +165,19 @@ export class AuthService {
 
   public async getToken(): Promise<string | undefined> {
     // FIXME: Could be refactored to use the getCurrentUserSession ... probably
-    if (this.isLoggedIn) {
-      const cognitoUser = this.userpool.getCurrentUser();
-      if (cognitoUser != null) {
-        return new Promise((resolve, reject) => {
-          cognitoUser.getSession((err: any, session: CognitoUserSession) => {
-            if (err) return reject(err);
-            this.setUser(session);
-            resolve(session.getIdToken().getJwtToken());
-          });
-        });
-      }
-    }
-    return Promise.resolve(undefined);
-  }
-
-  // FIXME: This should be set by the api middleware, not calculated in the property.
-  // The property calculation can cause the UI to spam cognito with requests because getSession will refresh a token
-  get isLoggedIn(): boolean {
-    let isAuth = false;
-
     const cognitoUser = this.userpool.getCurrentUser();
-
     if (cognitoUser != null) {
-      cognitoUser.getSession((err: any, session: CognitoUserSession) => {
-        if (err) {
-          alert(err.message || JSON.stringify(err));
-        } else if (!session) {
-          alert(err.message || JSON.stringify(err));
-        } else {
+      return new Promise((resolve, reject) => {
+        cognitoUser.getSession((err: any, session: CognitoUserSession) => {
+          if (err) return reject(err);
+          if (!session) return reject('no session');
           this.setUser(session);
-          isAuth = session.isValid();
-        }
+          resolve(session.getIdToken().getJwtToken());
+        });
       });
     }
-    return isAuth;
+    throw new Error('No user signed in');
+    // return Promise.resolve(undefined);
   }
 
   private getCurrentUserSession(callback?: (err: any, session: CognitoUserSession) => void): void {
