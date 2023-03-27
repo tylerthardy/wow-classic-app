@@ -42,7 +42,7 @@ export class ClassicCompanionAuthStack extends Stack {
     this.userpool.addClient('users-app-client', {
       userPoolClientName: 'users-app-client',
       authFlows: {
-        userPassword: true
+        userSrp: true
       }
     });
   }
