@@ -5,3 +5,9 @@ export interface JsonRaidPlayer {
   role: RaidPlayerRole;
   classFileName: string;
 }
+
+export interface JsonRaidPlayerV2 {
+  name: string;
+  roles: [number, number, number];
+  class: string;
+}

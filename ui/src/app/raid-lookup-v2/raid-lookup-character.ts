@@ -3,12 +3,14 @@ import { IGetMultipleCharacterZoneRankingsResponseItem } from '../common/service
 import { RankingMetric } from '../common/services/graphql';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidPlayerRole } from '../raid-lookup/raid-player-role.type';
-import { JsonRaidPlayer } from '../raid-lookup/raid-player.interface';
+import { JsonRaidPlayer, JsonRaidPlayerV2 } from '../raid-lookup/raid-player.interface';
 
-export class RaidLookupCharacter implements JsonRaidPlayer, IGetMultipleCharacterZoneRankingsResponseItem {
+const playerRoleLookup: RaidPlayerRole[] = ['TANK', 'HEALER', 'DAMAGER'];
+
+export class RaidLookupCharacter {
   public name: string;
   public role: RaidPlayerRole;
-  public classFileName: string; // TODO: Use class enum
+  public class: string; // TODO: Use class enum
   public metric: RankingMetric;
   public characterName: string;
   public lastUpdated?: number | undefined;
@@ -25,13 +27,30 @@ export class RaidLookupCharacter implements JsonRaidPlayer, IGetMultipleCharacte
 
   public lastUpdatedChanging: boolean = false;
 
-  constructor(player: JsonRaidPlayer, raidZoneAndSize: RaidZoneAndSize) {
+  constructor(player: JsonRaidPlayer | JsonRaidPlayerV2, raidZoneAndSize: RaidZoneAndSize) {
+    this.raidZoneAndSize = raidZoneAndSize;
+
     this.name = player.name;
     this.characterName = player.name; // FIXME: Shouldn't be duplicated
-    this.role = player.role;
-    this.classFileName = player.classFileName;
-    this.metric = this.getMetricFromRole(player.role);
-    this.raidZoneAndSize = raidZoneAndSize;
+    if (player.hasOwnProperty('roles')) {
+      player = player as JsonRaidPlayerV2;
+      this.class = player.class;
+      this.role = this.getFirstRoleFromArray(player.roles);
+    } else {
+      player = player as JsonRaidPlayer;
+      this.class = player.classFileName;
+      this.role = player.role;
+    }
+    this.metric = this.getMetricFromRole(this.role);
+  }
+
+  private getFirstRoleFromArray(roles: [number, number, number]): RaidPlayerRole {
+    for (let i = 0; i < roles.length; i++) {
+      if (roles[i] === 1) {
+        return playerRoleLookup[i];
+      }
+    }
+    return 'DAMAGER';
   }
 
   public updateRankingData(data: IGetMultipleCharacterZoneRankingsResponseItem): void {

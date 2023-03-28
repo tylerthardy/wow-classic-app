@@ -16,7 +16,7 @@ import { Theme } from '../common/services/theme/theme.type';
 import { ToastService } from '../common/services/toast/toast.service';
 import { ParseUtil } from '../common/utils';
 import { RaidPlayerRole } from '../raid-lookup/raid-player-role.type';
-import { JsonRaidPlayer } from '../raid-lookup/raid-player.interface';
+import { JsonRaidPlayer, JsonRaidPlayerV2 } from '../raid-lookup/raid-player.interface';
 import { RaidLookupCharacter } from './raid-lookup-character';
 
 @Component({
@@ -79,7 +79,7 @@ export class RaidLookupV2Component implements OnInit {
   }
 
   public searchRaid(json: string): void {
-    let importedCharacters: JsonRaidPlayer[];
+    let importedCharacters: JsonRaidPlayer[] | JsonRaidPlayerV2[];
     try {
       importedCharacters = JSON.parse(json);
     } catch (err) {
@@ -122,7 +122,7 @@ export class RaidLookupV2Component implements OnInit {
       const query: ZoneRankingsQuery = {
         characterName: raidCharacter.name,
         metric: raidCharacter.metric,
-        classFileName: raidCharacter.classFileName,
+        classFileName: raidCharacter.class,
         role: raidCharacter.role,
         serverRegion: this.regionServerService.regionServer.regionSlug,
         serverSlug: this.regionServerService.regionServer.serverSlug,
@@ -168,9 +168,7 @@ export class RaidLookupV2Component implements OnInit {
   ): RaidLookupCharacter[] {
     let resultingData: RaidLookupCharacter[] = Object.assign([], this.characters);
     if (classFilter) {
-      resultingData = resultingData.filter(
-        (d) => !d.classFileName || d.classFileName === classFilter.getClassFileName()
-      );
+      resultingData = resultingData.filter((d) => !d.class || d.class === classFilter.getClassFileName());
     }
     if (roleFilter) {
       resultingData = resultingData.filter((d) => !d.role || d.role === roleFilter);
@@ -219,11 +217,12 @@ export class RaidLookupV2Component implements OnInit {
         sortType: 'string',
         style: {
           cursor: 'pointer'
-        }
+        },
+        onClick: (value: string) => this.onCharacterNameClick(value)
       },
       {
         label: 'Class',
-        valueKey: 'classFileName',
+        valueKey: 'class',
         sortType: 'string'
       },
       {

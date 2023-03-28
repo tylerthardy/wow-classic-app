@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  // apiUrl: 'http://localhost:3000',
-  apiUrl: 'https://6zdrton9kb.execute-api.us-east-1.amazonaws.com/prod',
+  apiUrl: 'http://localhost:3000',
+  // apiUrl: 'https://6zdrton9kb.execute-api.us-east-1.amazonaws.com/prod',
   discordUrl: 'https://discord.gg/dJ8YvKn8AR',
   addonDownloadUrl: 'https://wowclassicapp-addon.s3.amazonaws.com/GroupMembersExporter.zip',
   maintenance: true,

@@ -77,6 +77,14 @@ export class RaidLookupComponent implements OnInit, OnChanges {
       return;
     }
 
+    if (players.find((player) => player.hasOwnProperty('roles'))) {
+      this.toastService.warn(
+        'Unsupported Data',
+        'The data is in a new format, and can only be used with the new Raid Lookup.'
+      );
+      return;
+    }
+
     this.importJson = json;
 
     // FIXME: Jesus, look at this method
