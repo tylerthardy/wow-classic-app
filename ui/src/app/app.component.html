@@ -3,21 +3,26 @@
     <header>
       <app-svg-icon class="svg-button" iconName="hamburger" size="18px" (click)="onHamburgerClick()"></app-svg-icon>
       <span style="margin-right: 10px; font-size: 16px">WoW Classic App</span>
-      <app-server-selection [(ngModel)]="regionServerService.regionServer"></app-server-selection>
+      <app-server-selection
+        *ngIf="!appConfig.maintenance"
+        [(ngModel)]="regionServerService.regionServer"
+      ></app-server-selection>
       <div class="header-button-bar">
         <app-svg-icon class="svg-button" iconName="discord" size="18px" (click)="onDiscordClick()"></app-svg-icon>
         <button (click)="onDownloadButtonClick()">Download Addon</button>
         <!-- <button (click)="cycleContainerStyle()">{{ nextContainerStyle }}</button> -->
-        <button class="emoji" (click)="onGettingStartedClick()">❔</button>
+        <button *ngIf="!appConfig.maintenance" class="emoji" (click)="onGettingStartedClick()">❔</button>
         <button class="emoji" (click)="onToggleThemeClick()">
           {{ themeService.theme === 'light' ? '🌞' : '🌙' }}
         </button>
-        <button *ngIf="!authService.user" (click)="onRegisterButtonClick()">
-          Register <span class="free-emphasis">Free!</span>
-        </button>
-        <button *ngIf="!authService.user" (click)="onSignInButtonClick()">Sign In</button>
-        <span style="display: inline-block" *ngIf="authService.user">{{ authService.user.name }}</span>
-        <button *ngIf="authService.user" (click)="onSignOutButtonClick()">Sign Out</button>
+        <ng-container *ngIf="!appConfig.maintenance">
+          <button *ngIf="!authService.user" (click)="onRegisterButtonClick()">
+            Register <span class="free-emphasis">Free!</span>
+          </button>
+          <button *ngIf="!authService.user" (click)="onSignInButtonClick()">Sign In</button>
+          <span style="display: inline-block" *ngIf="authService.user">{{ authService.user.name }}</span>
+          <button *ngIf="authService.user" (click)="onSignOutButtonClick()">Sign Out</button>
+        </ng-container>
       </div>
     </header>
     <div id="main">

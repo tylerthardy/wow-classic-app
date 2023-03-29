@@ -20,6 +20,7 @@
     "@angular/platform-browser-dynamic": "^14.0.0",
     "@angular/router": "^14.0.0",
     "@apollo/client": "^3.7.7",
+    "@aws-amplify/auth": "^5.2.0",
     "amazon-cognito-identity-js": "^6.1.2",
     "apollo-angular": "^4.1.0",
     "classic-companion-core": "*",

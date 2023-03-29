@@ -7,6 +7,9 @@ import { environment } from './environments/environment';
 
 if (environment.production) {
   enableProdMode();
+} else {
+  // Amplify debugging
+  (window as any).LOG_LEVEL = 'DEBUG';
 }
 
 platformBrowserDynamic()

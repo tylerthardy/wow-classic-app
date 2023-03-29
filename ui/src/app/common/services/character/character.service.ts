@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuthService } from '../../../auth/auth.service';
 import { AppConfig } from '../../../config/app.config';
 import { ZoneRankingsQuery } from '../graphql';
 import { IGetCharacterZoneRankingsResponse } from './get-character-zone-rankings-response.interface';
@@ -11,7 +10,7 @@ import { IGetMultipleCharacterZoneRankingsResponse } from './get-multiple-charac
   providedIn: 'root'
 })
 export class CharacterService {
-  constructor(private config: AppConfig, private authService: AuthService, private http: HttpClient) {}
+  constructor(private config: AppConfig, private http: HttpClient) {}
 
   public getZoneRankings(query: ZoneRankingsQuery): Observable<IGetCharacterZoneRankingsResponse> {
     const url: string = `${this.config.apiUrl}/character`;

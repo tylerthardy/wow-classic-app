@@ -1,5 +1,11 @@
 import { Duration, Stack, StackProps } from 'aws-cdk-lib';
-import { AuthorizationType, CognitoUserPoolsAuthorizer, Cors, LambdaRestApi } from 'aws-cdk-lib/aws-apigateway';
+import {
+  AuthorizationType,
+  CfnMethod,
+  CognitoUserPoolsAuthorizer,
+  Cors,
+  LambdaRestApi
+} from 'aws-cdk-lib/aws-apigateway';
 import { UserPool } from 'aws-cdk-lib/aws-cognito';
 import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb';
 import { ManagedPolicy } from 'aws-cdk-lib/aws-iam';
@@ -8,7 +14,7 @@ import { Construct } from 'constructs';
 import path = require('path');
 
 export class ClassicCompanionApiStack extends Stack {
-  constructor(scope: Construct, id: string, userpool: UserPool, props?: StackProps) {
+  constructor(scope: Construct, id: string, userpool: UserPool, apiScopeName: string, props?: StackProps) {
     super(scope, id, props);
     this.validateEnvironmentVariables();
 
@@ -38,10 +44,22 @@ export class ClassicCompanionApiStack extends Stack {
       handler: handlerLambda,
       defaultMethodOptions: {
         authorizationType: AuthorizationType.COGNITO,
-        authorizer
+        authorizer,
+        authorizationScopes: [apiScopeName]
       },
       defaultCorsPreflightOptions: { allowOrigins: Cors.ALL_ORIGINS }
     });
+    // Hack to get around preflight + authorizer
+    // https://github.com/aws/aws-cdk/issues/8615
+    apiGateway.methods
+      .filter((method) => method.httpMethod === 'OPTIONS')
+      .forEach((method) => {
+        const methodCfn = method.node.defaultChild as CfnMethod;
+        methodCfn.authorizationType = AuthorizationType.NONE;
+        methodCfn.authorizerId = undefined;
+        methodCfn.authorizationScopes = undefined;
+        methodCfn.apiKeyRequired = false;
+      });
   }
 
   private validateEnvironmentVariables(): void {

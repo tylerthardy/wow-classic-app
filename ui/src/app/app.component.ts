@@ -5,13 +5,10 @@ import { SimpleModalService } from 'ngx-simple-modal';
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr';
 import { navigation } from './app-routing.module';
 import { AuthService } from './auth/auth.service';
-import { RegisterModalComponent } from './auth/register-modal/register-modal.component';
-import { SignInModalComponent } from './auth/sign-in-modal/sign-in-modal.component';
 import { ConfirmModalComponent } from './common/components/confirm-modal/confirm-modal.component';
 import { LocalStorageService } from './common/services/local-storage.service';
 import { RegionServerService } from './common/services/region-server.service';
 import { ThemeService } from './common/services/theme/theme.service';
-import { ToastService } from './common/services/toast/toast.service';
 import { AppConfig } from './config/app.config';
 
 export interface ContainerStyle {
@@ -42,13 +39,14 @@ export class AppComponent implements OnInit {
     public localStorageService: LocalStorageService,
     public regionServerService: RegionServerService,
     public themeService: ThemeService,
+    public appConfig: AppConfig,
     private simpleModalService: SimpleModalService,
-    private appConfig: AppConfig,
-    private toastrService: ToastrService,
-    private toastService: ToastService
+    private toastrService: ToastrService
   ) {}
 
   ngOnInit() {
+    this.authService.initialize();
+
     // FIXME: Initialize somewhere higher?
     TimeAgo.addDefaultLocale(en);
 
@@ -97,17 +95,11 @@ export class AppComponent implements OnInit {
   }
 
   public onRegisterButtonClick(): void {
-    this.simpleModalService.addModal(RegisterModalComponent, {}).subscribe((result) => {
-      if (result) {
-        this.toastService.success('Account Created', 'Sign in with your username & password to get started');
-      }
-    });
+    this.authService.signUp();
   }
 
   public onSignInButtonClick(): void {
-    this.simpleModalService.addModal(SignInModalComponent, {}).subscribe((result) => {
-      this.toastService.info('Signed In', 'Welcome!');
-    });
+    this.authService.signIn();
   }
 
   public onSignOutButtonClick(): void {

@@ -23,5 +23,6 @@ export class MaintenanceComponent implements OnInit {
 
   public onKonami() {
     this.localStorageService.store('maintenance', 'bypass', true);
+    this.router.navigate(['/']);
   }
 }
