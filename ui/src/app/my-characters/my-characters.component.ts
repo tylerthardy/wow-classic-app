@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IWowSimsExport, Specialization, WowClass } from 'classic-companion-core';
 import { SimpleModalService } from 'ngx-simple-modal';
+import { finalize } from 'rxjs';
 import { LocalStorageService } from '../common/services/local-storage.service';
 import { SpecializationService } from '../common/services/specialization/specialization.service';
 import { ToastService } from '../common/services/toast/toast.service';
@@ -22,6 +23,7 @@ export class MyCharactersComponent {
   public selectedCharacterIndex: number = 0;
   public myCharacters: Character[] = [];
   public selectedSet?: IWowSimsExport;
+  public gearSetsLoading: boolean = false;
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -109,10 +111,13 @@ export class MyCharactersComponent {
     if (!character) {
       return;
     }
-    this.specializationService.getBis(new Specialization(character.specialization)).subscribe((sets) => {
-      this.compareSets = sets;
-      this.selectedSet = this.compareSets[0];
-    });
+    this.specializationService
+      .getBis(new Specialization(character.specialization))
+      .pipe(finalize(() => (this.gearSetsLoading = false)))
+      .subscribe((sets) => {
+        this.compareSets = sets;
+        this.selectedSet = this.compareSets[0];
+      });
   }
 
   private setSelectedCharacter(characterIndex: number) {

@@ -25,6 +25,7 @@
       [(ngModel)]="selectedSet"
     ></app-dropdown>
   </div>
+  <div *ngIf="gearSetsLoading" class="loading-spinner"></div>
   <app-my-character-gear-compare
     [compareGear]="selectedSet?.gear"
     [myGear]="myCharacters[selectedCharacterIndex].gear"
