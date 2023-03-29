@@ -7,7 +7,7 @@ export const environment = {
   apiUrl: 'http://localhost:3000',
   discordUrl: 'https://discord.gg/dJ8YvKn8AR',
   addonDownloadUrl: 'https://wowclassicapp-addon.s3.amazonaws.com/GroupMembersExporter.zip',
-  maintenance: true,
+  maintenance: false,
   advertisements: false,
   cognito: {
     userPoolId: 'us-east-1_ilRzncdYc',

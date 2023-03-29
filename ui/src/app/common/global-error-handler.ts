@@ -8,9 +8,18 @@ export class GlobalErrorHandler implements ErrorHandler {
   constructor(private injector: Injector) {}
 
   handleError(error: any): void {
-    console.error(error);
     const errorMessage: string = error.message ?? error;
     const toastService: ToastService = this.injector.get(ToastService);
+    console.error(error);
+
+    // FIXME: A bit of a hacky way to check the error type
+    if (errorMessage === 'Unauthenticated WCA Request') {
+      toastService.warn('Unauthenticated', 'Please sign in to use this feature', {
+        onActivateTick: true
+      });
+      return;
+    }
+
     toastService.error('Unhandled Error', errorMessage, {
       onActivateTick: true
     });

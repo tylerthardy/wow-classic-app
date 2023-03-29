@@ -41,15 +41,12 @@ export class AuthService {
     this.getSession().subscribe();
   }
 
-  public getToken(): Observable<string | undefined> {
-    return this.getAccessToken();
-  }
-
   public getAccessToken(): Observable<string | undefined> {
+    // Check to see the user is signed in
     if (!this.user) {
-      return throwError(() => 'no user session to obtain token');
+      return throwError(() => 'No user session to obtain token');
     }
-    // This performs a refresh on the token
+    // Using getSession performs a refresh on the token if expired, rather than pulling from cached this.user
     return this.getSession().pipe(map((session) => session?.getAccessToken().getJwtToken()));
   }
 

@@ -28,6 +28,7 @@ import { GlobalErrorHandler } from './common/global-error-handler';
 import { GlobalHttpInterceptor } from './common/global-http-interceptor';
 import { MaintenanceAuthGuard } from './common/guards/maintenance.auth-guard';
 import { KonamiModule } from './common/konami/konami.module';
+import { ToastService } from './common/services/toast/toast.service';
 import { AppConfig } from './config/app.config';
 import { CreateSoftresModalComponent } from './create-softres-modal/create-softres-modal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -125,7 +126,7 @@ import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.com
       provide: HTTP_INTERCEPTORS,
       useClass: GlobalHttpInterceptor,
       multi: true,
-      deps: [AppConfig, AuthService, Injector]
+      deps: [AppConfig, ToastService, AuthService, Injector]
     },
     MaintenanceAuthGuard
   ],

@@ -1,12 +1,13 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { from, mergeMap, Observable, throwError } from 'rxjs';
+import { catchError, mergeMap, Observable, throwError } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { AppConfig } from '../config/app.config';
+import { ToastService } from './services/toast/toast.service';
 
 @Injectable()
 export class GlobalHttpInterceptor implements HttpInterceptor {
-  constructor(private appConfig: AppConfig, private authService: AuthService) {}
+  constructor(private appConfig: AppConfig, private toastService: ToastService, private authService: AuthService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.isWcaApiRequest(request)) {
@@ -20,9 +21,19 @@ export class GlobalHttpInterceptor implements HttpInterceptor {
   }
 
   private getRequestWithCognitoAuth(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return from(this.authService.getToken()).pipe(
+    return this.authService.getAccessToken().pipe(
+      catchError((err, caught) => {
+        // FIXME: A bit of a hacky way to check error type
+        if (err === 'No user session to obtain token') {
+          return throwError(() => new Error('Unauthenticated WCA Request'));
+        } else {
+          console.error('Unhandled error while retrieving token fron authService', err);
+          return throwError(() => err);
+        }
+      }),
       mergeMap((token: string | undefined) => {
-        if (!token) return throwError(() => 'undefined token');
+        // FIXME: Unlikely state because token will rarely be undefined; see line 50 in AuthService
+        if (!token) return throwError(() => new Error('Unauthenticated WCA Request'));
         return next.handle(
           request.clone({
             setHeaders: {
