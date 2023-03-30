@@ -3,8 +3,11 @@ import {
   AccountRecovery,
   DateTimeAttribute,
   OAuthScope,
+  ProviderAttribute,
   ResourceServerScope,
   UserPool,
+  UserPoolClientIdentityProvider,
+  UserPoolIdentityProviderGoogle,
   VerificationEmailStyle
 } from 'aws-cdk-lib/aws-cognito';
 import { Construct } from 'constructs';
@@ -47,6 +50,8 @@ export class ClassicCompanionAuthStack extends Stack {
       removalPolicy: RemovalPolicy.DESTROY
     });
 
+    this.userpool.registerIdentityProvider(this.getGoogleIdp(this.userpool));
+
     this.userpool.addDomain('cognito-domain', {
       cognitoDomain: {
         domainPrefix: 'wowclassicapp'
@@ -73,11 +78,36 @@ export class ClassicCompanionAuthStack extends Stack {
         scopes: [this.apiOauthScope, OAuthScope.OPENID, OAuthScope.PROFILE],
         callbackUrls: callbackUrls
       },
+      supportedIdentityProviders: [UserPoolClientIdentityProvider.GOOGLE, UserPoolClientIdentityProvider.COGNITO],
       accessTokenValidity: Duration.minutes(60),
       idTokenValidity: Duration.minutes(60),
       refreshTokenValidity: Duration.days(30)
     });
   }
 
-  private validateEnvironmentVariables(): void {}
+  private getGoogleIdp(userPool: UserPool): UserPoolIdentityProviderGoogle {
+    return new UserPoolIdentityProviderGoogle(this, 'google-idp', {
+      userPool,
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+
+      // Email scope is required, because the default is 'profile' and that doesn't allow Cognito
+      // to fetch the user's email from his Google account after the user does an SSO with Google
+      scopes: ['email'],
+
+      // Map fields from the user's Google profile to Cognito user fields, when the user is auto-provisioned
+      attributeMapping: {
+        email: ProviderAttribute.GOOGLE_EMAIL
+      }
+    });
+  }
+
+  private validateEnvironmentVariables(): void {
+    if (!process.env.GOOGLE_CLIENT_ID) {
+      throw new Error('GOOGLE_CLIENT_ID missing');
+    }
+    if (!process.env.GOOGLE_CLIENT_SECRET) {
+      throw new Error('GOOGLE_CLIENT_SECRET missing');
+    }
+  }
 }
