@@ -41,11 +41,21 @@
   top: 2px;
   left: 4px;
   pointer-events: none;
-  width: 100%;
+  width: calc(100% - 12px);
   height: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.clear-button {
+  cursor: pointer;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+}
+.clear-button:hover {
+  color: #ff8080;
 }
 
 input:not(:focus) {
