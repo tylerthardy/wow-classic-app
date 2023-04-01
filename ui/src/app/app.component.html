@@ -1,4 +1,4 @@
-<div class="full-wrapper" [ngClass]="themeService.getThemeClass()">
+<div class="full-wrapper" appTheme>
   <div class="wrapper" [ngClass]="containerStyles[containerStyle].cssClass">
     <header>
       <app-svg-icon class="svg-button" iconName="hamburger" size="18px" (click)="onHamburgerClick()"></app-svg-icon>

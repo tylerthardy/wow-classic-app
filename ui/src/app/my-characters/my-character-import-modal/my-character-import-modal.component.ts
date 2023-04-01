@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Specialization, WowClass } from 'classic-companion-core';
 import { SimpleModalComponent } from 'ngx-simple-modal';
 import { RankingMetric } from '../../common/services/graphql';
-import { ThemeService } from '../../common/services/theme/theme.service';
 import { IMyCharacterImportModalInput } from './my-character-import-modal-input.interface';
 import { IMyCharacterImportModalOutput } from './my-character-import-modal-output.interface';
 
@@ -22,7 +21,7 @@ export class MyCharacterImportModalComponent
 
   public metricOptions: RankingMetric[] = ['dps', 'hps'];
 
-  constructor(public themeService: ThemeService) {
+  constructor() {
     super();
   }
 
