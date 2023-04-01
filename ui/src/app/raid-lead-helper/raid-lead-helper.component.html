@@ -23,13 +23,24 @@
       <button class="chunky-btn" (click)="onCheckPlayerClick()">Check Player</button>
       <button class="chunky-btn" (click)="onCheckRaidClick()">Check Raid</button>
       <button class="chunky-btn" (click)="onCreateSoftresClick()">Create Softres</button>
+      <button class="chunky-btn" (click)="onCopySoftresClick()">Copy Softres</button>
       <button
         class="chunky-btn"
         style="float: right"
         [class]="isRecopyAfterPaste ? 'toggle-btn enabled' : 'toggle-btn'"
         (click)="onToggleRecopyAfterPaste()"
+        title="Recopy Spam After Paste"
       >
-        Recopy After Paste
+        Paste &gt; Recopy
+      </button>
+      <button
+        class="chunky-btn"
+        style="float: right"
+        [class]="isStoreBeforeCopy ? 'toggle-btn enabled' : 'toggle-btn'"
+        (click)="onToggleStoreBeforeCopy()"
+        title="Store Clipboard Before Copy"
+      >
+        Store &gt; Copy
       </button>
       <button class="chunky-btn" style="float: right" (click)="onStoreClipboard()">Store Clipboard to Spam</button>
       <button style="float: right" class="chunky-btn" (click)="onCopySpamClick()">Copy Spam</button>
