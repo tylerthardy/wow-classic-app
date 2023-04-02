@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {
+  IGetCharacterZoneRankingsRequest,
   IGetCharacterZoneRankingsResponse,
   RankingMetric,
   RankingMetricValues,
@@ -8,7 +9,6 @@ import {
 import { finalize, forkJoin, Observable } from 'rxjs';
 import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
 import { CharacterService } from '../common/services/character/character.service';
-import { ZoneRankingsQuery } from '../common/services/graphql';
 import { RaidSize } from '../common/services/raids/raid-size.type';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';
@@ -118,7 +118,7 @@ export class PlayerLookupComponent implements OnInit {
   }
 
   private getSearchObservable(zoneId: number, size: RaidSize): Observable<IGetCharacterZoneRankingsResponse> {
-    const request: ZoneRankingsQuery = {
+    const request: IGetCharacterZoneRankingsRequest = {
       characterName: this.characterNameInput!,
       metric: this.metricInput!,
       serverRegion: this.regionServerService.regionServer.regionSlug!,

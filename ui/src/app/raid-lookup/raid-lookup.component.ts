@@ -1,9 +1,13 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { IGetMultipleCharacterZoneRankingsResponse, RankingMetric, WowClass } from 'classic-companion-core';
+import {
+  IGetCharacterZoneRankingsRequest,
+  IGetMultipleCharacterZoneRankingsResponse,
+  RankingMetric,
+  WowClass
+} from 'classic-companion-core';
 import { finalize } from 'rxjs';
 import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
 import { CharacterService } from '../common/services/character/character.service';
-import { ZoneRankingsQuery } from '../common/services/graphql';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';
 import { RegionServerService } from '../common/services/region-server.service';
@@ -104,8 +108,8 @@ export class RaidLookupComponent implements OnInit, OnChanges {
     }
     const raidZoneAndSize: RaidZoneAndSize = this.raidService.getZoneAndSize(raidSlugs[0]);
 
-    const queries: ZoneRankingsQuery[] = players.map((player) => {
-      const query: ZoneRankingsQuery = {
+    const queries: IGetCharacterZoneRankingsRequest[] = players.map((player) => {
+      const query: IGetCharacterZoneRankingsRequest = {
         characterName: player.name,
         metric: this.getMetricFromRole(player.role),
         classFileName: player.classFileName,

@@ -1,6 +1,6 @@
 import { Directive, ElementRef } from '@angular/core';
-import { ThemeService } from '../services/theme/theme.service';
-import { Theme } from '../services/theme/theme.type';
+import { ThemeService } from '../../services/theme/theme.service';
+import { Theme } from '../../services/theme/theme.type';
 
 @Directive({
   selector: '[appTheme]'

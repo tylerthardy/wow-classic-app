@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
+  IGetCharacterZoneRankingsRequest,
   IGetCharacterZoneRankingsResponse,
   IGetMultipleCharacterZoneRankingsResponse,
   WowClass
@@ -8,7 +9,6 @@ import { finalize } from 'rxjs';
 import { ColumnSpecification } from '../common/components/grid/grid.component';
 import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
 import { CharacterService } from '../common/services/character/character.service';
-import { ZoneRankingsQuery } from '../common/services/graphql';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';
 import { RegionServerService } from '../common/services/region-server.service';
@@ -116,12 +116,12 @@ export class RaidLookupV2Component implements OnInit {
 
     this.clearCharacterData();
 
-    let queries: ZoneRankingsQuery[] = [];
+    let queries: IGetCharacterZoneRankingsRequest[] = [];
     for (let importedCharacter of importedCharacters) {
       const raidCharacter: RaidLookupCharacter = new RaidLookupCharacter(importedCharacter, raidZoneAndSize);
       this.characters.push(raidCharacter);
 
-      const query: ZoneRankingsQuery = {
+      const query: IGetCharacterZoneRankingsRequest = {
         characterName: raidCharacter.name,
         metric: raidCharacter.metric,
         classFileName: raidCharacter.class,
@@ -184,7 +184,7 @@ export class RaidLookupV2Component implements OnInit {
 
   private onLastUpdatedRefreshClick(character: RaidLookupCharacter): void {
     character.lastUpdatedChanging = true;
-    const query: ZoneRankingsQuery = {
+    const query: IGetCharacterZoneRankingsRequest = {
       characterName: character.characterName,
       serverSlug: this.regionServerService.regionServer.serverSlug!,
       serverRegion: this.regionServerService.regionServer.regionSlug!,

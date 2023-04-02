@@ -7,7 +7,6 @@ import {
 } from 'classic-companion-core';
 import { Observable } from 'rxjs';
 import { AppConfig } from '../../../config/app.config';
-import { ZoneRankingsQuery } from '../graphql';
 import { RegionServerService } from '../region-server.service';
 
 @Injectable({
@@ -26,12 +25,14 @@ export class CharacterService {
     return this.http.post<IGetCharacterZoneRankingsResponse>(url, request);
   }
 
-  public getZoneRankingsV1(query: ZoneRankingsQuery): Observable<IGetCharacterZoneRankingsResponse> {
+  public getZoneRankingsV1(query: IGetCharacterZoneRankingsRequest): Observable<IGetCharacterZoneRankingsResponse> {
     const url: string = `${this.config.apiUrl}/character`;
     return this.http.post<IGetCharacterZoneRankingsResponse>(url, query);
   }
 
-  public getMultipleZoneRankings(queries: ZoneRankingsQuery[]): Observable<IGetMultipleCharacterZoneRankingsResponse> {
+  public getMultipleZoneRankings(
+    queries: IGetCharacterZoneRankingsRequest[]
+  ): Observable<IGetMultipleCharacterZoneRankingsResponse> {
     const url: string = `${this.config.apiUrl}/character/multiple`;
     // FIXME: Use imported interface type
     const body = {

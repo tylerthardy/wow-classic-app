@@ -24,10 +24,11 @@ import { ServerSelectionComponent } from './common/components/server-selection/s
 import { SvgIconComponent } from './common/components/svg-icon/svg-icon.component';
 import { WclLinkIconComponent } from './common/components/wcl-link-icon/wcl-link-icon.component';
 import { WowheadLinkComponent } from './common/components/wowhead-link/wowhead-link.component';
+import { KonamiModule } from './common/directives/konami/konami.module';
+import { ThemeDirective } from './common/directives/theme/theme.directive';
 import { GlobalErrorHandler } from './common/global-error-handler';
 import { GlobalHttpInterceptor } from './common/global-http-interceptor';
 import { MaintenanceAuthGuard } from './common/guards/maintenance.auth-guard';
-import { KonamiModule } from './common/konami/konami.module';
 import { ToastService } from './common/services/toast/toast.service';
 import { AppConfig } from './config/app.config';
 import { CreateSoftresModalComponent } from './create-softres-modal/create-softres-modal.component';
@@ -50,7 +51,6 @@ import { SoftresManagerComponent } from './softres-manager/softres-manager.compo
 import { SpecializationDataComponent } from './specialization-data/specialization-data.component';
 import { SpecializationIconComponent } from './specialization-icon/specialization-icon.component';
 import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.component';
-import { ThemeDirective } from './common/directives/theme.directive';
 
 @NgModule({
   declarations: [

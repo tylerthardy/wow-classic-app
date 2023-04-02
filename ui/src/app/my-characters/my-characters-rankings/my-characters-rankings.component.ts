@@ -1,9 +1,8 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { IGetCharacterZoneRankingsResponse } from 'classic-companion-core';
+import { IGetCharacterZoneRankingsRequest, IGetCharacterZoneRankingsResponse } from 'classic-companion-core';
 import { finalize, forkJoin, Observable } from 'rxjs';
 import { RaidAndSizeSelection } from '../../common/components/raid-size-selection/raid-and-size-selection';
 import { CharacterService } from '../../common/services/character/character.service';
-import { ZoneRankingsQuery } from '../../common/services/graphql';
 import { RaidService } from '../../common/services/raids/raid.service';
 import { RegionServerService } from '../../common/services/region-server.service';
 import { SoftresRaidSlug } from '../../common/services/softres/softres-raid-slug';
@@ -52,7 +51,7 @@ export class MyCharactersRankingsComponent implements OnInit {
         );
       }
       const zoneAndSize = this.raidService.getZoneAndSize(slug);
-      const request: ZoneRankingsQuery = {
+      const request: IGetCharacterZoneRankingsRequest = {
         characterName: character.name,
         serverSlug: this.regionServerService.regionServer.serverSlug!,
         serverRegion: this.regionServerService.regionServer.regionSlug!,

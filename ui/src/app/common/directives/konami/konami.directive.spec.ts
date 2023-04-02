@@ -1,6 +1,6 @@
 import { KonamiDirective } from './konami.directive';
 describe('Konami2irective', () => {
-  let directive;
+  let directive: any;
   beforeEach(() => {
     directive = new KonamiDirective();
   });

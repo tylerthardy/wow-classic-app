@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { RankingMetric, RankingMetricValues } from 'classic-companion-core';
+import { IGetCharacterZoneRankingsRequest, RankingMetric, RankingMetricValues } from 'classic-companion-core';
 import { finalize, forkJoin } from 'rxjs';
 import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
 import { CharacterService } from '../common/services/character/character.service';
-import { ZoneRankingsQuery } from '../common/services/graphql';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';
 import { RegionServerService } from '../common/services/region-server.service';
@@ -80,7 +79,7 @@ export class PlayerComparisonComponent implements OnInit {
       return;
     }
     const theme: Theme = this.themeService.theme;
-    const queries: ZoneRankingsQuery[] = [
+    const queries: IGetCharacterZoneRankingsRequest[] = [
       {
         characterName: player1Name,
         metric: this.metricInput,
