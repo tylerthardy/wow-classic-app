@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { IGetCharacterZoneRankingsRequest, RankingMetric, RankingMetricValues } from 'classic-companion-core';
+import { RankingMetric, RankingMetricValues } from 'classic-companion-core';
 import { finalize, forkJoin } from 'rxjs';
 import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
 import { CharacterService } from '../common/services/character/character.service';
+import { IGetCharacterZoneRankings } from '../common/services/character/get-character-zone-rankings.interface';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';
-import { RegionServerService } from '../common/services/region-server.service';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { ThemeService } from '../common/services/theme/theme.service';
 import { Theme } from '../common/services/theme/theme.type';
@@ -34,7 +34,6 @@ export class PlayerComparisonComponent implements OnInit {
     private toastService: ToastService,
     private raidService: RaidService,
     private characterService: CharacterService,
-    private regionServerService: RegionServerService,
     private themeService: ThemeService
   ) {}
 
@@ -73,26 +72,17 @@ export class PlayerComparisonComponent implements OnInit {
     const zonesAndSizes: RaidZoneAndSize[] = instanceSlugs.map((instanceSlug: SoftresRaidSlug) =>
       this.raidService.getZoneAndSize(instanceSlug)
     );
-    // TODO: Move the region logic into the character service since its required by all character calls
-    if (!this.regionServerService.regionServer.regionSlug || !this.regionServerService.regionServer.serverSlug) {
-      this.toastService.warn('Invalid Server', 'Choose your server at top of page');
-      return;
-    }
     const theme: Theme = this.themeService.theme;
-    const queries: IGetCharacterZoneRankingsRequest[] = [
+    const queries: IGetCharacterZoneRankings[] = [
       {
         characterName: player1Name,
         metric: this.metricInput,
-        serverRegion: this.regionServerService.regionServer.regionSlug!,
-        serverSlug: this.regionServerService.regionServer.serverSlug!,
         size: zonesAndSizes[0].size,
         zoneId: zonesAndSizes[0].zoneId
       },
       {
         characterName: player2Name,
         metric: this.metricInput,
-        serverRegion: this.regionServerService.regionServer.regionSlug!,
-        serverSlug: this.regionServerService.regionServer.serverSlug!,
         size: zonesAndSizes[0].size,
         zoneId: zonesAndSizes[0].zoneId
       }

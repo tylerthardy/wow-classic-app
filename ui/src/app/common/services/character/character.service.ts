@@ -3,19 +3,31 @@ import { Injectable } from '@angular/core';
 import {
   IGetCharacterZoneRankingsRequest,
   IGetCharacterZoneRankingsResponse,
+  IGetMultipleCharacterZoneRankingsRequest,
   IGetMultipleCharacterZoneRankingsResponse
 } from 'classic-companion-core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AppConfig } from '../../../config/app.config';
 import { RegionServerService } from '../region-server.service';
+import { ToastService } from '../toast/toast.service';
+import { IGetCharacterZoneRankings } from './get-character-zone-rankings.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CharacterService {
-  constructor(private config: AppConfig, private regionServerService: RegionServerService, private http: HttpClient) {}
+  constructor(
+    private config: AppConfig,
+    private toastService: ToastService,
+    private regionServerService: RegionServerService,
+    private http: HttpClient
+  ) {}
 
-  public getZoneRankings(query: IGetCharacterZoneRankingsRequest): Observable<IGetCharacterZoneRankingsResponse> {
+  public getZoneRankings(query: IGetCharacterZoneRankings): Observable<IGetCharacterZoneRankingsResponse> {
+    if (!this.regionServerService.regionServer.regionSlug || !this.regionServerService.regionServer.serverSlug) {
+      this.toastService.warn('Invalid Server', 'Choose your server at top of page');
+      return of();
+    }
     const url: string = `${this.config.apiUrl}/character`;
     const request: IGetCharacterZoneRankingsRequest = {
       ...query,
@@ -25,18 +37,21 @@ export class CharacterService {
     return this.http.post<IGetCharacterZoneRankingsResponse>(url, request);
   }
 
-  public getZoneRankingsV1(query: IGetCharacterZoneRankingsRequest): Observable<IGetCharacterZoneRankingsResponse> {
-    const url: string = `${this.config.apiUrl}/character`;
-    return this.http.post<IGetCharacterZoneRankingsResponse>(url, query);
-  }
-
   public getMultipleZoneRankings(
-    queries: IGetCharacterZoneRankingsRequest[]
+    queries: IGetCharacterZoneRankings[]
   ): Observable<IGetMultipleCharacterZoneRankingsResponse> {
+    if (!this.regionServerService.regionServer.regionSlug || !this.regionServerService.regionServer.serverSlug) {
+      this.toastService.warn('Invalid Server', 'Choose your server at top of page');
+      return of();
+    }
     const url: string = `${this.config.apiUrl}/character/multiple`;
-    // FIXME: Use imported interface type
-    const body = {
-      characters: queries
+    const requests: IGetCharacterZoneRankingsRequest[] = queries.map((query) => ({
+      ...query,
+      serverSlug: this.regionServerService.regionServer.serverSlug!,
+      serverRegion: this.regionServerService.regionServer.regionSlug!
+    }));
+    const body: IGetMultipleCharacterZoneRankingsRequest = {
+      characters: requests
     };
     return this.http.post<IGetMultipleCharacterZoneRankingsResponse>(url, body);
   }

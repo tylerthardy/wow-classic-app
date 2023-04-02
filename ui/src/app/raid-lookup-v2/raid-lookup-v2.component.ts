@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
-  IGetCharacterZoneRankingsRequest,
   IGetCharacterZoneRankingsResponse,
   IGetMultipleCharacterZoneRankingsResponse,
   WowClass
@@ -9,9 +8,9 @@ import { finalize } from 'rxjs';
 import { ColumnSpecification } from '../common/components/grid/grid.component';
 import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
 import { CharacterService } from '../common/services/character/character.service';
+import { IGetCharacterZoneRankings } from '../common/services/character/get-character-zone-rankings.interface';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';
-import { RegionServerService } from '../common/services/region-server.service';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { ThemeService } from '../common/services/theme/theme.service';
 import { Theme } from '../common/services/theme/theme.type';
@@ -47,7 +46,6 @@ export class RaidLookupV2Component implements OnInit {
   constructor(
     private characterService: CharacterService,
     private raidService: RaidService,
-    private regionServerService: RegionServerService,
     private toastService: ToastService,
     private themeService: ThemeService
   ) {}
@@ -94,12 +92,6 @@ export class RaidLookupV2Component implements OnInit {
 
     this.importJson = json;
 
-    // FIXME: Move this check to the API
-    if (!this.regionServerService.regionServer.regionSlug || !this.regionServerService.regionServer.serverSlug) {
-      this.toastService.warn('Missing Server', 'Choose your server at top of page');
-      return;
-    }
-
     if (!this.raidAndSize.hasRaidAndSize()) {
       this.toastService.warn('Invalid Search', 'Select a raid instance and size');
       return;
@@ -116,18 +108,16 @@ export class RaidLookupV2Component implements OnInit {
 
     this.clearCharacterData();
 
-    let queries: IGetCharacterZoneRankingsRequest[] = [];
+    let queries: IGetCharacterZoneRankings[] = [];
     for (let importedCharacter of importedCharacters) {
       const raidCharacter: RaidLookupCharacter = new RaidLookupCharacter(importedCharacter, raidZoneAndSize);
       this.characters.push(raidCharacter);
 
-      const query: IGetCharacterZoneRankingsRequest = {
+      const query: IGetCharacterZoneRankings = {
         characterName: raidCharacter.name,
         metric: raidCharacter.metric,
         classFileName: raidCharacter.class,
         role: raidCharacter.role,
-        serverRegion: this.regionServerService.regionServer.regionSlug,
-        serverSlug: this.regionServerService.regionServer.serverSlug,
         zoneId: raidZoneAndSize.zoneId,
         size: raidZoneAndSize.size
       };
@@ -184,10 +174,8 @@ export class RaidLookupV2Component implements OnInit {
 
   private onLastUpdatedRefreshClick(character: RaidLookupCharacter): void {
     character.lastUpdatedChanging = true;
-    const query: IGetCharacterZoneRankingsRequest = {
+    const query: IGetCharacterZoneRankings = {
       characterName: character.characterName,
-      serverSlug: this.regionServerService.regionServer.serverSlug!,
-      serverRegion: this.regionServerService.regionServer.regionSlug!,
       zoneId: character.raidZoneAndSize.zoneId,
       metric: character.metric,
       size: character.raidZoneAndSize.size
