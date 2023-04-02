@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
+import { IGetCharacterZoneRankingsResponse } from 'classic-companion-core';
 import { ColumnSpecification } from '../common/components/grid/grid.component';
-import { IGetCharacterZoneRankingsResponse } from '../common/services/character/get-character-zone-rankings-response.interface';
 import { Theme } from '../common/services/theme/theme.type';
 import { ParseUtil } from '../common/utils';
 import { PlayerLookupViewModel, PlayerLookupViewModelEncounterItem } from './player-lookup.viewmodel';

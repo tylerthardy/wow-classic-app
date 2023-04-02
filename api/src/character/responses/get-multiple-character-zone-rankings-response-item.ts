@@ -1,15 +1,15 @@
-import { RankingMetric, ZoneEncounterRanking } from '../../warcraft-logs/common';
+import { IGetMultipleCharacterZoneRankingsResponseItem, RankingMetric } from 'classic-companion-core';
+import { ZoneEncounterRanking } from '../../warcraft-logs/common';
 import { IGetWclCharacterZoneRankingsResponse } from '../../warcraft-logs/responses/get-wcl-character-zone-rankings-response.interface';
 import { ZoneRankingParser } from '../common/zone-ranking-parser';
 import { GetCharacterZoneRankingsRequest } from '../requests';
-import { IGetMultipleCharacterZoneRankingsResponseItem } from './get-multiple-character-zone-rankings-response.interface';
 
 // FIXME: Clean up these models. Maybe separate wcl concepts from things like lastUpdated, metric, characterName. Also size gets passed through.
 export class GetMultipleCharacterZoneRankingsResponseItem implements IGetMultipleCharacterZoneRankingsResponseItem {
   public characterName: string;
   public metric: RankingMetric;
   public lastUpdated?: number;
-  public classFileName?: string;
+  public classFileName: string;
   public role?: string;
   public warcraftLogsClassId?: number;
   public bestPerformanceAverage?: number;
@@ -28,7 +28,7 @@ export class GetMultipleCharacterZoneRankingsResponseItem implements IGetMultipl
   ) {
     this.characterName = query.characterName;
     this.metric = query.metric;
-    this.classFileName = query.classFileName;
+    this.classFileName = query.classFileName ?? 'UNKNOWN';
     this.role = query.role;
     this.errors = errors;
     if (wclCharacterData && wclCharacterData.zoneRankings) {

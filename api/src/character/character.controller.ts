@@ -1,10 +1,10 @@
 import { Controller, NotFoundException, Post } from '@nestjs/common';
 import { Body } from '@nestjs/common/decorators';
+import { IGetMultipleCharacterZoneRankingsResponse } from 'classic-companion-core';
 import { NotFoundError } from 'common-errors';
 import { CharacterService } from './character.service';
 import { GetCharacterZoneRankingsRequest, GetMultipleCharacterZoneRankingsRequest } from './requests';
-import { IGetMultipleCharacterZoneRankingsResponse } from './responses';
-import { GetCharacterZoneRankingsV2Response } from './responses/get-character-zone-rankings-response-v2';
+import { GetCharacterZoneRankingsResponse } from './responses/get-character-zone-rankings-response';
 
 @Controller('character')
 export class CharacterController {
@@ -13,7 +13,7 @@ export class CharacterController {
   @Post()
   public async getCharacterZoneRankings(
     @Body() request: GetCharacterZoneRankingsRequest
-  ): Promise<GetCharacterZoneRankingsV2Response> {
+  ): Promise<GetCharacterZoneRankingsResponse> {
     try {
       return await this.service.getCharacterZoneRankings(request);
     } catch (error) {

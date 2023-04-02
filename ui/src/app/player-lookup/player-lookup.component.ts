@@ -1,14 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SpecializationData } from 'classic-companion-core';
+import {
+  IGetCharacterZoneRankingsResponse,
+  RankingMetric,
+  RankingMetricValues,
+  SpecializationData
+} from 'classic-companion-core';
 import { finalize, forkJoin, Observable } from 'rxjs';
 import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
 import { CharacterService } from '../common/services/character/character.service';
-import { IGetCharacterZoneRankingsResponse } from '../common/services/character/get-character-zone-rankings-response.interface';
-import { RankingMetric, RankingMetricValues, ZoneRankingsQuery } from '../common/services/graphql';
+import { IGetCharacterZoneRankings } from '../common/services/character/get-character-zone-rankings.interface';
 import { RaidSize } from '../common/services/raids/raid-size.type';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';
-import { RegionServerService } from '../common/services/region-server.service';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { ThemeService } from '../common/services/theme/theme.service';
 import { ToastService } from '../common/services/toast/toast.service';
@@ -38,7 +41,6 @@ export class PlayerLookupComponent implements OnInit {
     private characterService: CharacterService,
     private raidService: RaidService,
     private toastService: ToastService,
-    private regionServerService: RegionServerService,
     private themeService: ThemeService
   ) {}
 
@@ -73,11 +75,6 @@ export class PlayerLookupComponent implements OnInit {
     }
     this.clearViewModels();
     this.characterNameInput = name;
-
-    if (!this.regionServerService.regionServer.regionSlug || !this.regionServerService.regionServer.serverSlug) {
-      this.toastService.warn('Invalid Server', 'Choose your server at top of page');
-      return;
-    }
 
     const instanceSlugs: SoftresRaidSlug[] = this.raidAndSize.getSoftResSlugs();
     if (!instanceSlugs || instanceSlugs.length === 0) {
@@ -114,11 +111,9 @@ export class PlayerLookupComponent implements OnInit {
   }
 
   private getSearchObservable(zoneId: number, size: RaidSize): Observable<IGetCharacterZoneRankingsResponse> {
-    const request: ZoneRankingsQuery = {
+    const request: IGetCharacterZoneRankings = {
       characterName: this.characterNameInput!,
       metric: this.metricInput!,
-      serverRegion: this.regionServerService.regionServer.regionSlug!,
-      serverSlug: this.regionServerService.regionServer.serverSlug!,
       zoneId: zoneId,
       size: size
     };

@@ -1,7 +1,5 @@
-import { RankingMetric } from '../graphql';
-import { IGetCharacterZoneRankingsResponseRanking } from './get-character-zone-rankings-response-ranking.interface';
+import { RankingMetric } from '../../../warcraft-logs/ranking-metric.type';
 
-// FIXME: Duplicated from the API
 export interface IGetCharacterZoneRankingsResponse {
   characterName: string;
   metric: RankingMetric;
@@ -15,4 +13,17 @@ export interface IGetCharacterZoneRankingsResponse {
   bestHardModeProgress?: number;
   maxPossibleHardmodes?: number;
   size?: number;
+}
+
+export interface IGetCharacterZoneRankingsResponseRanking {
+  encounterName: string;
+  encounterId: number;
+  lockedIn: boolean;
+  bestPercent?: number;
+  bestSpec?: string;
+  medianPercent?: number;
+  highestAmount?: number;
+  kills?: number;
+  fastest?: number;
+  highestDifficulty?: string;
 }

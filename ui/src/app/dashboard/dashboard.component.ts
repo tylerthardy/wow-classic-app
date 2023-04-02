@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { environment } from '../../environments/environment';
+import { ItemData } from '../common/item-data.interface';
 import { AppConfig } from '../config/app.config';
 import { PlayerLookupComponent } from '../player-lookup/player-lookup.component';
 
@@ -11,6 +12,7 @@ import { PlayerLookupComponent } from '../player-lookup/player-lookup.component'
 export class DashboardComponent implements OnInit {
   public isDevelopment: boolean = !environment.production;
   public konamiMode: boolean = false;
+  public selectedItem: ItemData | undefined;
   @ViewChild('playerLookup') playerLookupRef!: PlayerLookupComponent;
 
   constructor(public appConfig: AppConfig) {}

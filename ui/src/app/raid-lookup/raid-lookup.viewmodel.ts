@@ -1,7 +1,6 @@
-import { WowClass } from 'classic-companion-core';
+import { IGetMultipleCharacterZoneRankingsResponseItem, WowClass } from 'classic-companion-core';
 import TimeAgo from 'javascript-time-ago';
 import { ColumnSpecification } from '../common/components/grid/grid.component';
-import { IGetMultipleCharacterZoneRankingsResponseItem } from '../common/services/character/get-multiple-character-zone-rankings-response.interface';
 import { Theme } from '../common/services/theme/theme.type';
 import { ParseUtil } from '../common/utils';
 import { RaidPlayerRole } from './raid-player-role.type';

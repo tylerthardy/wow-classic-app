@@ -1,6 +1,16 @@
+:host {
+  width: 190px;
+  display: inline-block;
+}
+
 .dropdown {
   position: relative;
   display: inline-block;
+  width: 100%;
+}
+
+.dropdown input {
+  width: 100%;
 }
 
 .dropdown-content {
@@ -31,6 +41,21 @@
   top: 2px;
   left: 4px;
   pointer-events: none;
+  width: calc(100% - 12px);
+  height: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.clear-button {
+  cursor: pointer;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+}
+.clear-button:hover {
+  color: #ff8080;
 }
 
 input:not(:focus) {

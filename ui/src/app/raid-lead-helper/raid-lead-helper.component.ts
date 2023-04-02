@@ -35,6 +35,7 @@ export class RaidLeadHelperComponent implements OnInit {
   public raid: Raid | undefined;
   public detailsButtons: RaidInformationButton[];
   public isRecopyAfterPaste: boolean = true;
+  public isStoreBeforeCopy: boolean = true;
 
   public instanceInput: SoftresRaidSlug = 'wotlknaxx10p2';
   public hardReserveItemInput: ItemData | undefined;
@@ -130,6 +131,12 @@ export class RaidLeadHelperComponent implements OnInit {
   public onCreateSoftresClick(): void {
     this.softresManagerRef.create();
   }
+  public onCopySoftresClick(): void {
+    if (this.isStoreBeforeCopy) {
+      this.onStoreClipboard();
+    }
+    this.softresManagerRef.copyOutput();
+  }
   public onStoreClipboard(): void {
     navigator.clipboard.readText().then((result) => {
       this.raidSpamRef.setCustomMessage(result);
@@ -137,6 +144,9 @@ export class RaidLeadHelperComponent implements OnInit {
   }
   public onToggleRecopyAfterPaste(): void {
     this.isRecopyAfterPaste = !this.isRecopyAfterPaste;
+  }
+  public onToggleStoreBeforeCopy(): void {
+    this.isStoreBeforeCopy = !this.isStoreBeforeCopy;
   }
   public onRaidCharacterNameClicked(characterName: string): void {
     this.playerLookupRef.searchPlayer(characterName);

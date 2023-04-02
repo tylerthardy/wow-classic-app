@@ -1,5 +1,5 @@
-import { RankingMetric } from 'classic-companion-core';
-import { RaidSize } from '../../warcraft-logs/common';
+import { RaidSize } from '../../../common/raid-size';
+import { RankingMetric } from '../../../warcraft-logs';
 
 export interface IGetCharacterZoneRankingsRequest {
   characterName: string;
@@ -8,6 +8,7 @@ export interface IGetCharacterZoneRankingsRequest {
   zoneId: number;
   metric: RankingMetric;
   classFileName?: string;
+  role?: string;
   specName?: string;
   size: RaidSize;
 }

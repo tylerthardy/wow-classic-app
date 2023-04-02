@@ -77,7 +77,11 @@ export class ItemSelectionComponent implements ControlValueAccessor, OnInit, OnC
     this.applyFilters();
   }
 
-  private selectItem(item: ItemData): void {
+  public onClearButtonClick(): void {
+    this.selectItem(undefined);
+  }
+
+  private selectItem(item: ItemData | undefined): void {
     this.selectedItem = item;
     this.onChangeCallback(item);
     this.itemChoices = [];

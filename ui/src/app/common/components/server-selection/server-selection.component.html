@@ -4,7 +4,7 @@
     {{ region.value.compactName }}
   </option>
 </select>
-<select *ngIf="regionSlug" [ngModel]="serverSlug" (change)="onServerSelectChange($event)">
+<select *ngIf="regionSlug && regions[regionSlug]" [ngModel]="serverSlug" (change)="onServerSelectChange($event)">
   <option [value]="">-</option>
   <option *ngFor="let server of regions[regionSlug].servers" [value]="server.slug">
     {{ server.name }}

@@ -7,6 +7,7 @@
     type="item"
     [disableLink]="true"
   ></wowhead-link>
+  <span *ngIf="selectedItem" class="clear-button" (click)="onClearButtonClick()">✖</span>
   <input
     #textFilterElement
     [(ngModel)]="textFilterInput"

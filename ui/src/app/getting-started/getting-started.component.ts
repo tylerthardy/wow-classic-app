@@ -14,7 +14,7 @@ export class GettingStartedComponent implements OnInit {
   constructor(
     public localStorageService: LocalStorageService,
     public regionServerService: RegionServerService,
-    appConfig: AppConfig
+    private appConfig: AppConfig
   ) {
     this.maintenanceHide = appConfig.maintenance;
   }
@@ -22,7 +22,7 @@ export class GettingStartedComponent implements OnInit {
   ngOnInit(): void {}
 
   public onDownloadButtonClick(): void {
-    window.open('https://wowclassicapp-addon.s3.amazonaws.com/GroupMembersExporter.zip', '_blank');
+    window.open(this.appConfig.addonDownloadUrl, '_blank');
   }
 
   public onCloseButtonClick(): void {

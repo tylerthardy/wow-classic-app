@@ -1,10 +1,9 @@
+import { RankingMetric } from 'classic-companion-core';
 import { RaidSize } from '../raids/raid-size.type';
-import { RankingMetric } from './Metric';
 
-export interface ZoneRankingsQuery {
+export interface IGetCharacterZoneRankings {
+  // omit server slug and region because service adds these on
   characterName: string;
-  serverSlug: string;
-  serverRegion: string;
   zoneId: number;
   metric: RankingMetric;
   classFileName?: string;

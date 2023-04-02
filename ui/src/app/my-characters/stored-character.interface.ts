@@ -1,5 +1,4 @@
-import { IWowSimsExportItem } from 'classic-companion-core';
-import { RankingMetric } from '../common/services/graphql';
+import { IWowSimsExportItem, RankingMetric } from 'classic-companion-core';
 
 export interface IStoredCharacter {
   name: string;

@@ -1,13 +1,11 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { WowClass } from 'classic-companion-core';
+import { IGetMultipleCharacterZoneRankingsResponse, RankingMetric, WowClass } from 'classic-companion-core';
 import { finalize } from 'rxjs';
 import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
 import { CharacterService } from '../common/services/character/character.service';
-import { IGetMultipleCharacterZoneRankingsResponse } from '../common/services/character/get-multiple-character-zone-rankings-response.interface';
-import { RankingMetric, ZoneRankingsQuery } from '../common/services/graphql';
+import { IGetCharacterZoneRankings } from '../common/services/character/get-character-zone-rankings.interface';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';
-import { RegionServerService } from '../common/services/region-server.service';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { ThemeService } from '../common/services/theme/theme.service';
 import { ToastService } from '../common/services/toast/toast.service';
@@ -37,7 +35,6 @@ export class RaidLookupComponent implements OnInit, OnChanges {
   constructor(
     private characterService: CharacterService,
     private raidService: RaidService,
-    private regionServerService: RegionServerService,
     private toastService: ToastService,
     private themeService: ThemeService
   ) {}
@@ -88,11 +85,6 @@ export class RaidLookupComponent implements OnInit, OnChanges {
     this.importJson = json;
 
     // FIXME: Jesus, look at this method
-    if (!this.regionServerService.regionServer.regionSlug || !this.regionServerService.regionServer.serverSlug) {
-      this.toastService.warn('Missing Server', 'Choose your server at top of page');
-      return;
-    }
-
     if (!this.raidAndSize.hasRaidAndSize()) {
       this.toastService.warn('Invalid Search', 'Select a raid instance and size');
       return;
@@ -105,14 +97,12 @@ export class RaidLookupComponent implements OnInit, OnChanges {
     }
     const raidZoneAndSize: RaidZoneAndSize = this.raidService.getZoneAndSize(raidSlugs[0]);
 
-    const queries: ZoneRankingsQuery[] = players.map((player) => {
-      const query: ZoneRankingsQuery = {
+    const queries: IGetCharacterZoneRankings[] = players.map((player) => {
+      const query: IGetCharacterZoneRankings = {
         characterName: player.name,
         metric: this.getMetricFromRole(player.role),
         classFileName: player.classFileName,
         role: player.role,
-        serverRegion: 'us',
-        serverSlug: 'benediction',
         zoneId: raidZoneAndSize.zoneId,
         size: raidZoneAndSize.size
       };
