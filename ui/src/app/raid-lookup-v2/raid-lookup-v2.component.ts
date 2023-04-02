@@ -170,7 +170,7 @@ export class RaidLookupV2Component implements OnInit {
   ): RaidLookupCharacter[] {
     let resultingData: RaidLookupCharacter[] = Object.assign([], this.characters);
     if (classFilter) {
-      resultingData = resultingData.filter((d) => !d.class || d.class === classFilter.getClassFileName());
+      resultingData = resultingData.filter((d) => !d.class || d.class.toLowerCase() === classFilter.name.toLowerCase());
     }
     if (roleFilter) {
       resultingData = resultingData.filter((d) => !d.role || d.role === roleFilter);
