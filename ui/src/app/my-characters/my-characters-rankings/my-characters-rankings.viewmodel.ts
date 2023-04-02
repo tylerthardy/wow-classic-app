@@ -1,6 +1,5 @@
+import { IGetCharacterZoneRankingsResponse, RankingMetric } from 'classic-companion-core';
 import { ColumnSpecification } from '../../common/components/grid/grid.component';
-import { IGetCharacterZoneRankingsResponse } from '../../common/services/character/get-character-zone-rankings-response.interface';
-import { RankingMetric } from '../../common/services/graphql';
 import { Theme } from '../../common/services/theme/theme.type';
 import { ParseUtil } from '../../common/utils';
 import { PlayerLookupViewModelEncounterItem } from '../../player-lookup/player-lookup.viewmodel';

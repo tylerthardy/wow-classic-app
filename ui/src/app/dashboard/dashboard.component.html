@@ -1,7 +1,10 @@
 <div class="dashboard-container" (konami)="onKonami()">
   <div class="left-container">
     <ng-container *ngIf="isDevelopment">
-      <app-card [collapsed]="false" header="Playground"> </app-card>
+      <app-card [collapsed]="false" header="Playground">
+        <app-item-selection [(ngModel)]="selectedItem"></app-item-selection>
+        {{ selectedItem?.name }}
+      </app-card>
     </ng-container>
 
     <app-card [collapsed]="true" header="VoA Raid Builder" *ngIf="konamiMode">

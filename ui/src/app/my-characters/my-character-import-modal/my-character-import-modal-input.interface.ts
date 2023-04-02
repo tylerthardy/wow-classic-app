@@ -1,5 +1,4 @@
-import { Specialization, WowClass } from 'classic-companion-core';
-import { RankingMetric } from '../../common/services/graphql';
+import { RankingMetric, Specialization, WowClass } from 'classic-companion-core';
 
 export interface IMyCharacterImportModalInput {
   name?: string;

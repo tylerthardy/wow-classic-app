@@ -1,10 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SpecializationData } from 'classic-companion-core';
+import {
+  IGetCharacterZoneRankingsResponse,
+  RankingMetric,
+  RankingMetricValues,
+  SpecializationData
+} from 'classic-companion-core';
 import { finalize, forkJoin, Observable } from 'rxjs';
 import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
 import { CharacterService } from '../common/services/character/character.service';
-import { IGetCharacterZoneRankingsResponse } from '../common/services/character/get-character-zone-rankings-response.interface';
-import { RankingMetric, RankingMetricValues, ZoneRankingsQuery } from '../common/services/graphql';
+import { ZoneRankingsQuery } from '../common/services/graphql';
 import { RaidSize } from '../common/services/raids/raid-size.type';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';

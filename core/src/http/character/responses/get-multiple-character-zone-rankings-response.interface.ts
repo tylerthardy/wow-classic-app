@@ -1,4 +1,4 @@
-import { RankingMetric } from '../../warcraft-logs/common';
+import { RankingMetric } from '../../../warcraft-logs';
 
 export interface IGetMultipleCharacterZoneRankingsResponse {
   characters: IGetMultipleCharacterZoneRankingsResponseItem[];
@@ -6,8 +6,10 @@ export interface IGetMultipleCharacterZoneRankingsResponse {
 
 export interface IGetMultipleCharacterZoneRankingsResponseItem {
   characterName: string;
+  role?: string;
   metric: RankingMetric;
   lastUpdated?: number;
+  classFileName: string;
   warcraftLogsClassId?: number;
   bestPerformanceAverage?: number;
   medianPerformanceAverage?: number;
@@ -16,5 +18,5 @@ export interface IGetMultipleCharacterZoneRankingsResponseItem {
   bestHardModeProgress?: number;
   hardModes?: string[];
   maxPossibleHardmodes?: number;
-  error?: any;
+  errors?: any[];
 }

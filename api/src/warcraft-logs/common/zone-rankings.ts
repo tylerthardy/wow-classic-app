@@ -1,5 +1,5 @@
+import { RankingMetric } from 'classic-companion-core';
 import { AllStar } from './all-star';
-import { RankingMetric } from './ranking-metric';
 import { ZoneEncounterRanking } from './zone-encounter-ranking';
 
 export interface ZoneRankings {

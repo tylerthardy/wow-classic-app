@@ -1,4 +1,5 @@
-import { AllStar, Character, RankingMetric, ZoneEncounterRanking } from './';
+import { RankingMetric } from 'classic-companion-core';
+import { AllStar, Character, ZoneEncounterRanking } from './';
 
 export interface CharacterZoneRankings extends Character {
   zoneRankings: ZoneRankings;

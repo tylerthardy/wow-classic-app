@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { Specialization, WowClass } from 'classic-companion-core';
+import { RankingMetric, Specialization, WowClass } from 'classic-companion-core';
 import { SimpleModalComponent } from 'ngx-simple-modal';
-import { RankingMetric } from '../../common/services/graphql';
 import { IMyCharacterImportModalInput } from './my-character-import-modal-input.interface';
 import { IMyCharacterImportModalOutput } from './my-character-import-modal-output.interface';
 

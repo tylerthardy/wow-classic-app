@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { validate, ValidationError } from 'class-validator';
+import { IGetCharacterZoneRankingsResponse, IGetMultipleCharacterZoneRankingsResponse } from 'classic-companion-core';
 import { NotFoundError } from 'common-errors';
 import { PlayerTableService } from '../common/player-table/player-table.service';
 import { IGetWclCharacterZoneRankingsResponse } from '../warcraft-logs/responses/get-wcl-character-zone-rankings-response.interface';
@@ -9,8 +10,7 @@ import {
   GetMultipleCharacterZoneRankingsRequest,
   IGetCharacterZoneRankingsRequest
 } from './requests';
-import { IGetMultipleCharacterZoneRankingsResponse } from './responses';
-import { GetCharacterZoneRankingsV2Response } from './responses/get-character-zone-rankings-response-v2';
+import { GetCharacterZoneRankingsResponse } from './responses/get-character-zone-rankings-response';
 import { GetMultipleCharacterZoneRankingsResponseItem } from './responses/get-multiple-character-zone-rankings-response-item';
 
 @Injectable()
@@ -21,12 +21,12 @@ export class CharacterService {
 
   public async getCharacterZoneRankings(
     request: GetCharacterZoneRankingsRequest
-  ): Promise<GetCharacterZoneRankingsV2Response> {
+  ): Promise<IGetCharacterZoneRankingsResponse> {
     const wclRankings = await this.getWclCharacterZoneRankings(request);
     if (!wclRankings || !wclRankings.name) {
       throw new NotFoundError('character not found');
     }
-    return new GetCharacterZoneRankingsV2Response(wclRankings);
+    return new GetCharacterZoneRankingsResponse(wclRankings);
   }
 
   public async getMultipleCharactersZoneRankings(

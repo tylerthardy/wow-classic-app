@@ -1,5 +1,10 @@
-import { IWowSimsExportItem, Specialization, SpecializationData, WowClass } from 'classic-companion-core';
-import { RankingMetric } from '../common/services/graphql';
+import {
+  IWowSimsExportItem,
+  RankingMetric,
+  Specialization,
+  SpecializationData,
+  WowClass
+} from 'classic-companion-core';
 import { IStoredCharacter } from './stored-character.interface';
 
 export class Character {

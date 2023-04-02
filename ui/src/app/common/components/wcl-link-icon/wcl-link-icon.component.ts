@@ -20,7 +20,7 @@ export class WclLinkIconComponent implements OnInit {
   public getUrl(): string {
     const region: string = this.regionServerService.regionServer.regionSlug!;
     const server: string = this.regionServerService.regionServer.serverSlug!;
-    return `https://classic.warcraftlogs.com/character/${region}/${server}/${this.characterName}`;
+    return `https://classic.warcraftlogs.com/character/${region}/${server}/${this.characterName.toLowerCase()}`;
   }
 
   private getImageStyles(): { [styleKey: string]: string } {

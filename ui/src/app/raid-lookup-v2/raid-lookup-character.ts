@@ -1,6 +1,8 @@
-import { IGetCharacterZoneRankingsResponse } from '../common/services/character/get-character-zone-rankings-response.interface';
-import { IGetMultipleCharacterZoneRankingsResponseItem } from '../common/services/character/get-multiple-character-zone-rankings-response.interface';
-import { RankingMetric } from '../common/services/graphql';
+import {
+  IGetCharacterZoneRankingsResponse,
+  IGetMultipleCharacterZoneRankingsResponseItem,
+  RankingMetric
+} from 'classic-companion-core';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidPlayerRole } from '../raid-lookup/raid-player-role.type';
 import { JsonRaidPlayer, JsonRaidPlayerV2 } from '../raid-lookup/raid-player.interface';

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { RankingMetric, RankingMetricValues } from 'classic-companion-core';
 import { finalize, forkJoin } from 'rxjs';
 import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
 import { CharacterService } from '../common/services/character/character.service';
-import { RankingMetric, RankingMetricValues, ZoneRankingsQuery } from '../common/services/graphql';
+import { ZoneRankingsQuery } from '../common/services/graphql';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidService } from '../common/services/raids/raid.service';
 import { RegionServerService } from '../common/services/region-server.service';

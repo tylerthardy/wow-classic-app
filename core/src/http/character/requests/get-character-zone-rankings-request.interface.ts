@@ -1,7 +1,7 @@
-import { RankingMetric } from 'classic-companion-core';
-import { RaidSize } from '../raids/raid-size.type';
+import { RaidSize } from '../../../common/raid-size';
+import { RankingMetric } from '../../../warcraft-logs';
 
-export interface ZoneRankingsQuery {
+export interface IGetCharacterZoneRankingsRequest {
   characterName: string;
   serverSlug: string;
   serverRegion: string;

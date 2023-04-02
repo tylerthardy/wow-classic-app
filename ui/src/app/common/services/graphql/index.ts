@@ -7,7 +7,6 @@ export * from './CharacterZoneRankings';
 export * from './EncounterRankingsQuery';
 export * from './EventDataType';
 export * from './GuildData';
-export * from './Metric';
 export * from './Report';
 export * from './ReportData';
 export * from './ReportDeathEvent';

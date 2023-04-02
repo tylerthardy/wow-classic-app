@@ -1,8 +1,8 @@
+import { IGetCharacterZoneRankingsResponseRanking } from 'classic-companion-core';
 import { DifficultyLevel } from '../../common/models/difficulty-level.type';
 import { ZoneEncounterRanking } from '../../warcraft-logs/common';
-import { IGetCharacterZoneRankingsResponseV2Ranking } from './get-character-zone-rankings-response-v2-ranking.interface';
 
-export class GetCharacterZoneRankingsResponseV2Ranking implements IGetCharacterZoneRankingsResponseV2Ranking {
+export class GetCharacterZoneRankingsResponseRanking implements IGetCharacterZoneRankingsResponseRanking {
   public encounterName: string;
   public encounterId: number;
   public lockedIn: boolean;

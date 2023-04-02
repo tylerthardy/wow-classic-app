@@ -1,18 +1,32 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import {
+  IGetCharacterZoneRankingsRequest,
+  IGetCharacterZoneRankingsResponse,
+  IGetMultipleCharacterZoneRankingsResponse
+} from 'classic-companion-core';
 import { Observable } from 'rxjs';
 import { AppConfig } from '../../../config/app.config';
 import { ZoneRankingsQuery } from '../graphql';
-import { IGetCharacterZoneRankingsResponse } from './get-character-zone-rankings-response.interface';
-import { IGetMultipleCharacterZoneRankingsResponse } from './get-multiple-character-zone-rankings-response.interface';
+import { RegionServerService } from '../region-server.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CharacterService {
-  constructor(private config: AppConfig, private http: HttpClient) {}
+  constructor(private config: AppConfig, private regionServerService: RegionServerService, private http: HttpClient) {}
 
-  public getZoneRankings(query: ZoneRankingsQuery): Observable<IGetCharacterZoneRankingsResponse> {
+  public getZoneRankings(query: IGetCharacterZoneRankingsRequest): Observable<IGetCharacterZoneRankingsResponse> {
+    const url: string = `${this.config.apiUrl}/character`;
+    const request: IGetCharacterZoneRankingsRequest = {
+      ...query,
+      serverSlug: this.regionServerService.regionServer.serverSlug!,
+      serverRegion: this.regionServerService.regionServer.regionSlug!
+    };
+    return this.http.post<IGetCharacterZoneRankingsResponse>(url, request);
+  }
+
+  public getZoneRankingsV1(query: ZoneRankingsQuery): Observable<IGetCharacterZoneRankingsResponse> {
     const url: string = `${this.config.apiUrl}/character`;
     return this.http.post<IGetCharacterZoneRankingsResponse>(url, query);
   }
