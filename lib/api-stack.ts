@@ -1,15 +1,19 @@
 import { Duration, Stack, StackProps } from 'aws-cdk-lib';
 import {
+  AccessLogField,
+  AccessLogFormat,
   AuthorizationType,
   CfnMethod,
   CognitoUserPoolsAuthorizer,
   Cors,
-  LambdaRestApi
+  LambdaRestApi,
+  LogGroupLogDestination
 } from 'aws-cdk-lib/aws-apigateway';
 import { UserPool } from 'aws-cdk-lib/aws-cognito';
 import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb';
 import { ManagedPolicy } from 'aws-cdk-lib/aws-iam';
 import { Code, Function, ILayerVersion, LayerVersion, Runtime } from 'aws-cdk-lib/aws-lambda';
+import { LogGroup } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
 import path = require('path');
 
@@ -37,18 +41,25 @@ export class ClassicCompanionApiStack extends Stack {
     // Allow API to write to player table
     playerTable.grantReadWriteData(handlerLambda);
 
+    const apiGatewayId: string = 'nestjs-api-gateway';
     const authorizer = new CognitoUserPoolsAuthorizer(this, 'api-authorizer', {
       cognitoUserPools: [userpool]
     });
-    const apiGateway = new LambdaRestApi(this, 'nestjs-api-gateway', {
+    const logGroup = new LogGroup(this, apiGatewayId + '_access-logs');
+    const apiGateway = new LambdaRestApi(this, apiGatewayId, {
       handler: handlerLambda,
       defaultMethodOptions: {
         authorizationType: AuthorizationType.COGNITO,
         authorizer,
         authorizationScopes: [apiScopeName]
       },
-      defaultCorsPreflightOptions: { allowOrigins: Cors.ALL_ORIGINS }
+      defaultCorsPreflightOptions: { allowOrigins: Cors.ALL_ORIGINS },
+      deployOptions: {
+        accessLogDestination: new LogGroupLogDestination(logGroup),
+        accessLogFormat: this.getCustomAccessLogFormat()
+      }
     });
+
     // Hack to get around preflight + authorizer
     // https://github.com/aws/aws-cdk/issues/8615
     apiGateway.methods
@@ -98,5 +109,23 @@ export class ClassicCompanionApiStack extends Stack {
   private getLambdaInsightsArn(region: string = 'us-east-1', version: number = 21): string {
     const insightsLayerArn = `arn:aws:lambda:${region}:580247275435:layer:LambdaInsightsExtension:${version}`;
     return insightsLayerArn;
+  }
+
+  private getCustomAccessLogFormat(): AccessLogFormat {
+    const formatJson: object = {
+      requestTime: AccessLogField.contextRequestTime(),
+      requestId: AccessLogField.contextRequestId(),
+      httpMethod: AccessLogField.contextHttpMethod(),
+      path: AccessLogField.contextPath(),
+      resourcePath: AccessLogField.contextResourcePath(),
+      status: AccessLogField.contextRequestTime(),
+      responseLatency: AccessLogField.contextResponseLatency(),
+      userAgent: AccessLogField.contextIdentityUserAgent(),
+      identity: {
+        sub: AccessLogField.contextAuthorizer('claims.sub')
+      }
+    };
+    const format = JSON.stringify(formatJson);
+    return AccessLogFormat.custom(format);
   }
 }
