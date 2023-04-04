@@ -11,6 +11,16 @@
   <app-raid-size-selection selectionType="radio" [(ngModel)]="raidAndSize"></app-raid-size-selection>
   <button (click)="onSearchClick()">Search</button>
   <button (click)="onClearClick()">Clear</button>
+  <div>
+    Class: <app-class-selection [(ngModel)]="wowClassFilter" (change)="onClassChange($event)"></app-class-selection>
+    <ng-container *ngIf="wowClassFilter">
+      Spec:
+      <app-class-spec-selection
+        [classId]="wowClassFilter.warcraftLogsId"
+        [(ngModel)]="specializationFilter"
+      ></app-class-spec-selection>
+    </ng-container>
+  </div>
 </div>
 
 <div class="loading-spinner large" *ngIf="isLoading"></div>

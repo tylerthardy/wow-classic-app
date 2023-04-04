@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RankingMetric, RankingMetricValues } from 'classic-companion-core';
+import { RankingMetric, RankingMetricValues, SpecializationData, WowClass } from 'classic-companion-core';
 import { finalize, forkJoin } from 'rxjs';
 import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
 import { CharacterService } from '../common/services/character/character.service';
@@ -29,6 +29,8 @@ export class PlayerComparisonComponent implements OnInit {
   metricInput: RankingMetric = 'dps';
   isLoading: boolean = false;
   viewModel: PlayerComparisonViewModel | undefined;
+  wowClassFilter: WowClass | undefined;
+  specializationFilter: SpecializationData | undefined;
 
   constructor(
     private toastService: ToastService,
@@ -62,6 +64,10 @@ export class PlayerComparisonComponent implements OnInit {
     this.viewModel = undefined;
   }
 
+  public onClassChange(wowClass: WowClass | undefined): void {
+    this.specializationFilter = undefined;
+  }
+
   public comparePlayers(player1Name: string, player2Name: string) {
     // TODO: Fix this crap having to be duplicated everywhere. Normalize raid concepts
     const instanceSlugs: SoftresRaidSlug[] = this.raidAndSize.getSoftResSlugs();
@@ -87,6 +93,12 @@ export class PlayerComparisonComponent implements OnInit {
         zoneId: zonesAndSizes[0].zoneId
       }
     ];
+    if (this.specializationFilter) {
+      const specName: string = this.specializationFilter.name;
+      queries.forEach((query) => {
+        query.specName = specName;
+      });
+    }
 
     this.isLoading = true;
     forkJoin(queries.map((query) => this.characterService.getZoneRankings(query)))
