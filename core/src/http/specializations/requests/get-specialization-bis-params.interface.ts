@@ -1,5 +1,5 @@
 export interface IGetSpecializationBisParams {
-  class: string;
+  classSlug: string;
   specialization: string;
   role: string;
 }

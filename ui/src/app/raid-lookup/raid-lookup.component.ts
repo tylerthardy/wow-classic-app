@@ -101,7 +101,7 @@ export class RaidLookupComponent implements OnInit, OnChanges {
       const query: IGetCharacterZoneRankings = {
         characterName: player.name,
         metric: this.getMetricFromRole(player.role),
-        classFileName: player.classFileName,
+        classSlug: player.classFileName,
         role: player.role,
         zoneId: raidZoneAndSize.zoneId,
         size: raidZoneAndSize.size

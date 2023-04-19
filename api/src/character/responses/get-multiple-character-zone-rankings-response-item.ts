@@ -9,7 +9,7 @@ export class GetMultipleCharacterZoneRankingsResponseItem implements IGetMultipl
   public characterName: string;
   public metric: RankingMetric;
   public lastUpdated?: number;
-  public classFileName: string;
+  public classSlug: string;
   public role?: string;
   public warcraftLogsClassId?: number;
   public bestPerformanceAverage?: number;
@@ -28,7 +28,7 @@ export class GetMultipleCharacterZoneRankingsResponseItem implements IGetMultipl
   ) {
     this.characterName = query.characterName;
     this.metric = query.metric;
-    this.classFileName = query.classFileName ?? 'UNKNOWN';
+    this.classSlug = query.classSlug ?? 'UNKNOWN';
     this.role = query.role;
     this.errors = errors;
     if (wclCharacterData && wclCharacterData.zoneRankings) {

@@ -6,28 +6,20 @@ export class WowClass {
   public id: number;
   public warcraftLogsId: number;
   public name: string;
+  public slug: string;
+  public classIconUrl: string;
 
   constructor(id: number, warcraftLogsId: number, name: string) {
     this.id = id;
     this.warcraftLogsId = warcraftLogsId;
     this.name = name;
+    this.slug = WowClass.normalizeName(name);
+    this.classIconUrl = this.getClassIconUrl();
   }
 
-  public getKebab(): string {
-    return paramCase(this.name);
-  }
-
-  public getSlugifiedName(): string {
-    const slugified: string = this.name.toLowerCase().replace(' ', '');
-    return slugified;
-  }
-
-  public getClassIconUrl(): string {
-    return `https://wow.zamimg.com/images/wow/icons/large/classicon_${this.getSlugifiedName()}.jpg`;
-  }
-
-  public getClassFileName(): string {
-    return this.getSlugifiedName().toUpperCase();
+  private getClassIconUrl(): string {
+    const zamimgClassName: string = this.name.toLowerCase().replace(' ', '');
+    return `https://wow.zamimg.com/images/wow/icons/large/classicon_${zamimgClassName}.jpg`;
   }
 
   public static DEATH_KNIGHT = new WowClass(6, 1, 'Death Knight');
@@ -42,36 +34,44 @@ export class WowClass {
   public static WARLOCK = new WowClass(9, 10, 'Warlock');
   public static WARRIOR = new WowClass(1, 11, 'Warrior');
 
-  public static getClassByKebab(classKebab: string): WowClass | undefined {
-    return WowClass.getAll().find((wowClass) => wowClass.getKebab() === classKebab);
+  public static getClassBySlug(slug: string): WowClass | undefined {
+    return WowClass.getAll().find((wowClass) => wowClass.slug === slug);
+  }
+
+  public static getClassByFileName(fileName: string): WowClass | undefined {
+    if (fileName === 'DEATHKNIGHT') {
+      return WowClass.DEATH_KNIGHT;
+    }
+    return this.getClassBySlug(fileName);
   }
 
   public static getClassByName(name: string): WowClass | undefined {
     if (!name) {
       throw new Error('invalid class name: ' + name);
     }
-    switch (name) {
-      case WowClass.DEATH_KNIGHT.name:
+    const normalizedName: string = WowClass.normalizeName(name);
+    switch (normalizedName) {
+      case WowClass.DEATH_KNIGHT.slug:
         return WowClass.DEATH_KNIGHT;
-      case WowClass.DRUID.name:
+      case WowClass.DRUID.slug:
         return WowClass.DRUID;
-      case WowClass.HUNTER.name:
+      case WowClass.HUNTER.slug:
         return WowClass.HUNTER;
-      case WowClass.MAGE.name:
+      case WowClass.MAGE.slug:
         return WowClass.MAGE;
-      case WowClass.MONK.name:
+      case WowClass.MONK.slug:
         return WowClass.MONK;
-      case WowClass.PALADIN.name:
+      case WowClass.PALADIN.slug:
         return WowClass.PALADIN;
-      case WowClass.PRIEST.name:
+      case WowClass.PRIEST.slug:
         return WowClass.PRIEST;
-      case WowClass.ROGUE.name:
+      case WowClass.ROGUE.slug:
         return WowClass.ROGUE;
-      case WowClass.SHAMAN.name:
+      case WowClass.SHAMAN.slug:
         return WowClass.SHAMAN;
-      case WowClass.WARLOCK.name:
+      case WowClass.WARLOCK.slug:
         return WowClass.WARLOCK;
-      case WowClass.WARRIOR.name:
+      case WowClass.WARRIOR.slug:
         return WowClass.WARRIOR;
     }
     return undefined;
@@ -153,5 +153,9 @@ export class WowClass {
       WowClass.WARLOCK,
       WowClass.WARRIOR
     ];
+  }
+
+  private static normalizeName(name: string): string {
+    return paramCase(name).toUpperCase();
   }
 }

@@ -39,6 +39,12 @@
                 [value]="cellValue.value"
               ></app-parse-number>
             </ng-container>
+            <ng-container *ngSwitchCase="'class'" style="text-align: center">
+              <app-class-icon size="small" [wowClass]="cellValue"></app-class-icon>
+              <ng-container *ngIf="column.format.formatParams.showName && cellValue">
+                &nbsp;{{ cellValue.name }}
+              </ng-container>
+            </ng-container>
             <ng-container *ngSwitchCase="'number'">
               {{ cellValue | number : column.format.formatParams }}
             </ng-container>

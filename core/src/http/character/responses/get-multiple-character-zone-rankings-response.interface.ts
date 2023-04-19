@@ -9,7 +9,7 @@ export interface IGetMultipleCharacterZoneRankingsResponseItem {
   role?: string;
   metric: RankingMetric;
   lastUpdated?: number;
-  classFileName: string;
+  classSlug: string;
   warcraftLogsClassId?: number;
   bestPerformanceAverage?: number;
   medianPerformanceAverage?: number;

@@ -1,7 +1,8 @@
 import {
   IGetCharacterZoneRankingsResponse,
   IGetMultipleCharacterZoneRankingsResponseItem,
-  RankingMetric
+  RankingMetric,
+  WowClass
 } from 'classic-companion-core';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidPlayerRole } from '../raid-lookup/raid-player-role.type';
@@ -12,7 +13,7 @@ const playerRoleLookup: RaidPlayerRole[] = ['TANK', 'HEALER', 'DAMAGER'];
 export class RaidLookupCharacter {
   public name: string;
   public role: RaidPlayerRole;
-  public class: string; // TODO: Use class enum
+  public class?: WowClass;
   public metric: RankingMetric;
   public characterName: string;
   public lastUpdated?: number | undefined;
@@ -36,11 +37,11 @@ export class RaidLookupCharacter {
     this.characterName = player.name; // FIXME: Shouldn't be duplicated
     if (player.hasOwnProperty('roles')) {
       player = player as JsonRaidPlayerV2;
-      this.class = player.class;
+      this.class = WowClass.getClassByFileName(player.class);
       this.role = this.getFirstRoleFromArray(player.roles);
     } else {
       player = player as JsonRaidPlayer;
-      this.class = player.classFileName;
+      this.class = WowClass.getClassByFileName(player.classFileName);
       this.role = player.role;
     }
     this.metric = this.getMetricFromRole(this.role);

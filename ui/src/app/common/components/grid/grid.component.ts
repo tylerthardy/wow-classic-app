@@ -9,13 +9,13 @@ export interface ParseColumnDeprecated {
 }
 export interface ColumnFormat<T> {
   // FIXME: These are getting very specific
-  type: 'number' | 'string' | 'last-updated' | 'parse' | 'date' | 'wcl-link' | 'custom';
+  type: 'number' | 'string' | 'last-updated' | 'parse' | 'class' | 'date' | 'wcl-link' | 'custom';
   // FIXME: Use real types for formatParams
   formatParams?: any;
   customFormat?: (rowValue: T) => string;
   transform?: (rowValue: T) => any;
 }
-export type SortType = 'number' | 'string' | 'parse' | 'custom';
+export type SortType = 'number' | 'string' | 'parse' | 'class' | 'custom';
 export type SortDirection = 'asc' | 'desc' | 'none';
 export interface ColumnSpecification<T> {
   label: string | (() => string);
@@ -205,6 +205,8 @@ export class GridComponent implements OnInit, OnChanges {
         return GridComponent.sortString(this.sortedData, property, direction);
       case 'parse':
         return GridComponent.sortParse(this.sortedData, property, direction);
+      case 'class':
+        return GridComponent.sortWowClass(this.sortedData, property, direction);
       case 'custom':
         if (!customSort) {
           throw new Error('custom sort column without custom sort function');
@@ -251,6 +253,15 @@ export class GridComponent implements OnInit, OnChanges {
       return data.sort((a, b) => a[property].value - b[property].value);
     } else {
       return data.sort((a, b) => b[property].value - a[property].value);
+    }
+  }
+
+  // FIXME: Should have a generic
+  private static sortWowClass(data: any[], property: keyof any, direction: 'asc' | 'desc'): any[] {
+    if (direction === 'asc') {
+      return data.sort((a, b) => (a[property].name > b[property].name ? -1 : 1));
+    } else {
+      return data.sort((a, b) => (b[property].name < a[property].name ? 1 : -1));
     }
   }
 }

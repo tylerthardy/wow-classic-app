@@ -55,7 +55,7 @@ export class RaidLookupViewModel {
       },
       {
         label: 'Class',
-        valueKey: 'classFileName',
+        valueKey: 'classSlug',
         sortType: 'string'
       },
       {
@@ -162,8 +162,6 @@ export class RaidLookupViewModel {
       .map((ranking) => ({
         characterName: ranking.characterName,
         metric: ranking.metric,
-        classFileName: ranking.classFileName,
-        role: ranking.role,
         errors: JSON.stringify(ranking.errors)
       }));
 
@@ -199,9 +197,7 @@ export class RaidLookupViewModel {
       return resultingData;
     }
     if (classFilter) {
-      resultingData = resultingData.filter(
-        (d) => !d.classFileName || d.classFileName === classFilter.getClassFileName()
-      );
+      resultingData = resultingData.filter((d) => !d.classSlug || d.classSlug === classFilter.slug);
     }
     if (roleFilter) {
       resultingData = resultingData.filter((d) => !d.role || d.role === roleFilter);

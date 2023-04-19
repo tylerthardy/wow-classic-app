@@ -116,7 +116,7 @@ export class RaidLookupV2Component implements OnInit {
       const query: IGetCharacterZoneRankings = {
         characterName: raidCharacter.name,
         metric: raidCharacter.metric,
-        classFileName: raidCharacter.class,
+        classSlug: raidCharacter.class?.slug,
         role: raidCharacter.role,
         zoneId: raidZoneAndSize.zoneId,
         size: raidZoneAndSize.size
@@ -160,7 +160,7 @@ export class RaidLookupV2Component implements OnInit {
   ): RaidLookupCharacter[] {
     let resultingData: RaidLookupCharacter[] = Object.assign([], this.characters);
     if (classFilter) {
-      resultingData = resultingData.filter((d) => !d.class || d.class.toLowerCase() === classFilter.name.toLowerCase());
+      resultingData = resultingData.filter((d) => !d.class || d.class.id === classFilter.id);
     }
     if (roleFilter) {
       resultingData = resultingData.filter((d) => !d.role || d.role === roleFilter);
@@ -213,7 +213,13 @@ export class RaidLookupV2Component implements OnInit {
       {
         label: 'Class',
         valueKey: 'class',
-        sortType: 'string'
+        sortType: 'class',
+        format: {
+          type: 'class',
+          formatParams: {
+            showName: false
+          }
+        }
       },
       {
         label: 'Role',

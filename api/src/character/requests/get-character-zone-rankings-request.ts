@@ -32,7 +32,7 @@ export class GetCharacterZoneRankingsRequest implements IGetCharacterZoneRanking
   // TODO: Enum eventually
   @IsString()
   @IsOptional()
-  classFileName?: string;
+  classSlug?: string;
 
   // FIXME: This just echoed by the API so the UI gets role
   @IsString()

@@ -131,7 +131,7 @@ export class VoaRaidBuilderComponent implements OnInit {
           className: voaSpec.class,
           role: voaSpec.spec,
           name: voaSpec.spec,
-          iconUrl: wowClass.getClassIconUrl()
+          iconUrl: wowClass.classIconUrl
         });
       }
       const foundSpec: SpecializationData | undefined = specializations.find(

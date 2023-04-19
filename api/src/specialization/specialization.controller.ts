@@ -7,11 +7,11 @@ import { SpecializationService } from './specialization.service';
 export class SpecializationController {
   constructor(private specializationService: SpecializationService) {}
 
-  @Get(':class/:specialization/:role/bis')
+  @Get(':classSlug/:specialization/:role/bis')
   public getBis(@Param() params: IGetSpecializationBisParams): GetSpecializationBisResponse {
     try {
       const bisData: IWowSimsExport[] = this.specializationService.getBis(
-        params.class,
+        params.classSlug,
         params.specialization,
         params.role
       );
