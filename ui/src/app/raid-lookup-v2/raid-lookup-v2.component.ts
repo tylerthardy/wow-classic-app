@@ -224,7 +224,13 @@ export class RaidLookupV2Component implements OnInit {
       {
         label: 'Role',
         valueKey: 'role',
-        sortType: 'string'
+        sortType: 'role',
+        format: {
+          type: 'role',
+          formatParams: {
+            showName: false
+          }
+        }
       },
       {
         label: 'Metric',

@@ -45,6 +45,12 @@
                 &nbsp;{{ cellValue.name }}
               </ng-container>
             </ng-container>
+            <ng-container *ngSwitchCase="'role'" style="text-align: center">
+              <app-role-icon [roleName]="cellValue"></app-role-icon>
+              <ng-container *ngIf="column.format.formatParams.showName && cellValue">
+                &nbsp;{{ cellValue }}
+              </ng-container>
+            </ng-container>
             <ng-container *ngSwitchCase="'number'">
               {{ cellValue | number : column.format.formatParams }}
             </ng-container>
