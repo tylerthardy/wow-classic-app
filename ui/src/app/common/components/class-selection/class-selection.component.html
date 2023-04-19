@@ -13,6 +13,7 @@
       {{ blankLabel }}
     </div>
     <div class="dropdown-item" *ngFor="let wowClass of wowClasses" (click)="onDropdownItemClick(wowClass)">
+      <app-class-icon size="small" [wowClass]="wowClass" style="padding-right: 2px"></app-class-icon>
       {{ wowClass.name }}
     </div>
   </ng-container>
