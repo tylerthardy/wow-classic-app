@@ -37,7 +37,7 @@ export class RaidLookupCharacter {
     this.characterName = player.name; // FIXME: Shouldn't be duplicated
     if (player.hasOwnProperty('roles')) {
       player = player as JsonRaidPlayerV2;
-      this.class = WowClass.getClassByFileName(player.class);
+      this.class = WowClass.getClassByName(player.class);
       this.role = this.getFirstRoleFromArray(player.roles);
     } else {
       player = player as JsonRaidPlayer;
