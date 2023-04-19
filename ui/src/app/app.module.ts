@@ -52,6 +52,7 @@ import { SpecializationDataComponent } from './specialization-data/specializatio
 import { SpecializationIconComponent } from './specialization-icon/specialization-icon.component';
 import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.component';
 import { ClassIconComponent } from './class-icon/class-icon.component';
+import { RoleIconComponent } from './role-icon/role-icon.component';
 
 @NgModule({
   declarations: [
@@ -91,7 +92,8 @@ import { ClassIconComponent } from './class-icon/class-icon.component';
     RaidLookupV2Component,
     MaintenanceComponent,
     ThemeDirective,
-    ClassIconComponent
+    ClassIconComponent,
+    RoleIconComponent
   ],
   imports: [
     BrowserAnimationsModule,
