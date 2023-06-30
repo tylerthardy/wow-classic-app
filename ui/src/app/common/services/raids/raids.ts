@@ -32,5 +32,13 @@ export const raids: RaidData[] = [
   {
     name: 'Uld 25',
     softresSlug: 'ulduar25'
+  },
+  {
+    name: 'ToC 10',
+    softresSlug: 'toc10'
+  },
+  {
+    name: 'ToC 25',
+    softresSlug: 'toc25'
   }
 ];

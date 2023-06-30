@@ -21,7 +21,7 @@ import { JsonRaidPlayer } from './raid-player.interface';
 export class RaidLookupComponent implements OnInit, OnChanges {
   @Output() characterNameClicked: EventEmitter<string> = new EventEmitter<string>();
   @Input() raidAndSize: RaidAndSizeSelection = new RaidAndSizeSelection({
-    raid: 'ulduar',
+    raid: 'toc',
     size10: true,
     size25: false
   });

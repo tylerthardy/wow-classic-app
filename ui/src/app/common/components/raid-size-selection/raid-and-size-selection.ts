@@ -42,6 +42,14 @@ export class RaidAndSizeSelection implements IRaidAndSizeSelection {
     if (!this.hasRaidAndSize()) {
       return results;
     }
+    if (this.raid === 'toc') {
+      if (this.size10) {
+        results.push('toc10');
+      }
+      if (this.size25) {
+        results.push('toc25');
+      }
+    }
     if (this.raid === 'ulduar') {
       if (this.size10) {
         results.push('ulduar10');

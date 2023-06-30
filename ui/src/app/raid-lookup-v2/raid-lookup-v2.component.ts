@@ -28,7 +28,7 @@ import { RaidLookupCharacter } from './raid-lookup-character';
 export class RaidLookupV2Component implements OnInit {
   @Output() public characterNameClicked: EventEmitter<string> = new EventEmitter<string>();
   @Input() public raidAndSize: RaidAndSizeSelection = new RaidAndSizeSelection({
-    raid: 'ulduar',
+    raid: 'toc',
     size10: true,
     size25: false
   });

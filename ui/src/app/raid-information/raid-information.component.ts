@@ -43,6 +43,10 @@ export class RaidInformationComponent implements OnInit {
       case 'ulduar25':
         id = 1017;
         break;
+      case 'toc10':
+      case 'toc25':
+        id = 1018;
+        break;
       default:
         id = 1000;
     }
@@ -70,6 +74,9 @@ export class RaidInformationComponent implements OnInit {
       case 'ulduar10':
       case 'ulduar25':
         return 'Ulduar';
+      case 'toc10':
+      case 'toc25':
+        return 'Trial of the Crusader';
       default:
         return 'Unknown';
     }

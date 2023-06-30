@@ -11,4 +11,6 @@ export type SoftresRaidSlug =
   | 'eyeofeternity25'
   | 'wyrmrest25'
   | 'naxxdragons25'
-  | 'ulduar25';
+  | 'ulduar25'
+  | 'toc10'
+  | 'toc25';

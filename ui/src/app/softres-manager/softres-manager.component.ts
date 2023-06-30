@@ -107,7 +107,7 @@ export class SoftresManagerComponent implements OnInit {
     }
     const data: CreateSoftresModalData = {
       raidAndSize: new RaidAndSizeSelection({
-        raid: 'ulduar',
+        raid: 'toc',
         size10: true
       }),
       softReserveCount: 1,

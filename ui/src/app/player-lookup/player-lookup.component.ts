@@ -5,7 +5,7 @@ import {
   RankingMetricValues,
   SpecializationData
 } from 'classic-companion-core';
-import { finalize, forkJoin, Observable } from 'rxjs';
+import { Observable, finalize, forkJoin } from 'rxjs';
 import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
 import { CharacterService } from '../common/services/character/character.service';
 import { IGetCharacterZoneRankings } from '../common/services/character/get-character-zone-rankings.interface';
@@ -25,7 +25,7 @@ import { PlayerLookupViewModel } from './player-lookup.viewmodel';
 })
 export class PlayerLookupComponent implements OnInit {
   @Input() raidAndSize: RaidAndSizeSelection = new RaidAndSizeSelection({
-    raid: 'ulduar',
+    raid: 'toc',
     size10: true
   });
   characterNameInput: string | undefined;

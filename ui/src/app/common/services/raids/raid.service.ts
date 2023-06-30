@@ -27,6 +27,10 @@ export class RaidService {
         return { zoneId: 1017, size: 10 };
       case 'ulduar25':
         return { zoneId: 1017, size: 25 };
+      case 'toc10':
+        return { zoneId: 1018, size: 10 };
+      case 'toc25':
+        return { zoneId: 1018, size: 25 };
       default:
         return { zoneId: -1, size: 40 };
     }
