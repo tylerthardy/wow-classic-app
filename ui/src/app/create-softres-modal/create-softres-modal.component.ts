@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Instances } from 'classic-companion-core';
 import { SimpleModalComponent } from 'ngx-simple-modal';
-import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
+import { IInstanceSizeSelection } from '../common/components/instance-size-selection/instance-size-selection.interface';
+import { RaidAndSizeSelection } from '../common/components/instance-size-selection/raid-and-size-selection';
 import { ItemData } from '../common/item-data.interface';
 import { CreateSoftresModalData } from './create-softres-modal-data.interface';
 
@@ -13,7 +15,10 @@ export class CreateSoftresModalComponent
   extends SimpleModalComponent<CreateSoftresModalData, CreateSoftresModalData>
   implements CreateSoftresModalData
 {
-  raidAndSize!: RaidAndSizeSelection;
+  @Input() instanceSizeSelection: IInstanceSizeSelection = { instance: Instances.ToGC, sizes: [25] };
+  get raidAndSize(): RaidAndSizeSelection {
+    return RaidAndSizeSelection.fromInstanceSizeSelection(this.instanceSizeSelection);
+  }
   hardReserveItem: ItemData | undefined = undefined;
   hardReserveRecipient: string | undefined = undefined;
   softReserveCount: number = 1;

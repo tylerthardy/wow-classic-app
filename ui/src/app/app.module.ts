@@ -18,9 +18,9 @@ import { ConfirmModalComponent } from './common/components/confirm-modal/confirm
 import { DropdownComponent } from './common/components/dropdown/dropdown.component';
 import { GridComponent } from './common/components/grid/grid.component';
 import { CopyIconComponent } from './common/components/icons/copy-icon/copy-icon.component';
+import { InstanceSizeSelectionComponent } from './common/components/instance-size-selection/instance-size-selection.component';
 import { ItemSelectionComponent } from './common/components/item-selection/item-selection.component';
 import { ParseNumberComponent } from './common/components/parse-number/parse-number.component';
-import { RaidSizeSelectionComponent } from './common/components/raid-size-selection/raid-size-selection.component';
 import { ServerSelectionComponent } from './common/components/server-selection/server-selection.component';
 import { SvgIconComponent } from './common/components/svg-icon/svg-icon.component';
 import { WclLinkIconComponent } from './common/components/wcl-link-icon/wcl-link-icon.component';
@@ -74,7 +74,6 @@ import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.com
     ParseNumberComponent,
     RaidInformationComponent,
     ServerSelectionComponent,
-    RaidSizeSelectionComponent,
     PlayerRaidStatsComponent,
     ClassSpecSelectionComponent,
     ClassSelectionComponent,
@@ -92,7 +91,8 @@ import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.com
     MaintenanceComponent,
     ThemeDirective,
     ClassIconComponent,
-    RoleIconComponent
+    RoleIconComponent,
+    InstanceSizeSelectionComponent
   ],
   imports: [
     BrowserAnimationsModule,

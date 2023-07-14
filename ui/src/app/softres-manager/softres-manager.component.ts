@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { Observable } from 'rxjs';
 import { ConfirmModalComponent } from '../common/components/confirm-modal/confirm-modal.component';
-import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
+import { RaidAndSizeSelection } from '../common/components/instance-size-selection/raid-and-size-selection';
 import { Raid } from '../common/services/raids/raid.interface';
 import { Softres } from '../common/services/softres/http/common/softres.interface';
 import { CreateSoftresResponse } from '../common/services/softres/http/create-softres-response.interface';

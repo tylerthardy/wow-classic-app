@@ -4,43 +4,51 @@ export interface IInstance {
   name: string;
   zoneId: number;
   sizes: number[];
+  holdOverSlug: string; // TODO: Fix
 }
 export class Instance implements IInstance {
   public name: string;
   public zoneId: number;
   public sizes: number[];
+  public holdOverSlug: string;
 
   constructor(data: IInstance) {
     this.name = data.name;
     this.zoneId = data.zoneId;
     this.sizes = data.sizes;
+    this.holdOverSlug = data.holdOverSlug;
   }
 }
 export class Instances {
   public static Naxxramas = new Instance({
     name: 'Naxxramas',
     zoneId: 1015,
-    sizes: [10, 25]
+    sizes: [10, 25],
+    holdOverSlug: 'wotlknaxx'
   });
   public static ObsidianSanctum = new Instance({
     name: 'Obsidian Sanctum',
     zoneId: 1015,
-    sizes: [10, 25]
+    sizes: [10, 25],
+    holdOverSlug: 'obsidiansanctum'
   });
   public static EyeOfEternity = new Instance({
     name: 'Eye of Eternity',
     zoneId: 1015,
-    sizes: [10, 25]
+    sizes: [10, 25],
+    holdOverSlug: 'eyeofeternity'
   });
   public static Ulduar = new Instance({
     name: 'Ulduar',
     zoneId: 1017,
-    sizes: [10, 25]
+    sizes: [10, 25],
+    holdOverSlug: 'ulduar'
   });
   public static ToGC = new Instance({
     name: 'Trial of the Crusader',
     zoneId: 1018,
-    sizes: [10, 25]
+    sizes: [10, 25],
+    holdOverSlug: 'toc'
   });
 
   public static All: Instance[] = [
@@ -50,6 +58,14 @@ export class Instances {
     Instances.Ulduar,
     Instances.ToGC
   ];
+
+  public static getByHoldOverSlug(slug: string): Instance {
+    const instance: Instance | undefined = Instances.All.find((i) => i.holdOverSlug === slug);
+    if (!instance) {
+      throw new Error('instance not found for slug: ' + slug);
+    }
+    return instance;
+  }
 }
 
 export interface IRaid {

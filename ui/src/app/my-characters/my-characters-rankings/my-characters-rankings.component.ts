@@ -1,7 +1,8 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { IGetCharacterZoneRankingsResponse } from 'classic-companion-core';
+import { IGetCharacterZoneRankingsResponse, Instances } from 'classic-companion-core';
 import { Observable, finalize, forkJoin } from 'rxjs';
-import { RaidAndSizeSelection } from '../../common/components/raid-size-selection/raid-and-size-selection';
+import { IInstanceSizeSelection } from '../../common/components/instance-size-selection/instance-size-selection.interface';
+import { RaidAndSizeSelection } from '../../common/components/instance-size-selection/raid-and-size-selection';
 import { CharacterService } from '../../common/services/character/character.service';
 import { IGetCharacterZoneRankings } from '../../common/services/character/get-character-zone-rankings.interface';
 import { RaidService } from '../../common/services/raids/raid.service';
@@ -18,11 +19,11 @@ import { MyCharactersRankingsViewModel } from './my-characters-rankings.viewmode
 })
 export class MyCharactersRankingsComponent implements OnInit {
   @Input() myCharacters!: Character[];
+  @Input() public instanceSizeSelection: IInstanceSizeSelection = { instance: Instances.ToGC, sizes: [25] };
+  get raidAndSize(): RaidAndSizeSelection {
+    return RaidAndSizeSelection.fromInstanceSizeSelection(this.instanceSizeSelection);
+  }
   public viewModel: MyCharactersRankingsViewModel | undefined;
-  public raidAndSize: RaidAndSizeSelection = new RaidAndSizeSelection({
-    raid: 'toc',
-    size10: true
-  });
   public isLoading: boolean = false;
 
   constructor(

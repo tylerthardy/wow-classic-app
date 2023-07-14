@@ -1,8 +1,8 @@
 <app-card>
   <div *ngIf="!raid">
-    <div>
+    <!-- <div>
       Raid: <app-raid-size-selection selectionType="radio" [(ngModel)]="raidSelectionInput"></app-raid-size-selection>
-    </div>
+    </div> -->
     <div>
       Hard Reserve:
       <app-item-selection
@@ -46,24 +46,24 @@
       <button style="float: right" class="chunky-btn" (click)="onCopySpamClick()">Copy Spam</button>
     </div>
 
-    <app-card #raidSpamCard header="Raid Spam">
+    <!-- <app-card #raidSpamCard header="Raid Spam">
       <app-raid-spam #raidSpam [raid]="raidSpamInput!" [hideRaidInputFields]="true"></app-raid-spam>
-    </app-card>
+    </app-card> -->
 
-    <app-card id="player-lookup-card" #playerLookupCard header="Player Lookup">
+    <!-- <app-card id="player-lookup-card" #playerLookupCard header="Player Lookup">
       <app-player-lookup #playerLookup [raidAndSize]="playerLookupInput!"></app-player-lookup
-    ></app-card>
+    ></app-card> -->
 
     <app-card #softresManagerCard header="Softres.it Manager">
       <app-softres-manager #softresManager [raid]="softresManagerInput"></app-softres-manager>
     </app-card>
 
-    <app-card #raidLookupCard header="Raid Lookup" [collapsed]="true">
+    <!-- <app-card #raidLookupCard header="Raid Lookup" [collapsed]="true">
       <app-raid-lookup
         #raidLookup
         [raidAndSize]="raidLookupInput!"
         (characterNameClicked)="onRaidCharacterNameClicked($event)"
       ></app-raid-lookup>
-    </app-card>
+    </app-card> -->
   </ng-container>
 </app-card>

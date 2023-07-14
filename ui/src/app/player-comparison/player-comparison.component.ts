@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { RankingMetric, RankingMetricValues, SpecializationData, WowClass } from 'classic-companion-core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Instances, RankingMetric, RankingMetricValues, SpecializationData, WowClass } from 'classic-companion-core';
 import { finalize, forkJoin } from 'rxjs';
-import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
+import { IInstanceSizeSelection } from '../common/components/instance-size-selection/instance-size-selection.interface';
+import { RaidAndSizeSelection } from '../common/components/instance-size-selection/raid-and-size-selection';
 import { CharacterService } from '../common/services/character/character.service';
 import { IGetCharacterZoneRankings } from '../common/services/character/get-character-zone-rankings.interface';
 import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
@@ -19,10 +20,10 @@ import { PlayerComparisonViewModel } from './player-comparison.viewmodel';
   styleUrls: ['./player-comparison.component.scss']
 })
 export class PlayerComparisonComponent implements OnInit {
-  raidAndSize: RaidAndSizeSelection = new RaidAndSizeSelection({
-    raid: 'ulduar',
-    size10: true
-  });
+  @Input() public instanceSizeSelection: IInstanceSizeSelection = { instance: Instances.ToGC, sizes: [25] };
+  get raidAndSize(): RaidAndSizeSelection {
+    return RaidAndSizeSelection.fromInstanceSizeSelection(this.instanceSizeSelection);
+  }
   player1NameInput: string | undefined;
   player2NameInput: string | undefined;
   rankingMetricValues = RankingMetricValues;

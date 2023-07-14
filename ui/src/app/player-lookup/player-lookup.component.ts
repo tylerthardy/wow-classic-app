@@ -1,18 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {
   IGetCharacterZoneRankingsResponse,
+  Instances,
   RankingMetric,
   RankingMetricValues,
   SpecializationData
 } from 'classic-companion-core';
 import { Observable, finalize, forkJoin } from 'rxjs';
-import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
+import { IInstanceSizeSelection } from '../common/components/instance-size-selection/instance-size-selection.interface';
 import { CharacterService } from '../common/services/character/character.service';
 import { IGetCharacterZoneRankings } from '../common/services/character/get-character-zone-rankings.interface';
 import { RaidSize } from '../common/services/raids/raid-size.type';
-import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
-import { RaidService } from '../common/services/raids/raid.service';
-import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { ThemeService } from '../common/services/theme/theme.service';
 import { ToastService } from '../common/services/toast/toast.service';
 import { CompactPlayerLookupViewModel } from './compact-player-lookup.viewmodel';
@@ -24,10 +22,7 @@ import { PlayerLookupViewModel } from './player-lookup.viewmodel';
   styleUrls: ['./player-lookup.component.scss']
 })
 export class PlayerLookupComponent implements OnInit {
-  @Input() raidAndSize: RaidAndSizeSelection = new RaidAndSizeSelection({
-    raid: 'toc',
-    size10: true
-  });
+  @Input() instanceSizeSelection: IInstanceSizeSelection = { instance: Instances.ToGC, sizes: [25] };
   characterNameInput: string | undefined;
   rankingMetricValues = RankingMetricValues;
   metricInput: RankingMetric = 'dps';
@@ -39,7 +34,6 @@ export class PlayerLookupComponent implements OnInit {
 
   constructor(
     private characterService: CharacterService,
-    private raidService: RaidService,
     private toastService: ToastService,
     private themeService: ThemeService
   ) {}
@@ -76,19 +70,10 @@ export class PlayerLookupComponent implements OnInit {
     this.clearViewModels();
     this.characterNameInput = name;
 
-    const instanceSlugs: SoftresRaidSlug[] = this.raidAndSize.getSoftResSlugs();
-    if (!instanceSlugs || instanceSlugs.length === 0) {
-      this.toastService.warn('Invalid raid', 'Choose a raid and size');
-      return;
-    }
-    const zonesAndSizes: RaidZoneAndSize[] = instanceSlugs.map((instanceSlug: SoftresRaidSlug) =>
-      this.raidService.getZoneAndSize(instanceSlug)
-    );
-
-    if (zonesAndSizes.length === 1) {
-      this.performSingleRaidSearch(zonesAndSizes[0]);
+    if (this.instanceSizeSelection.sizes.length === 1) {
+      this.performSingleRaidSearch(this.instanceSizeSelection.instance.zoneId, this.instanceSizeSelection.sizes[0]);
     } else {
-      this.performMultipleRaidSearch(zonesAndSizes);
+      this.performMultipleRaidSearch(this.instanceSizeSelection.instance.zoneId, this.instanceSizeSelection.sizes);
     }
   }
 
@@ -123,9 +108,9 @@ export class PlayerLookupComponent implements OnInit {
     return this.characterService.getZoneRankings(request);
   }
 
-  private performSingleRaidSearch(zoneAndSize: RaidZoneAndSize): void {
+  private performSingleRaidSearch(zoneId: number, size: RaidSize): void {
     this.isLoading = true;
-    this.getSearchObservable(zoneAndSize.zoneId, zoneAndSize.size)
+    this.getSearchObservable(zoneId, size)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: (result: IGetCharacterZoneRankingsResponse) =>
@@ -134,15 +119,16 @@ export class PlayerLookupComponent implements OnInit {
       });
   }
 
-  private performMultipleRaidSearch(zonesAndSizes: RaidZoneAndSize[]): void {
-    const observables: Observable<IGetCharacterZoneRankingsResponse>[] = zonesAndSizes.map(
-      (zoneAndSize: RaidZoneAndSize) => this.getSearchObservable(zoneAndSize.zoneId, zoneAndSize.size)
+  private performMultipleRaidSearch(zoneId: number, sizes: RaidSize[]): void {
+    const observables: Observable<IGetCharacterZoneRankingsResponse>[] = sizes.map((size: RaidSize) =>
+      this.getSearchObservable(zoneId, size)
     );
     this.isLoading = true;
     forkJoin(observables)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: (responses: IGetCharacterZoneRankingsResponse[]) => {
+          // TODO: Sizes are hard-coded
           const response10: IGetCharacterZoneRankingsResponse = responses.find((response) => response.size === 10)!;
           const response25: IGetCharacterZoneRankingsResponse = responses.find((response) => response.size === 25)!;
           if (response10) {

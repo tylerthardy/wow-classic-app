@@ -1,5 +1,6 @@
 import { RaidSize } from '../../services/raids/raid-size.type';
 import { SoftresRaidSlug } from '../../services/softres/softres-raid-slug';
+import { IInstanceSizeSelection } from './instance-size-selection.interface';
 import { IRaidAndSizeSelection } from './raid-and-size-selection.interface';
 
 export class RaidAndSizeSelection implements IRaidAndSizeSelection {
@@ -90,6 +91,15 @@ export class RaidAndSizeSelection implements IRaidAndSizeSelection {
       raid: this.raid,
       size10: this.size10,
       size25: this.size25
+    });
+  }
+
+  // TODO: Deprecate
+  public static fromInstanceSizeSelection(instanceSizeSelection: IInstanceSizeSelection): RaidAndSizeSelection {
+    return new RaidAndSizeSelection({
+      raid: instanceSizeSelection.instance.holdOverSlug,
+      size10: instanceSizeSelection.sizes.some((s) => s === 10),
+      size25: instanceSizeSelection.sizes.some((s) => s === 25)
     });
   }
 }

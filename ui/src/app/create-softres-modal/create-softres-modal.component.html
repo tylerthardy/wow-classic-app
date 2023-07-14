@@ -3,7 +3,13 @@
     <h4>{{ 'Confirm' }}</h4>
   </div>
   <div class="modal-body">
-    <div>Raid: <app-raid-size-selection selectionType="radio" [(ngModel)]="raidAndSize"></app-raid-size-selection></div>
+    <div>
+      Raid:
+      <app-instance-size-selection
+        selectionType="radio"
+        [(ngModel)]="instanceSizeSelection"
+      ></app-instance-size-selection>
+    </div>
     <div>
       Hard Reserve:
       <app-item-selection [instance]="raidAndSize.getSoftResSlug()" [(ngModel)]="hardReserveItem"></app-item-selection>
