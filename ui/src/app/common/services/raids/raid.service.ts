@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Raid, Raids } from 'classic-companion-core';
 import { SoftresRaidSlug } from '../softres/softres-raid-slug';
 import { RaidZoneAndSize } from './raid-zone-and-size.interface';
 
@@ -10,29 +11,14 @@ export class RaidService {
 
   // FIXME: Enum
   public getZoneAndSize(softresSlug: SoftresRaidSlug): RaidZoneAndSize {
-    switch (softresSlug) {
-      case 'wotlknaxx10p2':
-      case 'obsidiansanctum10p2':
-      case 'wyrmrest10p2':
-      case 'eyeofeternity10p2':
-      case 'naxxdragons10p2':
-        return { zoneId: 1015, size: 10 };
-      case 'wotlknaxx25':
-      case 'obsidiansanctum25':
-      case 'wyrmrest25':
-      case 'eyeofeternity25':
-      case 'naxxdragons25':
-        return { zoneId: 1015, size: 25 };
-      case 'ulduar10':
-        return { zoneId: 1017, size: 10 };
-      case 'ulduar25':
-        return { zoneId: 1017, size: 25 };
-      case 'toc10':
-        return { zoneId: 1018, size: 10 };
-      case 'toc25':
-        return { zoneId: 1018, size: 25 };
-      default:
-        return { zoneId: -1, size: 40 };
+    const raid: Raid | undefined = Raids.getBySoftresSlug(softresSlug);
+    if (!raid) {
+      return { zoneId: -1, size: 40 };
     }
+
+    return {
+      zoneId: raid.instance.zoneId,
+      size: raid.size
+    };
   }
 }
