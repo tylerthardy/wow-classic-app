@@ -27,7 +27,7 @@ export class InstanceSizeSelectionComponent implements AfterViewInit, ControlVal
   protected uniqueId = MathUtil.generateUUID();
 
   // TODO: Dedupe instance with selectedInstance
-  private value: IInstanceSizeSelection = { instance: Instances.ToGC, sizes: [10] };
+  private value: IInstanceSizeSelection = { instance: Instances.Naxxramas, sizes: [10] };
   private onChangeCallback = (_: any) => {};
   private onTouchedCallback = () => {};
 
@@ -41,9 +41,7 @@ export class InstanceSizeSelectionComponent implements AfterViewInit, ControlVal
   // ControlValueAccessor
   writeValue(value: IInstanceSizeSelection): void {
     if (!value) {
-      return; //throw new Error('no value set for InstanceSizeSelectionComponent');
-    } else {
-      console.log(value);
+      return;
     }
     this.value = value;
     this.selectedInstance = value.instance;
@@ -60,9 +58,9 @@ export class InstanceSizeSelectionComponent implements AfterViewInit, ControlVal
   }
 
   // TODO: any
-  protected onSelectChange(event: any): void {
-    // this.value.instance = event.target.value;
-    // this.onChangeCallback(this.value);
+  protected onSelectChange(_event: any): void {
+    this.value.instance = this.selectedInstance;
+    this.onChangeCallback(this.value);
   }
 
   // TODO: any

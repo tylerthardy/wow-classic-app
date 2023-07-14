@@ -12,7 +12,10 @@
     </div>
     <div>
       Hard Reserve:
-      <app-item-selection [instance]="raidAndSize.getSoftResSlug()" [(ngModel)]="hardReserveItem"></app-item-selection>
+      <app-item-selection
+        [instance]="instanceSizeSelection.getSoftResSlug()"
+        [(ngModel)]="hardReserveItem"
+      ></app-item-selection>
     </div>
     <div>Recipient: <input [(ngModel)]="hardReserveRecipient" /></div>
   </div>

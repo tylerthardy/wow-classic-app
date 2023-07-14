@@ -18,6 +18,19 @@ export class Instance implements IInstance {
     this.sizes = data.sizes;
     this.holdOverSlug = data.holdOverSlug;
   }
+
+  // FIXME: Standardize using getter methods vs property getters
+  public getRaid(size: RaidSize): Raid {
+    const raid: Raid | undefined = Raids.getRaidBySizeInstance(this, size);
+    if (!raid) {
+      throw new Error(`no raid found: ${this.name}, ${size}`);
+    }
+    return raid;
+  }
+
+  public getImage(): string {
+    return `https://assets.rpglogs.com/img/warcraft/zones/zone-${this.zoneId}-header-background.jpg`;
+  }
 }
 export class Instances {
   public static Naxxramas = new Instance({
@@ -162,7 +175,14 @@ export class Raids {
     Raids.ToGC25
   ];
   private static raidBySoftRes: Map<string, Raid> = new Map(Raids.All.map((raid) => [raid.softresSlug, raid]));
+  private static raidBySizeInstance: Map<RaidSize, Map<Instance, Raid>> = new Map([
+    [10, new Map(Raids.All.filter((r) => r.size === 25).map((r) => [r.instance, r]))],
+    [25, new Map(Raids.All.filter((r) => r.size === 25).map((r) => [r.instance, r]))]
+  ]);
 
+  public static getRaidBySizeInstance(instance: Instance, size: RaidSize): Raid | undefined {
+    return this.raidBySizeInstance.get(size)?.get(instance);
+  }
   public static getBySoftresSlug(softresSlug: string): Raid | undefined {
     return Raids.raidBySoftRes.get(softresSlug);
   }

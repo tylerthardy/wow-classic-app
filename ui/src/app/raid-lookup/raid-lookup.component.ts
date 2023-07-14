@@ -3,17 +3,14 @@ import {
   IGetCharacterZoneRankingsResponse,
   IGetMultipleCharacterZoneRankingsResponse,
   Instances,
+  Raid,
   WowClass
 } from 'classic-companion-core';
 import { finalize } from 'rxjs';
 import { ColumnSpecification } from '../common/components/grid/grid.component';
-import { IInstanceSizeSelection } from '../common/components/instance-size-selection/instance-size-selection.interface';
-import { RaidAndSizeSelection } from '../common/components/instance-size-selection/raid-and-size-selection';
+import { InstanceSizeSelection } from '../common/components/instance-size-selection/instance-size-selection';
 import { CharacterService } from '../common/services/character/character.service';
 import { IGetCharacterZoneRankings } from '../common/services/character/get-character-zone-rankings.interface';
-import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
-import { RaidService } from '../common/services/raids/raid.service';
-import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { ThemeService } from '../common/services/theme/theme.service';
 import { Theme } from '../common/services/theme/theme.type';
 import { ToastService } from '../common/services/toast/toast.service';
@@ -29,10 +26,10 @@ import { RaidLookupCharacter } from './raid-lookup-character';
 })
 export class RaidLookupComponent implements OnInit {
   @Output() public characterNameClicked: EventEmitter<string> = new EventEmitter<string>();
-  @Input() public instanceSizeSelection: IInstanceSizeSelection = { instance: Instances.ToGC, sizes: [25] };
-  get raidAndSize(): RaidAndSizeSelection {
-    return RaidAndSizeSelection.fromInstanceSizeSelection(this.instanceSizeSelection);
-  }
+  @Input() public instanceSizeSelection: InstanceSizeSelection = new InstanceSizeSelection({
+    instance: Instances.ToGC,
+    sizes: [25]
+  });
   protected importJson: string | undefined;
   protected classFilterInput: WowClass | undefined;
   protected roleFilterInput: RaidPlayerRole | undefined;
@@ -46,7 +43,6 @@ export class RaidLookupComponent implements OnInit {
 
   constructor(
     private characterService: CharacterService,
-    private raidService: RaidService,
     private toastService: ToastService,
     private themeService: ThemeService
   ) {}
@@ -93,25 +89,24 @@ export class RaidLookupComponent implements OnInit {
 
     this.importJson = json;
 
-    if (!this.raidAndSize.hasRaidAndSize()) {
+    if (!this.instanceSizeSelection.hasSize()) {
       this.toastService.warn('Invalid Search', 'Select a raid instance and size');
       return;
     }
 
-    // FIXME: START: These should be simple methods on the object
-    const raidSlugs: SoftresRaidSlug[] = this.raidAndSize.getSoftResSlugs();
-    if (raidSlugs.length === 0) {
-      this.toastService.error('Error', 'No raids found for provided data' + JSON.stringify(this.raidAndSize));
+    let raid: Raid;
+    try {
+      raid = this.instanceSizeSelection.getRaid();
+    } catch (err) {
+      this.toastService.error('Error', 'No raids found for provided data' + JSON.stringify(this.instanceSizeSelection));
       return;
     }
-    const raidZoneAndSize: RaidZoneAndSize = this.raidService.getZoneAndSize(raidSlugs[0]);
-    // FIXME: END: These should be simple methods on the object
 
     this.clearCharacterData();
 
     let queries: IGetCharacterZoneRankings[] = [];
     for (let importedCharacter of importedCharacters) {
-      const raidCharacter: RaidLookupCharacter = new RaidLookupCharacter(importedCharacter, raidZoneAndSize);
+      const raidCharacter: RaidLookupCharacter = new RaidLookupCharacter(importedCharacter, raid);
       this.characters.push(raidCharacter);
 
       const query: IGetCharacterZoneRankings = {
@@ -119,8 +114,8 @@ export class RaidLookupComponent implements OnInit {
         metric: raidCharacter.metric,
         classSlug: raidCharacter.class?.slug,
         role: raidCharacter.role,
-        zoneId: raidZoneAndSize.zoneId,
-        size: raidZoneAndSize.size
+        zoneId: this.instanceSizeSelection.instance.zoneId,
+        size: this.instanceSizeSelection.getSize()
       };
       queries.push(query);
     }
@@ -177,9 +172,9 @@ export class RaidLookupComponent implements OnInit {
     character.lastUpdatedChanging = true;
     const query: IGetCharacterZoneRankings = {
       characterName: character.characterName,
-      zoneId: character.raidZoneAndSize.zoneId,
+      zoneId: character.raid.instance.zoneId,
       metric: character.metric,
-      size: character.raidZoneAndSize.size
+      size: character.raid.size
     };
     this.characterService
       .getZoneRankings(query)

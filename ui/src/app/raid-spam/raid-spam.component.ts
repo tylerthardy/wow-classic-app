@@ -24,11 +24,11 @@ export class RaidSpamComponent implements OnInit {
   ngOnInit(): void {}
 
   get spamOutput(): string | undefined {
-    if (!this.raid.raidAndSize || !this.raid.softReserveCount) {
+    if (!this.raid.instanceSizeSelection || !this.raid.softReserveCount) {
       return undefined;
     }
 
-    const raidSlug: SoftresRaidSlug | undefined = this.raid.raidAndSize.getSoftResSlug();
+    const raidSlug: SoftresRaidSlug | undefined = this.raid.instanceSizeSelection.getSoftResSlug();
     if (!raidSlug) {
       return undefined;
     }

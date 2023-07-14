@@ -1,10 +1,10 @@
 import {
   IGetCharacterZoneRankingsResponse,
   IGetMultipleCharacterZoneRankingsResponseItem,
+  Raid,
   RankingMetric,
   WowClass
 } from 'classic-companion-core';
-import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidPlayerRole } from '../raid-lookup/raid-player-role.type';
 import { JsonRaidPlayer, JsonRaidPlayerV2 } from '../raid-lookup/raid-player.interface';
 
@@ -26,14 +26,13 @@ export class RaidLookupCharacter {
   public hardModes?: string[] | undefined;
   public maxPossibleHardmodes?: number | undefined;
   public errors?: any[] | undefined;
-  public raidZoneAndSize: RaidZoneAndSize;
+  public raid: Raid;
 
   public lastUpdatedChanging: boolean = false;
 
-  constructor(player: JsonRaidPlayer | JsonRaidPlayerV2, raidZoneAndSize: RaidZoneAndSize) {
-    this.raidZoneAndSize = raidZoneAndSize;
-
+  constructor(player: JsonRaidPlayer | JsonRaidPlayerV2, raid: Raid) {
     this.name = player.name;
+    this.raid = raid;
     this.characterName = player.name; // FIXME: Shouldn't be duplicated
     if (player.hasOwnProperty('roles')) {
       player = player as JsonRaidPlayerV2;
