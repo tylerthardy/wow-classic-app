@@ -1,4 +1,4 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, Injector, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -10,6 +10,7 @@ import { SafePipeModule } from 'safe-pipe';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthService } from './auth/auth.service';
+import { ClassIconComponent } from './class-icon/class-icon.component';
 import { CardComponent } from './common/components/card/card.component';
 import { ClassSelectionComponent } from './common/components/class-selection/class-selection.component';
 import { ClassSpecSelectionComponent } from './common/components/class-spec-selection/class-spec-selection.component';
@@ -44,15 +45,13 @@ import { PlayerLookupComponent } from './player-lookup/player-lookup.component';
 import { PlayerRaidStatsComponent } from './player-lookup/player-raid-stats/player-raid-stats.component';
 import { RaidInformationComponent } from './raid-information/raid-information.component';
 import { RaidLeadHelperComponent } from './raid-lead-helper/raid-lead-helper.component';
-import { RaidLookupV2Component } from './raid-lookup-v2/raid-lookup-v2.component';
 import { RaidLookupComponent } from './raid-lookup/raid-lookup.component';
 import { RaidSpamComponent } from './raid-spam/raid-spam.component';
+import { RoleIconComponent } from './role-icon/role-icon.component';
 import { SoftresManagerComponent } from './softres-manager/softres-manager.component';
 import { SpecializationDataComponent } from './specialization-data/specialization-data.component';
 import { SpecializationIconComponent } from './specialization-icon/specialization-icon.component';
 import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.component';
-import { ClassIconComponent } from './class-icon/class-icon.component';
-import { RoleIconComponent } from './role-icon/role-icon.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +88,7 @@ import { RoleIconComponent } from './role-icon/role-icon.component';
     MyCharacterGearCompareComponent,
     SvgIconComponent,
     GettingStartedComponent,
-    RaidLookupV2Component,
+    RaidLookupComponent,
     MaintenanceComponent,
     ThemeDirective,
     ClassIconComponent,

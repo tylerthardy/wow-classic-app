@@ -1,6 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { IGetMultipleCharacterZoneRankingsResponse, RankingMetric, WowClass } from 'classic-companion-core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  IGetCharacterZoneRankingsResponse,
+  IGetMultipleCharacterZoneRankingsResponse,
+  WowClass
+} from 'classic-companion-core';
 import { finalize } from 'rxjs';
+import { ColumnSpecification } from '../common/components/grid/grid.component';
 import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
 import { CharacterService } from '../common/services/character/character.service';
 import { IGetCharacterZoneRankings } from '../common/services/character/get-character-zone-rankings.interface';
@@ -8,29 +13,35 @@ import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.int
 import { RaidService } from '../common/services/raids/raid.service';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { ThemeService } from '../common/services/theme/theme.service';
+import { Theme } from '../common/services/theme/theme.type';
 import { ToastService } from '../common/services/toast/toast.service';
-import { RaidLookupViewModel } from './raid-lookup.viewmodel';
-import { RaidPlayerRole } from './raid-player-role.type';
-import { JsonRaidPlayer } from './raid-player.interface';
+import { ParseUtil } from '../common/utils';
+import { RaidPlayerRole } from '../raid-lookup/raid-player-role.type';
+import { JsonRaidPlayer, JsonRaidPlayerV2 } from '../raid-lookup/raid-player.interface';
+import { RaidLookupCharacter } from './raid-lookup-character';
 
 @Component({
   selector: 'app-raid-lookup',
   templateUrl: './raid-lookup.component.html',
   styleUrls: ['./raid-lookup.component.scss']
 })
-export class RaidLookupComponent implements OnInit, OnChanges {
-  @Output() characterNameClicked: EventEmitter<string> = new EventEmitter<string>();
-  @Input() raidAndSize: RaidAndSizeSelection = new RaidAndSizeSelection({
+export class RaidLookupComponent implements OnInit {
+  @Output() public characterNameClicked: EventEmitter<string> = new EventEmitter<string>();
+  @Input() public raidAndSize: RaidAndSizeSelection = new RaidAndSizeSelection({
     raid: 'toc',
     size10: true,
     size25: false
   });
-  importJson: string | undefined;
-  raidRankingsLoading: boolean = false;
-  viewModel: RaidLookupViewModel | undefined;
-  classFilterInput: WowClass | undefined;
-  roleFilterInput: RaidPlayerRole | undefined;
-  roleFilterOptions: RaidPlayerRole[] = ['DAMAGER', 'HEALER', 'TANK'];
+  protected importJson: string | undefined;
+  protected classFilterInput: WowClass | undefined;
+  protected roleFilterInput: RaidPlayerRole | undefined;
+  protected roleFilterOptions: RaidPlayerRole[] = ['DAMAGER', 'HEALER', 'TANK'];
+
+  protected characters: RaidLookupCharacter[] = [];
+  protected filteredCharacters: RaidLookupCharacter[] = [];
+  protected erroredCharacters: RaidLookupCharacter[] = [];
+  protected raidRankingsLoading: boolean = false;
+  protected columns!: ColumnSpecification<RaidLookupCharacter>[];
 
   constructor(
     private characterService: CharacterService,
@@ -39,15 +50,15 @@ export class RaidLookupComponent implements OnInit, OnChanges {
     private themeService: ThemeService
   ) {}
 
-  ngOnInit(): void {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['classFilterInput'] || changes['roleFilterInput']) {
-      this.viewModel?.filterData(this.classFilterInput, this.roleFilterInput);
-    }
+  ngOnInit(): void {
+    this.columns = this.getColumns(this.themeService.theme);
   }
 
-  public onSearchClick(): void {
+  protected onFilterChanged(): void {
+    this.filterData(this.classFilterInput, this.roleFilterInput);
+  }
+
+  protected onSearchClick(): void {
     if (!this.importJson) {
       this.toastService.warn(
         'Data Required',
@@ -58,14 +69,19 @@ export class RaidLookupComponent implements OnInit, OnChanges {
     this.searchRaid(this.importJson);
   }
 
-  public onCharacterNameClick(characterName: string): void {
+  protected onClearClick(): void {
+    this.importJson = undefined;
+    this.clearCharacterData();
+  }
+
+  protected onCharacterNameClick(characterName: string): void {
     this.characterNameClicked.emit(characterName);
   }
 
   public searchRaid(json: string): void {
-    let players: JsonRaidPlayer[];
+    let importedCharacters: JsonRaidPlayer[] | JsonRaidPlayerV2[];
     try {
-      players = JSON.parse(json);
+      importedCharacters = JSON.parse(json);
     } catch (err) {
       this.toastService.warn(
         'Invalid Data',
@@ -74,40 +90,39 @@ export class RaidLookupComponent implements OnInit, OnChanges {
       return;
     }
 
-    if (players.find((player) => player.hasOwnProperty('roles'))) {
-      this.toastService.warn(
-        'Unsupported Data',
-        'The data is in a new format, and can only be used with the new Raid Lookup.'
-      );
-      return;
-    }
-
     this.importJson = json;
 
-    // FIXME: Jesus, look at this method
     if (!this.raidAndSize.hasRaidAndSize()) {
       this.toastService.warn('Invalid Search', 'Select a raid instance and size');
       return;
     }
 
+    // FIXME: START: These should be simple methods on the object
     const raidSlugs: SoftresRaidSlug[] = this.raidAndSize.getSoftResSlugs();
     if (raidSlugs.length === 0) {
       this.toastService.error('Error', 'No raids found for provided data' + JSON.stringify(this.raidAndSize));
       return;
     }
     const raidZoneAndSize: RaidZoneAndSize = this.raidService.getZoneAndSize(raidSlugs[0]);
+    // FIXME: END: These should be simple methods on the object
 
-    const queries: IGetCharacterZoneRankings[] = players.map((player) => {
+    this.clearCharacterData();
+
+    let queries: IGetCharacterZoneRankings[] = [];
+    for (let importedCharacter of importedCharacters) {
+      const raidCharacter: RaidLookupCharacter = new RaidLookupCharacter(importedCharacter, raidZoneAndSize);
+      this.characters.push(raidCharacter);
+
       const query: IGetCharacterZoneRankings = {
-        characterName: player.name,
-        metric: this.getMetricFromRole(player.role),
-        classSlug: player.classFileName,
-        role: player.role,
+        characterName: raidCharacter.name,
+        metric: raidCharacter.metric,
+        classSlug: raidCharacter.class?.slug,
+        role: raidCharacter.role,
         zoneId: raidZoneAndSize.zoneId,
         size: raidZoneAndSize.size
       };
-      return query;
-    });
+      queries.push(query);
+    }
 
     this.raidRankingsLoading = true;
     this.characterService
@@ -115,26 +130,188 @@ export class RaidLookupComponent implements OnInit, OnChanges {
       .pipe(finalize(() => (this.raidRankingsLoading = false)))
       .subscribe({
         next: (response: IGetMultipleCharacterZoneRankingsResponse) => {
-          this.viewModel = new RaidLookupViewModel(response.characters, this.themeService.theme, (value) =>
-            this.onCharacterNameClick(value)
-          );
-          this.viewModel.filterData(this.classFilterInput, this.roleFilterInput);
+          if (response.characters.length !== this.characters.length) {
+            throw new Error('Response length mismatch');
+          }
+          for (let i = 0; i < response.characters.length; i++) {
+            const rankingData = response.characters[i];
+            const character = this.characters[i];
+            character.updateRankingData(rankingData);
+          }
+          this.filterData(this.classFilterInput, this.roleFilterInput);
         }
       });
   }
 
-  public onClearClick(): void {
-    this.viewModel = undefined;
-    this.importJson = undefined;
+  private clearCharacterData(): void {
+    this.characters = [];
+    this.filteredCharacters = [];
+    this.erroredCharacters = [];
   }
 
-  private getMetricFromRole(role: RaidPlayerRole): RankingMetric {
-    switch (role) {
-      case 'DAMAGER':
-      case 'TANK':
-        return 'dps';
-      case 'HEALER':
-        return 'hps';
+  private filterData(classFilter: WowClass | undefined, roleFilter: RaidPlayerRole | undefined): void {
+    this.filteredCharacters = this.getFilteredData(classFilter, roleFilter);
+    this.erroredCharacters = this.getErroredData();
+  }
+
+  private getFilteredData(
+    classFilter: WowClass | undefined,
+    roleFilter: RaidPlayerRole | undefined
+  ): RaidLookupCharacter[] {
+    let resultingData: RaidLookupCharacter[] = Object.assign([], this.characters);
+    if (classFilter) {
+      resultingData = resultingData.filter((d) => !d.class || d.class.id === classFilter.id);
     }
+    if (roleFilter) {
+      resultingData = resultingData.filter((d) => !d.role || d.role === roleFilter);
+    }
+    return resultingData.filter((d) => !d.errors || d.errors.length === 0);
+  }
+
+  private getErroredData(): RaidLookupCharacter[] {
+    return this.characters.filter((d) => d.errors && d.errors.length > 0);
+  }
+
+  private onLastUpdatedRefreshClick(character: RaidLookupCharacter): void {
+    character.lastUpdatedChanging = true;
+    const query: IGetCharacterZoneRankings = {
+      characterName: character.characterName,
+      zoneId: character.raidZoneAndSize.zoneId,
+      metric: character.metric,
+      size: character.raidZoneAndSize.size
+    };
+    this.characterService
+      .getZoneRankings(query)
+      .pipe(finalize(() => (character.lastUpdatedChanging = false)))
+      .subscribe({
+        next: (response: IGetCharacterZoneRankingsResponse) => {
+          character.updateSingleRankingData(response);
+          this.filterData(this.classFilterInput, this.roleFilterInput);
+        }
+      });
+  }
+
+  private getColumns(theme: Theme): ColumnSpecification<RaidLookupCharacter>[] {
+    return [
+      {
+        label: 'WL',
+        valueKey: 'characterName',
+        sortType: 'string',
+        format: {
+          type: 'wcl-link'
+        }
+      },
+      {
+        label: 'Player',
+        valueKey: 'characterName',
+        sortType: 'string',
+        style: {
+          cursor: 'pointer'
+        },
+        onClick: (value: string) => this.onCharacterNameClick(value)
+      },
+      {
+        label: 'Class',
+        valueKey: 'class',
+        sortType: 'class',
+        format: {
+          type: 'class',
+          formatParams: {
+            showName: false
+          }
+        }
+      },
+      {
+        label: 'Role',
+        valueKey: 'role',
+        sortType: 'role',
+        format: {
+          type: 'role',
+          formatParams: {
+            showName: false
+          }
+        }
+      },
+      {
+        label: 'Metric',
+        valueKey: 'metric',
+        sortType: 'string',
+        transform: (rowValue) => {
+          return rowValue.metric.toUpperCase();
+        }
+      },
+      {
+        label: 'Best Perf. Avg',
+        valueKey: 'bestPerformanceAverage',
+        sortType: 'number',
+        format: {
+          type: 'parse'
+        },
+        transform: (rowValue) => {
+          return { value: rowValue.bestPerformanceAverage };
+        },
+        style: (rowValue) => {
+          return { 'background-color': ParseUtil.getParseWarningColor(rowValue.bestPerformanceAverage, theme) };
+        }
+      },
+      {
+        label: 'Med Perf. Avg',
+        valueKey: 'medianPerformanceAverage',
+        sortType: 'number',
+        format: {
+          type: 'parse'
+        },
+        transform: (rowValue) => {
+          return { value: rowValue.medianPerformanceAverage };
+        },
+        style: (rowValue) => {
+          return { 'background-color': ParseUtil.getParseWarningColor(rowValue.medianPerformanceAverage, theme) };
+        }
+      },
+      {
+        label: 'Best Progress',
+        valueKey: 'bestProgress',
+        sortType: 'number',
+        format: {
+          type: 'custom',
+          customFormat: (rowValue) => {
+            if (!rowValue.bestProgress) {
+              return '';
+            }
+            return `${rowValue.bestProgress}/${rowValue.maxPossibleProgress}`;
+          }
+        }
+      },
+      {
+        label: 'Best HM',
+        valueKey: 'bestHardModeProgress',
+        sortType: 'number',
+        format: {
+          type: 'custom',
+          customFormat: (rowValue) => {
+            if (!rowValue.bestHardModeProgress) {
+              return '';
+            }
+            return `${rowValue.bestHardModeProgress}/${rowValue.maxPossibleHardmodes}`;
+          }
+        },
+        tooltip: (rowValue) => {
+          if (!rowValue.hardModes || rowValue.hardModes.length === 0) {
+            return undefined;
+          }
+          return rowValue.hardModes.join('\n');
+        }
+      },
+      {
+        label: 'Last Updated',
+        valueKey: 'lastUpdated',
+        sortType: 'number',
+        format: {
+          // TODO: Extract a date formatter
+          type: 'last-updated'
+        },
+        onClick: (rowValue) => this.onLastUpdatedRefreshClick(rowValue)
+      }
+    ];
   }
 }
