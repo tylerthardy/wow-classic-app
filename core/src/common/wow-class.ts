@@ -1,5 +1,3 @@
-import { paramCase } from 'change-case';
-
 export type WowRole = 'DPS' | 'Tank' | 'Healer';
 
 export class WowClass {
@@ -156,6 +154,6 @@ export class WowClass {
   }
 
   private static normalizeName(name: string): string {
-    return paramCase(name).toUpperCase();
+    return name.toUpperCase().replace(' ', '');
   }
 }

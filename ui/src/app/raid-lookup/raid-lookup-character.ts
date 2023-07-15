@@ -6,7 +6,7 @@ import {
   WowClass
 } from 'classic-companion-core';
 import { RaidPlayerRole } from '../raid-lookup/raid-player-role.type';
-import { JsonRaidPlayer, JsonRaidPlayerV2 } from '../raid-lookup/raid-player.interface';
+import { JsonRaidPlayer } from '../raid-lookup/raid-player.interface';
 
 const playerRoleLookup: RaidPlayerRole[] = ['TANK', 'HEALER', 'DAMAGER'];
 
@@ -30,19 +30,12 @@ export class RaidLookupCharacter {
 
   public lastUpdatedChanging: boolean = false;
 
-  constructor(player: JsonRaidPlayer | JsonRaidPlayerV2, raid: Raid) {
+  constructor(player: JsonRaidPlayer, raid: Raid) {
     this.name = player.name;
     this.raid = raid;
     this.characterName = player.name; // FIXME: Shouldn't be duplicated
-    if (player.hasOwnProperty('roles')) {
-      player = player as JsonRaidPlayerV2;
-      this.class = WowClass.getClassByName(player.class);
-      this.role = this.getFirstRoleFromArray(player.roles);
-    } else {
-      player = player as JsonRaidPlayer;
-      this.class = WowClass.getClassByFileName(player.classFileName);
-      this.role = player.role;
-    }
+    this.class = WowClass.getClassByName(player.class);
+    this.role = this.getFirstRoleFromArray(player.roles);
     this.metric = this.getMetricFromRole(this.role);
   }
 

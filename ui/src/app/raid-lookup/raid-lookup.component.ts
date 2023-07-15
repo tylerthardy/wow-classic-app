@@ -16,7 +16,7 @@ import { Theme } from '../common/services/theme/theme.type';
 import { ToastService } from '../common/services/toast/toast.service';
 import { ParseUtil } from '../common/utils';
 import { RaidPlayerRole } from '../raid-lookup/raid-player-role.type';
-import { JsonRaidPlayer, JsonRaidPlayerV2 } from '../raid-lookup/raid-player.interface';
+import { JsonRaidPlayer } from '../raid-lookup/raid-player.interface';
 import { RaidLookupCharacter } from './raid-lookup-character';
 
 @Component({
@@ -76,7 +76,7 @@ export class RaidLookupComponent implements OnInit {
   }
 
   public searchRaid(json: string): void {
-    let importedCharacters: JsonRaidPlayer[] | JsonRaidPlayerV2[];
+    let importedCharacters: JsonRaidPlayer[];
     try {
       importedCharacters = JSON.parse(json);
     } catch (err) {
