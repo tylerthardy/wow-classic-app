@@ -1,13 +1,17 @@
 <div id="form">
   <ng-container *ngIf="!hideRaidInputFields">
     <div>
-      Raid: <app-raid-size-selection selectionType="radio" [(ngModel)]="raid.raidAndSize"></app-raid-size-selection>
+      Raid:
+      <app-instance-size-selection
+        selectionType="radio"
+        [(ngModel)]="raid.instanceSizeSelection"
+      ></app-instance-size-selection>
     </div>
     <div>
       Hard Reserve:
       <app-item-selection
-        *ngIf="raid.raidAndSize"
-        [instance]="raid.raidAndSize.getSoftResSlug()"
+        *ngIf="raid.instanceSizeSelection"
+        [instance]="raid.instanceSizeSelection.getSoftResSlug()"
         [(ngModel)]="raid.hardReserveItem"
       ></app-item-selection>
     </div>

@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Instances } from 'classic-companion-core';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { Observable } from 'rxjs';
 import { ConfirmModalComponent } from '../common/components/confirm-modal/confirm-modal.component';
-import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
+import { InstanceSizeSelection } from '../common/components/instance-size-selection/instance-size-selection';
 import { Raid } from '../common/services/raids/raid.interface';
 import { Softres } from '../common/services/softres/http/common/softres.interface';
 import { CreateSoftresResponse } from '../common/services/softres/http/create-softres-response.interface';
@@ -106,9 +107,9 @@ export class SoftresManagerComponent implements OnInit {
       return;
     }
     const data: CreateSoftresModalData = {
-      raidAndSize: new RaidAndSizeSelection({
-        raid: 'toc',
-        size10: true
+      instanceSizeSelection: new InstanceSizeSelection({
+        instance: Instances.ToGC,
+        sizes: [25]
       }),
       softReserveCount: 1,
       ...this.raid
@@ -132,7 +133,7 @@ export class SoftresManagerComponent implements OnInit {
   private createSoftres(modalData: CreateSoftresModalData): Observable<CreateSoftresResponse> {
     let createOptions: CreateSoftresOptions = {
       edition: 'wotlk',
-      instance: modalData.raidAndSize.getSoftResSlug()!,
+      instance: modalData.instanceSizeSelection.getSoftResSlug()!,
       faction: 'Alliance',
       discord: true,
       amount: 1,

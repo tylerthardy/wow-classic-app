@@ -1,12 +1,16 @@
 <app-card>
   <div *ngIf="!raid">
     <div>
-      Raid: <app-raid-size-selection selectionType="radio" [(ngModel)]="raidSelectionInput"></app-raid-size-selection>
+      Raid:
+      <app-instance-size-selection
+        selectionType="radio"
+        [(ngModel)]="instanceSizeSelection"
+      ></app-instance-size-selection>
     </div>
     <div>
       Hard Reserve:
       <app-item-selection
-        [instance]="raidSelectionInput.getSoftResSlug()"
+        [instance]="instanceSizeSelection.getSoftResSlug()"
         [(ngModel)]="hardReserveItemInput"
       ></app-item-selection>
     </div>
@@ -51,7 +55,7 @@
     </app-card>
 
     <app-card id="player-lookup-card" #playerLookupCard header="Player Lookup">
-      <app-player-lookup #playerLookup [raidAndSize]="playerLookupInput!"></app-player-lookup
+      <app-player-lookup #playerLookup [instanceSizeSelection]="playerLookupInput!"></app-player-lookup
     ></app-card>
 
     <app-card #softresManagerCard header="Softres.it Manager">
@@ -59,11 +63,11 @@
     </app-card>
 
     <app-card #raidLookupCard header="Raid Lookup" [collapsed]="true">
-      <app-raid-lookup-v2
+      <app-raid-lookup
         #raidLookup
-        [raidAndSize]="raidLookupInput!"
+        [instanceSizeSelection]="raidLookupInput!"
         (characterNameClicked)="onRaidCharacterNameClicked($event)"
-      ></app-raid-lookup-v2>
+      ></app-raid-lookup>
     </app-card>
   </ng-container>
 </app-card>

@@ -19,12 +19,8 @@
       <app-player-lookup #playerLookup></app-player-lookup>
     </app-card>
 
-    <app-card header="Raid Lookup OLD" *ngIf="konamiMode">
-      <app-raid-lookup (characterNameClicked)="onRaidCharacterNameClicked($event)"></app-raid-lookup>
-    </app-card>
-
     <app-card header="Raid Lookup">
-      <app-raid-lookup-v2></app-raid-lookup-v2>
+      <app-raid-lookup></app-raid-lookup>
     </app-card>
   </div>
   <div class="right-container" *ngIf="appConfig.advertisements">

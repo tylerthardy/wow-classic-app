@@ -1,3 +1,4 @@
+import { Instances } from 'classic-companion-core';
 import { ZoneEncounterRanking } from '../../warcraft-logs/common';
 
 const FLAME_LEVIATHAN_ENCOUNTER_ID: number = 744;
@@ -18,7 +19,11 @@ export class ZoneRankingParser {
     return filteredEncounters;
   }
 
-  public static getHardModes(encounterRankings: ZoneEncounterRanking[]): string[] {
+  public static getHardModes(zoneId: number, encounterRankings: ZoneEncounterRanking[]): string[] {
+    // FIXME: Currently we only lookup HM ToGC
+    if (zoneId === Instances.ToGC.zoneId) {
+      return encounterRankings.filter((ranking) => ranking.totalKills > 0).map((ranking) => ranking.encounter.name);
+    }
     return encounterRankings
       .filter(
         (ranking) =>
@@ -28,17 +33,6 @@ export class ZoneRankingParser {
             HARD_MODE_OVERRIDE_ENCOUNTER_ID_LOOKUP[ranking.encounter.id])
       )
       .map((ranking) => ranking.encounter.name);
-  }
-
-  public static getHardModeCount(zoneId: number): number {
-    if (zoneId === 1017) {
-      // FIXME: Zone ids enum
-      return 13 - 4; // 8 + Algalon
-    }
-    if (zoneId === 1015) {
-      return 1; // Sartharion
-    }
-    return 0;
   }
 
   public static getBestProgress(encounterRankings: ZoneEncounterRanking[]): number {

@@ -1,10 +1,5 @@
-<select #raidSelect (change)="onSelectChange($event)">
-  <option value="">-</option>
-  <option value="toc">Trial of the Crusader</option>
-  <option value="wotlknaxx">Naxxramas</option>
-  <option value="ulduar">Ulduar</option>
-  <option value="obsidiansanctum">Obsidian Sanctum</option>
-  <option value="eyeofeternity">Eye of Eternity</option>
+<select #raidSelect [(ngModel)]="selectedInstance" (change)="onSelectChange($event)">
+  <option *ngFor="let instance of instances" [ngValue]="instance">{{ instance.name }}</option>
 </select>
 <label [for]="'size10' + uniqueId">10</label>
 <input

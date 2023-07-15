@@ -1,12 +1,12 @@
 import {
   IGetCharacterZoneRankingsResponse,
   IGetMultipleCharacterZoneRankingsResponseItem,
+  Raid,
   RankingMetric,
   WowClass
 } from 'classic-companion-core';
-import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
 import { RaidPlayerRole } from '../raid-lookup/raid-player-role.type';
-import { JsonRaidPlayer, JsonRaidPlayerV2 } from '../raid-lookup/raid-player.interface';
+import { JsonRaidPlayer } from '../raid-lookup/raid-player.interface';
 
 const playerRoleLookup: RaidPlayerRole[] = ['TANK', 'HEALER', 'DAMAGER'];
 
@@ -26,24 +26,16 @@ export class RaidLookupCharacter {
   public hardModes?: string[] | undefined;
   public maxPossibleHardmodes?: number | undefined;
   public errors?: any[] | undefined;
-  public raidZoneAndSize: RaidZoneAndSize;
+  public raid: Raid;
 
   public lastUpdatedChanging: boolean = false;
 
-  constructor(player: JsonRaidPlayer | JsonRaidPlayerV2, raidZoneAndSize: RaidZoneAndSize) {
-    this.raidZoneAndSize = raidZoneAndSize;
-
+  constructor(player: JsonRaidPlayer, raid: Raid) {
     this.name = player.name;
+    this.raid = raid;
     this.characterName = player.name; // FIXME: Shouldn't be duplicated
-    if (player.hasOwnProperty('roles')) {
-      player = player as JsonRaidPlayerV2;
-      this.class = WowClass.getClassByName(player.class);
-      this.role = this.getFirstRoleFromArray(player.roles);
-    } else {
-      player = player as JsonRaidPlayer;
-      this.class = WowClass.getClassByFileName(player.classFileName);
-      this.role = player.role;
-    }
+    this.class = WowClass.getClassByName(player.class);
+    this.role = this.getFirstRoleFromArray(player.roles);
     this.metric = this.getMetricFromRole(this.role);
   }
 

@@ -1,12 +1,11 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { IGetCharacterZoneRankingsResponse } from 'classic-companion-core';
-import { finalize, forkJoin, Observable } from 'rxjs';
-import { RaidAndSizeSelection } from '../../common/components/raid-size-selection/raid-and-size-selection';
+import { IGetCharacterZoneRankingsResponse, Instances, Raid } from 'classic-companion-core';
+import { Observable, finalize, forkJoin } from 'rxjs';
+import { InstanceSizeSelection } from '../../common/components/instance-size-selection/instance-size-selection';
 import { CharacterService } from '../../common/services/character/character.service';
 import { IGetCharacterZoneRankings } from '../../common/services/character/get-character-zone-rankings.interface';
-import { RaidService } from '../../common/services/raids/raid.service';
-import { SoftresRaidSlug } from '../../common/services/softres/softres-raid-slug';
 import { ThemeService } from '../../common/services/theme/theme.service';
+import { ToastService } from '../../common/services/toast/toast.service';
 import { Character } from '../character';
 import { MyCharactersRankingsViewModel } from './my-characters-rankings.viewmodel';
 
@@ -18,17 +17,17 @@ import { MyCharactersRankingsViewModel } from './my-characters-rankings.viewmode
 })
 export class MyCharactersRankingsComponent implements OnInit {
   @Input() myCharacters!: Character[];
-  public viewModel: MyCharactersRankingsViewModel | undefined;
-  public raidAndSize: RaidAndSizeSelection = new RaidAndSizeSelection({
-    raid: 'ulduar',
-    size10: true
+  @Input() public instanceSizeSelection: InstanceSizeSelection = new InstanceSizeSelection({
+    instance: Instances.ToGC,
+    sizes: [25]
   });
+  public viewModel: MyCharactersRankingsViewModel | undefined;
   public isLoading: boolean = false;
 
   constructor(
     private characterService: CharacterService,
-    private raidService: RaidService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -42,19 +41,19 @@ export class MyCharactersRankingsComponent implements OnInit {
   }
 
   private getMyCharacterRankings(): void {
+    let raid: Raid;
+    try {
+      raid = this.instanceSizeSelection.getRaid();
+    } catch (err) {
+      this.toastService.error('Error', 'No raids found for provided data' + JSON.stringify(this.instanceSizeSelection));
+      return;
+    }
     const characterObservables: Observable<IGetCharacterZoneRankingsResponse>[] = this.myCharacters.map((character) => {
-      const slug: SoftresRaidSlug | undefined = this.raidAndSize.getSoftResSlug();
-      if (!slug) {
-        throw new Error(
-          'no slug for raid ' + this.raidAndSize.raid + this.raidAndSize.size10 + this.raidAndSize.size25
-        );
-      }
-      const zoneAndSize = this.raidService.getZoneAndSize(slug);
       const request: IGetCharacterZoneRankings = {
         characterName: character.name,
-        zoneId: zoneAndSize.zoneId,
+        zoneId: raid.instance.zoneId,
         metric: character.metric,
-        size: this.raidAndSize.getSize()
+        size: raid.size
       };
       return this.characterService.getZoneRankings(request);
     });

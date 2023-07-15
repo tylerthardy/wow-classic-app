@@ -6,7 +6,10 @@
     <option *ngFor="let rankingMetric of rankingMetricValues" [value]="rankingMetric">{{ rankingMetric }}</option>
   </select>
   Raid:
-  <app-raid-size-selection selectionType="checkbox" [(ngModel)]="raidAndSize"></app-raid-size-selection>
+  <app-instance-size-selection
+    selectionType="checkbox"
+    [(ngModel)]="instanceSizeSelection"
+  ></app-instance-size-selection>
   <button (click)="onSearchClick()">Search</button>
   <button (click)="onClearClick()">Clear</button>
 </div>
@@ -47,7 +50,7 @@
     >
       <div style="display: flex; flex-direction: row; border: 1px black solid; border-bottom: 0; padding: 5px">
         <div style="flex: 2; text-align: center">
-          <div style="font-weight: bold">{{ raidAndSize.raid }}</div>
+          <div style="font-weight: bold">{{ instanceSizeSelection.instance.name }}</div>
           <div style="font-size: 20px">10</div>
         </div>
         <app-player-raid-stats
@@ -68,7 +71,7 @@
     >
       <div style="display: flex; flex-direction: row; border: 1px black solid; border-bottom: 0; padding: 5px">
         <div style="flex: 2; text-align: center">
-          <div style="font-weight: bold">{{ raidAndSize.raid }}</div>
+          <div style="font-weight: bold">{{ instanceSizeSelection.instance.name }}</div>
           <div style="font-size: 20px">25</div>
         </div>
         <app-player-raid-stats

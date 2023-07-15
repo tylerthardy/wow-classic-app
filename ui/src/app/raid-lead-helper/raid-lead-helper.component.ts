@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Instances } from 'classic-companion-core';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { CardComponent } from '../common/components/card/card.component';
 import { ConfirmModalComponent } from '../common/components/confirm-modal/confirm-modal.component';
-import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
+import { InstanceSizeSelection } from '../common/components/instance-size-selection/instance-size-selection';
 import { ItemData } from '../common/item-data.interface';
 import { Raid } from '../common/services/raids/raid.interface';
 import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
@@ -31,7 +32,10 @@ export class RaidLeadHelperComponent implements OnInit {
   @ViewChild('raidLookup') raidLookupRef!: RaidLookupComponent;
   @ViewChild('softresManager') softresManagerRef!: SoftresManagerComponent;
 
-  public raidSelectionInput: RaidAndSizeSelection = new RaidAndSizeSelection();
+  public instanceSizeSelection: InstanceSizeSelection = new InstanceSizeSelection({
+    instance: Instances.ToGC,
+    sizes: [25]
+  });
   public raid: Raid | undefined;
   public detailsButtons: RaidInformationButton[];
   public isRecopyAfterPaste: boolean = true;
@@ -44,8 +48,8 @@ export class RaidLeadHelperComponent implements OnInit {
 
   public raidSpamInput?: Raid;
   public softresManagerInput?: Raid;
-  public playerLookupInput?: RaidAndSizeSelection;
-  public raidLookupInput?: RaidAndSizeSelection;
+  public playerLookupInput?: InstanceSizeSelection; // FIXME: Do we need these separate ones? Or just the one parent (i think parent only)
+  public raidLookupInput?: InstanceSizeSelection; // FIXME: Do we need these separate ones? Or just the one parent (i think parent only)
 
   constructor(private toast: ToastService, simpleModalService: SimpleModalService) {
     this.detailsButtons = [
@@ -76,7 +80,7 @@ export class RaidLeadHelperComponent implements OnInit {
   public onCreateRaidClick(): void {
     //TODO: Use forms
     const params: Partial<Raid> = {
-      raidAndSize: this.raidSelectionInput,
+      instanceSizeSelection: this.instanceSizeSelection,
       hardReserveItem: this.hardReserveItemInput,
       hardReserveRecipient: this.hardReserveRecipientInput,
       softReserveCount: this.softReserveCountInput
@@ -89,24 +93,30 @@ export class RaidLeadHelperComponent implements OnInit {
     }
 
     this.raid = {
-      raidAndSize: params.raidAndSize!,
+      instanceSizeSelection: params.instanceSizeSelection!,
       hardReserveItem: params.hardReserveItem,
       hardReserveRecipient: params.hardReserveRecipient,
       softReserveCount: params.softReserveCount
     };
 
     // Duplicate inputs due to protect this.raid from modified properties
+    // FIXME: Switched over to instanceSizeSelection; check to see if the bug exists where properties get modified,
+    // FIXME: if so, use the commented lines
     // TODO: Separate these concepts. Too much
     this.raidSpamInput = {
       ...this.raid,
-      raidAndSize: this.raid.raidAndSize.duplicate()
+      // instanceSizeSelection: this.raid.instanceSizeSelection
+      instanceSizeSelection: new InstanceSizeSelection({ ...this.raid.instanceSizeSelection })
     };
     this.softresManagerInput = {
       ...this.raid,
-      raidAndSize: this.raid.raidAndSize.duplicate()
+      // instanceSizeSelection: this.raid.instanceSizeSelection
+      instanceSizeSelection: new InstanceSizeSelection({ ...this.raid.instanceSizeSelection })
     };
-    this.playerLookupInput = this.raid.raidAndSize.duplicate();
-    this.raidLookupInput = this.raid.raidAndSize.duplicate();
+    // this.playerLookupInput = this.raid.instanceSizeSelection; // FIXME: Why are we accessing off of this.raid?
+    this.playerLookupInput = new InstanceSizeSelection({ ...this.raid.instanceSizeSelection });
+    // this.raidLookupInput = this.raid.instanceSizeSelection;
+    this.raidLookupInput = new InstanceSizeSelection({ ...this.raid.instanceSizeSelection });
   }
 
   public onCheckPlayerClick(): void {
@@ -165,8 +175,8 @@ export class RaidLeadHelperComponent implements OnInit {
   // TODO: Copied from create-softres-modal -- use validators
   private getFormErrors(params: Partial<Raid>): string[] {
     const errors: string[] = [];
-    if (!params.raidAndSize?.hasRaidAndSize()) {
-      errors.push('A raid must be selected');
+    if (!params.instanceSizeSelection?.hasSize()) {
+      errors.push('A raid & size must be selected');
     }
     if (params.hardReserveItem && !params.hardReserveRecipient) {
       errors.push('A recipient must be specified for the hard-reserved item');

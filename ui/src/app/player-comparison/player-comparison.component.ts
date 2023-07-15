@@ -1,12 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { RankingMetric, RankingMetricValues, SpecializationData, WowClass } from 'classic-companion-core';
+import { Component, Input, OnInit } from '@angular/core';
+import {
+  Instances,
+  Raid,
+  RankingMetric,
+  RankingMetricValues,
+  SpecializationData,
+  WowClass
+} from 'classic-companion-core';
 import { finalize, forkJoin } from 'rxjs';
-import { RaidAndSizeSelection } from '../common/components/raid-size-selection/raid-and-size-selection';
+import { InstanceSizeSelection } from '../common/components/instance-size-selection/instance-size-selection';
 import { CharacterService } from '../common/services/character/character.service';
 import { IGetCharacterZoneRankings } from '../common/services/character/get-character-zone-rankings.interface';
-import { RaidZoneAndSize } from '../common/services/raids/raid-zone-and-size.interface';
-import { RaidService } from '../common/services/raids/raid.service';
-import { SoftresRaidSlug } from '../common/services/softres/softres-raid-slug';
 import { ThemeService } from '../common/services/theme/theme.service';
 import { Theme } from '../common/services/theme/theme.type';
 import { ToastService } from '../common/services/toast/toast.service';
@@ -19,9 +23,9 @@ import { PlayerComparisonViewModel } from './player-comparison.viewmodel';
   styleUrls: ['./player-comparison.component.scss']
 })
 export class PlayerComparisonComponent implements OnInit {
-  raidAndSize: RaidAndSizeSelection = new RaidAndSizeSelection({
-    raid: 'ulduar',
-    size10: true
+  @Input() public instanceSizeSelection: InstanceSizeSelection = new InstanceSizeSelection({
+    instance: Instances.ToGC,
+    sizes: [25]
   });
   player1NameInput: string | undefined;
   player2NameInput: string | undefined;
@@ -34,7 +38,6 @@ export class PlayerComparisonComponent implements OnInit {
 
   constructor(
     private toastService: ToastService,
-    private raidService: RaidService,
     private characterService: CharacterService,
     private themeService: ThemeService
   ) {}
@@ -69,28 +72,28 @@ export class PlayerComparisonComponent implements OnInit {
   }
 
   public comparePlayers(player1Name: string, player2Name: string) {
-    // TODO: Fix this crap having to be duplicated everywhere. Normalize raid concepts
-    const instanceSlugs: SoftresRaidSlug[] = this.raidAndSize.getSoftResSlugs();
-    if (!instanceSlugs || instanceSlugs.length === 0) {
+    const theme: Theme = this.themeService.theme;
+    let raid: Raid;
+
+    try {
+      raid = this.instanceSizeSelection.getRaid();
+    } catch (err) {
       this.toastService.warn('Invalid raid', 'Choose a raid and size');
       return;
     }
-    const zonesAndSizes: RaidZoneAndSize[] = instanceSlugs.map((instanceSlug: SoftresRaidSlug) =>
-      this.raidService.getZoneAndSize(instanceSlug)
-    );
-    const theme: Theme = this.themeService.theme;
+
     const queries: IGetCharacterZoneRankings[] = [
       {
         characterName: player1Name,
         metric: this.metricInput,
-        size: zonesAndSizes[0].size,
-        zoneId: zonesAndSizes[0].zoneId
+        size: raid.size,
+        zoneId: raid.instance.zoneId
       },
       {
         characterName: player2Name,
         metric: this.metricInput,
-        size: zonesAndSizes[0].size,
-        zoneId: zonesAndSizes[0].zoneId
+        size: raid.size,
+        zoneId: raid.instance.zoneId
       }
     ];
     if (this.specializationFilter) {
