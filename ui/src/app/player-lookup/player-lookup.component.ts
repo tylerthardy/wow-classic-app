@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import {
   IGetCharacterZoneRankingsResponse,
   Instances,
+  RaidSize,
   RankingMetric,
   RankingMetricValues,
   SpecializationData
@@ -10,7 +11,6 @@ import { Observable, finalize, forkJoin } from 'rxjs';
 import { IInstanceSizeSelection } from '../common/components/instance-size-selection/instance-size-selection.interface';
 import { CharacterService } from '../common/services/character/character.service';
 import { IGetCharacterZoneRankings } from '../common/services/character/get-character-zone-rankings.interface';
-import { RaidSize } from '../common/services/raids/raid-size.type';
 import { ThemeService } from '../common/services/theme/theme.service';
 import { ToastService } from '../common/services/toast/toast.service';
 import { CompactPlayerLookupViewModel } from './compact-player-lookup.viewmodel';

@@ -30,17 +30,6 @@ export class ZoneRankingParser {
       .map((ranking) => ranking.encounter.name);
   }
 
-  public static getHardModeCount(zoneId: number): number {
-    if (zoneId === 1017) {
-      // FIXME: Zone ids enum
-      return 13 - 4; // 8 + Algalon
-    }
-    if (zoneId === 1015) {
-      return 1; // Sartharion
-    }
-    return 0;
-  }
-
   public static getBestProgress(encounterRankings: ZoneEncounterRanking[]): number {
     const killCount: number = encounterRankings.filter((ranking) => ranking.totalKills > 0).length;
     return killCount;

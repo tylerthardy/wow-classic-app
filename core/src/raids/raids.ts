@@ -5,18 +5,21 @@ export interface IInstance {
   zoneId: number;
   sizes: number[];
   holdOverSlug: string; // TODO: Fix
+  hardModeCount: number;
 }
 export class Instance implements IInstance {
   public name: string;
   public zoneId: number;
   public sizes: number[];
-  public holdOverSlug: string;
+  public holdOverSlug: string; // TODO: enum work, remove this
+  public hardModeCount: number;
 
   constructor(data: IInstance) {
     this.name = data.name;
     this.zoneId = data.zoneId;
     this.sizes = data.sizes;
     this.holdOverSlug = data.holdOverSlug;
+    this.hardModeCount = data.hardModeCount;
   }
 
   // FIXME: Standardize using getter methods vs property getters
@@ -37,31 +40,36 @@ export class Instances {
     name: 'Naxxramas',
     zoneId: 1015,
     sizes: [10, 25],
-    holdOverSlug: 'wotlknaxx'
+    holdOverSlug: 'wotlknaxx',
+    hardModeCount: 0
   });
   public static ObsidianSanctum = new Instance({
     name: 'Obsidian Sanctum',
     zoneId: 1015,
     sizes: [10, 25],
-    holdOverSlug: 'obsidiansanctum'
+    holdOverSlug: 'obsidiansanctum',
+    hardModeCount: 1 // Sartharion
   });
   public static EyeOfEternity = new Instance({
     name: 'Eye of Eternity',
     zoneId: 1015,
     sizes: [10, 25],
-    holdOverSlug: 'eyeofeternity'
+    holdOverSlug: 'eyeofeternity',
+    hardModeCount: 0
   });
   public static Ulduar = new Instance({
     name: 'Ulduar',
     zoneId: 1017,
     sizes: [10, 25],
-    holdOverSlug: 'ulduar'
+    holdOverSlug: 'ulduar',
+    hardModeCount: 13 - 4 // 8 + Algalon
   });
   public static ToGC = new Instance({
     name: 'Trial of the Crusader',
     zoneId: 1018,
     sizes: [10, 25],
-    holdOverSlug: 'toc'
+    holdOverSlug: 'toc',
+    hardModeCount: 5
   });
 
   public static All: Instance[] = [
@@ -71,6 +79,9 @@ export class Instances {
     Instances.Ulduar,
     Instances.ToGC
   ];
+  private static instanceByZoneId: Map<number, Instance> = new Map(
+    Instances.All.map((instance) => [instance.zoneId, instance])
+  );
 
   public static getByHoldOverSlug(slug: string): Instance {
     const instance: Instance | undefined = Instances.All.find((i) => i.holdOverSlug === slug);
@@ -78,6 +89,10 @@ export class Instances {
       throw new Error('instance not found for slug: ' + slug);
     }
     return instance;
+  }
+
+  public static getByZoneId(zoneId: number): Instance | undefined {
+    return Instances.instanceByZoneId.get(zoneId);
   }
 }
 

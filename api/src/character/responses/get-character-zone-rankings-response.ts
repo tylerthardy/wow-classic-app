@@ -1,6 +1,8 @@
 import {
   IGetCharacterZoneRankingsResponse,
   IGetCharacterZoneRankingsResponseRanking,
+  Instance,
+  Instances,
   RankingMetric
 } from 'classic-companion-core';
 import { ZoneEncounterRanking } from '../../warcraft-logs/common';
@@ -39,6 +41,10 @@ export class GetCharacterZoneRankingsResponse implements IGetCharacterZoneRankin
     const hardModes: string[] = ZoneRankingParser.getHardModes(encounterRankings);
     this.bestHardModeProgress = hardModes.length;
     this.hardModes = hardModes;
-    this.maxPossibleHardmodes = ZoneRankingParser.getHardModeCount(wclCharacterData.zoneRankings.zone);
+    const instance: Instance | undefined = Instances.getByZoneId(wclCharacterData.zoneRankings.zone);
+    if (!instance) {
+      throw new Error('unknown zoneid ' + wclCharacterData.zoneRankings.zone);
+    }
+    this.maxPossibleHardmodes = instance.hardModeCount;
   }
 }
