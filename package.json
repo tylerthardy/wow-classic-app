@@ -9,16 +9,18 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
+    "build:all": "npm run build:core && npm run build:api && npm run build:ui",
     "build:core": "cd core && npm run build",
     "build:api": "cd api && npm run build",
     "build:ui": "cd ui && npm run build",
     "prep:api": "bash ./prep-api-layer.sh",
     "prep:ui": "",
+    "deploy:all": "npm run deploy:auth && npm run deploy:api && npm run deploy:ui",
     "deploy:auth": "cdk deploy classic-companion-auth",
     "deploy:api": "npm run build:core && npm run build:api && npm run prep:api && cdk deploy classic-companion-api",
     "deploy:ui": "npm run build:core && npm run build:ui && cdk deploy classic-companion-ui",
     "deploy:invalidate": "bash ./invalidate-cloudfront.sh",
-    "deploy": "npm install && npm run build:api && npm run build:ui && npm run deploy:auth && npm run deploy:api && npm run deploy:ui && npm run deploy:invalidate"
+    "deploy:cd": "npm install && npm run build:all && npm run deploy:all && npm run deploy:invalidate"
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",
