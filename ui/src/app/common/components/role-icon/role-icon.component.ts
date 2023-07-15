@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnChanges } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { RaidPlayerRole } from '../raid-lookup/raid-player-role.type';
+import { RaidPlayerRole } from '../../../raid-lookup/raid-player-role.type';
 
 @Component({
   selector: 'app-role-icon',

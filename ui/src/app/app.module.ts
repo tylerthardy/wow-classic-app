@@ -10,8 +10,8 @@ import { SafePipeModule } from 'safe-pipe';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthService } from './auth/auth.service';
-import { ClassIconComponent } from './class-icon/class-icon.component';
 import { CardComponent } from './common/components/card/card.component';
+import { ClassIconComponent } from './common/components/class-icon/class-icon.component';
 import { ClassSelectionComponent } from './common/components/class-selection/class-selection.component';
 import { ClassSpecSelectionComponent } from './common/components/class-spec-selection/class-spec-selection.component';
 import { ConfirmModalComponent } from './common/components/confirm-modal/confirm-modal.component';
@@ -21,6 +21,7 @@ import { CopyIconComponent } from './common/components/icons/copy-icon/copy-icon
 import { InstanceSizeSelectionComponent } from './common/components/instance-size-selection/instance-size-selection.component';
 import { ItemSelectionComponent } from './common/components/item-selection/item-selection.component';
 import { ParseNumberComponent } from './common/components/parse-number/parse-number.component';
+import { RoleIconComponent } from './common/components/role-icon/role-icon.component';
 import { ServerSelectionComponent } from './common/components/server-selection/server-selection.component';
 import { SvgIconComponent } from './common/components/svg-icon/svg-icon.component';
 import { WclLinkIconComponent } from './common/components/wcl-link-icon/wcl-link-icon.component';
@@ -47,7 +48,6 @@ import { RaidInformationComponent } from './raid-information/raid-information.co
 import { RaidLeadHelperComponent } from './raid-lead-helper/raid-lead-helper.component';
 import { RaidLookupComponent } from './raid-lookup/raid-lookup.component';
 import { RaidSpamComponent } from './raid-spam/raid-spam.component';
-import { RoleIconComponent } from './role-icon/role-icon.component';
 import { SoftresManagerComponent } from './softres-manager/softres-manager.component';
 import { SpecializationDataComponent } from './specialization-data/specialization-data.component';
 import { SpecializationIconComponent } from './specialization-icon/specialization-icon.component';
