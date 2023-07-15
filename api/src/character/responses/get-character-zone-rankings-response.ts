@@ -23,6 +23,8 @@ export class GetCharacterZoneRankingsResponse implements IGetCharacterZoneRankin
   public bestHardModeProgress?: number;
   public maxPossibleHardmodes?: number;
   public size?: number;
+  public zoneId?: number;
+  public difficulty?: number;
 
   constructor(wclCharacterData: IGetWclCharacterZoneRankingsResponse) {
     this.characterName = wclCharacterData.name;
@@ -32,19 +34,25 @@ export class GetCharacterZoneRankingsResponse implements IGetCharacterZoneRankin
     this.bestPerformanceAverage = wclCharacterData.zoneRankings.bestPerformanceAverage;
     this.medianPerformanceAverage = wclCharacterData.zoneRankings.medianPerformanceAverage;
     this.size = wclCharacterData.size;
+    this.zoneId = wclCharacterData.zoneRankings.zone;
+    this.difficulty = wclCharacterData.zoneRankings.difficulty;
 
     const encounterRankings: ZoneEncounterRanking[] = ZoneRankingParser.filterUnrankedEncounters(
       wclCharacterData.zoneRankings.rankings
     );
     this.encounters = encounterRankings.map((ranking) => new GetCharacterZoneRankingsResponseRanking(ranking));
 
-    const hardModes: string[] = ZoneRankingParser.getHardModes(encounterRankings);
+    const hardModes: string[] = ZoneRankingParser.getHardModes(this.zoneId, encounterRankings);
     this.bestHardModeProgress = hardModes.length;
     this.hardModes = hardModes;
-    const instance: Instance | undefined = Instances.getByZoneId(wclCharacterData.zoneRankings.zone);
+    this.maxPossibleHardmodes = this.getHardModeCount(this.zoneId);
+  }
+
+  private getHardModeCount(zoneId: number): number {
+    const instance: Instance | undefined = Instances.getByZoneId(zoneId);
     if (!instance) {
-      throw new Error('unknown zoneid ' + wclCharacterData.zoneRankings.zone);
+      throw new Error('unknown zoneid ' + zoneId);
     }
-    this.maxPossibleHardmodes = instance.hardModeCount;
+    return instance.hardModeCount;
   }
 }

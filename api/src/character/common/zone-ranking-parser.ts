@@ -1,3 +1,4 @@
+import { Instances } from 'classic-companion-core';
 import { ZoneEncounterRanking } from '../../warcraft-logs/common';
 
 const FLAME_LEVIATHAN_ENCOUNTER_ID: number = 744;
@@ -18,7 +19,11 @@ export class ZoneRankingParser {
     return filteredEncounters;
   }
 
-  public static getHardModes(encounterRankings: ZoneEncounterRanking[]): string[] {
+  public static getHardModes(zoneId: number, encounterRankings: ZoneEncounterRanking[]): string[] {
+    // FIXME: Currently we only lookup HM ToGC
+    if (zoneId === Instances.ToGC.zoneId) {
+      return encounterRankings.filter((ranking) => ranking.totalKills > 0).map((ranking) => ranking.encounter.name);
+    }
     return encounterRankings
       .filter(
         (ranking) =>

@@ -1,6 +1,7 @@
 import {
   IGetCharacterZoneRankingsResponse,
   IGetCharacterZoneRankingsResponseRanking,
+  Instances,
   SpecializationData,
   specializations,
   WowClass
@@ -149,6 +150,15 @@ export class PlayerLookupViewModel {
     this.bestHardModeProgress = characterData.bestHardModeProgress;
     this.maxPossibleHardmodes = characterData.maxPossibleHardmodes;
     this.columns = this.getPlayerColumns(theme);
+
+    // FIXME: Currently we only lookup HM ToGC
+    if (characterData.zoneId === Instances.ToGC.zoneId) {
+      characterData.encounters?.forEach((encounter) => {
+        if (encounter.kills && encounter.kills > 0) {
+          encounter.highestDifficulty = 'Hard Mode';
+        }
+      });
+    }
 
     this.encounters = characterData.encounters?.map(
       (encounter: IGetCharacterZoneRankingsResponseRanking): PlayerLookupViewModelEncounterItem =>

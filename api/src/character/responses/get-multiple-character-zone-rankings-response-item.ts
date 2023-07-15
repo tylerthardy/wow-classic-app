@@ -1,4 +1,9 @@
-import { IGetMultipleCharacterZoneRankingsResponseItem, RankingMetric } from 'classic-companion-core';
+import {
+  IGetMultipleCharacterZoneRankingsResponseItem,
+  Instance,
+  Instances,
+  RankingMetric
+} from 'classic-companion-core';
 import { ZoneEncounterRanking } from '../../warcraft-logs/common';
 import { IGetWclCharacterZoneRankingsResponse } from '../../warcraft-logs/responses/get-wcl-character-zone-rankings-response.interface';
 import { ZoneRankingParser } from '../common/zone-ranking-parser';
@@ -41,13 +46,22 @@ export class GetMultipleCharacterZoneRankingsResponseItem implements IGetMultipl
         wclCharacterData.zoneRankings.rankings
       );
 
+      const zoneId: number = wclCharacterData.zoneRankings.zone;
       this.bestProgress = ZoneRankingParser.getBestProgress(encounterRankings);
       this.maxPossibleProgress = encounterRankings.length;
 
-      const hardModes: string[] = ZoneRankingParser.getHardModes(encounterRankings);
+      const hardModes: string[] = ZoneRankingParser.getHardModes(zoneId, encounterRankings);
       this.bestHardModeProgress = hardModes.length;
       this.hardModes = hardModes;
-      this.maxPossibleHardmodes = ZoneRankingParser.getHardModeCount(wclCharacterData.zoneRankings.zone);
+      this.maxPossibleHardmodes = this.getHardModeCount(zoneId);
     }
+  }
+
+  private getHardModeCount(zoneId: number): number {
+    const instance: Instance | undefined = Instances.getByZoneId(zoneId);
+    if (!instance) {
+      throw new Error('unknown zoneid ' + zoneId);
+    }
+    return instance.hardModeCount;
   }
 }

@@ -13,6 +13,8 @@ export interface IGetCharacterZoneRankingsResponse {
   bestHardModeProgress?: number;
   maxPossibleHardmodes?: number;
   size?: number;
+  zoneId?: number;
+  difficulty?: number;
 }
 
 export interface IGetCharacterZoneRankingsResponseRanking {
