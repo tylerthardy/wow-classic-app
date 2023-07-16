@@ -38,7 +38,7 @@ import { TypescriptGenerator } from './typescript-generator';
   const processedSpecs: Specialization[] = [];
 
   for (const specData of specs) {
-    const phase: number = 2;
+    const phase: number = 3;
     const spec: Specialization = new Specialization(specData);
     let gearUrl: string | undefined;
     let sets: { [key: string]: IGearPlannerData } | undefined;
@@ -46,14 +46,18 @@ import { TypescriptGenerator } from './typescript-generator';
     let output: IWowSimsExport[];
     try {
       // get spec sets
+      console.log('getting gear sets');
       const extractor = new GearExtractor(spec, phase);
       gearUrl = extractor.getSpecGearUrl();
       sets = await extractor.extractGearDataFromPage(gearUrl);
       // transform if necessary
+      console.log('transforming');
       output = extractor.convertGearPlannerSetsToWowSims(sets);
       // write sets json
+      console.log('writing');
       const filename: string = spec.getClassSpecRoleKebab();
       path = `${outputPath}/${filename}.json`;
+      console.log(path);
       fs.writeFileSync(path, JSON.stringify(output));
       // collect written specs
       processedSpecs.push(spec);
