@@ -38,3 +38,5 @@ jobs:
           WARCRAFT_LOGS_CLIENT_ID: '${{ secrets.WARCRAFT_LOGS_CLIENT_ID }}'
           WARCRAFT_LOGS_CLIENT_SECRET: '${{ secrets.WARCRAFT_LOGS_CLIENT_SECRET }}'
           CALLBACK_URLS: '${{ secrets.CALLBACK_URLS }}'
+          GOOGLE_CLIENT_ID: '${{ secrets.GOOGLE_CLIENT_ID }}'
+          GOOGLE_CLIENT_SECRET: '${{ secrets.GOOGLE_CLIENT_SECRET }}'
