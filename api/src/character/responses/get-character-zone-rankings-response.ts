@@ -37,15 +37,17 @@ export class GetCharacterZoneRankingsResponse implements IGetCharacterZoneRankin
     this.zoneId = wclCharacterData.zoneRankings.zone;
     this.difficulty = wclCharacterData.zoneRankings.difficulty;
 
-    const encounterRankings: ZoneEncounterRanking[] = ZoneRankingParser.filterUnrankedEncounters(
-      wclCharacterData.zoneRankings.rankings
-    );
-    this.encounters = encounterRankings.map((ranking) => new GetCharacterZoneRankingsResponseRanking(ranking));
+    if (wclCharacterData.zoneRankings.rankings) {
+      const encounterRankings: ZoneEncounterRanking[] = ZoneRankingParser.filterUnrankedEncounters(
+        wclCharacterData.zoneRankings.rankings
+      );
+      this.encounters = encounterRankings.map((ranking) => new GetCharacterZoneRankingsResponseRanking(ranking));
 
-    const hardModes: string[] = ZoneRankingParser.getHardModes(this.zoneId, encounterRankings);
-    this.bestHardModeProgress = hardModes.length;
-    this.hardModes = hardModes;
-    this.maxPossibleHardmodes = this.getHardModeCount(this.zoneId);
+      const hardModes: string[] = ZoneRankingParser.getHardModes(this.zoneId, encounterRankings);
+      this.bestHardModeProgress = hardModes.length;
+      this.hardModes = hardModes;
+      this.maxPossibleHardmodes = this.getHardModeCount(this.zoneId);
+    }
   }
 
   private getHardModeCount(zoneId: number): number {
