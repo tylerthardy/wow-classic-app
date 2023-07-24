@@ -2,5 +2,9 @@
   "search.exclude": {
     "**/dist": true,
     "**/.angular": true
-  }
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "python.formatting.provider": "none"
 }

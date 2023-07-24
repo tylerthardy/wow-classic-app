@@ -18,11 +18,14 @@ import { Construct } from 'constructs';
 import path = require('path');
 
 export class ClassicCompanionApiStack extends Stack {
+  public playerTable: Table;
+  private playerTableName: string = 'player-1679377599';
+
   constructor(scope: Construct, id: string, userpool: UserPool, apiScopeName: string, props?: StackProps) {
     super(scope, id, props);
     this.validateEnvironmentVariables();
 
-    const playerTable = new Table(this, 'player-1679377599', {
+    this.playerTable = new Table(this, this.playerTableName, {
       billingMode: BillingMode.PAY_PER_REQUEST,
       partitionKey: { name: 'regionServerCharacterName', type: AttributeType.STRING },
       sortKey: { name: 'zoneAndSize', type: AttributeType.STRING }
@@ -37,9 +40,9 @@ export class ClassicCompanionApiStack extends Stack {
     handlerLambda.role!.addManagedPolicy(
       ManagedPolicy.fromAwsManagedPolicyName('CloudWatchLambdaInsightsExecutionRolePolicy')
     );
-    handlerLambda.addEnvironment('DYNAMO_PLAYER_TABLE_NAME', playerTable.tableName);
+    handlerLambda.addEnvironment('DYNAMO_PLAYER_TABLE_NAME', this.playerTable.tableName);
     // Allow API to write to player table
-    playerTable.grantReadWriteData(handlerLambda);
+    this.playerTable.grantReadWriteData(handlerLambda);
 
     const apiGatewayId: string = 'nestjs-api-gateway';
     const authorizer = new CognitoUserPoolsAuthorizer(this, 'api-authorizer', {

@@ -15,7 +15,8 @@
     "build:ui": "cd ui && npm run build",
     "prep:api": "bash ./prep-api-layer.sh",
     "prep:ui": "",
-    "deploy:all": "npm run deploy:auth && npm run deploy:api && npm run deploy:ui",
+    "deploy:all": "npm run deploy:auth && npm run deploy:api && npm run deploy:ui && npm run deploy:addon-api",
+    "deploy:addon-api": "cdk deploy classic-companion-addon-api",
     "deploy:auth": "cdk deploy classic-companion-auth",
     "deploy:api": "npm run build:core && npm run build:api && npm run prep:api && cdk deploy classic-companion-api",
     "deploy:ui": "npm run build:core && npm run build:ui && cdk deploy classic-companion-ui",
@@ -34,6 +35,7 @@
     "typescript": "~4.9.4"
   },
   "dependencies": {
+    "@aws-cdk/aws-lambda-python": "^1.204.0",
     "aws-cdk-lib": "2.63.2",
     "constructs": "^10.0.0",
     "source-map-support": "^0.5.21"

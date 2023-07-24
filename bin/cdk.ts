@@ -2,6 +2,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { config } from 'dotenv';
 import 'source-map-support/register';
+import { ClassicCompanionAddonApiStack } from '../lib/addon-stack';
 import { ClassicCompanionApiStack } from '../lib/api-stack';
 import { ClassicCompanionAuthStack } from '../lib/auth-stack';
 import { ClassicCompanionUiStack } from '../lib/ui-stack';
@@ -14,8 +15,15 @@ const callbackUrl = process.env.CALLBACK_URLS.split(',');
 
 const app = new cdk.App();
 const authStack = new ClassicCompanionAuthStack(app, 'classic-companion-auth', callbackUrl, {});
-new ClassicCompanionApiStack(app, 'classic-companion-api', authStack.userpool, authStack.apiOauthScope.scopeName, {});
+const apiStack = new ClassicCompanionApiStack(
+  app,
+  'classic-companion-api',
+  authStack.userpool,
+  authStack.apiOauthScope.scopeName,
+  {}
+);
 new ClassicCompanionUiStack(app, 'classic-companion-ui', {});
+new ClassicCompanionAddonApiStack(app, 'classic-companion-addon-api', apiStack.playerTable, {});
 
 // IRT the empty objects
 /* If you don't specify 'env', this stack will be environment-agnostic.
