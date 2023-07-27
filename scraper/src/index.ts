@@ -1,9 +1,9 @@
 // import { Command } from 'commander';
 import {
   IGearPlannerData,
+  ISpecializationData,
   IWowSimsExport,
   Specialization,
-  SpecializationData,
   specializations
 } from 'classic-companion-core';
 import * as fs from 'fs';
@@ -34,7 +34,7 @@ import { TypescriptGenerator } from './typescript-generator';
 (async () => {
   const outputPath: string = '../api/src/specialization/specialization-bis-data';
   const typescriptFileName: string = 'specialization-bis';
-  const specs: SpecializationData[] = specializations.filter((spec) => !spec.isWarcraftLogsOnly);
+  const specs: ISpecializationData[] = specializations.filter((spec) => !spec.isWarcraftLogsOnly);
   const processedSpecs: Specialization[] = [];
 
   for (const specData of specs) {

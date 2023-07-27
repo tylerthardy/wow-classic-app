@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {
   IGetCharacterZoneRankingsResponse,
+  ISpecializationData,
   Instances,
   RaidSize,
   RankingMetric,
-  RankingMetricValues,
-  SpecializationData
+  RankingMetricValues
 } from 'classic-companion-core';
 import { Observable, finalize, forkJoin } from 'rxjs';
 import { IInstanceSizeSelection } from '../common/components/instance-size-selection/instance-size-selection.interface';
@@ -26,7 +26,7 @@ export class PlayerLookupComponent implements OnInit {
   characterNameInput: string | undefined;
   rankingMetricValues = RankingMetricValues;
   metricInput: RankingMetric = 'dps';
-  specFilter: SpecializationData | undefined;
+  specFilter: ISpecializationData | undefined;
   isLoading: boolean = false;
   viewModel: PlayerLookupViewModel | undefined;
   viewModel10: CompactPlayerLookupViewModel | undefined;
@@ -59,7 +59,7 @@ export class PlayerLookupComponent implements OnInit {
     this.clearViewModels();
   }
 
-  public onSpecChanged(spec: SpecializationData): void {
+  public onSpecChanged(spec: ISpecializationData): void {
     this.searchPlayer(this.characterNameInput!);
   }
 

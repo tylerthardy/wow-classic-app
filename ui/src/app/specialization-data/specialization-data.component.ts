@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Specialization, SpecializationData } from 'classic-companion-core';
+import { ISpecializationData, Specialization } from 'classic-companion-core';
 import { LocalStorageService } from '../common/services/local-storage.service';
 
 @Component({
@@ -7,10 +7,10 @@ import { LocalStorageService } from '../common/services/local-storage.service';
   templateUrl: './specialization-data.component.html',
   styleUrls: ['./specialization-data.component.scss']
 })
-export class SpecializationDataComponent implements OnInit {
-  specializations: SpecializationData[];
+export class ISpecializationDataComponent implements OnInit {
+  specializations: ISpecializationData[];
   visibleSpecs: number[] = [25, 26, 18, 17, 23, 29, 30, 10, 19];
-  selectedSpecialization: SpecializationData | undefined;
+  selectedSpecialization: ISpecializationData | undefined;
   showSettings: boolean = false;
 
   constructor(private localStorageService: LocalStorageService) {
@@ -20,14 +20,14 @@ export class SpecializationDataComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const storedSpecs: number[] = this.localStorageService.get('specializationData', 'visibleSpecs');
+    const storedSpecs: number[] = this.localStorageService.get('ISpecializationData', 'visibleSpecs');
     if (storedSpecs?.length > 0) {
       this.visibleSpecs = storedSpecs;
     }
   }
 
   onSpecializationButtonClick(specializationIndex: number): void {
-    const selectedSpecialization: SpecializationData = this.specializations[specializationIndex];
+    const selectedSpecialization: ISpecializationData = this.specializations[specializationIndex];
     if (selectedSpecialization === this.selectedSpecialization) {
       this.selectedSpecialization = undefined;
     } else {
@@ -43,7 +43,7 @@ export class SpecializationDataComponent implements OnInit {
     } else {
       this.visibleSpecs.splice(specIndex, 1);
     }
-    this.localStorageService.store('specializationData', 'visibleSpecs', this.visibleSpecs);
+    this.localStorageService.store('ISpecializationData', 'visibleSpecs', this.visibleSpecs);
   }
 
   onToggleSettingsButton(): void {
@@ -67,7 +67,7 @@ export class SpecializationDataComponent implements OnInit {
     };
   }
 
-  private getPhaseBisUrl(specialization: SpecializationData, phaseNumber: number): string {
+  private getPhaseBisUrl(specialization: ISpecializationData, phaseNumber: number): string {
     const classSlug: string = specialization.className.replace(' ', '-').toLowerCase();
     const specNameSlug: string = specialization.name.replace(' ', '-').toLowerCase();
     const roleSlug: string = specialization.role.toLowerCase();
@@ -76,7 +76,7 @@ export class SpecializationDataComponent implements OnInit {
     return url;
   }
 
-  private getStatPriorityUrl(specialization: SpecializationData): string {
+  private getStatPriorityUrl(specialization: ISpecializationData): string {
     const classSlug: string = specialization.className.replace(' ', '-').toLowerCase();
     const specNameSlug: string = specialization.name.replace(' ', '-').toLowerCase();
     const roleSlug: string = specialization.role.toLowerCase();

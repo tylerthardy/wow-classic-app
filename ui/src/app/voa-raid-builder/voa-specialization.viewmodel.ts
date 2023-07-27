@@ -1,12 +1,12 @@
-import { SpecializationData } from 'classic-companion-core';
+import { ISpecializationData } from 'classic-companion-core';
 import { IVoaSpec } from './voa-spec.interface';
 
 export class VoaSpecializationViewModel {
   public selected: boolean = false;
-  public specialization: SpecializationData;
+  public specialization: ISpecializationData;
   public voaSpec: IVoaSpec;
 
-  constructor(voaSpec: IVoaSpec, spec: SpecializationData) {
+  constructor(voaSpec: IVoaSpec, spec: ISpecializationData) {
     this.specialization = spec;
     this.voaSpec = voaSpec;
   }

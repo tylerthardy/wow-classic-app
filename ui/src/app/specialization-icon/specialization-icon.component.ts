@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SpecializationData } from 'classic-companion-core';
+import { ISpecializationData } from 'classic-companion-core';
 
 @Component({
   selector: 'app-specialization-icon',
@@ -9,7 +9,7 @@ import { SpecializationData } from 'classic-companion-core';
 export class SpecializationIconComponent implements OnInit {
   @Input() size?: 'small' | 'large';
   @Input() sizePx?: string;
-  @Input() specialization!: SpecializationData;
+  @Input() specialization!: ISpecializationData;
 
   public classes: string = '';
   public styles: string = '';

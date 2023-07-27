@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { SpecializationData } from 'classic-companion-core';
+import { ISpecializationData } from 'classic-companion-core';
 import TimeAgo from 'javascript-time-ago';
 
 // FIXME: Deprecate
 export interface ParseColumnDeprecated {
   value?: number;
-  specialization?: SpecializationData;
+  specialization?: ISpecializationData;
 }
 export interface ColumnFormat<T> {
   // FIXME: These are getting very specific

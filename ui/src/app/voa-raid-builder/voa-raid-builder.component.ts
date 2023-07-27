@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SpecializationData, specializations, WowClass } from 'classic-companion-core';
+import { ISpecializationData, WowClass, specializations } from 'classic-companion-core';
 import { ToastService } from '../common/services/toast/toast.service';
 import { HtmlCopyUtil } from '../common/utils/html-copy-util';
 import { RaidPlayerRole } from '../raid-lookup/raid-player-role.type';
@@ -134,7 +134,7 @@ export class VoaRaidBuilderComponent implements OnInit {
           iconUrl: wowClass.classIconUrl
         });
       }
-      const foundSpec: SpecializationData | undefined = specializations.find(
+      const foundSpec: ISpecializationData | undefined = specializations.find(
         (spec) => spec.className === voaSpec.class && voaSpec.spec === spec.name
       );
       if (!foundSpec) {

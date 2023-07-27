@@ -1,4 +1,5 @@
-export interface SpecializationData {
+export interface ISpecializationData {
+  id: number;
   className: string;
   name: string;
   role: string;

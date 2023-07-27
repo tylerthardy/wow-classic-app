@@ -2,10 +2,10 @@ import {
   GEAR_PLANNER_SLOTS,
   IGearPlannerData,
   ISlotData,
+  ISpecializationData,
   IWowSimsExport,
   IWowSimsExportItem,
   Specialization,
-  SpecializationData,
   WOWSIMS_EXPORT_SLOT_NUMBER_BY_NAME
 } from 'classic-companion-core';
 import got from 'got';
@@ -21,8 +21,8 @@ const TAB_REGEX = new RegExp(/\[tab [^\]]*name=\\"([^"]*)\\"\]/g);
 export class GearExtractor {
   public specialization: Specialization;
 
-  constructor(specializationData: SpecializationData, private phaseNumber: number) {
-    this.specialization = new Specialization(specializationData);
+  constructor(ISpecializationData: ISpecializationData, private phaseNumber: number) {
+    this.specialization = new Specialization(ISpecializationData);
   }
 
   public async extractGearDataFromPage(url: string): Promise<{ [key: string]: IGearPlannerData }> {

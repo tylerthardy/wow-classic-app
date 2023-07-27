@@ -1,8 +1,8 @@
 import {
+  ISpecializationData,
   IWowSimsExportItem,
   RankingMetric,
   Specialization,
-  SpecializationData,
   WowClass
 } from 'classic-companion-core';
 import { IStoredCharacter } from './stored-character.interface';
@@ -25,7 +25,7 @@ export class Character {
     }
     this.wowClass = wowClass;
 
-    const specData: SpecializationData | undefined = Specialization.getData(wowClass, character.specName);
+    const specData: ISpecializationData | undefined = Specialization.getData(wowClass, character.specName);
     if (!specData) {
       throw new Error('could not find spec ' + character.specName);
     }

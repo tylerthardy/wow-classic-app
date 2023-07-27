@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SpecializationDataComponent } from './specialization-data.component';
+import { ISpecializationDataComponent } from './specialization-data.component';
 
-describe('SpecializationDataComponent', () => {
-  let component: SpecializationDataComponent;
-  let fixture: ComponentFixture<SpecializationDataComponent>;
+describe('ISpecializationDataComponent', () => {
+  let component: ISpecializationDataComponent;
+  let fixture: ComponentFixture<ISpecializationDataComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SpecializationDataComponent]
+      declarations: [ISpecializationDataComponent]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SpecializationDataComponent);
+    fixture = TestBed.createComponent(ISpecializationDataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

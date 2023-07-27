@@ -2,7 +2,7 @@ import {
   IGetCharacterZoneRankingsResponse,
   IGetCharacterZoneRankingsResponseRanking,
   Instances,
-  SpecializationData,
+  ISpecializationData,
   specializations,
   WowClass
 } from 'classic-companion-core';
@@ -106,7 +106,7 @@ export class PlayerLookupViewModelEncounterItem {
   private getSpecialization(
     warcraftLogsClassId: number | undefined,
     specName: string | undefined
-  ): SpecializationData | undefined {
+  ): ISpecializationData | undefined {
     if (!specName || !warcraftLogsClassId) {
       return undefined;
     }
@@ -116,7 +116,7 @@ export class PlayerLookupViewModelEncounterItem {
       return undefined;
     }
 
-    const specialization: SpecializationData | undefined = specializations.find((spec) => {
+    const specialization: ISpecializationData | undefined = specializations.find((spec) => {
       const normalizedEnumName: string = spec.name.replace(' ', '').toLowerCase();
       const normalizedDataName: string = specName.toLowerCase();
       return spec.className === wowClass.name && normalizedEnumName === normalizedDataName;

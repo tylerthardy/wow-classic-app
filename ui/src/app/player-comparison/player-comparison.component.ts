@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {
+  ISpecializationData,
   Instances,
   Raid,
   RankingMetric,
   RankingMetricValues,
-  SpecializationData,
   WowClass
 } from 'classic-companion-core';
 import { finalize, forkJoin } from 'rxjs';
@@ -34,7 +34,7 @@ export class PlayerComparisonComponent implements OnInit {
   isLoading: boolean = false;
   viewModel: PlayerComparisonViewModel | undefined;
   wowClassFilter: WowClass | undefined;
-  specializationFilter: SpecializationData | undefined;
+  specializationFilter: ISpecializationData | undefined;
 
   constructor(
     private toastService: ToastService,

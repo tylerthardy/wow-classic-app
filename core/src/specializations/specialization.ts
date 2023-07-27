@@ -1,7 +1,7 @@
 import { camelCase, paramCase, pascalCase } from 'change-case';
 import { WowClass } from '../common/wow-class';
 import { GetSpecializationsOptions } from './get-specializations-options.interface';
-import { SpecializationData } from './specialization-data.interface';
+import { ISpecializationData } from './specialization-data.interface';
 import { specializations } from './specializations';
 
 export class Specialization {
@@ -11,7 +11,7 @@ export class Specialization {
   public isWarcraftLogsOnly?: boolean;
   public iconUrl?: string;
 
-  constructor(data: SpecializationData) {
+  constructor(data: ISpecializationData) {
     this.className = data.className;
     this.name = data.name;
     this.role = data.role;
@@ -44,15 +44,19 @@ export class Specialization {
     return camelCase(this.className) + pascalCase(this.name) + pascalCase(this.role);
   }
 
-  public static getAllData(options: GetSpecializationsOptions): SpecializationData[] {
-    let filteredSpecializations: SpecializationData[] = Object.assign([], specializations);
+  public static getAllData(options: GetSpecializationsOptions): ISpecializationData[] {
+    let filteredSpecializations: ISpecializationData[] = Object.assign([], specializations);
     if (options.omitWarcraftLogsSpecs) {
       filteredSpecializations = specializations.filter((spec) => !spec.isWarcraftLogsOnly);
     }
     return filteredSpecializations;
   }
-  public static getData(wowClass: WowClass, specializationName: string, role?: string): SpecializationData | undefined {
-    const foundData: SpecializationData[] = specializations.filter(
+  public static getData(
+    wowClass: WowClass,
+    specializationName: string,
+    role?: string
+  ): ISpecializationData | undefined {
+    const foundData: ISpecializationData[] = specializations.filter(
       (spec) =>
         spec.className.toLowerCase() === wowClass.name.toLowerCase() &&
         spec.name.toLowerCase() === specializationName.toLowerCase() &&

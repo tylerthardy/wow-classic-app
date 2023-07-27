@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SpecializationData } from 'classic-companion-core';
+import { ISpecializationData } from 'classic-companion-core';
 
 @Component({
   selector: 'app-parse-number',
@@ -8,7 +8,7 @@ import { SpecializationData } from 'classic-companion-core';
 })
 export class ParseNumberComponent implements OnInit {
   @Input() value!: number;
-  @Input() specialization?: SpecializationData;
+  @Input() specialization?: ISpecializationData;
   @Input() sizePx?: string;
   containerStyles: { [styleKey: string]: string } = {};
 

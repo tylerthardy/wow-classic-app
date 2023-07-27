@@ -1,6 +1,6 @@
 import { Component, ElementRef, forwardRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { SpecializationData, specializations, WowClass } from 'classic-companion-core';
+import { ISpecializationData, specializations, WowClass } from 'classic-companion-core';
 
 @Component({
   selector: 'app-class-spec-selection',
@@ -22,17 +22,17 @@ export class ClassSpecSelectionComponent implements ControlValueAccessor, OnInit
   @Input() classId: number | undefined;
   @Input() blankLabel: string | undefined;
   @Input() removeBlank: boolean = false;
-  public selectedSpec: SpecializationData | undefined;
-  public specializations: SpecializationData[] = specializations;
+  public selectedSpec: ISpecializationData | undefined;
+  public specializations: ISpecializationData[] = specializations;
   public isDropdownShown: boolean = false;
-  public filteredSpecs: SpecializationData[] = [];
+  public filteredSpecs: ISpecializationData[] = [];
 
   private onChangeCallback = (_: any) => {};
   private onTouchedCallback = () => {};
 
   constructor() {}
 
-  writeValue(value: SpecializationData): void {
+  writeValue(value: ISpecializationData): void {
     this.selectedSpec = value;
   }
   registerOnChange(fn: any): void {
@@ -55,7 +55,7 @@ export class ClassSpecSelectionComponent implements ControlValueAccessor, OnInit
     }
   }
 
-  public onDropdownItemClick(spec: SpecializationData | undefined) {
+  public onDropdownItemClick(spec: ISpecializationData | undefined) {
     this.selectedSpec = spec;
     this.isDropdownShown = false;
     this.onChangeCallback(spec);
