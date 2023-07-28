@@ -191,7 +191,7 @@ export class Raids {
   ];
   private static raidBySoftRes: Map<string, Raid> = new Map(Raids.All.map((raid) => [raid.softresSlug, raid]));
   private static raidBySizeInstance: Map<RaidSize, Map<Instance, Raid>> = new Map([
-    [10, new Map(Raids.All.filter((r) => r.size === 25).map((r) => [r.instance, r]))],
+    [10, new Map(Raids.All.filter((r) => r.size === 10).map((r) => [r.instance, r]))],
     [25, new Map(Raids.All.filter((r) => r.size === 25).map((r) => [r.instance, r]))]
   ]);
 
