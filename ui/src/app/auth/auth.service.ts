@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Auth } from '@aws-amplify/auth';
 import { AuthOptions, OAuthOpts } from '@aws-amplify/auth/lib-esm/types';
 import { CognitoUserSession } from 'amazon-cognito-identity-js';
-import { catchError, from, map, Observable, of, take, tap, throwError } from 'rxjs';
+import { Observable, catchError, from, map, of, take, tap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AppConfig } from '../config/app.config';
 import { CognitoConfig } from '../config/cognito-config.interface';
@@ -72,11 +72,9 @@ export class AuthService {
   }
 
   public signOut(): void {
-    from(Auth.signOut())
-      .pipe(take(1))
-      .subscribe(() => {
-        this.setUser(undefined);
-      });
+    this.setUser(undefined);
+    const url: string = this.getCognitoHostedUrl('logout');
+    window.location.assign(url);
   }
 
   private setUser(session: CognitoUserSession | undefined) {
