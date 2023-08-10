@@ -2,7 +2,9 @@
   <div class="wrapper" [ngClass]="containerStyles[containerStyle].cssClass">
     <header>
       <app-svg-icon class="svg-button" iconName="hamburger" size="18px" (click)="onHamburgerClick()"></app-svg-icon>
-      <span style="margin-right: 10px; font-size: 16px">WoW Classic App</span>
+      <span style="margin-right: 10px; font-size: 16px"
+        ><a [routerLink]="'/'" style="color: inherit; text-decoration: inherit">WoW Classic App</a></span
+      >
       <app-server-selection
         *ngIf="!appConfig.maintenance"
         [(ngModel)]="regionServerService.regionServer"
@@ -22,6 +24,7 @@
           <button *ngIf="!authService.user" (click)="onSignInButtonClick()">Sign In</button>
           <span style="display: inline-block" *ngIf="authService.user">{{ authService.user.name }}</span>
           <button *ngIf="authService.user" (click)="onSignOutButtonClick()">Sign Out</button>
+          <app-svg-icon class="svg-button" iconName="profile" size="16px" (click)="onProfileClick()"></app-svg-icon>
         </ng-container>
       </div>
     </header>

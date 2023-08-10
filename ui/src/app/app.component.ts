@@ -1,6 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import TimeAgo from 'javascript-time-ago';
-import en from 'javascript-time-ago/locale/en';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr';
 import { navigation } from './app-routing.module';
@@ -26,6 +24,7 @@ export class AppComponent implements OnInit {
   toastContainer!: ToastContainerDirective;
 
   public isNavigationShown: boolean = false;
+  public isUserDropdownShown: boolean = false;
   public navigation = navigation;
   public containerStyle: number = 0;
   public containerStyles: ContainerStyle[] = [
@@ -46,9 +45,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.authService.initialize();
-
-    // FIXME: Initialize somewhere higher?
-    TimeAgo.addDefaultLocale(en);
 
     this.toastrService.overlayContainer = this.toastContainer;
 
@@ -76,6 +72,10 @@ export class AppComponent implements OnInit {
 
   public onHamburgerClick(): void {
     this.isNavigationShown = !this.isNavigationShown;
+  }
+
+  public onProfileClick(): void {
+    this.isUserDropdownShown = !this.isUserDropdownShown;
   }
 
   public onDownloadButtonClick(): void {
