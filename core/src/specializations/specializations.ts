@@ -1,5 +1,6 @@
 import { SpecializationData } from './specialization-data.interface';
 
+// TODO: Deprecate data into common/classes, and use a Specializations static class to pull all
 export const specializations: SpecializationData[] = [
   {
     className: 'Death Knight',

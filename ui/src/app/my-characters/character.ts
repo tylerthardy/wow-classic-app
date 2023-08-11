@@ -3,7 +3,8 @@ import {
   RankingMetric,
   Specialization,
   SpecializationData,
-  WowClass
+  WowClass,
+  WowClasses
 } from 'classic-companion-core';
 import { IStoredCharacter } from './stored-character.interface';
 
@@ -19,7 +20,7 @@ export class Character {
     this.metric = character.metric;
     this.gear = character.gear;
 
-    const wowClass: WowClass | undefined = WowClass.getClassByName(character.className);
+    const wowClass: WowClass | undefined = WowClasses.getClassByName(character.className);
     if (!wowClass) {
       throw new Error('could not find class ' + character.className);
     }

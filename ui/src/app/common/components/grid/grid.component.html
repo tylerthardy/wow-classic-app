@@ -1,6 +1,6 @@
 <table>
   <tr>
-    <th *ngFor="let column of columns; let i = index" (click)="onClickColumnSort(i)">
+    <th *ngFor="let column of columns; let i = index" [ngStyle]="getColumnStyle(column)" (click)="onClickColumnSort(i)">
       <div>
         {{ getColumnLabel(column, i) }}
       </div>
@@ -41,6 +41,25 @@
             </ng-container>
             <ng-container *ngSwitchCase="'class'" style="text-align: center">
               <app-class-icon size="small" [wowClass]="cellValue"></app-class-icon>
+              <ng-container *ngIf="column.format.formatParams.showName && cellValue">
+                &nbsp;{{ cellValue.name }}
+              </ng-container>
+            </ng-container>
+            <ng-container *ngSwitchCase="'class-spec'" style="text-align: center">
+              <app-class-selection
+                size="small"
+                [isReadOnly]="true"
+                [iconOnly]="true"
+                [ngModel]="cellValue"
+              ></app-class-selection>
+              <app-class-spec-selection
+                size="small"
+                [iconOnly]="true"
+                blankLabel="Mix"
+                [classId]="cellValue.warcraftLogsId"
+                [ngModel]="dataRow.selectedSpec"
+                (ngModelChange)="column.format.formatParams.onSpecializationChange($event, dataRow)"
+              ></app-class-spec-selection>
               <ng-container *ngIf="column.format.formatParams.showName && cellValue">
                 &nbsp;{{ cellValue.name }}
               </ng-container>

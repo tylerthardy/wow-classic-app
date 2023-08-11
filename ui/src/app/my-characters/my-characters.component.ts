@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IWowSimsExport, Specialization, WowClass } from 'classic-companion-core';
+import { IWowSimsExport, Specialization, WowClasses } from 'classic-companion-core';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { finalize } from 'rxjs';
 import { LocalStorageService } from '../common/services/local-storage.service';
@@ -51,7 +51,7 @@ export class MyCharactersComponent {
     } else {
       const data: IMyCharacterImportModalInput = {
         name: wowSimsImport.name,
-        wowClass: WowClass.getClassByName(wowSimsImport.class)
+        wowClass: WowClasses.getClassByName(wowSimsImport.class)
       };
       this.simpleModalService
         .addModal(MyCharacterImportModalComponent, data)

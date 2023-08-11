@@ -1,6 +1,6 @@
 import { Component, ElementRef, forwardRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { SpecializationData, specializations, WowClass } from 'classic-companion-core';
+import { SpecializationData, specializations, WowClass, WowClasses } from 'classic-companion-core';
 
 @Component({
   selector: 'app-class-spec-selection',
@@ -15,13 +15,13 @@ import { SpecializationData, specializations, WowClass } from 'classic-companion
   ]
 })
 export class ClassSpecSelectionComponent implements ControlValueAccessor, OnInit, OnChanges {
-  @ViewChild('selectedItemElement', { read: ElementRef })
-  selectedItemRef!: ElementRef;
+  @ViewChild('selectedItemElement', { read: ElementRef }) selectedItemRef!: ElementRef;
   @ViewChild('textFilterElement') textFilterRef!: ElementRef;
   @ViewChild('dropdownContent', { static: false }) dropdownContentRef!: ElementRef;
   @Input() classId: number | undefined;
   @Input() blankLabel: string | undefined;
   @Input() removeBlank: boolean = false;
+  @Input() iconOnly: boolean = false;
   public selectedSpec: SpecializationData | undefined;
   public specializations: SpecializationData[] = specializations;
   public isDropdownShown: boolean = false;
@@ -81,7 +81,7 @@ export class ClassSpecSelectionComponent implements ControlValueAccessor, OnInit
   private setSpecsToClass(classId: number | undefined): void {
     this.filteredSpecs = Object.assign([], specializations);
     if (classId) {
-      const wowClass: WowClass | undefined = WowClass.getClassByWarcraftLogsId(classId);
+      const wowClass: WowClass | undefined = WowClasses.getClassByWarcraftLogsId(classId);
       if (!wowClass) {
         throw new Error('Cannot find wow class by wcl id ' + classId);
       }

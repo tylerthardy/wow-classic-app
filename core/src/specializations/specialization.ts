@@ -51,6 +51,7 @@ export class Specialization {
     }
     return filteredSpecializations;
   }
+  // TODO: Deprecate SpecializationData?
   public static getData(wowClass: WowClass, specializationName: string, role?: string): SpecializationData | undefined {
     const foundData: SpecializationData[] = specializations.filter(
       (spec) =>

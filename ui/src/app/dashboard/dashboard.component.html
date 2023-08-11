@@ -4,6 +4,13 @@
       <app-card [collapsed]="false" header="Playground">
         <app-item-selection [(ngModel)]="selectedItem"></app-item-selection>
         {{ selectedItem?.name }}
+        <app-class-selection></app-class-selection>
+        <app-class-selection [isReadOnly]="true" [iconOnly]="true" [ngModel]="selectedClass"></app-class-selection>
+        <app-class-spec-selection
+          [iconOnly]="true"
+          [classId]="selectedClass.warcraftLogsId"
+          [ngModel]="selectedSpec"
+        ></app-class-spec-selection>
       </app-card>
     </ng-container>
 

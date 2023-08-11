@@ -3,7 +3,10 @@ import {
   IGetMultipleCharacterZoneRankingsResponseItem,
   Raid,
   RankingMetric,
-  WowClass
+  SpecializationData,
+  WowClass,
+  WowClasses,
+  WowRoleTrue
 } from 'classic-companion-core';
 import { RaidPlayerRole } from '../raid-lookup/raid-player-role.type';
 import { JsonRaidPlayer } from '../raid-lookup/raid-player.interface';
@@ -13,6 +16,7 @@ const playerRoleLookup: RaidPlayerRole[] = ['TANK', 'HEALER', 'DAMAGER'];
 export class RaidLookupCharacter {
   public name: string;
   public role: RaidPlayerRole;
+  public selectedSpec: SpecializationData | undefined;
   public class?: WowClass;
   public metric: RankingMetric;
   public characterName: string;
@@ -34,9 +38,14 @@ export class RaidLookupCharacter {
     this.name = player.name;
     this.raid = raid;
     this.characterName = player.name; // FIXME: Shouldn't be duplicated
-    this.class = WowClass.getClassByName(player.class);
+    this.class = WowClasses.getClassByName(player.class);
     this.role = this.getFirstRoleFromArray(player.roles);
+    this.selectedSpec = this.class?.getFirstRoleSpecialization(WowRoleTrue.getByEnumName(this.role));
     this.metric = this.getMetricFromRole(this.role);
+  }
+
+  public changeSpec(spec: SpecializationData | undefined): void {
+    this.selectedSpec = spec;
   }
 
   private getFirstRoleFromArray(roles: [number, number, number]): RaidPlayerRole {

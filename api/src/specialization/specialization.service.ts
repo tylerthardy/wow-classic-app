@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { IWowSimsExport, Specialization, SpecializationData, WowClass } from 'classic-companion-core';
+import { IWowSimsExport, Specialization, SpecializationData, WowClass, WowClasses } from 'classic-companion-core';
 import { NotFoundError } from 'common-errors';
 import { SPECIALIZATION_BIS } from './specialization-bis-data/specialization-bis';
 
 @Injectable()
 export class SpecializationService {
   public getBis(classSlug: string, specializationKebab: string, role: string): IWowSimsExport[] {
-    const wowClass: WowClass | undefined = WowClass.getClassBySlug(classSlug.toUpperCase());
+    const wowClass: WowClass | undefined = WowClasses.getClassBySlug(classSlug.toUpperCase());
     if (!wowClass) {
       throw new NotFoundError('no wow class found for slug ' + classSlug);
     }

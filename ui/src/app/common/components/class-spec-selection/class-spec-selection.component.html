@@ -1,15 +1,16 @@
-<input readonly (mouseenter)="onInputMouseEnter()" (mouseleave)="onInputMouseLeave()" />
+<input readonly [class.icon-only]="iconOnly" (mouseenter)="onInputMouseEnter()" (mouseleave)="onInputMouseLeave()" />
 <div class="selected-spec">
   <app-specialization-icon
     *ngIf="selectedSpec"
     style="margin-right: 4px"
     [specialization]="selectedSpec"
     sizePx="17px"
-  ></app-specialization-icon
-  >{{ selectedSpec?.name ?? blankLabel }}
+  ></app-specialization-icon>
+  <ng-container *ngIf="!iconOnly || !selectedSpec">{{ selectedSpec?.name ?? blankLabel }}</ng-container>
 </div>
 <div
   class="dropdown-content"
+  [class.icon-only]="iconOnly"
   [style.display]="isDropdownShown ? 'block' : 'none'"
   (mouseenter)="onContentMouseEnter()"
   (mouseleave)="onContentMouseLeave()"
@@ -28,7 +29,7 @@
         [specialization]="specialization"
         size="small"
       ></app-specialization-icon>
-      {{ specialization.name }}
+      <ng-container *ngIf="!iconOnly">{{ specialization.name }}</ng-container>
     </div>
   </ng-container>
 </div>

@@ -1,9 +1,16 @@
-<input readonly (mouseenter)="onInputMouseEnter()" (mouseleave)="onInputMouseLeave()" />
+<input readonly [class.icon-only]="iconOnly" (mouseenter)="onInputMouseEnter()" (mouseleave)="onInputMouseLeave()" />
 <div class="selected-spec">
-  {{ selectedClass?.name ?? blankLabel }}
+  <app-class-icon
+    *ngIf="selectedClass"
+    size="small"
+    [wowClass]="selectedClass"
+    style="padding-right: 2px"
+  ></app-class-icon>
+  <ng-container *ngIf="!iconOnly">{{ selectedClass?.name ?? blankLabel }}</ng-container>
 </div>
 <div
   class="dropdown-content"
+  [class.icon-only]="iconOnly"
   [style.display]="isDropdownShown ? 'block' : 'none'"
   (mouseenter)="onContentMouseEnter()"
   (mouseleave)="onContentMouseLeave()"
@@ -14,7 +21,7 @@
     </div>
     <div class="dropdown-item" *ngFor="let wowClass of wowClasses" (click)="onDropdownItemClick(wowClass)">
       <app-class-icon size="small" [wowClass]="wowClass" style="padding-right: 2px"></app-class-icon>
-      {{ wowClass.name }}
+      <ng-container *ngIf="!iconOnly">{{ wowClass.name }}</ng-container>
     </div>
   </ng-container>
 </div>

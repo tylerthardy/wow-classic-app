@@ -4,6 +4,7 @@ import {
   IGetMultipleCharacterZoneRankingsResponse,
   Instances,
   Raid,
+  SpecializationData,
   WowClass
 } from 'classic-companion-core';
 import { finalize } from 'rxjs';
@@ -168,13 +169,14 @@ export class RaidLookupComponent implements OnInit {
     return this.characters.filter((d) => d.errors && d.errors.length > 0);
   }
 
-  private onLastUpdatedRefreshClick(character: RaidLookupCharacter): void {
+  private refreshCharacter(character: RaidLookupCharacter): void {
     character.lastUpdatedChanging = true;
     const query: IGetCharacterZoneRankings = {
       characterName: character.characterName,
       zoneId: character.raid.instance.zoneId,
       metric: character.metric,
-      size: character.raid.size
+      size: character.raid.size,
+      specName: character.selectedSpec?.name
     };
     this.characterService
       .getZoneRankings(query)
@@ -211,9 +213,16 @@ export class RaidLookupComponent implements OnInit {
         valueKey: 'class',
         sortType: 'class',
         format: {
-          type: 'class',
+          type: 'class-spec',
           formatParams: {
-            showName: false
+            showName: false,
+            onSpecializationChange: (
+              specialization: SpecializationData | undefined,
+              character: RaidLookupCharacter
+            ) => {
+              character.changeSpec(specialization);
+              this.refreshCharacter(character);
+            }
           }
         }
       },
@@ -306,7 +315,7 @@ export class RaidLookupComponent implements OnInit {
           // TODO: Extract a date formatter
           type: 'last-updated'
         },
-        onClick: (rowValue) => this.onLastUpdatedRefreshClick(rowValue)
+        onClick: (rowValue) => this.refreshCharacter(rowValue)
       }
     ];
   }

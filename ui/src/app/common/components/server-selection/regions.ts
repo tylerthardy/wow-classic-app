@@ -1,5 +1,6 @@
 import { Region } from './region.interface';
 
+// TODO: Consts or validation
 export const regions: { [compactName: string]: Region } = {
   US: {
     id: 6,

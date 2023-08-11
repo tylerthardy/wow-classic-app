@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { WowClass } from 'classic-companion-core';
+import { WowClass, WowClasses } from 'classic-companion-core';
 
 @Component({
   selector: 'app-class-selection',
@@ -18,9 +18,11 @@ export class ClassSelectionComponent implements ControlValueAccessor, OnInit {
   selectedItemRef!: ElementRef;
   @Input() blankLabel: string | undefined;
   @Input() removeBlank: boolean = false;
+  @Input() iconOnly: boolean = false;
+  @Input() isReadOnly: boolean = false;
   @Output() change: EventEmitter<WowClass | undefined> = new EventEmitter();
   public selectedClass: WowClass | undefined;
-  public wowClasses: WowClass[] = WowClass.getAll();
+  public wowClasses: WowClass[] = WowClasses.getAll();
   public isDropdownShown: boolean = false;
 
   private onChangeCallback = (_: any) => {};
@@ -48,18 +50,26 @@ export class ClassSelectionComponent implements ControlValueAccessor, OnInit {
   }
 
   public onInputMouseEnter(): void {
-    this.isDropdownShown = true;
+    if (!this.isReadOnly) {
+      this.isDropdownShown = true;
+    }
   }
 
   public onInputMouseLeave(): void {
-    this.isDropdownShown = false;
+    if (!this.isReadOnly) {
+      this.isDropdownShown = false;
+    }
   }
 
   public onContentMouseEnter(): void {
-    this.isDropdownShown = true;
+    if (!this.isReadOnly) {
+      this.isDropdownShown = true;
+    }
   }
 
   public onContentMouseLeave(): void {
-    this.isDropdownShown = false;
+    if (!this.isReadOnly) {
+      this.isDropdownShown = false;
+    }
   }
 }

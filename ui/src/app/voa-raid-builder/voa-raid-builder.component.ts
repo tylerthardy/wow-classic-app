@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SpecializationData, specializations, WowClass } from 'classic-companion-core';
+import { SpecializationData, WowClass, WowClasses, specializations } from 'classic-companion-core';
 import { ToastService } from '../common/services/toast/toast.service';
 import { HtmlCopyUtil } from '../common/utils/html-copy-util';
 import { RaidPlayerRole } from '../raid-lookup/raid-player-role.type';
@@ -123,7 +123,7 @@ export class VoaRaidBuilderComponent implements OnInit {
   private getSpecs(voaSpecs: IVoaSpec[]): VoaSpecializationViewModel[] {
     return voaSpecs.map((voaSpec) => {
       if (voaSpec.spec === 'DPS' || voaSpec.spec === 'Tank' || voaSpec.spec === 'Heal') {
-        const wowClass: WowClass | undefined = WowClass.getClassByName(voaSpec.class);
+        const wowClass: WowClass | undefined = WowClasses.getClassByName(voaSpec.class);
         if (!wowClass) {
           throw new Error('could not find class for class name ' + voaSpec.class);
         }

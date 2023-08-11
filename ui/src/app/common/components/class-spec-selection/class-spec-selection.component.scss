@@ -39,3 +39,15 @@ input:focus {
 input:not(:focus) {
   color: rgba(0, 0, 0, 0);
 }
+
+.icon-only {
+  width: 20px;
+  min-width: 20px;
+}
+.dropdown-content.icon-only {
+  width: 30px;
+
+  .dropdown-item {
+    width: 20px;
+  }
+}

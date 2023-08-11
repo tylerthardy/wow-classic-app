@@ -9,7 +9,17 @@ export interface ParseColumnDeprecated {
 }
 export interface ColumnFormat<T> {
   // FIXME: These are getting very specific
-  type: 'number' | 'string' | 'last-updated' | 'parse' | 'class' | 'role' | 'date' | 'wcl-link' | 'custom';
+  type:
+    | 'number'
+    | 'string'
+    | 'last-updated'
+    | 'parse'
+    | 'class'
+    | 'class-spec'
+    | 'role'
+    | 'date'
+    | 'wcl-link'
+    | 'custom';
   // FIXME: Use real types for formatParams
   formatParams?: any;
   customFormat?: (rowValue: T) => string;
@@ -114,6 +124,18 @@ export class GridComponent implements OnInit, OnChanges {
       label += this.getSortArrow();
     }
     return label;
+  }
+
+  getColumnStyle(column: ColumnSpecification<any>): { [key: string]: any } {
+    if (column.format?.type === 'class-spec') {
+      return {
+        width: '62px'
+      };
+    }
+    if (!column.style) {
+      return {};
+    }
+    return column.style;
   }
 
   // TODO: Signature "dataRow: any, column: ColumnSpecification<any>" is repeated - indicates a class, method, or pattern

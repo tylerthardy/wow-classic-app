@@ -4,7 +4,8 @@ import {
   Instances,
   SpecializationData,
   specializations,
-  WowClass
+  WowClass,
+  WowClasses
 } from 'classic-companion-core';
 import { ColumnSpecification, ParseColumnDeprecated } from '../common/components/grid/grid.component';
 import { Theme } from '../common/services/theme/theme.type';
@@ -111,7 +112,7 @@ export class PlayerLookupViewModelEncounterItem {
       return undefined;
     }
 
-    const wowClass: WowClass | undefined = WowClass.getClassByWarcraftLogsId(warcraftLogsClassId);
+    const wowClass: WowClass | undefined = WowClasses.getClassByWarcraftLogsId(warcraftLogsClassId);
     if (!wowClass) {
       return undefined;
     }
