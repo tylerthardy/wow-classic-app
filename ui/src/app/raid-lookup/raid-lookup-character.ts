@@ -44,10 +44,6 @@ export class RaidLookupCharacter {
     this.metric = this.getMetricFromRole(this.role);
   }
 
-  public changeSpec(spec: SpecializationData | undefined): void {
-    this.selectedSpec = spec;
-  }
-
   private getFirstRoleFromArray(roles: [number, number, number]): RaidPlayerRole {
     for (let i = 0; i < roles.length; i++) {
       if (roles[i] === 1) {

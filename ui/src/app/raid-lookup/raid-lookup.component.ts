@@ -21,6 +21,17 @@ import { RaidPlayerRole } from '../raid-lookup/raid-player-role.type';
 import { AddonImport } from './addon-import.interface';
 import { RaidLookupCharacter } from './raid-lookup-character';
 
+const sample: AddonImport = {
+  version: '0.1',
+  group: [
+    {
+      class: 'PALADIN',
+      name: 'Pertadin',
+      roles: [0, 1, 0]
+    }
+  ]
+};
+
 @Component({
   selector: 'app-raid-lookup',
   templateUrl: './raid-lookup.component.html',
@@ -30,9 +41,9 @@ export class RaidLookupComponent implements OnInit {
   @Output() public characterNameClicked: EventEmitter<string> = new EventEmitter<string>();
   @Input() public instanceSizeSelection: InstanceSizeSelection = new InstanceSizeSelection({
     instance: Instances.ToGC,
-    sizes: [25]
+    sizes: [10]
   });
-  protected importJson: string | undefined;
+  protected importJson: string | undefined = JSON.stringify(sample);
   protected classFilterInput: WowClass | undefined;
   protected roleFilterInput: RaidPlayerRole | undefined;
   protected roleFilterOptions: RaidPlayerRole[] = ['DAMAGER', 'HEALER', 'TANK'];
@@ -231,7 +242,7 @@ export class RaidLookupComponent implements OnInit {
               specialization: SpecializationData | undefined,
               character: RaidLookupCharacter
             ) => {
-              character.changeSpec(specialization);
+              character.selectedSpec = specialization;
               this.refreshCharacter(character);
             }
           }

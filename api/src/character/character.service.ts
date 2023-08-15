@@ -19,52 +19,6 @@ export class CharacterService {
 
   constructor(private warcraftLogsService: WarcraftLogsService, private playerTableService: PlayerTableService) {}
 
-  // // TODO: Cleanup request & response type
-  // public async getCharacterZoneRankingsByClassRole(request: {
-  //   characterName: string;
-  //   serverSlug: string;
-  //   serverRegion: string;
-  //   zoneId: number;
-  //   size: RaidSize;
-  //   classSlug: string;
-  //   role: WowRoleTrue;
-  // }): Promise<IGetCharacterZoneRankingsWithSpecResponse> {
-  //   const wowClass: WowClass | undefined = WowClasses.getClassBySlug(request.classSlug);
-  //   if (!wowClass) {
-  //     throw new Error('missing class');
-  //   }
-  //   const metric: RankingMetric = request.role.metric;
-  //   const spec: SpecializationData | undefined = wowClass.getFirstRoleSpecialization(request.role);
-  //   if (!spec) {
-  //     Logger.warn('spec not found', {
-  //       request,
-  //       wowClass,
-  //       metric
-  //     });
-  //   }
-
-  //   const newRequest: GetCharacterZoneRankingsRequest = {
-  //     characterName: request.characterName,
-  //     serverSlug: request.serverSlug,
-  //     serverRegion: request.serverRegion,
-  //     zoneId: request.zoneId,
-  //     size: request.size,
-  //     metric,
-  //     classSlug: request.classSlug,
-  //     role: request.role.name,
-  //     specName: spec?.name
-  //   };
-  //   const errors = await validate(newRequest);
-  //   if (errors.length > 0) {
-  //     throw new Error('validation errors ' + JSON.stringify(errors));
-  //   }
-  //   const rankings = await this.getCharacterZoneRankings(newRequest);
-  //   return {
-  //     specName: spec?.name ?? 'all',
-  //     ...rankings
-  //   };
-  // }
-
   public async getCharacterZoneRankings(
     request: GetCharacterZoneRankingsRequest
   ): Promise<IGetCharacterZoneRankingsResponse> {
