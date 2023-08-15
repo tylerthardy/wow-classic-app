@@ -126,7 +126,8 @@ export class RaidLookupComponent implements OnInit {
         classSlug: raidCharacter.class?.slug,
         role: raidCharacter.role,
         zoneId: this.instanceSizeSelection.instance.zoneId,
-        size: this.instanceSizeSelection.getSize()
+        size: this.instanceSizeSelection.getSize(),
+        specName: raidCharacter.selectedSpec?.name
       };
       queries.push(query);
     }
