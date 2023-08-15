@@ -15,8 +15,9 @@ import { ThemeService } from '../common/services/theme/theme.service';
 import { Theme } from '../common/services/theme/theme.type';
 import { ToastService } from '../common/services/toast/toast.service';
 import { ParseUtil } from '../common/utils';
+import { AppConfig } from '../config/app.config';
 import { RaidPlayerRole } from '../raid-lookup/raid-player-role.type';
-import { JsonRaidPlayer } from '../raid-lookup/raid-player.interface';
+import { AddonImport } from './addon-import.interface';
 import { RaidLookupCharacter } from './raid-lookup-character';
 
 @Component({
@@ -44,7 +45,8 @@ export class RaidLookupComponent implements OnInit {
   constructor(
     private characterService: CharacterService,
     private toastService: ToastService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private config: AppConfig
   ) {}
 
   ngOnInit(): void {
@@ -76,13 +78,21 @@ export class RaidLookupComponent implements OnInit {
   }
 
   public searchRaid(json: string): void {
-    let importedCharacters: JsonRaidPlayer[];
+    let addonImport: AddonImport;
     try {
-      importedCharacters = JSON.parse(json);
+      addonImport = JSON.parse(json);
     } catch (err) {
       this.toastService.warn(
         'Invalid Data',
-        'The data on clipboard is not valid json. Copy from the GME addon and try again.'
+        'The data on clipboard is not valid json. Copy from the addon and try again.'
+      );
+      return;
+    }
+
+    if (addonImport.version !== this.config.addonVersion) {
+      this.toastService.warn(
+        'Outdated Addon',
+        'Get the latest version of the addon from the "Download Addon" button at the top of the page.'
       );
       return;
     }
@@ -105,7 +115,7 @@ export class RaidLookupComponent implements OnInit {
     this.clearCharacterData();
 
     let queries: IGetCharacterZoneRankings[] = [];
-    for (let importedCharacter of importedCharacters) {
+    for (let importedCharacter of addonImport.group) {
       const raidCharacter: RaidLookupCharacter = new RaidLookupCharacter(importedCharacter, raid);
       this.characters.push(raidCharacter);
 

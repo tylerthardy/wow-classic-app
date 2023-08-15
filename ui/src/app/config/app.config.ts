@@ -18,6 +18,7 @@ export class AppConfig {
     this._maintenance = value;
   }
   private _maintenance: boolean;
+  public addonVersion: string;
   public addonDownloadUrl: string;
   public cognito: CognitoConfig;
 
@@ -26,6 +27,7 @@ export class AppConfig {
     this.discordUrl = environment.discordUrl;
     this._maintenance = environment.maintenance;
     this.advertisements = environment.advertisements;
+    this.addonVersion = environment.addonVersion;
     this.addonDownloadUrl = environment.addonDownloadUrl;
     this.cognito = environment.cognito;
   }
