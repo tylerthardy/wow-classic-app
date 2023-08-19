@@ -10,6 +10,13 @@ export const specializations: SpecializationData[] = [
   },
   {
     className: 'Death Knight',
+    name: 'BloodDPS',
+    iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/inv_weapon_shortblade_40.jpg',
+    role: 'DPS',
+    isWarcraftLogsOnly: true
+  },
+  {
+    className: 'Death Knight',
     name: 'Runeblade',
     iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_darkconviction.jpg',
     role: 'Tank',

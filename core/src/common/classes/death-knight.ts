@@ -11,6 +11,13 @@ export class DeathKnight extends WowClass {
     },
     {
       className: 'Death Knight',
+      name: 'BloodDPS',
+      iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/inv_weapon_shortblade_40.jpg',
+      role: 'DPS',
+      isWarcraftLogsOnly: true
+    },
+    {
+      className: 'Death Knight',
       name: 'Runeblade',
       iconUrl: 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_darkconviction.jpg',
       role: 'Tank',
@@ -43,7 +50,7 @@ export class DeathKnight extends WowClass {
   public override getFirstRoleSpecialization(role: WowRoleTrue, id?: number): SpecializationData | undefined {
     switch (role) {
       case WowRoleTrue.DPS:
-        return this.specializations[3];
+        return this.specializations[4];
       case WowRoleTrue.TANK:
         return this.specializations[0];
       default:
