@@ -24,15 +24,21 @@ export class PlayerTableService {
     characterName: string,
     zoneId: number,
     size: number,
+    specName: string | undefined,
     lastUpdated: number,
     wclResponse: IGetWclCharacterZoneRankingsResponse
   ): Promise<PutCommandOutput> {
     Logger.log('storing wcl character zone rankings');
-    const regionServerCharacterName: string = this.getRegionServerCharacterName(region, server, characterName);
-    const zoneAndSize: string = this.getZoneAndSize(zoneId, size);
+    const regionServer: string = this.getRegionServer(region, server);
+    const characterNameSpecZoneSize: string = this.getCharacterNameSpecZoneSize(characterName, zoneId, size, specName);
     const putCommand = new PutCommand({
       TableName: this.tableName,
-      Item: { regionServerCharacterName, zoneAndSize, timestamp: lastUpdated, wclResponse }
+      Item: {
+        pk: regionServer,
+        sk: characterNameSpecZoneSize,
+        timestamp: lastUpdated,
+        wclResponse
+      }
     });
     const putResult: PutCommandOutput = await this.documentClient.send(putCommand);
     return putResult;
@@ -43,7 +49,8 @@ export class PlayerTableService {
     server: string,
     characterName: string,
     zoneId: number,
-    size: number
+    size: number,
+    specName: string | undefined
   ): Promise<IGetWclCharacterZoneRankingsResponse> {
     Logger.log('getting wcl character zone rankings from the past 24 hours', {
       region,
@@ -52,21 +59,21 @@ export class PlayerTableService {
       zoneId,
       size
     });
-    const regionServerCharacterName: string = this.getRegionServerCharacterName(region, server, characterName);
-    const zoneAndSize: string = this.getZoneAndSize(zoneId, size);
+    const regionServer: string = this.getRegionServer(region, server);
+    const characterNameSpecZoneSize: string = this.getCharacterNameSpecZoneSize(characterName, zoneId, size, specName);
     const queryCommand = new QueryCommand({
       TableName: this.tableName,
       KeyConditionExpression: '#kn0 = :kv0 AND #kn1 = :kv1',
       FilterExpression: '#n0 > :v0',
       ExpressionAttributeNames: {
         '#n0': 'timestamp',
-        '#kn0': 'regionServerCharacterName',
-        '#kn1': 'zoneAndSize'
+        '#kn0': 'pk',
+        '#kn1': 'sk'
       },
       ExpressionAttributeValues: {
         ':v0': { N: this.getUnixNowMinusOneDay().toString() },
-        ':kv0': { S: regionServerCharacterName },
-        ':kv1': { S: zoneAndSize }
+        ':kv0': { S: regionServer },
+        ':kv1': { S: characterNameSpecZoneSize }
       },
       Select: 'ALL_ATTRIBUTES'
     });
@@ -85,12 +92,15 @@ export class PlayerTableService {
     return result;
   }
 
-  private getRegionServerCharacterName(region: string, server: string, characterName: string): string {
-    return `${region}-${server}-${characterName}`.toLowerCase();
+  private getRegionServer(region: string, server: string): string {
+    return `${region}#${server}`.toLowerCase();
   }
 
-  private getZoneAndSize(zoneId: number, size: number): string {
-    return `${zoneId}-${size}`.toLowerCase();
+  private getCharacterNameSpecZoneSize(characterName: string, zoneId: number, size: number, spec?: string): string {
+    if (!spec) {
+      spec = 'all';
+    }
+    return `${characterName}#${zoneId}#${size}#${spec}`.trim().toLowerCase();
   }
 
   private getUnixNowMinusOneDay(): number {

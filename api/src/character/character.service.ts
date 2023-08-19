@@ -15,7 +15,7 @@ import { GetMultipleCharacterZoneRankingsResponseItem } from './responses/get-mu
 
 @Injectable()
 export class CharacterService {
-  private bypassCache: boolean = true;
+  private bypassCache: boolean = false;
 
   constructor(private warcraftLogsService: WarcraftLogsService, private playerTableService: PlayerTableService) {}
 
@@ -117,6 +117,7 @@ export class CharacterService {
         request.characterName,
         request.zoneId,
         request.size,
+        request.specName,
         lastUpdated,
         characterRankings
       )
@@ -136,7 +137,8 @@ export class CharacterService {
           request.serverSlug,
           request.characterName,
           request.zoneId,
-          request.size
+          request.size,
+          request.specName
         );
       return cachedRankings;
     } catch (error) {

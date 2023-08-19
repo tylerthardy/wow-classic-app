@@ -22,10 +22,10 @@ export class ClassicCompanionApiStack extends Stack {
     super(scope, id, props);
     this.validateEnvironmentVariables();
 
-    const playerTable = new Table(this, 'player-1679377599', {
+    const playerTable = new Table(this, 'player-1692233653', {
       billingMode: BillingMode.PAY_PER_REQUEST,
-      partitionKey: { name: 'regionServerCharacterName', type: AttributeType.STRING },
-      sortKey: { name: 'zoneAndSize', type: AttributeType.STRING }
+      partitionKey: { name: 'pk', type: AttributeType.STRING },
+      sortKey: { name: 'sk', type: AttributeType.STRING }
     });
 
     const lambdaLayer = this.createLambdaLayer();
