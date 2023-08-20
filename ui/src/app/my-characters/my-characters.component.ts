@@ -11,7 +11,6 @@ import { IMyCharacterImportModalOutput } from './my-character-import-modal/my-ch
 import { MyCharacterImportModalComponent } from './my-character-import-modal/my-character-import-modal.component';
 import { IStoredCharacter } from './stored-character.interface';
 
-// FIXME: Should we use a view model here? Probably. It would clean up the template
 @Component({
   selector: 'app-my-characters',
   templateUrl: './my-characters.component.html',
@@ -20,7 +19,7 @@ import { IStoredCharacter } from './stored-character.interface';
 export class MyCharactersComponent {
   public compareSets?: IWowSimsExport[];
   public wseInput?: string;
-  public selectedCharacterIndex: number = 0;
+  public selectedCharacter: Character | undefined;
   public myCharacters: Character[] = [];
   public selectedSet?: IWowSimsExport;
   public gearSetsLoading: boolean = false;
@@ -34,13 +33,7 @@ export class MyCharactersComponent {
     this.loadCharacters();
   }
 
-  public onWseImportClick(): void {
-    if (!this.wseInput) {
-      this.toastService.warn('Invalid Import', 'Add value to the import'); // FIXME: Tone is all wrong
-      return;
-    }
-    const wowSimsImport: IWowSimsExport = JSON.parse(this.wseInput);
-
+  public onWseImported(wowSimsImport: IWowSimsExport): void {
     let matchedCharacter: Character | undefined = this.myCharacters.find(
       (c) => c.name.toLowerCase() === wowSimsImport.name.toLowerCase()
     );
@@ -64,29 +57,29 @@ export class MyCharactersComponent {
               className: result.wowClass.name,
               specName: result.specialization.name
             });
-            const length = this.myCharacters.push(newCharacter);
-            this.setSelectedCharacter(length - 1);
+            this.selectedCharacter = newCharacter;
             this.storeCharacters();
           }
         });
     }
   }
 
-  public onSelectedCharacterChange(changeEvent: Event) {
-    const inputTarget: HTMLInputElement | null = changeEvent.target as HTMLInputElement;
-    if (!inputTarget) {
-      return;
-    }
-    this.loadCharacterGearSets();
+  public onSelectedCharacterChange(selectedCharacter: Character) {
+    this.selectedCharacter = selectedCharacter;
+    console.log(this.selectedCharacter);
+    this.loadCharacterGearSets(selectedCharacter);
   }
 
-  public onDeleteCharacterClick(characterIndex: number): void {
-    this.myCharacters.splice(characterIndex, 1);
+  public onDeleteCharacterClick(deletedCharacter: Character): void {
+    const deletedIndex: number | undefined = this.myCharacters.findIndex((character) => character === deletedCharacter);
+    if (!deletedIndex) {
+      return;
+    }
+    this.myCharacters.splice(deletedIndex, 1);
     this.storeCharacters();
   }
 
-  public onEditCharacterClick(characterIndex: number): void {
-    const character: Character = this.myCharacters[characterIndex];
+  public onEditCharacterClick(character: Character): void {
     const data: IMyCharacterImportModalInput = {
       name: character.name,
       metric: character.metric,
@@ -106,8 +99,7 @@ export class MyCharactersComponent {
       });
   }
 
-  private loadCharacterGearSets(): void {
-    const character: Character = this.myCharacters[this.selectedCharacterIndex];
+  private loadCharacterGearSets(character: Character | undefined): void {
     if (!character) {
       return;
     }
@@ -120,8 +112,8 @@ export class MyCharactersComponent {
       });
   }
 
-  private setSelectedCharacter(characterIndex: number) {
-    this.selectedCharacterIndex = characterIndex;
+  private loadSelectedCharacterGearSets(): void {
+    this.loadCharacterGearSets(this.selectedCharacter);
   }
 
   private loadCharacters(): void {
@@ -129,7 +121,8 @@ export class MyCharactersComponent {
     this.myCharacters = storedCharacters
       ? storedCharacters.map((storedCharacter: IStoredCharacter) => new Character(storedCharacter))
       : [];
-    this.loadCharacterGearSets();
+    this.selectedCharacter = this.myCharacters[0];
+    this.loadSelectedCharacterGearSets();
   }
 
   private storeCharacters(): void {

@@ -1,19 +1,12 @@
-<app-card header="Characters">
-  <textarea [(ngModel)]="wseInput"></textarea><button (click)="onWseImportClick()">Import Character</button>
-  <div *ngFor="let character of myCharacters; let i = index">
-    <input
-      type="radio"
-      name="character"
-      [(ngModel)]="selectedCharacterIndex"
-      [value]="i"
-      (change)="onSelectedCharacterChange($event)"
-    />
-    {{ character.name }} <button (click)="onDeleteCharacterClick(i)">❌</button>
-    <button (click)="onEditCharacterClick(i)">📝</button>
-  </div>
-</app-card>
+<app-my-character-list
+  [characters]="myCharacters"
+  (selectedCharacterChanged)="onSelectedCharacterChange($event)"
+  (editCharacterClicked)="onEditCharacterClick($event)"
+  (deleteCharacterClicked)="onDeleteCharacterClick($event)"
+  (wseImported)="onWseImported($event)"
+></app-my-character-list>
 
-<app-card header="Gear" *ngIf="myCharacters.length > 0">
+<app-card header="Gear" *ngIf="myCharacters.length > 0" [collapsed]="false">
   <div style="display: flex; flex-direction: row">
     <span style="margin-right: 10px">Compare Gear to Set:</span>
     <app-dropdown
@@ -28,7 +21,7 @@
   <div *ngIf="gearSetsLoading" class="loading-spinner"></div>
   <app-my-character-gear-compare
     [compareGear]="selectedSet?.gear"
-    [myGear]="myCharacters[selectedCharacterIndex].gear"
+    [myGear]="selectedCharacter?.gear"
   ></app-my-character-gear-compare>
 </app-card>
 

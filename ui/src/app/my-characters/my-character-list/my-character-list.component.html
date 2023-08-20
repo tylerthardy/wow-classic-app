@@ -1,0 +1,12 @@
+<textarea [(ngModel)]="wseInput"></textarea><button (click)="onWseImportClick()">Import Character</button>
+<div *ngFor="let character of characters; let i = index">
+  <input
+    type="radio"
+    name="character"
+    [(ngModel)]="selectedCharacterIndex"
+    [value]="i"
+    (change)="onSelectedCharacterChange($event)"
+  />
+  {{ character.name }} <button (click)="onDeleteCharacterClick(i)">❌</button>
+  <button (click)="onEditCharacterClick(i)">📝</button>
+</div>

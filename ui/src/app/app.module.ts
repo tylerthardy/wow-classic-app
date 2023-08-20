@@ -31,7 +31,6 @@ import { ThemeDirective } from './common/directives/theme/theme.directive';
 import { GlobalErrorHandler } from './common/global-error-handler';
 import { GlobalHttpInterceptor } from './common/global-http-interceptor';
 import { MaintenanceAuthGuard } from './common/guards/maintenance.auth-guard';
-import { ToastService } from './common/services/toast/toast.service';
 import { AppConfig } from './config/app.config';
 import { CreateSoftresModalComponent } from './create-softres-modal/create-softres-modal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -39,6 +38,7 @@ import { GettingStartedComponent } from './getting-started/getting-started.compo
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MyCharacterGearCompareComponent } from './my-characters/my-character-gear-compare/my-character-gear-compare.component';
 import { MyCharacterImportModalComponent } from './my-characters/my-character-import-modal/my-character-import-modal.component';
+import { MyCharacterListComponent } from './my-characters/my-character-list/my-character-list.component';
 import { MyCharactersRankingsComponent } from './my-characters/my-characters-rankings/my-characters-rankings.component';
 import { MyCharactersComponent } from './my-characters/my-characters.component';
 import { PlayerComparisonComponent } from './player-comparison/player-comparison.component';
@@ -82,6 +82,7 @@ import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.com
     CopyIconComponent,
     PlayerComparisonComponent,
     MyCharactersComponent,
+    MyCharacterListComponent,
     MyCharactersRankingsComponent,
     MyCharacterImportModalComponent,
     MyCharacterGearCompareComponent,
@@ -131,7 +132,7 @@ import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.com
       provide: HTTP_INTERCEPTORS,
       useClass: GlobalHttpInterceptor,
       multi: true,
-      deps: [AppConfig, ToastService, AuthService, Injector]
+      deps: [AppConfig, AuthService, Injector]
     },
     MaintenanceAuthGuard
   ],
