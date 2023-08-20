@@ -34,6 +34,7 @@ export class MyCharactersComponent {
   }
 
   public onWseImported(wowSimsImport: IWowSimsExport): void {
+    debugger;
     let matchedCharacter: Character | undefined = this.myCharacters.find(
       (c) => c.name.toLowerCase() === wowSimsImport.name.toLowerCase()
     );
@@ -57,6 +58,7 @@ export class MyCharactersComponent {
               className: result.wowClass.name,
               specName: result.specialization.name
             });
+            this.myCharacters.push(newCharacter);
             this.selectedCharacter = newCharacter;
             this.storeCharacters();
           }

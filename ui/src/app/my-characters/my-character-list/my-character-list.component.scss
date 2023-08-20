@@ -4,9 +4,29 @@
   flex-direction: row;
   border: 1px solid black;
   padding: 5px;
-  border-bottom: 0;
-  background-color: #282828;
   cursor: pointer;
+
+  &.new-character {
+    background-color: #253520;
+    &:hover {
+      background-color: #2f3f2a;
+    }
+  }
+  &.existing-character {
+    background-color: #282828;
+    border-bottom: 0;
+    &:hover {
+      background-color: #4f4f4f;
+    }
+  }
+  &.selected {
+    background-color: #ffdb97;
+    color: black;
+    &:hover {
+      background-color: #ffebc6;
+      color: black;
+    }
+  }
 
   .spec-icon {
     padding-right: 10px;
@@ -23,15 +43,7 @@
     flex-direction: column;
   }
 }
-.character-item:hover {
-  background-color: #4f4f4f;
-}
 
-.character-item.selected {
-  background-color: #ffdb97;
-  color: black;
-}
-.character-item.selected:hover {
-  background-color: #ffebc6;
-  color: black;
+.import-character {
+  border-bottom: 1px solid black;
 }
