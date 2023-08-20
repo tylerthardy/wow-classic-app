@@ -1,5 +1,5 @@
 <textarea [(ngModel)]="wseInput"></textarea><button (click)="onWseImportClick()">Import Character</button>
-<div *ngFor="let character of characters; let i = index">
+<!-- <div *ngFor="let character of characters; let i = index">
   <input
     type="radio"
     name="character"
@@ -9,4 +9,27 @@
   />
   {{ character.name }} <button (click)="onDeleteCharacterClick(i)">❌</button>
   <button (click)="onEditCharacterClick(i)">📝</button>
+  <br />
+  {{ character.wowClass.name }}
+  <br />
+  {{ character.specialization.name }}
+</div> -->
+<div
+  *ngFor="let character of characters; let i = index"
+  class="character-item"
+  [class.selected]="character === selectedCharacter"
+  (click)="onCharacterClick(i, $event)"
+>
+  <app-specialization-icon
+    class="spec-icon"
+    sizePx="45px"
+    [specialization]="character.specialization"
+  ></app-specialization-icon>
+  <div class="character-info">
+    <h3 class="character-name">{{ character.name }}</h3>
+  </div>
+  <div class="buttons">
+    <button (click)="onEditCharacterClick(i)">📝</button>
+    <button (click)="onDeleteCharacterClick(i)">❌</button>
+  </div>
 </div>

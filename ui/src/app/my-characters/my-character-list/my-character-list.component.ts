@@ -11,12 +11,12 @@ import { Character } from '../character';
 })
 export class MyCharacterListComponent {
   @Input() public characters: Character[] = [];
-  @Output() public selectedCharacterChanged: EventEmitter<Character> = new EventEmitter();
+  @Input() public selectedCharacter: Character | undefined;
+  @Output() public characterClicked: EventEmitter<Character> = new EventEmitter();
   @Output() public editCharacterClicked: EventEmitter<Character> = new EventEmitter();
   @Output() public deleteCharacterClicked: EventEmitter<Character> = new EventEmitter();
   @Output() public wseImported: EventEmitter<IWowSimsExport> = new EventEmitter();
   public wseInput?: string;
-  public selectedCharacterIndex: number = 0;
 
   constructor(private toastService: ToastService, private simpleModalService: SimpleModalService) {}
 
@@ -29,13 +29,9 @@ export class MyCharacterListComponent {
     this.wseImported.emit(wowSimsImport);
   }
 
-  public onSelectedCharacterChange(changeEvent: Event) {
-    const character: Character | undefined = this.getCharacterFromRadioEvent(changeEvent);
-    if (!character) {
-      return;
-    }
-    console.log('selectedCharacterChanged.emit(character)', character);
-    this.selectedCharacterChanged.emit(character);
+  public onCharacterClick(characterIndex: number, event: MouseEvent): void {
+    this.selectedCharacter = this.characters[characterIndex];
+    this.characterClicked.emit(this.selectedCharacter);
   }
 
   public onDeleteCharacterClick(characterIndex: number): void {
@@ -56,19 +52,5 @@ export class MyCharacterListComponent {
 
   private getCharacterFromIndex(index: number): Character | undefined {
     return this.characters[index];
-  }
-
-  private getCharacterFromRadioEvent(event: Event): Character | undefined {
-    const inputTarget: HTMLInputElement | null = event.target as HTMLInputElement;
-    if (!inputTarget) {
-      return;
-    }
-    const characterIndexValue: string | null = inputTarget.getAttribute('ng-reflect-value');
-    if (characterIndexValue === null || characterIndexValue === undefined) {
-      return;
-    }
-    const characterIndex: number = Number.parseInt(characterIndexValue);
-    const character: Character | undefined = this.getCharacterFromIndex(characterIndex);
-    return character;
   }
 }

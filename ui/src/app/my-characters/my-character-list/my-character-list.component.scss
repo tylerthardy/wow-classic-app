@@ -1,0 +1,37 @@
+// TODO: Proper theming
+.character-item {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+  padding: 5px;
+  border-bottom: 0;
+  background-color: #282828;
+  cursor: pointer;
+
+  .spec-icon {
+    padding-right: 10px;
+  }
+  .character-info {
+    flex: 1;
+    .character-name {
+      padding: 0;
+      margin: 0;
+    }
+  }
+  .buttons {
+    display: flex;
+    flex-direction: column;
+  }
+}
+.character-item:hover {
+  background-color: #4f4f4f;
+}
+
+.character-item.selected {
+  background-color: #ffdb97;
+  color: black;
+}
+.character-item.selected:hover {
+  background-color: #ffebc6;
+  color: black;
+}

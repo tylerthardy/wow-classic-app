@@ -64,7 +64,7 @@ export class MyCharactersComponent {
     }
   }
 
-  public onSelectedCharacterChange(selectedCharacter: Character) {
+  public onCharacterClicked(selectedCharacter: Character) {
     this.selectedCharacter = selectedCharacter;
     console.log(this.selectedCharacter);
     this.loadCharacterGearSets(selectedCharacter);
