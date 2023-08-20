@@ -56,7 +56,7 @@
                 size="small"
                 [iconOnly]="true"
                 blankLabel="Mix"
-                [classId]="cellValue.warcraftLogsId"
+                [classId]="cellValue?.warcraftLogsId"
                 [ngModel]="dataRow.selectedSpec"
                 (ngModelChange)="column.format.formatParams.onSpecializationChange($event, dataRow)"
               ></app-class-spec-selection>

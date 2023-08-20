@@ -23,7 +23,7 @@ export class ClassSpecSelectionComponent implements ControlValueAccessor, OnInit
   @Input() removeBlank: boolean = false;
   @Input() iconOnly: boolean = false;
   public selectedSpec: SpecializationData | undefined;
-  public specializations: SpecializationData[] = specializations;
+  public specializations: SpecializationData[] = specializations.filter((s) => !s.isWarcraftLogsOnly);
   public isDropdownShown: boolean = false;
   public filteredSpecs: SpecializationData[] = [];
 
@@ -79,7 +79,10 @@ export class ClassSpecSelectionComponent implements ControlValueAccessor, OnInit
 
   // FIXME: This should be part of a data structure instead of having to loop through and map weird shit
   private setSpecsToClass(classId: number | undefined): void {
-    this.filteredSpecs = Object.assign([], specializations);
+    this.filteredSpecs = Object.assign(
+      [],
+      specializations.filter((s) => !s.isWarcraftLogsOnly)
+    );
     if (classId) {
       const wowClass: WowClass | undefined = WowClasses.getClassByWarcraftLogsId(classId);
       if (!wowClass) {
