@@ -1,13 +1,12 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, mergeMap, Observable, throwError } from 'rxjs';
+import { Observable, catchError, mergeMap, throwError } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { AppConfig } from '../config/app.config';
-import { ToastService } from './services/toast/toast.service';
 
 @Injectable()
 export class GlobalHttpInterceptor implements HttpInterceptor {
-  constructor(private appConfig: AppConfig, private toastService: ToastService, private authService: AuthService) {}
+  constructor(private appConfig: AppConfig, private authService: AuthService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.isWcaApiRequest(request)) {

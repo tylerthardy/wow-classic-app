@@ -21,6 +21,7 @@ export class AuthService {
   }
 
   public initialize(): void {
+    console.log('authService.initialize');
     const config = environment.cognito;
     const oauth: OAuthOpts = {
       domain: config.authUrl,
@@ -37,20 +38,23 @@ export class AuthService {
       storage: localStorage
     };
     Auth.configure(authConfig);
-
-    this.getSession().subscribe();
   }
 
   public getAccessToken(): Observable<string | undefined> {
-    // Check to see the user is signed in
-    if (!this.user) {
-      return throwError(() => 'No user session to obtain token');
-    }
     // Using getSession performs a refresh on the token if expired, rather than pulling from cached this.user
-    return this.getSession().pipe(map((session) => session?.getAccessToken().getJwtToken()));
+    return this.getSession().pipe(
+      map((session) => {
+        // Check to see the user is signed in
+        if (!this.user) {
+          throwError(() => 'No user session to obtain token');
+        }
+        return session?.getAccessToken().getJwtToken();
+      })
+    );
   }
 
   public getSession(): Observable<CognitoUserSession | undefined> {
+    console.log('authService.getSession');
     return from(Auth.currentSession()).pipe(
       take(1),
       tap((session) => this.setUser(session)),
@@ -78,6 +82,7 @@ export class AuthService {
   }
 
   private setUser(session: CognitoUserSession | undefined) {
+    console.log('authService.setUser');
     if (!session) {
       this.user = undefined;
       return;
