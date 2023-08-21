@@ -51,7 +51,7 @@ export class PlayerComparisonViewModel {
         format: {
           type: 'parse'
         },
-        style: (rowValue) => {
+        cellStyle: (rowValue) => {
           return { 'background-color': ParseUtil.getParseWarningColor(rowValue.bestPercent1Display.value, theme) };
         }
       },
@@ -62,7 +62,7 @@ export class PlayerComparisonViewModel {
         format: {
           type: 'parse'
         },
-        style: (rowValue) => {
+        cellStyle: (rowValue) => {
           return { 'background-color': ParseUtil.getParseWarningColor(rowValue.bestPercent2Display.value, theme) };
         }
       },
@@ -70,20 +70,17 @@ export class PlayerComparisonViewModel {
         label: 'Diff',
         valueKey: 'bestPercentDifference',
         sortType: 'number',
-        format: {
-          type: 'custom',
-          customFormat: (rowValue) => {
-            if (isNaN(rowValue.bestPercentDifference)) {
-              return '';
-            }
-            if (rowValue.bestPercentDifference > 0) {
-              return '+' + rowValue.bestPercentDifference;
-            } else {
-              return '' + rowValue.bestPercentDifference;
-            }
+        transform: (rowValue) => {
+          if (isNaN(rowValue.bestPercentDifference)) {
+            return '';
+          }
+          if (rowValue.bestPercentDifference > 0) {
+            return '+' + rowValue.bestPercentDifference;
+          } else {
+            return '' + rowValue.bestPercentDifference;
           }
         },
-        style: (rowValue) => {
+        cellStyle: (rowValue) => {
           return {
             'font-weight': 'bold',
             'background-color': ParseUtil.getDifferenceBackgroundColor(rowValue.bestPercentDifference, theme),

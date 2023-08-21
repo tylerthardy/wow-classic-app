@@ -1,0 +1,21 @@
+.rotating {
+  display: inline-block;
+  animation: spin 2s infinite linear;
+}
+
+.refresh-icon {
+  font-size: 16px;
+  line-height: 12px;
+  cursor: pointer;
+}
+
+@keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}

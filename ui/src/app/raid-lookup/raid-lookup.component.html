@@ -43,3 +43,45 @@
     </ng-container>
   </app-grid>
 </ng-container>
+
+<ng-template #testTemplate let-cellValue="cellValue" let-rowValue="rowValue">
+  HELLO WORLD!! {{ rowValue.characterName }}
+</ng-template>
+
+<ng-template #wclLinkTemplate let-cellValue="cellValue">
+  <app-wcl-link-icon size="small" [characterName]="cellValue"></app-wcl-link-icon>
+</ng-template>
+
+<ng-template #classSpecTemplate let-rowValue="rowValue">
+  <app-class-selection
+    size="small"
+    [isReadOnly]="true"
+    [iconOnly]="true"
+    [ngModel]="rowValue.class"
+  ></app-class-selection>
+  <app-class-spec-selection
+    size="small"
+    [iconOnly]="true"
+    blankLabel="Mix"
+    [classId]="rowValue.class?.warcraftLogsId"
+    [ngModel]="rowValue.selectedSpec"
+    (ngModelChange)="onSpecializationChange($event, rowValue)"
+  ></app-class-spec-selection>
+</ng-template>
+
+<ng-template #roleTemplate let-cellValue="cellValue" style="text-align: center">
+  <app-role-icon [roleName]="cellValue"></app-role-icon>
+</ng-template>
+
+<ng-template #lastUpdatedTemplate let-cellValue="cellValue" let-rowValue="rowValue">
+  <ng-container *ngIf="cellValue">
+    {{ getLastUpdatedValue(cellValue) }}
+    <span
+      class="refresh-icon"
+      [ngClass]="{ rotating: rowValue.lastUpdatedChanging }"
+      (click)="onLastUpdatedRefreshClick(rowValue)"
+    >
+      ↻
+    </span>
+  </ng-container>
+</ng-template>

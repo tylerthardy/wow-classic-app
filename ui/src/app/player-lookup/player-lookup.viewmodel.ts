@@ -181,7 +181,7 @@ export class PlayerLookupViewModel {
         format: {
           type: 'parse'
         },
-        style: (rowValue) => {
+        cellStyle: (rowValue) => {
           return { 'background-color': ParseUtil.getParseWarningColor(rowValue.bestPercentDisplay.value, theme) };
         }
       },
@@ -192,7 +192,7 @@ export class PlayerLookupViewModel {
         format: {
           type: 'parse'
         },
-        style: (rowValue) => {
+        cellStyle: (rowValue) => {
           return { 'background-color': ParseUtil.getParseWarningColor(rowValue.medianPercentDisplay.value, theme) };
         }
       },

@@ -61,7 +61,7 @@ export class MyCharactersRankingsViewModel {
         transform: (rowValue) => {
           return { value: rowValue.bestPerformanceAverage };
         },
-        style: (rowValue) => {
+        cellStyle: (rowValue) => {
           return { 'background-color': ParseUtil.getParseWarningColor(rowValue.bestPerformanceAverage, theme) };
         }
       },
@@ -69,14 +69,11 @@ export class MyCharactersRankingsViewModel {
         label: 'HMs',
         valueKey: 'bestHardModeProgress',
         sortType: 'number',
-        format: {
-          type: 'custom',
-          customFormat: (rowValue) => {
-            if (!rowValue.bestHardModeProgress) {
-              return '';
-            }
-            return `${rowValue.bestHardModeProgress}/${rowValue.maxPossibleHardmodes}`;
+        transform: (rowValue) => {
+          if (!rowValue.bestHardModeProgress) {
+            return '';
           }
+          return `${rowValue.bestHardModeProgress}/${rowValue.maxPossibleHardmodes}`;
         },
         tooltip: (rowValue) => {
           if (!rowValue.hardModes || rowValue.hardModes.length === 0) {
@@ -111,7 +108,7 @@ export class MyCharactersRankingsViewModel {
       sortType: 'custom',
       customSort: (a: ViewModelCharacter, b: ViewModelCharacter) =>
         a.encounterById[encounter.encounterId].bestPercent! - b.encounterById[encounter.encounterId].bestPercent!,
-      style: (rowValue) => {
+      cellStyle: (rowValue) => {
         return { 'background-color': ParseUtil.getParseWarningColor(rowValue.bestPerformanceAverage, theme) };
       }
     }));

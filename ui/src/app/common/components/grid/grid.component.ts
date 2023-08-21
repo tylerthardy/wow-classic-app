@@ -1,6 +1,13 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  TemplateRef
+} from '@angular/core';
 import { SpecializationData } from 'classic-companion-core';
-import TimeAgo from 'javascript-time-ago';
 
 // FIXME: Deprecate
 export interface ParseColumnDeprecated {
@@ -8,24 +15,11 @@ export interface ParseColumnDeprecated {
   specialization?: SpecializationData;
 }
 export interface ColumnFormat<T> {
-  // FIXME: These are getting very specific
-  type:
-    | 'number'
-    | 'string'
-    | 'last-updated'
-    | 'parse'
-    | 'class'
-    | 'class-spec'
-    | 'role'
-    | 'date'
-    | 'wcl-link'
-    | 'custom';
-  // FIXME: Use real types for formatParams
-  formatParams?: any;
-  customFormat?: (rowValue: T) => string;
-  transform?: (rowValue: T) => any;
+  template?: TemplateRef<any> | null;
+  type: 'number' | 'parse' | 'class' | 'date' | 'template';
+  formatParams?: string;
 }
-export type SortType = 'number' | 'string' | 'parse' | 'class' | 'role' | 'custom';
+export type SortType = 'number' | 'string' | 'parse' | 'class' | 'custom';
 export type SortDirection = 'asc' | 'desc' | 'none';
 export interface ColumnSpecification<T> {
   label: string | (() => string);
@@ -36,7 +30,8 @@ export interface ColumnSpecification<T> {
   sortType?: SortType;
   customSort?: (a: T, b: T) => number;
   onClick?: (value: any) => void;
-  style?: { [key: string]: any } | ((rowValue: T) => { [key: string]: any });
+  columnStyle?: { [key: string]: any };
+  cellStyle?: { [key: string]: any } | ((rowValue: T) => { [key: string]: any });
 }
 
 @Component({
@@ -52,11 +47,8 @@ export class GridComponent implements OnInit, OnChanges {
   @Input() sortArrowSide: 'left' | 'right' = 'right';
   sortedColumnId: number | undefined;
   sortDirection: SortDirection = 'none';
-  private timeAgo: TimeAgo;
 
-  constructor() {
-    this.timeAgo = new TimeAgo('en-US');
-  }
+  constructor() {}
 
   ngOnInit(): void {
     this.sortedData = Object.assign([], this.data);
@@ -83,25 +75,9 @@ export class GridComponent implements OnInit, OnChanges {
     this.sortColumn(columnId);
   }
 
-  getLastUpdatedValue(lastUpdated: number | undefined): string {
-    if (lastUpdated === undefined) {
-      return '';
-    }
-    return this.timeAgo.format(lastUpdated, 'twitter-now');
-  }
-
-  // FIXME: Should have a generic? T instead of any?
-  onClickLastUpdatedRefresh(dataRow: any, column: ColumnSpecification<any>): void {
-    if (!column.onClick) {
-      return;
-    }
-    dataRow.lastUpdatedChanging = true;
-    column.onClick(dataRow);
-  }
-
   // FIXME: Should have a generic? T instead of any?
   onClickCell(dataRow: any, column: ColumnSpecification<any>): void {
-    if (!column.onClick || column.format?.type === 'last-updated') {
+    if (!column.onClick) {
       return;
     }
     column.onClick(dataRow[column.valueKey]);
@@ -127,15 +103,10 @@ export class GridComponent implements OnInit, OnChanges {
   }
 
   getColumnStyle(column: ColumnSpecification<any>): { [key: string]: any } {
-    if (column.format?.type === 'class-spec') {
-      return {
-        width: '62px'
-      };
-    }
-    if (!column.style) {
+    if (!column.columnStyle) {
       return {};
     }
-    return column.style;
+    return column.columnStyle;
   }
 
   // TODO: Signature "dataRow: any, column: ColumnSpecification<any>" is repeated - indicates a class, method, or pattern
@@ -147,13 +118,13 @@ export class GridComponent implements OnInit, OnChanges {
   }
 
   getCellStyle(dataRow: any, column: ColumnSpecification<any>): { [key: string]: any } {
-    if (!column.style) {
+    if (!column.cellStyle) {
       return {};
     }
-    if (typeof column.style === 'function') {
-      return column.style(dataRow);
+    if (typeof column.cellStyle === 'function') {
+      return column.cellStyle(dataRow);
     }
-    return column.style;
+    return column.cellStyle;
   }
 
   getCellTooltip(dataRow: any, column: ColumnSpecification<any>): string | undefined {
@@ -164,13 +135,6 @@ export class GridComponent implements OnInit, OnChanges {
       return column.tooltip(dataRow);
     }
     return column.tooltip;
-  }
-
-  getColumnCustomFormat(column: ColumnSpecification<any>, dataRow: any) {
-    if (!column.format?.customFormat) {
-      throw new Error('no custom format for custom column ' + column.valueKey.toString());
-    }
-    return column.format.customFormat(dataRow);
   }
 
   private getSortArrow(): string {
@@ -229,8 +193,6 @@ export class GridComponent implements OnInit, OnChanges {
         return GridComponent.sortParse(this.sortedData, property, direction);
       case 'class':
         return GridComponent.sortWowClass(this.sortedData, property, direction);
-      case 'role':
-        return GridComponent.sortString(this.sortedData, property, direction);
       case 'custom':
         if (!customSort) {
           throw new Error('custom sort column without custom sort function');

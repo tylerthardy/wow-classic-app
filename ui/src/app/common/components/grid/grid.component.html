@@ -6,31 +6,24 @@
       </div>
     </th>
   </tr>
-  <tr *ngFor="let dataRow of sortedData" [ngStyle]="dataRow.rowStyle">
+  <tr *ngFor="let rowValue of sortedData" [ngStyle]="rowValue.rowStyle">
     <td
       *ngFor="let column of columns"
-      [ngStyle]="getCellStyle(dataRow, column)"
-      (click)="onClickCell(dataRow, column)"
-      [attr.title]="getCellTooltip(dataRow, column)"
+      [ngStyle]="getCellStyle(rowValue, column)"
+      (click)="onClickCell(rowValue, column)"
+      [attr.title]="getCellTooltip(rowValue, column)"
     >
       <!-- TODO: Wrapping an array and using ngFor is a hack to set the variable -->
-      <ng-container *ngFor="let cellValue of [getCellValue(dataRow, column)]">
+      <ng-container *ngFor="let cellValue of [getCellValue(rowValue, column)]">
         <ng-container *ngIf="column.format">
           <ng-container [ngSwitch]="column.format.type">
-            <ng-container *ngSwitchCase="'last-updated'">
-              <ng-container *ngIf="cellValue">
-                {{ getLastUpdatedValue(cellValue) }}
-                <span
-                  class="refresh-icon"
-                  [ngClass]="{ rotating: dataRow.lastUpdatedChanging }"
-                  (click)="onClickLastUpdatedRefresh(dataRow, column)"
-                >
-                  ↻
-                </span>
-              </ng-container>
-            </ng-container>
-            <ng-container *ngSwitchCase="'wcl-link'">
-              <app-wcl-link-icon size="small" [characterName]="cellValue"></app-wcl-link-icon>
+            <ng-container *ngSwitchCase="'template'">
+              <ng-container
+                *ngIf="column.format.template"
+                [ngTemplateOutlet]="column.format.template"
+                [ngTemplateOutletContext]="{ cellValue, rowValue }"
+              ></ng-container>
+              <ng-container *ngIf="!column.format.template">TEMPLATE NOT SPECIFIED</ng-container>
             </ng-container>
             <ng-container *ngSwitchCase="'parse'">
               <app-parse-number
@@ -41,43 +34,12 @@
             </ng-container>
             <ng-container *ngSwitchCase="'class'" style="text-align: center">
               <app-class-icon size="small" [wowClass]="cellValue"></app-class-icon>
-              <ng-container *ngIf="column.format.formatParams.showName && cellValue">
-                &nbsp;{{ cellValue.name }}
-              </ng-container>
-            </ng-container>
-            <ng-container *ngSwitchCase="'class-spec'" style="text-align: center">
-              <app-class-selection
-                size="small"
-                [isReadOnly]="true"
-                [iconOnly]="true"
-                [ngModel]="cellValue"
-              ></app-class-selection>
-              <app-class-spec-selection
-                size="small"
-                [iconOnly]="true"
-                blankLabel="Mix"
-                [classId]="cellValue?.warcraftLogsId"
-                [ngModel]="dataRow.selectedSpec"
-                (ngModelChange)="column.format.formatParams.onSpecializationChange($event, dataRow)"
-              ></app-class-spec-selection>
-              <ng-container *ngIf="column.format.formatParams.showName && cellValue">
-                &nbsp;{{ cellValue.name }}
-              </ng-container>
-            </ng-container>
-            <ng-container *ngSwitchCase="'role'" style="text-align: center">
-              <app-role-icon [roleName]="cellValue"></app-role-icon>
-              <ng-container *ngIf="column.format.formatParams.showName && cellValue">
-                &nbsp;{{ cellValue }}
-              </ng-container>
             </ng-container>
             <ng-container *ngSwitchCase="'number'">
               {{ cellValue | number : column.format.formatParams }}
             </ng-container>
             <ng-container *ngSwitchCase="'date'">
               {{ cellValue | date : column.format.formatParams }}
-            </ng-container>
-            <ng-container *ngSwitchCase="'custom'">
-              {{ getColumnCustomFormat(column, dataRow) }}
             </ng-container>
           </ng-container>
         </ng-container>
