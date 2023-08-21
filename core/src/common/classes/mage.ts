@@ -27,7 +27,7 @@ export class Mage extends WowClass {
     super(8, 4, 'Mage');
   }
   public override getFirstRoleSpecialization(role: WowRoleTrue, id?: number): SpecializationData | undefined {
-    return this.specializations[1];
+    return undefined;
   }
   public override getSpecializations(): Specialization[] {
     throw new Error('Method not implemented.');

@@ -27,7 +27,7 @@ export class Hunter extends WowClass {
     super(3, 3, 'Hunter');
   }
   public override getFirstRoleSpecialization(role: WowRoleTrue, id?: number): SpecializationData | undefined {
-    return this.specializations[2];
+    return undefined;
   }
   public override getSpecializations(): Specialization[] {
     throw new Error('Method not implemented.');

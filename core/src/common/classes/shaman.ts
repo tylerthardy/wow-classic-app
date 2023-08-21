@@ -28,7 +28,7 @@ export class Shaman extends WowClass {
   public override getFirstRoleSpecialization(role: WowRoleTrue, id?: number): SpecializationData | undefined {
     switch (role) {
       case WowRoleTrue.DPS:
-        return this.specializations[0];
+        return undefined;
       case WowRoleTrue.HEALER:
         return this.specializations[2];
       default:
