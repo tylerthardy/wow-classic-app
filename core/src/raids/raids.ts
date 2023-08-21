@@ -82,6 +82,9 @@ export class Instances {
   private static instanceByZoneId: Map<number, Instance> = new Map(
     Instances.All.map((instance) => [instance.zoneId, instance])
   );
+  private static instanceByName: Map<string, Instance> = new Map(
+    Instances.All.map((instance) => [instance.name, instance])
+  );
 
   public static getByHoldOverSlug(slug: string): Instance {
     const instance: Instance | undefined = Instances.All.find((i) => i.holdOverSlug === slug);
@@ -93,6 +96,10 @@ export class Instances {
 
   public static getByZoneId(zoneId: number): Instance | undefined {
     return Instances.instanceByZoneId.get(zoneId);
+  }
+
+  public static getByName(name: string): Instance | undefined {
+    return Instances.instanceByName.get(name);
   }
 }
 
