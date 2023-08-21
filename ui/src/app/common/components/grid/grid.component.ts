@@ -16,20 +16,9 @@ export interface ParseColumnDeprecated {
   specialization?: SpecializationData;
 }
 export interface ColumnFormat<T> {
-  template?: TemplateRef<any>;
+  template?: TemplateRef<any> | null;
   // FIXME: These are getting very specific
-  type:
-    | 'number'
-    | 'string'
-    | 'last-updated'
-    | 'parse'
-    | 'class'
-    | 'class-spec'
-    | 'role'
-    | 'date'
-    | 'wcl-link'
-    | 'template'
-    | 'custom';
+  type: 'number' | 'string' | 'last-updated' | 'parse' | 'class' | 'role' | 'date' | 'template' | 'custom';
   // FIXME: Use real types for formatParams
   formatParams?: any;
   customFormat?: (rowValue: T) => string;
@@ -137,11 +126,6 @@ export class GridComponent implements OnInit, OnChanges {
   }
 
   getColumnStyle(column: ColumnSpecification<any>): { [key: string]: any } {
-    if (column.format?.type === 'class-spec') {
-      return {
-        width: '62px'
-      };
-    }
     if (!column.columnStyle) {
       return {};
     }

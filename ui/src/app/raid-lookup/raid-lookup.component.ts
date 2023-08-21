@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import {
   IGetCharacterZoneRankingsResponse,
   IGetMultipleCharacterZoneRankingsResponse,
@@ -38,6 +38,9 @@ const sample: AddonImport = {
   styleUrls: ['./raid-lookup.component.scss']
 })
 export class RaidLookupComponent implements OnInit {
+  @ViewChild('testTemplate', { static: true }) testTemplateRef!: TemplateRef<any>;
+  @ViewChild('wclLinkTemplate', { static: true }) wclLinkTemplateRef!: TemplateRef<any>;
+  @ViewChild('classSpecTemplate', { static: true }) classSpecTemplateRef!: TemplateRef<any>;
   @Output() public characterNameClicked: EventEmitter<string> = new EventEmitter<string>();
   @Input() public instanceSizeSelection: InstanceSizeSelection = new InstanceSizeSelection({
     instance: Instances.ToGC,
@@ -87,6 +90,14 @@ export class RaidLookupComponent implements OnInit {
 
   protected onCharacterNameClick(characterName: string): void {
     this.characterNameClicked.emit(characterName);
+  }
+
+  protected onSpecializationChange(
+    specialization: SpecializationData | undefined,
+    character: RaidLookupCharacter
+  ): void {
+    character.selectedSpec = specialization;
+    this.refreshCharacter(character);
   }
 
   public searchRaid(json: string): void {
@@ -214,11 +225,12 @@ export class RaidLookupComponent implements OnInit {
   private getColumns(theme: Theme): ColumnSpecification<RaidLookupCharacter>[] {
     return [
       {
-        label: 'WL',
+        label: 'WCL',
         valueKey: 'characterName',
         sortType: 'string',
         format: {
-          type: 'wcl-link'
+          type: 'template',
+          template: this.wclLinkTemplateRef
         }
       },
       {
@@ -234,18 +246,12 @@ export class RaidLookupComponent implements OnInit {
         label: 'Class',
         valueKey: 'class',
         sortType: 'class',
+        columnStyle: {
+          width: '62px'
+        },
         format: {
-          type: 'class-spec',
-          formatParams: {
-            showName: false,
-            onSpecializationChange: (
-              specialization: SpecializationData | undefined,
-              character: RaidLookupCharacter
-            ) => {
-              character.selectedSpec = specialization;
-              this.refreshCharacter(character);
-            }
-          }
+          type: 'template',
+          template: this.classSpecTemplateRef
         }
       },
       {
@@ -338,6 +344,15 @@ export class RaidLookupComponent implements OnInit {
           type: 'last-updated'
         },
         onClick: (rowValue) => this.refreshCharacter(rowValue)
+      },
+      {
+        label: 'template test',
+        valueKey: 'lastUpdated',
+        sortType: 'number',
+        format: {
+          type: 'template',
+          template: this.testTemplateRef
+        }
       }
     ];
   }

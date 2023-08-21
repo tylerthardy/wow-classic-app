@@ -29,14 +29,13 @@
                 </span>
               </ng-container>
             </ng-container>
-            <ng-container
-              *ngSwitchCase="'template'"
-              [ngTemplateOutlet]="column.format.formatParams.template"
-              [ngTemplateOutletContext]="{ cellValue, rowValue }"
-              >test</ng-container
-            >
-            <ng-container *ngSwitchCase="'wcl-link'">
-              <app-wcl-link-icon size="small" [characterName]="cellValue"></app-wcl-link-icon>
+            <ng-container *ngSwitchCase="'template'">
+              <ng-container
+                *ngIf="column.format.template"
+                [ngTemplateOutlet]="column.format.template"
+                [ngTemplateOutletContext]="{ cellValue, rowValue }"
+              ></ng-container>
+              <ng-container *ngIf="!column.format.template">TEMPLATE NOT SPECIFIED</ng-container>
             </ng-container>
             <ng-container *ngSwitchCase="'parse'">
               <app-parse-number
