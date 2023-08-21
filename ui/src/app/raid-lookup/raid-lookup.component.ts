@@ -7,6 +7,7 @@ import {
   SpecializationData,
   WowClass
 } from 'classic-companion-core';
+import TimeAgo from 'javascript-time-ago';
 import { finalize } from 'rxjs';
 import { ColumnSpecification } from '../common/components/grid/grid.component';
 import { InstanceSizeSelection } from '../common/components/instance-size-selection/instance-size-selection';
@@ -38,9 +39,10 @@ const sample: AddonImport = {
   styleUrls: ['./raid-lookup.component.scss']
 })
 export class RaidLookupComponent implements OnInit {
-  @ViewChild('testTemplate', { static: true }) testTemplateRef!: TemplateRef<any>;
   @ViewChild('wclLinkTemplate', { static: true }) wclLinkTemplateRef!: TemplateRef<any>;
   @ViewChild('classSpecTemplate', { static: true }) classSpecTemplateRef!: TemplateRef<any>;
+  @ViewChild('roleTemplate', { static: true }) roleTemplateRef!: TemplateRef<any>;
+  @ViewChild('lastUpdatedTemplate', { static: true }) lastUpdatedTemplateRef!: TemplateRef<any>;
   @Output() public characterNameClicked: EventEmitter<string> = new EventEmitter<string>();
   @Input() public instanceSizeSelection: InstanceSizeSelection = new InstanceSizeSelection({
     instance: Instances.ToGC,
@@ -57,12 +59,16 @@ export class RaidLookupComponent implements OnInit {
   protected raidRankingsLoading: boolean = false;
   protected columns!: ColumnSpecification<RaidLookupCharacter>[];
 
+  private timeAgo: TimeAgo;
+
   constructor(
     private characterService: CharacterService,
     private toastService: ToastService,
     private themeService: ThemeService,
     private config: AppConfig
-  ) {}
+  ) {
+    this.timeAgo = new TimeAgo('en-US');
+  }
 
   ngOnInit(): void {
     this.columns = this.getColumns(this.themeService.theme);
@@ -97,6 +103,18 @@ export class RaidLookupComponent implements OnInit {
     character: RaidLookupCharacter
   ): void {
     character.selectedSpec = specialization;
+    this.refreshCharacter(character);
+  }
+
+  protected getLastUpdatedValue(lastUpdated: number | undefined): string {
+    if (lastUpdated === undefined) {
+      return '';
+    }
+    return this.timeAgo.format(lastUpdated, 'twitter-now');
+  }
+
+  protected onLastUpdatedRefreshClick(character: RaidLookupCharacter): void {
+    character.lastUpdatedChanging = true;
     this.refreshCharacter(character);
   }
 
@@ -257,12 +275,10 @@ export class RaidLookupComponent implements OnInit {
       {
         label: 'Role',
         valueKey: 'role',
-        sortType: 'role',
+        sortType: 'string',
         format: {
-          type: 'role',
-          formatParams: {
-            showName: false
-          }
+          type: 'template',
+          template: this.roleTemplateRef
         }
       },
       {
@@ -305,28 +321,22 @@ export class RaidLookupComponent implements OnInit {
         label: 'Best Progress',
         valueKey: 'bestProgress',
         sortType: 'number',
-        format: {
-          type: 'custom',
-          customFormat: (rowValue) => {
-            if (!rowValue.bestProgress) {
-              return '';
-            }
-            return `${rowValue.bestProgress}/${rowValue.maxPossibleProgress}`;
+        transform: (rowValue) => {
+          if (!rowValue.bestProgress) {
+            return '';
           }
+          return `${rowValue.bestProgress}/${rowValue.maxPossibleProgress}`;
         }
       },
       {
         label: 'Best HM',
         valueKey: 'bestHardModeProgress',
         sortType: 'number',
-        format: {
-          type: 'custom',
-          customFormat: (rowValue) => {
-            if (!rowValue.bestHardModeProgress) {
-              return '';
-            }
-            return `${rowValue.bestHardModeProgress}/${rowValue.maxPossibleHardmodes}`;
+        transform: (rowValue) => {
+          if (!rowValue.bestHardModeProgress) {
+            return '';
           }
+          return `${rowValue.bestHardModeProgress}/${rowValue.maxPossibleHardmodes}`;
         },
         tooltip: (rowValue) => {
           if (!rowValue.hardModes || rowValue.hardModes.length === 0) {
@@ -340,18 +350,8 @@ export class RaidLookupComponent implements OnInit {
         valueKey: 'lastUpdated',
         sortType: 'number',
         format: {
-          // TODO: Extract a date formatter
-          type: 'last-updated'
-        },
-        onClick: (rowValue) => this.refreshCharacter(rowValue)
-      },
-      {
-        label: 'template test',
-        valueKey: 'lastUpdated',
-        sortType: 'number',
-        format: {
           type: 'template',
-          template: this.testTemplateRef
+          template: this.lastUpdatedTemplateRef
         }
       }
     ];

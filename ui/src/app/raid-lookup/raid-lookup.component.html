@@ -68,3 +68,20 @@
     (ngModelChange)="onSpecializationChange($event, rowValue)"
   ></app-class-spec-selection>
 </ng-template>
+
+<ng-template #roleTemplate let-cellValue="cellValue" style="text-align: center">
+  <app-role-icon [roleName]="cellValue"></app-role-icon>
+</ng-template>
+
+<ng-template #lastUpdatedTemplate let-cellValue="cellValue" let-rowValue="rowValue">
+  <ng-container *ngIf="cellValue">
+    {{ getLastUpdatedValue(cellValue) }}
+    <span
+      class="refresh-icon"
+      [ngClass]="{ rotating: rowValue.lastUpdatedChanging }"
+      (click)="onLastUpdatedRefreshClick(rowValue)"
+    >
+      ↻
+    </span>
+  </ng-container>
+</ng-template>

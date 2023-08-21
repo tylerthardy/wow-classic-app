@@ -69,14 +69,11 @@ export class MyCharactersRankingsViewModel {
         label: 'HMs',
         valueKey: 'bestHardModeProgress',
         sortType: 'number',
-        format: {
-          type: 'custom',
-          customFormat: (rowValue) => {
-            if (!rowValue.bestHardModeProgress) {
-              return '';
-            }
-            return `${rowValue.bestHardModeProgress}/${rowValue.maxPossibleHardmodes}`;
+        transform: (rowValue) => {
+          if (!rowValue.bestHardModeProgress) {
+            return '';
           }
+          return `${rowValue.bestHardModeProgress}/${rowValue.maxPossibleHardmodes}`;
         },
         tooltip: (rowValue) => {
           if (!rowValue.hardModes || rowValue.hardModes.length === 0) {

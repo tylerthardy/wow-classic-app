@@ -17,18 +17,6 @@
       <ng-container *ngFor="let cellValue of [getCellValue(rowValue, column)]">
         <ng-container *ngIf="column.format">
           <ng-container [ngSwitch]="column.format.type">
-            <ng-container *ngSwitchCase="'last-updated'">
-              <ng-container *ngIf="cellValue">
-                {{ getLastUpdatedValue(cellValue) }}
-                <span
-                  class="refresh-icon"
-                  [ngClass]="{ rotating: rowValue.lastUpdatedChanging }"
-                  (click)="onClickLastUpdatedRefresh(rowValue, column)"
-                >
-                  ↻
-                </span>
-              </ng-container>
-            </ng-container>
             <ng-container *ngSwitchCase="'template'">
               <ng-container
                 *ngIf="column.format.template"
@@ -46,43 +34,12 @@
             </ng-container>
             <ng-container *ngSwitchCase="'class'" style="text-align: center">
               <app-class-icon size="small" [wowClass]="cellValue"></app-class-icon>
-              <ng-container *ngIf="column.format.formatParams.showName && cellValue">
-                &nbsp;{{ cellValue.name }}
-              </ng-container>
-            </ng-container>
-            <ng-container *ngSwitchCase="'class-spec'" style="text-align: center">
-              <app-class-selection
-                size="small"
-                [isReadOnly]="true"
-                [iconOnly]="true"
-                [ngModel]="cellValue"
-              ></app-class-selection>
-              <app-class-spec-selection
-                size="small"
-                [iconOnly]="true"
-                blankLabel="Mix"
-                [classId]="cellValue?.warcraftLogsId"
-                [ngModel]="rowValue.selectedSpec"
-                (ngModelChange)="column.format.formatParams.onSpecializationChange($event, rowValue)"
-              ></app-class-spec-selection>
-              <ng-container *ngIf="column.format.formatParams.showName && cellValue">
-                &nbsp;{{ cellValue.name }}
-              </ng-container>
-            </ng-container>
-            <ng-container *ngSwitchCase="'role'" style="text-align: center">
-              <app-role-icon [roleName]="cellValue"></app-role-icon>
-              <ng-container *ngIf="column.format.formatParams.showName && cellValue">
-                &nbsp;{{ cellValue }}
-              </ng-container>
             </ng-container>
             <ng-container *ngSwitchCase="'number'">
               {{ cellValue | number : column.format.formatParams }}
             </ng-container>
             <ng-container *ngSwitchCase="'date'">
               {{ cellValue | date : column.format.formatParams }}
-            </ng-container>
-            <ng-container *ngSwitchCase="'custom'">
-              {{ getColumnCustomFormat(column, rowValue) }}
             </ng-container>
           </ng-container>
         </ng-container>

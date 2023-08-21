@@ -70,17 +70,14 @@ export class PlayerComparisonViewModel {
         label: 'Diff',
         valueKey: 'bestPercentDifference',
         sortType: 'number',
-        format: {
-          type: 'custom',
-          customFormat: (rowValue) => {
-            if (isNaN(rowValue.bestPercentDifference)) {
-              return '';
-            }
-            if (rowValue.bestPercentDifference > 0) {
-              return '+' + rowValue.bestPercentDifference;
-            } else {
-              return '' + rowValue.bestPercentDifference;
-            }
+        transform: (rowValue) => {
+          if (isNaN(rowValue.bestPercentDifference)) {
+            return '';
+          }
+          if (rowValue.bestPercentDifference > 0) {
+            return '+' + rowValue.bestPercentDifference;
+          } else {
+            return '' + rowValue.bestPercentDifference;
           }
         },
         cellStyle: (rowValue) => {

@@ -8,7 +8,6 @@ import {
   TemplateRef
 } from '@angular/core';
 import { SpecializationData } from 'classic-companion-core';
-import TimeAgo from 'javascript-time-ago';
 
 // FIXME: Deprecate
 export interface ParseColumnDeprecated {
@@ -17,13 +16,10 @@ export interface ParseColumnDeprecated {
 }
 export interface ColumnFormat<T> {
   template?: TemplateRef<any> | null;
-  // FIXME: These are getting very specific
-  type: 'number' | 'string' | 'last-updated' | 'parse' | 'class' | 'role' | 'date' | 'template' | 'custom';
-  // FIXME: Use real types for formatParams
-  formatParams?: any;
-  customFormat?: (rowValue: T) => string;
+  type: 'number' | 'parse' | 'class' | 'date' | 'template';
+  formatParams?: string;
 }
-export type SortType = 'number' | 'string' | 'parse' | 'class' | 'role' | 'custom';
+export type SortType = 'number' | 'string' | 'parse' | 'class' | 'custom';
 export type SortDirection = 'asc' | 'desc' | 'none';
 export interface ColumnSpecification<T> {
   label: string | (() => string);
@@ -51,11 +47,8 @@ export class GridComponent implements OnInit, OnChanges {
   @Input() sortArrowSide: 'left' | 'right' = 'right';
   sortedColumnId: number | undefined;
   sortDirection: SortDirection = 'none';
-  private timeAgo: TimeAgo;
 
-  constructor() {
-    this.timeAgo = new TimeAgo('en-US');
-  }
+  constructor() {}
 
   ngOnInit(): void {
     this.sortedData = Object.assign([], this.data);
@@ -82,25 +75,9 @@ export class GridComponent implements OnInit, OnChanges {
     this.sortColumn(columnId);
   }
 
-  getLastUpdatedValue(lastUpdated: number | undefined): string {
-    if (lastUpdated === undefined) {
-      return '';
-    }
-    return this.timeAgo.format(lastUpdated, 'twitter-now');
-  }
-
-  // FIXME: Should have a generic? T instead of any?
-  onClickLastUpdatedRefresh(dataRow: any, column: ColumnSpecification<any>): void {
-    if (!column.onClick) {
-      return;
-    }
-    dataRow.lastUpdatedChanging = true;
-    column.onClick(dataRow);
-  }
-
   // FIXME: Should have a generic? T instead of any?
   onClickCell(dataRow: any, column: ColumnSpecification<any>): void {
-    if (!column.onClick || column.format?.type === 'last-updated') {
+    if (!column.onClick) {
       return;
     }
     column.onClick(dataRow[column.valueKey]);
@@ -160,13 +137,6 @@ export class GridComponent implements OnInit, OnChanges {
     return column.tooltip;
   }
 
-  getColumnCustomFormat(column: ColumnSpecification<any>, dataRow: any) {
-    if (!column.format?.customFormat) {
-      throw new Error('no custom format for custom column ' + column.valueKey.toString());
-    }
-    return column.format.customFormat(dataRow);
-  }
-
   private getSortArrow(): string {
     if (this.sortDirection === 'asc') {
       return '🔼';
@@ -223,8 +193,6 @@ export class GridComponent implements OnInit, OnChanges {
         return GridComponent.sortParse(this.sortedData, property, direction);
       case 'class':
         return GridComponent.sortWowClass(this.sortedData, property, direction);
-      case 'role':
-        return GridComponent.sortString(this.sortedData, property, direction);
       case 'custom':
         if (!customSort) {
           throw new Error('custom sort column without custom sort function');
