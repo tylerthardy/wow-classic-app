@@ -6,15 +6,15 @@
       </div>
     </th>
   </tr>
-  <tr *ngFor="let dataRow of sortedData" [ngStyle]="dataRow.rowStyle">
+  <tr *ngFor="let rowValue of sortedData" [ngStyle]="rowValue.rowStyle">
     <td
       *ngFor="let column of columns"
-      [ngStyle]="getCellStyle(dataRow, column)"
-      (click)="onClickCell(dataRow, column)"
-      [attr.title]="getCellTooltip(dataRow, column)"
+      [ngStyle]="getCellStyle(rowValue, column)"
+      (click)="onClickCell(rowValue, column)"
+      [attr.title]="getCellTooltip(rowValue, column)"
     >
       <!-- TODO: Wrapping an array and using ngFor is a hack to set the variable -->
-      <ng-container *ngFor="let cellValue of [getCellValue(dataRow, column)]">
+      <ng-container *ngFor="let cellValue of [getCellValue(rowValue, column)]">
         <ng-container *ngIf="column.format">
           <ng-container [ngSwitch]="column.format.type">
             <ng-container *ngSwitchCase="'last-updated'">
@@ -22,13 +22,19 @@
                 {{ getLastUpdatedValue(cellValue) }}
                 <span
                   class="refresh-icon"
-                  [ngClass]="{ rotating: dataRow.lastUpdatedChanging }"
-                  (click)="onClickLastUpdatedRefresh(dataRow, column)"
+                  [ngClass]="{ rotating: rowValue.lastUpdatedChanging }"
+                  (click)="onClickLastUpdatedRefresh(rowValue, column)"
                 >
                   ↻
                 </span>
               </ng-container>
             </ng-container>
+            <ng-container
+              *ngSwitchCase="'template'"
+              [ngTemplateOutlet]="column.format.formatParams.template"
+              [ngTemplateOutletContext]="{ cellValue, rowValue }"
+              >test</ng-container
+            >
             <ng-container *ngSwitchCase="'wcl-link'">
               <app-wcl-link-icon size="small" [characterName]="cellValue"></app-wcl-link-icon>
             </ng-container>
@@ -57,8 +63,8 @@
                 [iconOnly]="true"
                 blankLabel="Mix"
                 [classId]="cellValue?.warcraftLogsId"
-                [ngModel]="dataRow.selectedSpec"
-                (ngModelChange)="column.format.formatParams.onSpecializationChange($event, dataRow)"
+                [ngModel]="rowValue.selectedSpec"
+                (ngModelChange)="column.format.formatParams.onSpecializationChange($event, rowValue)"
               ></app-class-spec-selection>
               <ng-container *ngIf="column.format.formatParams.showName && cellValue">
                 &nbsp;{{ cellValue.name }}
@@ -77,7 +83,7 @@
               {{ cellValue | date : column.format.formatParams }}
             </ng-container>
             <ng-container *ngSwitchCase="'custom'">
-              {{ getColumnCustomFormat(column, dataRow) }}
+              {{ getColumnCustomFormat(column, rowValue) }}
             </ng-container>
           </ng-container>
         </ng-container>

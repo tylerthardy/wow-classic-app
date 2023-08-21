@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  TemplateRef
+} from '@angular/core';
 import { SpecializationData } from 'classic-companion-core';
 import TimeAgo from 'javascript-time-ago';
 
@@ -8,6 +16,7 @@ export interface ParseColumnDeprecated {
   specialization?: SpecializationData;
 }
 export interface ColumnFormat<T> {
+  template?: TemplateRef<any>;
   // FIXME: These are getting very specific
   type:
     | 'number'
@@ -19,11 +28,11 @@ export interface ColumnFormat<T> {
     | 'role'
     | 'date'
     | 'wcl-link'
+    | 'template'
     | 'custom';
   // FIXME: Use real types for formatParams
   formatParams?: any;
   customFormat?: (rowValue: T) => string;
-  transform?: (rowValue: T) => any;
 }
 export type SortType = 'number' | 'string' | 'parse' | 'class' | 'role' | 'custom';
 export type SortDirection = 'asc' | 'desc' | 'none';
