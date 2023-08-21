@@ -45,7 +45,8 @@ export interface ColumnSpecification<T> {
   sortType?: SortType;
   customSort?: (a: T, b: T) => number;
   onClick?: (value: any) => void;
-  style?: { [key: string]: any } | ((rowValue: T) => { [key: string]: any });
+  columnStyle?: { [key: string]: any };
+  cellStyle?: { [key: string]: any } | ((rowValue: T) => { [key: string]: any });
 }
 
 @Component({
@@ -141,10 +142,10 @@ export class GridComponent implements OnInit, OnChanges {
         width: '62px'
       };
     }
-    if (!column.style) {
+    if (!column.columnStyle) {
       return {};
     }
-    return column.style;
+    return column.columnStyle;
   }
 
   // TODO: Signature "dataRow: any, column: ColumnSpecification<any>" is repeated - indicates a class, method, or pattern
@@ -156,13 +157,13 @@ export class GridComponent implements OnInit, OnChanges {
   }
 
   getCellStyle(dataRow: any, column: ColumnSpecification<any>): { [key: string]: any } {
-    if (!column.style) {
+    if (!column.cellStyle) {
       return {};
     }
-    if (typeof column.style === 'function') {
-      return column.style(dataRow);
+    if (typeof column.cellStyle === 'function') {
+      return column.cellStyle(dataRow);
     }
-    return column.style;
+    return column.cellStyle;
   }
 
   getCellTooltip(dataRow: any, column: ColumnSpecification<any>): string | undefined {

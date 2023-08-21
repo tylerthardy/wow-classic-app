@@ -225,7 +225,7 @@ export class RaidLookupComponent implements OnInit {
         label: 'Player',
         valueKey: 'characterName',
         sortType: 'string',
-        style: {
+        cellStyle: {
           cursor: 'pointer'
         },
         onClick: (value: string) => this.onCharacterNameClick(value)
@@ -277,7 +277,7 @@ export class RaidLookupComponent implements OnInit {
         transform: (rowValue) => {
           return { value: rowValue.bestPerformanceAverage };
         },
-        style: (rowValue) => {
+        cellStyle: (rowValue) => {
           return { 'background-color': ParseUtil.getParseWarningColor(rowValue.bestPerformanceAverage, theme) };
         }
       },
@@ -291,7 +291,7 @@ export class RaidLookupComponent implements OnInit {
         transform: (rowValue) => {
           return { value: rowValue.medianPerformanceAverage };
         },
-        style: (rowValue) => {
+        cellStyle: (rowValue) => {
           return { 'background-color': ParseUtil.getParseWarningColor(rowValue.medianPerformanceAverage, theme) };
         }
       },

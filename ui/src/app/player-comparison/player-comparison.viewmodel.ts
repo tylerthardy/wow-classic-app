@@ -51,7 +51,7 @@ export class PlayerComparisonViewModel {
         format: {
           type: 'parse'
         },
-        style: (rowValue) => {
+        cellStyle: (rowValue) => {
           return { 'background-color': ParseUtil.getParseWarningColor(rowValue.bestPercent1Display.value, theme) };
         }
       },
@@ -62,7 +62,7 @@ export class PlayerComparisonViewModel {
         format: {
           type: 'parse'
         },
-        style: (rowValue) => {
+        cellStyle: (rowValue) => {
           return { 'background-color': ParseUtil.getParseWarningColor(rowValue.bestPercent2Display.value, theme) };
         }
       },
@@ -83,7 +83,7 @@ export class PlayerComparisonViewModel {
             }
           }
         },
-        style: (rowValue) => {
+        cellStyle: (rowValue) => {
           return {
             'font-weight': 'bold',
             'background-color': ParseUtil.getDifferenceBackgroundColor(rowValue.bestPercentDifference, theme),

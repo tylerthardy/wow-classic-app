@@ -61,7 +61,7 @@ export class MyCharactersRankingsViewModel {
         transform: (rowValue) => {
           return { value: rowValue.bestPerformanceAverage };
         },
-        style: (rowValue) => {
+        cellStyle: (rowValue) => {
           return { 'background-color': ParseUtil.getParseWarningColor(rowValue.bestPerformanceAverage, theme) };
         }
       },
@@ -111,7 +111,7 @@ export class MyCharactersRankingsViewModel {
       sortType: 'custom',
       customSort: (a: ViewModelCharacter, b: ViewModelCharacter) =>
         a.encounterById[encounter.encounterId].bestPercent! - b.encounterById[encounter.encounterId].bestPercent!,
-      style: (rowValue) => {
+      cellStyle: (rowValue) => {
         return { 'background-color': ParseUtil.getParseWarningColor(rowValue.bestPerformanceAverage, theme) };
       }
     }));
