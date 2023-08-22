@@ -72,7 +72,7 @@ export class Instances {
     hardModeCount: 13 - 4 // 8 + Algalon
   });
   public static Onyxia = new Instance({
-    name: 'Onyxia',
+    name: "Onyxia's Lair",
     zoneId: 1019,
     sizes: [10, 25],
     holdOverSlug: 'wotlkonyxia',
@@ -120,18 +120,21 @@ export class Instances {
 }
 
 export interface IRaid {
+  slug: string;
   instance: Instance;
   size: RaidSize;
   softresSlug: string;
   lfgName: string;
 }
 export class Raid implements IRaid {
+  public slug: string;
   public instance: Instance;
   public size: RaidSize;
   public softresSlug: string;
   public lfgName: string;
 
   constructor(data: IRaid) {
+    this.slug = data.slug;
     this.instance = data.instance;
     this.size = data.size;
     this.softresSlug = data.softresSlug;
@@ -140,84 +143,98 @@ export class Raid implements IRaid {
 }
 export class Raids {
   public static Naxx10 = new Raid({
+    slug: 'Naxx10',
     instance: Instances.Naxxramas,
     size: 10,
     softresSlug: 'wotlknaxx10p2',
     lfgName: 'Naxx 10'
   });
   public static Naxx25 = new Raid({
+    slug: 'Naxx25',
     instance: Instances.Naxxramas,
     size: 25,
     softresSlug: 'wotlknaxx25',
     lfgName: 'Naxx 25'
   });
   public static VoA10 = new Raid({
+    slug: 'VoA10',
     instance: Instances.VaultOfArchavon,
     size: 10,
     softresSlug: 'has_no_softres',
     lfgName: 'VoA 10'
   });
   public static VoA25 = new Raid({
+    slug: 'VoA25',
     instance: Instances.VaultOfArchavon,
     size: 25,
     softresSlug: 'has_no_softres',
     lfgName: 'VoA 25'
   });
   public static OS10 = new Raid({
+    slug: 'OS10',
     instance: Instances.ObsidianSanctum,
     size: 10,
     softresSlug: 'obsidiansanctum10p2',
     lfgName: 'OS 10'
   });
   public static OS25 = new Raid({
+    slug: 'OS25',
     instance: Instances.ObsidianSanctum,
     size: 25,
     softresSlug: 'obsidiansanctum25',
     lfgName: 'OS 25'
   });
   public static EoE10 = new Raid({
+    slug: 'EoE10',
     instance: Instances.EyeOfEternity,
     size: 10,
     softresSlug: 'eyeofeternity10p2',
     lfgName: 'EoE 10'
   });
   public static EoE25 = new Raid({
+    slug: 'EoE25',
     instance: Instances.EyeOfEternity,
     size: 25,
     softresSlug: 'eyeofeternity25',
     lfgName: 'EoE 25'
   });
   public static Ulduar10 = new Raid({
+    slug: 'Ulduar10',
     instance: Instances.Ulduar,
     size: 10,
     softresSlug: 'ulduar10p2',
     lfgName: 'Uld 10'
   });
   public static Ulduar25 = new Raid({
+    slug: 'Ulduar25',
     instance: Instances.Ulduar,
     size: 25,
     softresSlug: 'ulduar25',
     lfgName: 'Uld 10'
   });
   public static Onyxia10 = new Raid({
+    slug: 'Onyxia10',
     instance: Instances.Onyxia,
     size: 10,
     softresSlug: 'wotlkonyxia10',
     lfgName: 'Ony 10'
   });
   public static Onyxia25 = new Raid({
+    slug: 'Onyxia25',
     instance: Instances.Onyxia,
     size: 25,
     softresSlug: 'wotlkonyxia25',
     lfgName: 'Ony 25'
   });
   public static ToGC10 = new Raid({
+    slug: 'ToGC10',
     instance: Instances.ToGC,
     size: 10,
     softresSlug: 'toc10',
     lfgName: 'ToGC 10'
   });
   public static ToGC25 = new Raid({
+    slug: 'ToGC25',
     instance: Instances.ToGC,
     size: 25,
     softresSlug: 'toc25',

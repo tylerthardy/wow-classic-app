@@ -1,7 +1,7 @@
 import { Instance, Instances, Raid, RaidSize, Raids } from 'classic-companion-core';
-import { INitImportLockout } from './nit-import-lockout.interface';
+import { INitImportLockout } from './imports/nit-import.interface';
 
-export class Lockout {
+export class LockoutData {
   public resetTime: number;
   public raid?: Raid;
 

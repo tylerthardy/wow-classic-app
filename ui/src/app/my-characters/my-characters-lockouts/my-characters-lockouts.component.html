@@ -1,23 +1,30 @@
 <textarea [(ngModel)]="nitInput"></textarea>
 <button (click)="onImportClick()" [disabled]="!nitInput">Import</button>
-<button (click)="onToggleHiddenClick()" [disabled]="!nitInput">Toggle Hidden</button>
+<button (click)="onToggleHiddenClick()">Toggle Hidden</button>
 <div class="loading-spinner large" *ngIf="isLoading"></div>
 <div *ngIf="!viewModel && !isLoading">No data yet</div>
-<app-grid *ngIf="viewModel" [data]="viewModel.filteredData" [columns]="columns" sortArrowSide="left"></app-grid>
+<app-grid
+  class="characters-table"
+  *ngIf="viewModel"
+  [data]="viewModel.filteredData"
+  [columns]="columns"
+  sortArrowSide="left"
+></app-grid>
 
 <ng-template #raidLockoutTemplate let-cellValue="cellValue">
   {{ cellValue.scheduledDay }}
   {{ cellValue.scheduledTime }}
+  {{ cellValue.notes }}
 </ng-template>
 
 <ng-template #playerNameTemplate let-rowValue="rowValue">
   <div style="display: flex; flex-direction: row">
     <div style="flex: 5">{{ rowValue.characterName }}</div>
-    <div style="flex: 1; text-align: right; cursor: pointer" (click)="onHiddenToggleClick(rowValue)">
+    <div style="flex: 1; cursor: pointer; display: flex; align-items: center" (click)="onHiddenToggleClick(rowValue)">
       <app-svg-icon
         [ngClass]="{ warn: rowValue.hidden }"
         [iconName]="rowValue.hidden ? 'no-eye' : 'eye'"
-        size="10px"
+        size="18px"
       ></app-svg-icon>
     </div>
   </div>

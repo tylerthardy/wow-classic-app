@@ -14,6 +14,7 @@ export class EditLockoutModalComponent
 {
   scheduledDay?: string;
   scheduledTime?: string;
+  notes?: string;
   needsToRun!: boolean;
   completed!: boolean;
 
@@ -29,8 +30,9 @@ export class EditLockoutModalComponent
     }
 
     this.result = {
-      scheduledDay: this.scheduledDay,
-      scheduledTime: this.scheduledTime,
+      scheduledDay: this.scheduledDay?.trim(),
+      scheduledTime: this.scheduledTime?.trim(),
+      notes: this.notes?.trim(),
       needsToRun: this.needsToRun,
       completed: this.completed
     };
