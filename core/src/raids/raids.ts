@@ -36,6 +36,13 @@ export class Instance implements IInstance {
   }
 }
 export class Instances {
+  public static VaultOfArchavon = new Instance({
+    name: 'Vault of Archavon',
+    zoneId: 1016,
+    sizes: [10, 25],
+    holdOverSlug: 'voa',
+    hardModeCount: 0
+  });
   public static Naxxramas = new Instance({
     name: 'Naxxramas',
     zoneId: 1015,
@@ -64,6 +71,13 @@ export class Instances {
     holdOverSlug: 'ulduar',
     hardModeCount: 13 - 4 // 8 + Algalon
   });
+  public static Onyxia = new Instance({
+    name: 'Onyxia',
+    zoneId: 1019,
+    sizes: [10, 25],
+    holdOverSlug: 'wotlkonyxia',
+    hardModeCount: 0
+  });
   public static ToGC = new Instance({
     name: 'Trial of the Crusader',
     zoneId: 1018,
@@ -73,9 +87,11 @@ export class Instances {
   });
 
   public static All: Instance[] = [
+    Instances.VaultOfArchavon,
     Instances.Naxxramas,
     Instances.ObsidianSanctum,
     Instances.EyeOfEternity,
+    Instances.Onyxia,
     Instances.Ulduar,
     Instances.ToGC
   ];
@@ -135,6 +151,18 @@ export class Raids {
     softresSlug: 'wotlknaxx25',
     lfgName: 'Naxx 25'
   });
+  public static VoA10 = new Raid({
+    instance: Instances.VaultOfArchavon,
+    size: 10,
+    softresSlug: 'has_no_softres',
+    lfgName: 'VoA 10'
+  });
+  public static VoA25 = new Raid({
+    instance: Instances.VaultOfArchavon,
+    size: 25,
+    softresSlug: 'has_no_softres',
+    lfgName: 'VoA 25'
+  });
   public static OS10 = new Raid({
     instance: Instances.ObsidianSanctum,
     size: 10,
@@ -171,6 +199,18 @@ export class Raids {
     softresSlug: 'ulduar25',
     lfgName: 'Uld 10'
   });
+  public static Onyxia10 = new Raid({
+    instance: Instances.Onyxia,
+    size: 10,
+    softresSlug: 'wotlkonyxia10',
+    lfgName: 'Ony 10'
+  });
+  public static Onyxia25 = new Raid({
+    instance: Instances.Onyxia,
+    size: 25,
+    softresSlug: 'wotlkonyxia25',
+    lfgName: 'Ony 25'
+  });
   public static ToGC10 = new Raid({
     instance: Instances.ToGC,
     size: 10,
@@ -184,7 +224,9 @@ export class Raids {
     lfgName: 'ToGC 25'
   });
 
-  private static All = [
+  public static All = [
+    Raids.VoA10,
+    Raids.VoA25,
     Raids.Naxx10,
     Raids.Naxx25,
     Raids.OS10,
@@ -193,6 +235,8 @@ export class Raids {
     Raids.EoE25,
     Raids.Ulduar10,
     Raids.Ulduar25,
+    Raids.Onyxia10,
+    Raids.Onyxia25,
     Raids.ToGC10,
     Raids.ToGC25
   ];

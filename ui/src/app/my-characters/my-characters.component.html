@@ -1,7 +1,10 @@
 <app-card header="Characters Dashboard" *ngIf="myCharacters.length > 0">
+  <app-card header="Lockouts">
+    <app-my-characters-lockouts></app-my-characters-lockouts>
+  </app-card>
   <app-card header="Rankings" [collapsed]="true">
-    <app-my-characters-rankings [myCharacters]="myCharacters"></app-my-characters-rankings
-  ></app-card>
+    <app-my-characters-rankings [myCharacters]="myCharacters"></app-my-characters-rankings>
+  </app-card>
 </app-card>
 
 <app-card header="Character Management">

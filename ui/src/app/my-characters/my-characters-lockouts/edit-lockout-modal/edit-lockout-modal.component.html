@@ -1,0 +1,29 @@
+<div class="modal-content" appTheme>
+  <div class="modal-header">
+    <h4>Complete Imported Character Data</h4>
+  </div>
+  <div class="modal-body">
+    <div>Scheduled Day: <input [(ngModel)]="scheduledDay" /></div>
+    <div>Scheduled Time: <input [(ngModel)]="scheduledTime" /></div>
+    <label for="needs-to-run">Needs to Run</label
+    ><input
+      id="needs-to-run"
+      #needsToRunCheckbox
+      type="checkbox"
+      [checked]="needsToRun"
+      (change)="onNeedsToRunChanged(needsToRunCheckbox.checked)"
+    />
+    <label for="completed">Completed</label
+    ><input
+      id="completed"
+      #completedCheckbox
+      type="checkbox"
+      [checked]="completed"
+      (change)="onCompletedChanged(completedCheckbox.checked)"
+    />
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger" (click)="close()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="confirm()">OK</button>
+  </div>
+</div>

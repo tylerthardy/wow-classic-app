@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { IGetCharacterZoneRankingsResponse, Instances, Raid } from 'classic-companion-core';
 import { Observable, finalize, forkJoin } from 'rxjs';
 import { InstanceSizeSelection } from '../../common/components/instance-size-selection/instance-size-selection';
@@ -12,8 +12,7 @@ import { MyCharactersRankingsViewModel } from './my-characters-rankings.viewmode
 @Component({
   selector: 'app-my-characters-rankings',
   templateUrl: './my-characters-rankings.component.html',
-  styleUrls: ['./my-characters-rankings.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./my-characters-rankings.component.scss']
 })
 export class MyCharactersRankingsComponent implements OnInit {
   @Input() myCharacters!: Character[];

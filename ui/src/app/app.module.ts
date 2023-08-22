@@ -39,6 +39,8 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MyCharacterGearCompareComponent } from './my-characters/my-character-gear-compare/my-character-gear-compare.component';
 import { MyCharacterImportModalComponent } from './my-characters/my-character-import-modal/my-character-import-modal.component';
 import { MyCharacterListComponent } from './my-characters/my-character-list/my-character-list.component';
+import { EditLockoutModalComponent } from './my-characters/my-characters-lockouts/edit-lockout-modal/edit-lockout-modal.component';
+import { MyCharactersLockoutsComponent } from './my-characters/my-characters-lockouts/my-characters-lockouts.component';
 import { MyCharactersRankingsComponent } from './my-characters/my-characters-rankings/my-characters-rankings.component';
 import { MyCharactersComponent } from './my-characters/my-characters.component';
 import { PlayerComparisonComponent } from './player-comparison/player-comparison.component';
@@ -93,7 +95,9 @@ import { VoaRaidBuilderComponent } from './voa-raid-builder/voa-raid-builder.com
     ThemeDirective,
     ClassIconComponent,
     RoleIconComponent,
-    InstanceSizeSelectionComponent
+    InstanceSizeSelectionComponent,
+    MyCharactersLockoutsComponent,
+    EditLockoutModalComponent
   ],
   imports: [
     BrowserAnimationsModule,

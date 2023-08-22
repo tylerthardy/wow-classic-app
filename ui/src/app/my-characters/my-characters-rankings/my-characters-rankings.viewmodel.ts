@@ -108,6 +108,11 @@ export class MyCharactersRankingsViewModel {
       sortType: 'custom',
       customSort: (a: ViewModelCharacter, b: ViewModelCharacter) =>
         a.encounterById[encounter.encounterId].bestPercent! - b.encounterById[encounter.encounterId].bestPercent!,
+      columnStyle: {
+        'max-width': '50px',
+        'white-space': 'nowrap',
+        overflow: 'hidden'
+      },
       cellStyle: (rowValue) => {
         return { 'background-color': ParseUtil.getParseWarningColor(rowValue.bestPerformanceAverage, theme) };
       }

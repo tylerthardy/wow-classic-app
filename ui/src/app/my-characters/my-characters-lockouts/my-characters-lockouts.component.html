@@ -1,0 +1,24 @@
+<textarea [(ngModel)]="nitInput"></textarea>
+<button (click)="onImportClick()" [disabled]="!nitInput">Import</button>
+<button (click)="onToggleHiddenClick()" [disabled]="!nitInput">Toggle Hidden</button>
+<div class="loading-spinner large" *ngIf="isLoading"></div>
+<div *ngIf="!viewModel && !isLoading">No data yet</div>
+<app-grid *ngIf="viewModel" [data]="viewModel.filteredData" [columns]="columns" sortArrowSide="left"></app-grid>
+
+<ng-template #raidLockoutTemplate let-cellValue="cellValue">
+  {{ cellValue.scheduledDay }}
+  {{ cellValue.scheduledTime }}
+</ng-template>
+
+<ng-template #playerNameTemplate let-rowValue="rowValue">
+  <div style="display: flex; flex-direction: row">
+    <div style="flex: 5">{{ rowValue.characterName }}</div>
+    <div style="flex: 1; text-align: right; cursor: pointer" (click)="onHiddenToggleClick(rowValue)">
+      <app-svg-icon
+        [ngClass]="{ warn: rowValue.hidden }"
+        [iconName]="rowValue.hidden ? 'no-eye' : 'eye'"
+        size="10px"
+      ></app-svg-icon>
+    </div>
+  </div>
+</ng-template>
