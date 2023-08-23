@@ -9,7 +9,7 @@
 
 <app-card header="Character Management">
   <div style="display: flex; flex-direction: row; flex-wrap: wrap">
-    <app-card style="flex: 1">
+    <div style="flex: 1; padding: 5px">
       <app-my-character-list
         [characters]="myCharacters"
         [selectedCharacter]="selectedCharacter"
@@ -18,8 +18,8 @@
         (deleteCharacterClicked)="onDeleteCharacterClick($event)"
         (wseImported)="onWseImported($event)"
       ></app-my-character-list>
-    </app-card>
-    <app-card style="flex: 3">
+    </div>
+    <div style="flex: 3; padding: 5px">
       <app-card header="Gear" *ngIf="myCharacters.length > 0" [collapsed]="false">
         <div style="display: flex; flex-direction: row">
           <span style="margin-right: 10px">Compare Gear to Set:</span>
@@ -38,6 +38,6 @@
           [myGear]="selectedCharacter?.gear"
         ></app-my-character-gear-compare>
       </app-card>
-    </app-card>
+    </div>
   </div>
 </app-card>
