@@ -27,7 +27,7 @@ export class Warlock extends WowClass {
     super(9, 10, 'Warlock');
   }
   public override getFirstRoleSpecialization(role: WowRoleTrue, id?: number): SpecializationData | undefined {
-    return this.specializations[0];
+    return undefined;
   }
   public override getSpecializations(): Specialization[] {
     throw new Error('Method not implemented.');
