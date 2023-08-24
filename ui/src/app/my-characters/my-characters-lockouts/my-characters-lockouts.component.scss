@@ -1,6 +1,22 @@
 ::ng-deep .characters-table {
+  th {
+    max-width: 50px;
+    min-width: 50px;
+    width: 50px;
+  }
   td {
     padding-top: 2px;
     padding-bottom: 2px;
+    max-width: 50px;
+    min-width: 50px;
+    // position: relative;
   }
+}
+
+.raid-status {
+  width: 100%;
+  color: black;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

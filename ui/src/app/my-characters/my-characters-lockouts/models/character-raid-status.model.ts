@@ -30,6 +30,10 @@ export class CharacterRaidStatus {
     }
   }
 
+  public getTooltip(): string {
+    return [this.scheduledDay, this.scheduledTime, this.notes].join(' ');
+  }
+
   public hasCustomData(): boolean {
     return (
       this.scheduledDay !== undefined ||

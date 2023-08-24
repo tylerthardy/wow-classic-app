@@ -27,25 +27,28 @@ export class MyCharactersLockoutsViewModel {
         return new CharacterLockoutsViewModel(characterName, lockouts);
       });
     }
-    // TODO: REFACTOR THIS. Seems like a lot of iterating & transforming for something simple
-    // const characterLockouts: { [characterName: string]: LockoutData[] } = {};
-    // for (const characterName of Object.keys(lockouts)) {
-    //   const lockoutData: INitImportLockout[] = lockouts[characterName];
-    //   characterLockouts[characterName] = [];
+  }
 
-    //   lockoutData.forEach((lockoutDatum) => {
-    //     const lockout: LockoutData = new LockoutData(lockoutDatum);
-    //     if (!!lockout.raid) {
-    //       characterLockouts[characterName].push(lockout);
-    //     }
-    //   });
-    // }
-
-    // this.data = Object.entries(characterLockouts).map((kvp) => {
-    //   const characterName: string = kvp[0];
-    //   const lockouts: LockoutData[] = kvp[1];
-    //   return new CharacterLockoutsViewModel(characterName, lockouts);
-    // });
+  public patchData(imported: MyCharactersLockoutsViewModel): void {
+    const dataByCharacterName: { [characterName: string]: CharacterLockoutsViewModel } = {};
+    this.data.map((character) => {
+      dataByCharacterName[character.characterName] = character;
+    });
+    imported.data.forEach((importedCharacter) => {
+      const existingCharacter: CharacterLockoutsViewModel = dataByCharacterName[importedCharacter.characterName];
+      if (!existingCharacter) {
+        this.data.push(importedCharacter);
+        return;
+      }
+      importedCharacter.raidStatuses.forEach((importedStatus, raid, _) => {
+        const existingStatus: CharacterRaidStatus | undefined = existingCharacter.raidStatuses.get(raid);
+        if (!existingStatus) {
+          throw new Error('unable to find existing raid for imported raid status ' + raid.slug);
+        }
+        existingStatus.completed = importedStatus.completed;
+        existingStatus.expires = importedStatus.expires;
+      });
+    });
   }
 
   public getSaveableData(): IMyCharactersLockoutsSave {
