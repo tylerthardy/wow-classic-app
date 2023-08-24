@@ -1,4 +1,4 @@
-import { RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
+import { CfnOutput, RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { Construct } from 'constructs';
@@ -9,7 +9,7 @@ export class ClassicCompanionUiStack extends Stack {
     super(scope, id, props);
 
     const websiteBucket = new Bucket(this, 'ui-bucket', {
-      bucketName: 'wowclassicapp-ui',
+      bucketName: 'dev-wowclassicapp-ui',
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'error.html',
       publicReadAccess: true,
@@ -22,9 +22,15 @@ export class ClassicCompanionUiStack extends Stack {
       }
     });
 
-    new BucketDeployment(this, 'wowclassicapp-ui-bucket-deployment', {
+    const deployment = new BucketDeployment(this, 'dev-wowclassicapp-ui-bucket-deployment', {
       sources: [Source.asset(path.resolve(__dirname, '../ui/dist/classic-companion'))],
       destinationBucket: websiteBucket
+    });
+
+    new CfnOutput(this, 'url', {
+      value: websiteBucket.bucketWebsiteUrl,
+      description: 'url for the bucket deployed ui',
+      exportName: 'uiUrl'
     });
   }
 }
