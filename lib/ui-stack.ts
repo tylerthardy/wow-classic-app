@@ -9,7 +9,7 @@ export class ClassicCompanionUiStack extends Stack {
     super(scope, id, props);
 
     const websiteBucket = new Bucket(this, 'ui-bucket', {
-      bucketName: 'dev-wowclassicapp-ui',
+      bucketName: 'wowclassicapp-ui',
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'error.html',
       publicReadAccess: true,
