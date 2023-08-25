@@ -22,7 +22,7 @@ export class ClassicCompanionUiStack extends Stack {
       }
     });
 
-    const deployment = new BucketDeployment(this, 'dev-wowclassicapp-ui-bucket-deployment', {
+    new BucketDeployment(this, 'wowclassicapp-ui-bucket-deployment', {
       sources: [Source.asset(path.resolve(__dirname, '../ui/dist/classic-companion'))],
       destinationBucket: websiteBucket
     });
