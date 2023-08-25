@@ -19,13 +19,14 @@ export class CharacterLockoutsViewModel {
     const loadedRaidStatuses: CharacterRaidStatus[] = lockoutData.map((data) => new CharacterRaidStatus(data));
     const statusPerRaid: Map<Raid, CharacterRaidStatus> = new Map();
     loadedRaidStatuses.forEach((status) => {
-      if (status.raid === undefined) return;
+      if (status.raid === undefined) {
+        return;
+      }
       statusPerRaid.set(status.raid, status);
     });
 
     Raids.All.forEach((raid) => {
       const raidStatus: CharacterRaidStatus = statusPerRaid.get(raid) ?? new CharacterRaidStatus();
-      console.log(this.characterName, raidStatus);
       this.raidStatuses.set(raid, raidStatus);
     });
   }

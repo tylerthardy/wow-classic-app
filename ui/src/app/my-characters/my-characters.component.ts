@@ -67,8 +67,7 @@ export class MyCharactersComponent {
 
   public onCharacterClicked(selectedCharacter: Character) {
     this.selectedCharacter = selectedCharacter;
-    console.log(this.selectedCharacter);
-    this.loadCharacterGearSets(selectedCharacter);
+    this.loadSelectedCharacterGearSets();
   }
 
   public onDeleteCharacterClick(deletedCharacter: Character): void {

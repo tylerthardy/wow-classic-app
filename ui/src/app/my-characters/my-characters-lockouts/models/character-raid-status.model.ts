@@ -48,7 +48,6 @@ export class CharacterRaidStatus {
     if (resetTime === undefined) {
       return false;
     }
-    return true;
-    // return resetTime * 1000 > Date.now();
+    return resetTime * 1000 > Date.now();
   }
 }

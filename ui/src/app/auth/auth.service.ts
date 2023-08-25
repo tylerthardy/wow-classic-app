@@ -21,7 +21,6 @@ export class AuthService {
   }
 
   public initialize(): void {
-    console.log('authService.initialize');
     const config = environment.cognito;
     const oauth: OAuthOpts = {
       domain: config.authUrl,
@@ -54,7 +53,6 @@ export class AuthService {
   }
 
   public getSession(): Observable<CognitoUserSession | undefined> {
-    console.log('authService.getSession');
     return from(Auth.currentSession()).pipe(
       take(1),
       tap((session) => this.setUser(session)),
@@ -82,7 +80,6 @@ export class AuthService {
   }
 
   private setUser(session: CognitoUserSession | undefined) {
-    console.log('authService.setUser');
     if (!session) {
       this.user = undefined;
       return;

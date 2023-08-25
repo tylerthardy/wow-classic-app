@@ -22,7 +22,6 @@ export class MyCharacterListComponent {
 
   public onWseImportClick(): void {
     if (!this.wseInput) {
-      this.toastService.warn('Invalid Import', 'Add value to the import'); // FIXME: Tone is all wrong
       return;
     }
     const wowSimsImport: IWowSimsExport = JSON.parse(this.wseInput);

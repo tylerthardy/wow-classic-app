@@ -12,11 +12,11 @@ export class EditLockoutModalComponent
   extends SimpleModalComponent<IEditLockoutModalInput, IEditLockoutModalOutput>
   implements IEditLockoutModalInput
 {
-  scheduledDay?: string;
-  scheduledTime?: string;
-  notes?: string;
-  needsToRun!: boolean;
-  completed!: boolean;
+  public scheduledDay?: string;
+  public scheduledTime?: string;
+  public notes?: string;
+  public needsToRun!: boolean;
+  public completed!: boolean;
 
   constructor() {
     super();

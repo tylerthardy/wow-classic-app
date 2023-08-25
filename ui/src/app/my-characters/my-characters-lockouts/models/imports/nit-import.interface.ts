@@ -3,7 +3,7 @@ import { Instance, Instances, Raid, RaidSize, Raids } from 'classic-companion-co
 // TODO: Remove interfaces?
 export interface INitImport {
   version: string;
-  lockouts: { [characterName: string]: INitImportLockout[] }; // TODO: Rename characters
+  lockouts: { [characterName: string]: INitImportLockout[] };
 }
 
 export class NitImport implements INitImport {
@@ -13,7 +13,6 @@ export class NitImport implements INitImport {
   constructor(data: INitImport) {
     this.version = data.version;
     const lockouts: { [characterName: string]: NitImportLockout[] } = {};
-    // TODO: Holy shit this is excessive
     Object.entries(data.lockouts).map((kvp) => {
       const characterName: string = kvp[0];
       const lockoutDatas: INitImportLockout[] = kvp[1];
@@ -29,20 +28,20 @@ export class NitImport implements INitImport {
 export interface INitImportLockout {
   locked: boolean; // true;
   resetTime: number; // 1692716402;
-  name: string; // "Trial of the Crusader";
+  instanceName: string; // "Trial of the Crusader";
   difficultyName: string; // "10 Player (Heroic)"
 }
 
 export class NitImportLockout implements INitImportLockout {
   public locked: boolean;
   public resetTime: number;
-  public name: string; // TODO: Rename instanceName
+  public instanceName: string;
   public difficultyName: string;
 
   constructor(data: INitImportLockout) {
     this.locked = data.locked;
     this.resetTime = data.resetTime;
-    this.name = data.name;
+    this.instanceName = data.instanceName;
     this.difficultyName = data.difficultyName;
   }
 
@@ -61,7 +60,7 @@ export class NitImportLockout implements INitImportLockout {
   }
 
   private getInstance(): Instance | undefined {
-    const instance: Instance | undefined = Instances.getByName(this.name);
+    const instance: Instance | undefined = Instances.getByName(this.instanceName);
     if (!instance) {
       // If no instance, then this is a dungeon, so return undefined instance
       return undefined;
