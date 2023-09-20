@@ -5,7 +5,7 @@ import {
   IMyCharactersLockoutsSaveCharacter,
   MyCharactersLockoutsSave
 } from '../imports/my-characters-lockouts-save.interface';
-import { NitImport, NitImportLockout } from '../imports/nit-import.interface';
+import { NitImport, NitImportCharacter, NitImportLockout } from '../imports/nit-import.interface';
 import { CharacterLockoutsViewModel } from './character-lockouts.viewmodel';
 export class MyCharactersLockoutsViewModel {
   public data: CharacterLockoutsViewModel[];
@@ -18,13 +18,14 @@ export class MyCharactersLockoutsViewModel {
   constructor(importedData: NitImport | MyCharactersLockoutsSave) {
     if (importedData instanceof MyCharactersLockoutsSave) {
       this.data = importedData.characters.map((char) => {
-        return new CharacterLockoutsViewModel(char.characterName, char.lockouts, char.hidden);
+        return new CharacterLockoutsViewModel(char.characterName, char.classSlug, char.lockouts, char.hidden);
       });
     } else {
-      this.data = Object.entries(importedData.lockouts).map((kvp) => {
+      this.data = Object.entries(importedData.characters).map((kvp) => {
         const characterName: string = kvp[0];
-        const lockouts: NitImportLockout[] = kvp[1];
-        return new CharacterLockoutsViewModel(characterName, lockouts);
+        const character: NitImportCharacter = kvp[1];
+        const lockouts: NitImportLockout[] = character.instances;
+        return new CharacterLockoutsViewModel(characterName, character.classEnglish, lockouts);
       });
     }
   }
@@ -40,6 +41,7 @@ export class MyCharactersLockoutsViewModel {
         this.data.push(importedCharacter);
         return;
       }
+      existingCharacter.wowClass = importedCharacter.wowClass;
       importedCharacter.raidStatuses.forEach((importedStatus, raid, _) => {
         const existingStatus: CharacterRaidStatus | undefined = existingCharacter.raidStatuses.get(raid);
         if (!existingStatus) {
@@ -55,6 +57,7 @@ export class MyCharactersLockoutsViewModel {
     const characters: IMyCharactersLockoutsSaveCharacter[] = this.data.map((characterData) => {
       const character: IMyCharactersLockoutsSaveCharacter = {
         characterName: characterData.characterName,
+        classSlug: characterData.wowClass?.slug,
         hidden: characterData.hidden,
         lockouts: []
       };

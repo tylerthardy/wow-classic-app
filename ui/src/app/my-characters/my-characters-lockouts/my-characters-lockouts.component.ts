@@ -65,6 +65,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
       characters: loadedSave.characters.map((c) => {
         return new MyCharactersLockoutsSaveCharacter({
           characterName: c.characterName,
+          classSlug: c.classSlug,
           hidden: c.hidden,
           lockouts: c.lockouts.map((l) => {
             return new MyCharacterLockoutSaveLockout(l);
@@ -119,7 +120,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
     const characterName = prompt('Enter character name');
 
     if (characterName != null) {
-      this.viewModel?.data.push(new CharacterLockoutsViewModel(characterName, []));
+      this.viewModel?.data.push(new CharacterLockoutsViewModel(characterName, undefined, []));
     }
   }
 

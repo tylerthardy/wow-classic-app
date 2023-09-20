@@ -1,3 +1,6 @@
 <ng-container *ngIf="wowClass">
   <img [src]="wowClass.classIconUrl" [class]="cssClasses" [attr.title]="wowClass.name" [style]="styles" />
 </ng-container>
+<ng-container *ngIf="!wowClass && showUnknownIcon">
+  <img src="assets/inv_misc_questionmark.jpg" [class]="cssClasses" [style]="styles" />
+</ng-container>

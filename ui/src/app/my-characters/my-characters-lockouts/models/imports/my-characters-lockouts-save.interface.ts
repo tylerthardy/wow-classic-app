@@ -19,6 +19,7 @@ export class MyCharactersLockoutsSave implements IMyCharactersLockoutsSave {
 
 export interface IMyCharactersLockoutsSaveCharacter {
   characterName: string;
+  classSlug?: string;
   hidden: boolean;
   lockouts: IMyCharacterLockoutSaveLockout[];
 }
@@ -36,11 +37,13 @@ export interface IMyCharacterLockoutSaveLockout {
 
 export class MyCharactersLockoutsSaveCharacter implements IMyCharactersLockoutsSaveCharacter {
   public characterName: string;
+  public classSlug?: string;
   public hidden: boolean;
   public lockouts: IMyCharacterLockoutSaveLockout[];
 
   constructor(data: IMyCharactersLockoutsSaveCharacter) {
     this.characterName = data.characterName;
+    this.classSlug = data.classSlug;
     this.hidden = data.hidden;
     this.lockouts = data.lockouts;
   }

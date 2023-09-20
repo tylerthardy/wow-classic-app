@@ -10,6 +10,7 @@ export class ClassIconComponent implements OnInit {
   @Input() size?: 'small' | 'large';
   @Input() sizePx?: string;
   @Input() wowClass!: WowClass;
+  @Input() showUnknownIcon: boolean = false;
 
   public cssClasses: string = '';
   public styles: string = '';

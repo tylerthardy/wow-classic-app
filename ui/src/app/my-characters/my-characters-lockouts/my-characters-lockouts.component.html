@@ -27,6 +27,9 @@
 
 <ng-template #playerNameTemplate let-rowValue="rowValue">
   <div style="display: flex; flex-direction: row">
+    <div style="flex: 1">
+      <app-class-icon [wowClass]="rowValue.wowClass" sizePx="18px" [showUnknownIcon]="true"></app-class-icon>
+    </div>
     <div style="flex: 5">{{ rowValue.characterName }}</div>
     <div style="flex: 1; cursor: pointer; display: flex; align-items: center" (click)="onHiddenToggleClick(rowValue)">
       <app-svg-icon
