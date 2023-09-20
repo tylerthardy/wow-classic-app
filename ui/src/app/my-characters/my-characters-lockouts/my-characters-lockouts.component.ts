@@ -158,8 +158,8 @@ export class MyCharactersLockoutsComponent implements OnInit {
         raidData.scheduledDay = result.scheduledDay;
         raidData.scheduledTime = result.scheduledTime;
         raidData.notes = result.notes;
-        raidData.needsToRun = result.needsToRun;
-        raidData.completed = result.completed;
+        raidData.needsToRun = result.needsToRun ?? false;
+        raidData.manuallyCompletedOn = result.completed === true ? Date.now() : -1;
         this.saveLockouts();
       }
     });

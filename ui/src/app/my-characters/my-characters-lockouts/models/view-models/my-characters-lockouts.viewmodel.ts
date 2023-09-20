@@ -45,7 +45,7 @@ export class MyCharactersLockoutsViewModel {
         if (!existingStatus) {
           throw new Error('unable to find existing raid for imported raid status ' + raid.slug);
         }
-        existingStatus.completed = importedStatus.completed;
+        existingStatus.manuallyCompletedOn = importedStatus.manuallyCompletedOn;
         existingStatus.expires = importedStatus.expires;
       });
     });
@@ -68,7 +68,7 @@ export class MyCharactersLockoutsViewModel {
           raidSlug: raid.slug,
           itemsNeeded: lockout.itemsNeeded,
           needsToRun: lockout.needsToRun,
-          completed: lockout.completed,
+          manuallyCompletedOn: lockout.manuallyCompletedOn,
           expires: lockout.expires,
           scheduledDay: lockout.scheduledDay,
           scheduledTime: lockout.scheduledTime,

@@ -27,7 +27,7 @@ export interface IMyCharacterLockoutSaveLockout {
   raidSlug: string;
   itemsNeeded: number[];
   needsToRun: boolean;
-  completed: boolean;
+  manuallyCompletedOn: number;
   expires?: number;
   scheduledDay?: string;
   scheduledTime?: string;
@@ -50,7 +50,7 @@ export class MyCharacterLockoutSaveLockout implements IMyCharacterLockoutSaveLoc
   public raidSlug: string;
   public itemsNeeded: number[];
   public needsToRun: boolean;
-  public completed: boolean;
+  public manuallyCompletedOn: number;
   public expires?: number;
   public scheduledDay?: string;
   public scheduledTime?: string;
@@ -60,7 +60,7 @@ export class MyCharacterLockoutSaveLockout implements IMyCharacterLockoutSaveLoc
     this.raidSlug = data.raidSlug;
     this.itemsNeeded = data.itemsNeeded;
     this.needsToRun = data.needsToRun;
-    this.completed = data.completed;
+    this.manuallyCompletedOn = data.manuallyCompletedOn;
     this.scheduledDay = data.scheduledDay;
     this.scheduledTime = data.scheduledTime;
     this.expires = data.expires;
