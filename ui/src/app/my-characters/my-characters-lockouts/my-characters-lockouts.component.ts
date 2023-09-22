@@ -49,6 +49,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
       return;
     }
     this.viewModel.showHidden = !this.viewModel.showHidden;
+    this.saveLockouts();
   }
 
   public loadSavedData(): void {
