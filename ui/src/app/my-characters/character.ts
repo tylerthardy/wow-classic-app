@@ -6,6 +6,8 @@ import {
   WowClass,
   WowClasses
 } from 'classic-companion-core';
+import { CharacterRaidStatus } from './my-characters-lockouts/models/character-raid-status.model';
+import { MyCharacterLockoutSaveLockout } from './my-characters-lockouts/models/imports/my-characters-lockouts-save.interface';
 import { IStoredCharacter } from './stored-character.interface';
 
 export class Character {
@@ -14,6 +16,7 @@ export class Character {
   public wowClass: WowClass;
   public specialization: Specialization;
   public gear: { items: (IWowSimsExportItem | null)[] } = { items: [] };
+  public raidStatuses: CharacterRaidStatus[] = [];
 
   constructor(character: IStoredCharacter) {
     this.name = character.name;
@@ -32,4 +35,10 @@ export class Character {
     }
     this.specialization = new Specialization(specData);
   }
+
+  public patchLockoutData(statuses: MyCharacterLockoutSaveLockout[]): void {
+    this.raidStatuses = statuses.map((statusData) => new CharacterRaidStatus(statusData));
+  }
+
+  public patchGearData(data: any): void {}
 }

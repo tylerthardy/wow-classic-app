@@ -1,5 +1,5 @@
 // TODO: Remove interfaces?
-export interface IMyCharactersLockoutsSave {
+interface IMyCharactersLockoutsSave {
   version: string;
   showHidden: boolean;
   characters: IMyCharactersLockoutsSaveCharacter[];
@@ -8,23 +8,23 @@ export interface IMyCharactersLockoutsSave {
 export class MyCharactersLockoutsSave implements IMyCharactersLockoutsSave {
   public version: string;
   public showHidden: boolean;
-  public characters: IMyCharactersLockoutsSaveCharacter[];
+  public characters: MyCharactersLockoutsSaveCharacter[];
 
   constructor(data: IMyCharactersLockoutsSave) {
     this.version = data.version;
     this.showHidden = data.showHidden;
-    this.characters = data.characters;
+    this.characters = data.characters.map((character) => new MyCharactersLockoutsSaveCharacter(character));
   }
 }
 
-export interface IMyCharactersLockoutsSaveCharacter {
+interface IMyCharactersLockoutsSaveCharacter {
   characterName: string;
   classSlug?: string;
   hidden: boolean;
   lockouts: IMyCharacterLockoutSaveLockout[];
 }
 
-export interface IMyCharacterLockoutSaveLockout {
+interface IMyCharacterLockoutSaveLockout {
   raidSlug: string;
   itemsNeeded: number[];
   needsToRun: boolean;
@@ -39,13 +39,13 @@ export class MyCharactersLockoutsSaveCharacter implements IMyCharactersLockoutsS
   public characterName: string;
   public classSlug?: string;
   public hidden: boolean;
-  public lockouts: IMyCharacterLockoutSaveLockout[];
+  public lockouts: MyCharacterLockoutSaveLockout[];
 
   constructor(data: IMyCharactersLockoutsSaveCharacter) {
     this.characterName = data.characterName;
     this.classSlug = data.classSlug;
     this.hidden = data.hidden;
-    this.lockouts = data.lockouts;
+    this.lockouts = data.lockouts.map((lockout) => new MyCharacterLockoutSaveLockout(lockout));
   }
 }
 

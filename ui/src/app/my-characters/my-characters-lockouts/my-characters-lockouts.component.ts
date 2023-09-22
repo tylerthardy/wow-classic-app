@@ -10,7 +10,6 @@ import { IEditLockoutModalOutput } from './edit-lockout-modal/edit-lockout-modal
 import { EditLockoutModalComponent } from './edit-lockout-modal/edit-lockout-modal.component';
 import { CharacterRaidStatus } from './models/character-raid-status.model';
 import {
-  IMyCharactersLockoutsSave,
   MyCharacterLockoutSaveLockout,
   MyCharactersLockoutsSave,
   MyCharactersLockoutsSaveCharacter
@@ -52,13 +51,11 @@ export class MyCharactersLockoutsComponent implements OnInit {
   }
 
   public loadSavedData(): void {
-    const loadedSave: IMyCharactersLockoutsSave | undefined = this.localStorageService.get(
-      'my-characters-lockouts',
-      'lockouts'
-    );
-    if (!loadedSave) {
+    const saveData: any = this.localStorageService.get('my-characters-lockouts', 'lockouts');
+    if (!saveData) {
       return;
     }
+    const loadedSave = new MyCharactersLockoutsSave(saveData);
     const save: MyCharactersLockoutsSave = new MyCharactersLockoutsSave({
       version: loadedSave.version,
       showHidden: loadedSave.showHidden,

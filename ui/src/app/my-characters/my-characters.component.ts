@@ -2,14 +2,13 @@ import { Component } from '@angular/core';
 import { IWowSimsExport, Specialization, WowClasses } from 'classic-companion-core';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { finalize } from 'rxjs';
-import { LocalStorageService } from '../common/services/local-storage.service';
 import { SpecializationService } from '../common/services/specialization/specialization.service';
 import { ToastService } from '../common/services/toast/toast.service';
 import { Character } from './character';
 import { IMyCharacterImportModalInput } from './my-character-import-modal/my-character-import-modal-input.interface';
 import { IMyCharacterImportModalOutput } from './my-character-import-modal/my-character-import-modal-output.interface';
 import { MyCharacterImportModalComponent } from './my-character-import-modal/my-character-import-modal.component';
-import { IStoredCharacter } from './stored-character.interface';
+import { MyCharactersService } from './my-characters.service';
 
 @Component({
   selector: 'app-my-characters',
@@ -20,27 +19,28 @@ export class MyCharactersComponent {
   public compareSets?: IWowSimsExport[];
   public wseInput?: string;
   public selectedCharacter: Character | undefined;
-  public myCharacters: Character[] = [];
   public selectedSet?: IWowSimsExport;
   public gearSetsLoading: boolean = false;
 
   constructor(
-    private localStorageService: LocalStorageService,
+    public myCharactersService: MyCharactersService,
     private toastService: ToastService,
     private specializationService: SpecializationService,
     private simpleModalService: SimpleModalService
   ) {
-    this.loadCharacters();
+    this.myCharactersService.loadCharacters();
+    this.selectedCharacter = this.myCharactersService.characters[0];
+    this.loadSelectedCharacterGearSets();
   }
 
   public onWseImported(wowSimsImport: IWowSimsExport): void {
-    let matchedCharacter: Character | undefined = this.myCharacters.find(
+    let matchedCharacter: Character | undefined = this.myCharactersService.characters.find(
       (c) => c.name.toLowerCase() === wowSimsImport.name.toLowerCase()
     );
     if (matchedCharacter) {
       matchedCharacter.gear = wowSimsImport.gear;
       this.toastService.info('Character Updated', 'Imported data to existing character');
-      this.storeCharacters();
+      this.myCharactersService.saveCharacters();
     } else {
       const data: IMyCharacterImportModalInput = {
         name: wowSimsImport.name,
@@ -57,9 +57,9 @@ export class MyCharactersComponent {
               className: result.wowClass.name,
               specName: result.specialization.name
             });
-            this.myCharacters.push(newCharacter);
+            this.myCharactersService.characters.push(newCharacter);
             this.selectedCharacter = newCharacter;
-            this.storeCharacters();
+            this.myCharactersService.saveCharacters();
           }
         });
     }
@@ -71,12 +71,14 @@ export class MyCharactersComponent {
   }
 
   public onDeleteCharacterClick(deletedCharacter: Character): void {
-    const deletedIndex: number | undefined = this.myCharacters.findIndex((character) => character === deletedCharacter);
+    const deletedIndex: number | undefined = this.myCharactersService.characters.findIndex(
+      (character) => character === deletedCharacter
+    );
     if (!deletedIndex) {
       return;
     }
-    this.myCharacters.splice(deletedIndex, 1);
-    this.storeCharacters();
+    this.myCharactersService.characters.splice(deletedIndex, 1);
+    this.myCharactersService.saveCharacters();
   }
 
   public onEditCharacterClick(character: Character): void {
@@ -94,7 +96,7 @@ export class MyCharactersComponent {
           character.metric = result.metric;
           character.wowClass = result.wowClass;
           character.specialization = result.specialization;
-          this.storeCharacters();
+          this.myCharactersService.saveCharacters();
         }
       });
   }
@@ -114,28 +116,5 @@ export class MyCharactersComponent {
 
   private loadSelectedCharacterGearSets(): void {
     this.loadCharacterGearSets(this.selectedCharacter);
-  }
-
-  private loadCharacters(): void {
-    const storedCharacters = this.localStorageService.get('myCharacters', 'characterList');
-    this.myCharacters = storedCharacters
-      ? storedCharacters.map((storedCharacter: IStoredCharacter) => new Character(storedCharacter))
-      : [];
-    this.selectedCharacter = this.myCharacters[0];
-    this.loadSelectedCharacterGearSets();
-  }
-
-  private storeCharacters(): void {
-    const storedCharacters: IStoredCharacter[] = this.myCharacters.map((character) => {
-      const storedCharacter: IStoredCharacter = {
-        name: character.name,
-        metric: character.metric,
-        gear: character.gear,
-        className: character.wowClass.name,
-        specName: character.specialization.name
-      };
-      return storedCharacter;
-    });
-    this.localStorageService.store('myCharacters', 'characterList', storedCharacters);
   }
 }

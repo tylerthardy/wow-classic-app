@@ -1,9 +1,8 @@
 import { Raid } from 'classic-companion-core';
 import { CharacterRaidStatus } from '../character-raid-status.model';
 import {
-  IMyCharactersLockoutsSave,
-  IMyCharactersLockoutsSaveCharacter,
-  MyCharactersLockoutsSave
+  MyCharactersLockoutsSave,
+  MyCharactersLockoutsSaveCharacter
 } from '../imports/my-characters-lockouts-save.interface';
 import { NitImport, NitImportCharacter, NitImportLockout } from '../imports/nit-import.interface';
 import { CharacterLockoutsViewModel } from './character-lockouts.viewmodel';
@@ -53,14 +52,14 @@ export class MyCharactersLockoutsViewModel {
     });
   }
 
-  public getSaveableData(): IMyCharactersLockoutsSave {
-    const characters: IMyCharactersLockoutsSaveCharacter[] = this.data.map((characterData) => {
-      const character: IMyCharactersLockoutsSaveCharacter = {
+  public getSaveableData(): MyCharactersLockoutsSave {
+    const characters: MyCharactersLockoutsSaveCharacter[] = this.data.map((characterData) => {
+      const character: MyCharactersLockoutsSaveCharacter = new MyCharactersLockoutsSaveCharacter({
         characterName: characterData.characterName,
         classSlug: characterData.wowClass?.slug,
         hidden: characterData.hidden,
         lockouts: []
-      };
+      });
       for (const kvp of characterData.raidStatuses.entries()) {
         const raid: Raid = kvp[0];
         const lockout: CharacterRaidStatus = kvp[1];
