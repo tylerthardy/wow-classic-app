@@ -22,17 +22,6 @@ import { RaidPlayerRole } from '../raid-lookup/raid-player-role.type';
 import { AddonImport } from './addon-import.interface';
 import { RaidLookupCharacter } from './raid-lookup-character';
 
-const sample: AddonImport = {
-  version: '0.1',
-  group: [
-    {
-      class: 'PALADIN',
-      name: 'Pertadin',
-      roles: [0, 1, 0]
-    }
-  ]
-};
-
 @Component({
   selector: 'app-raid-lookup',
   templateUrl: './raid-lookup.component.html',
@@ -48,7 +37,7 @@ export class RaidLookupComponent implements OnInit {
     instance: Instances.ToGC,
     sizes: [10]
   });
-  protected importJson: string | undefined = JSON.stringify(sample);
+  protected importJson: string | undefined;
   protected classFilterInput: WowClass | undefined;
   protected roleFilterInput: RaidPlayerRole | undefined;
   protected roleFilterOptions: RaidPlayerRole[] = ['DAMAGER', 'HEALER', 'TANK'];
