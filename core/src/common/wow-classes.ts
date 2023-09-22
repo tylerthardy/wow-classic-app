@@ -14,8 +14,12 @@ export class WowClasses {
   public static WARLOCK = new Warlock();
   public static WARRIOR = new Warrior();
 
-  public static getClassBySlug(slug: string): WowClass | undefined {
-    return WowClasses.getAll().find((wowClass) => wowClass.slug === slug);
+  public static getClassBySlug(slug: string): WowClass {
+    const wowClass: WowClass | undefined = WowClasses.getAll().find((wowClass) => wowClass.slug === slug);
+    if (!wowClass) {
+      throw new Error('Cannot find wowclass by slug ' + slug);
+    }
+    return wowClass;
   }
 
   public static getClassByFileName(fileName: string): WowClass | undefined {

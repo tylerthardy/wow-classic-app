@@ -5,5 +5,5 @@ export interface IStoredCharacter {
   metric: RankingMetric;
   gear: { items: (IWowSimsExportItem | null)[] };
   className: string;
-  specName: string;
+  specName?: string;
 }

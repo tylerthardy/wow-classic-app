@@ -14,7 +14,7 @@ export class Character {
   public name: string;
   public metric: RankingMetric;
   public wowClass: WowClass;
-  public specialization: Specialization;
+  public specialization?: Specialization;
   public gear: { items: (IWowSimsExportItem | null)[] } = { items: [] };
   public raidStatuses: CharacterRaidStatus[] = [];
 
@@ -30,10 +30,9 @@ export class Character {
     this.wowClass = wowClass;
 
     const specData: SpecializationData | undefined = Specialization.getData(wowClass, character.specName);
-    if (!specData) {
-      throw new Error('could not find spec ' + character.specName);
+    if (specData) {
+      this.specialization = new Specialization(specData);
     }
-    this.specialization = new Specialization(specData);
   }
 
   public patchLockoutData(statuses: MyCharacterLockoutSaveLockout[]): void {

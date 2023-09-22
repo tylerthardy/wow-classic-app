@@ -52,7 +52,14 @@ export class Specialization {
     return filteredSpecializations;
   }
   // TODO: Deprecate SpecializationData?
-  public static getData(wowClass: WowClass, specializationName: string, role?: string): SpecializationData | undefined {
+  public static getData(
+    wowClass: WowClass,
+    specializationName: string | undefined,
+    role?: string
+  ): SpecializationData | undefined {
+    if (!specializationName) {
+      return undefined;
+    }
     const foundData: SpecializationData[] = specializations.filter(
       (spec) =>
         spec.className.toLowerCase() === wowClass.name.toLowerCase() &&
@@ -60,11 +67,11 @@ export class Specialization {
         (!role || spec.role.toLowerCase() === role.toLowerCase())
     );
     if (foundData.length === 0) {
-      console.log('no spec found');
+      console.warn('no spec found');
       return undefined;
     }
     if (foundData.length > 1) {
-      console.log('multiple specs found, returning first. try adding a role to limit to one');
+      console.warn('multiple specs found, returning first. try adding a role to limit to one');
     }
     return foundData[0];
   }

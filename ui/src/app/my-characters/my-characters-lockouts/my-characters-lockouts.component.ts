@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { Raid, Raids } from 'classic-companion-core';
+import { Raid, Raids, WowClasses } from 'classic-companion-core';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { ColumnSpecification } from '../../common/components/grid/grid.component';
 import { LocalStorageService } from '../../common/services/local-storage.service';
@@ -117,7 +117,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
     const characterName = prompt('Enter character name');
 
     if (characterName != null) {
-      this.viewModel?.data.push(new CharacterLockoutsViewModel(characterName, undefined, []));
+      this.viewModel?.data.push(new CharacterLockoutsViewModel(characterName, WowClasses.PALADIN.name, []));
     }
   }
 

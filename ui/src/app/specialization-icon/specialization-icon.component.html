@@ -1,1 +1,3 @@
-<img [src]="specialization.iconUrl" [class]="classes" [attr.title]="specialization.name" [style]="styles" />
+<ng-container *ngIf="specialization">
+  <img [src]="specialization.iconUrl" [class]="classes" [attr.title]="specialization.name" [style]="styles" />
+</ng-container>

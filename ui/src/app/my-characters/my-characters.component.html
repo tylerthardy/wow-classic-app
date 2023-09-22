@@ -3,7 +3,7 @@
     <app-my-characters-lockouts></app-my-characters-lockouts>
   </app-card>
   <app-card header="Rankings" [collapsed]="true">
-    <app-my-characters-rankings [myCharacters]="myCharacters"></app-my-characters-rankings>
+    <app-my-characters-rankings [myCharacters]="myCharactersService.characters"></app-my-characters-rankings>
   </app-card>
 </app-card>
 
@@ -11,7 +11,7 @@
   <div style="display: flex; flex-direction: row; flex-wrap: wrap">
     <div style="flex: 1; padding: 5px">
       <app-my-character-list
-        [characters]="myCharacters"
+        [characters]="myCharactersService.characters"
         [selectedCharacter]="selectedCharacter"
         (characterClicked)="onCharacterClicked($event)"
         (editCharacterClicked)="onEditCharacterClick($event)"
@@ -20,7 +20,14 @@
       ></app-my-character-list>
     </div>
     <div style="flex: 3; padding: 5px">
-      <app-card header="Gear" *ngIf="myCharacters.length > 0" [collapsed]="false">
+      <app-card header="Lockouts" *ngIf="selectedCharacter" [collapsed]="false">
+        <ul>
+          <li *ngFor="let raidStatus of selectedCharacter.raidStatuses">
+            <span [ngClass]="{ completed: raidStatus.completed }">{{ raidStatus.raid?.slug }}</span>
+          </li>
+        </ul>
+      </app-card>
+      <app-card header="Gear" *ngIf="myCharactersService.characters.length > 0" [collapsed]="true">
         <div style="display: flex; flex-direction: row">
           <span style="margin-right: 10px">Compare Gear to Set:</span>
           <app-dropdown

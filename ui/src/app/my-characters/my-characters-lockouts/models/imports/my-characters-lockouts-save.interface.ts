@@ -19,7 +19,7 @@ export class MyCharactersLockoutsSave implements IMyCharactersLockoutsSave {
 
 interface IMyCharactersLockoutsSaveCharacter {
   characterName: string;
-  classSlug?: string;
+  classSlug: string;
   hidden: boolean;
   lockouts: IMyCharacterLockoutSaveLockout[];
 }
@@ -37,7 +37,7 @@ interface IMyCharacterLockoutSaveLockout {
 
 export class MyCharactersLockoutsSaveCharacter implements IMyCharactersLockoutsSaveCharacter {
   public characterName: string;
-  public classSlug?: string;
+  public classSlug: string;
   public hidden: boolean;
   public lockouts: MyCharacterLockoutSaveLockout[];
 

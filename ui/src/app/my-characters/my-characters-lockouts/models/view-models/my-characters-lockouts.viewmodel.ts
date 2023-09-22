@@ -56,7 +56,7 @@ export class MyCharactersLockoutsViewModel {
     const characters: MyCharactersLockoutsSaveCharacter[] = this.data.map((characterData) => {
       const character: MyCharactersLockoutsSaveCharacter = new MyCharactersLockoutsSaveCharacter({
         characterName: characterData.characterName,
-        classSlug: characterData.wowClass?.slug,
+        classSlug: characterData.wowClass.slug,
         hidden: characterData.hidden,
         lockouts: []
       });

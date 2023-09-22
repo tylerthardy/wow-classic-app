@@ -5,18 +5,18 @@ import { NitImportLockout } from '../imports/nit-import.interface';
 
 export class CharacterLockoutsViewModel {
   public characterName: string;
-  public wowClass?: WowClass;
+  public wowClass: WowClass;
   public hidden: boolean = false;
   public raidStatuses: Map<Raid, CharacterRaidStatus> = new Map();
 
   constructor(
     characterName: string,
-    classSlug: string | undefined,
+    classSlug: string,
     lockoutData: NitImportLockout[] | MyCharacterLockoutSaveLockout[],
     hidden?: boolean
   ) {
     this.characterName = characterName;
-    this.wowClass = classSlug ? WowClasses.getClassBySlug(classSlug) : undefined;
+    this.wowClass = WowClasses.getClassBySlug(classSlug);
     this.hidden = hidden ?? this.hidden;
 
     const loadedRaidStatuses: CharacterRaidStatus[] = lockoutData.map((data) => new CharacterRaidStatus(data));

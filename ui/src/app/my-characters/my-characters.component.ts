@@ -105,6 +105,10 @@ export class MyCharactersComponent {
     if (!character) {
       return;
     }
+    if (!character.specialization) {
+      this.toastService.warn('Cannot Display Gear', 'No specialization set for character, cannot display gear sets.');
+      return;
+    }
     this.specializationService
       .getBis(new Specialization(character.specialization))
       .pipe(finalize(() => (this.gearSetsLoading = false)))

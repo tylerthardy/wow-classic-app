@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { WowClass, WowClasses } from 'classic-companion-core';
 import { LocalStorageService } from '../common/services/local-storage.service';
 import { Character } from './character';
 import { MyCharactersLockoutsSave } from './my-characters-lockouts/models/imports/my-characters-lockouts-save.interface';
@@ -19,7 +20,7 @@ export class MyCharactersService {
         metric: character.metric,
         gear: character.gear,
         className: character.wowClass.name,
-        specName: character.specialization.name
+        specName: character.specialization?.name
       };
       return storedCharacter;
     });
@@ -31,11 +32,11 @@ export class MyCharactersService {
     this.characters = storedCharacters
       ? storedCharacters.map((storedCharacter: IStoredCharacter) => new Character(storedCharacter))
       : [];
-    this.loadCharacterDataToDeprecate();
+    this.loadCharacterLockoutDataToDeprecate();
   }
 
-  // TODO: Deprecate both of these by making it generalized to the characters/service
-  private loadCharacterDataToDeprecate(): void {
+  // TODO: Deprecate this by making it generalized to the characters/service
+  private loadCharacterLockoutDataToDeprecate(): void {
     const saveData: any | undefined = this.localStorageService.get('my-characters-lockouts', 'lockouts');
     if (!saveData) {
       return;
@@ -47,10 +48,23 @@ export class MyCharactersService {
     });
     for (let loadedCharacter of loadedSave.characters) {
       const foundCharacter: Character | undefined = characterLookup[loadedCharacter.characterName];
-      if (!foundCharacter) continue;
-      console.log('patching ' + foundCharacter.name);
-      foundCharacter.patchLockoutData(loadedCharacter.lockouts);
+      if (foundCharacter) {
+        console.log('patching ' + foundCharacter.name);
+        foundCharacter.patchLockoutData(loadedCharacter.lockouts);
+      } else {
+        console.log('creating ' + loadedCharacter.characterName);
+        const wowClass: WowClass = WowClasses.getClassBySlug(loadedCharacter.classSlug);
+        const characterData: IStoredCharacter = {
+          name: loadedCharacter.characterName,
+          metric: 'dps',
+          gear: {
+            items: []
+          },
+          className: wowClass.name,
+          specName: ''
+        };
+        this.characters.push(new Character(characterData));
+      }
     }
   }
-  private loadCharacterLockoutDataToDeprecate(): void {}
 }
