@@ -3,25 +3,42 @@ import { Instance, Instances, Raid, RaidSize, Raids } from 'classic-companion-co
 // TODO: Remove interfaces?
 export interface INitImport {
   version: string;
-  lockouts: { [characterName: string]: INitImportLockout[] };
+  characters: {
+    [characterName: string]: INitImportCharacter;
+  };
+}
+
+export interface INitImportCharacter {
+  instances: INitImportLockout[];
+  classEnglish: string;
+}
+export class NitImportCharacter implements INitImportCharacter {
+  public instances: NitImportLockout[];
+  public classEnglish: string;
+
+  constructor(data: INitImportCharacter) {
+    this.classEnglish = data.classEnglish;
+    const instances: NitImportLockout[] = [];
+    data.instances.forEach((lockoutDatum) => {
+      instances.push(new NitImportLockout(lockoutDatum));
+    });
+    this.instances = instances;
+  }
 }
 
 export class NitImport implements INitImport {
   public version: string;
-  public lockouts: { [characterName: string]: NitImportLockout[] };
+  public characters: { [characterName: string]: NitImportCharacter };
 
   constructor(data: INitImport) {
     this.version = data.version;
-    const lockouts: { [characterName: string]: NitImportLockout[] } = {};
-    Object.entries(data.lockouts).map((kvp) => {
+    const characters: { [characterName: string]: NitImportCharacter } = {};
+    Object.entries(data.characters).map((kvp) => {
       const characterName: string = kvp[0];
-      const lockoutDatas: INitImportLockout[] = kvp[1];
-      lockouts[characterName] = [];
-      lockoutDatas.forEach((lockoutDatum) => {
-        lockouts[characterName].push(new NitImportLockout(lockoutDatum));
-      });
+      const characterData: NitImportCharacter = new NitImportCharacter(kvp[1]);
+      characters[characterName] = characterData;
     });
-    this.lockouts = lockouts;
+    this.characters = characters;
   }
 }
 

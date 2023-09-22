@@ -65,6 +65,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
       characters: loadedSave.characters.map((c) => {
         return new MyCharactersLockoutsSaveCharacter({
           characterName: c.characterName,
+          classSlug: c.classSlug,
           hidden: c.hidden,
           lockouts: c.lockouts.map((l) => {
             return new MyCharacterLockoutSaveLockout(l);
@@ -119,7 +120,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
     const characterName = prompt('Enter character name');
 
     if (characterName != null) {
-      this.viewModel?.data.push(new CharacterLockoutsViewModel(characterName, []));
+      this.viewModel?.data.push(new CharacterLockoutsViewModel(characterName, undefined, []));
     }
   }
 
@@ -158,8 +159,8 @@ export class MyCharactersLockoutsComponent implements OnInit {
         raidData.scheduledDay = result.scheduledDay;
         raidData.scheduledTime = result.scheduledTime;
         raidData.notes = result.notes;
-        raidData.needsToRun = result.needsToRun;
-        raidData.completed = result.completed;
+        raidData.needsToRun = result.needsToRun ?? false;
+        raidData.manuallyCompletedOn = result.completed === true ? Date.now() : -1;
         this.saveLockouts();
       }
     });
