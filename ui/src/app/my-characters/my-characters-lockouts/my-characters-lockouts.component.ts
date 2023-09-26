@@ -141,6 +141,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
       return;
     }
     this.viewModel.data.splice(toDeleteIndex, 1);
+    this.saveLockouts();
   }
 
   public onRaidLockoutClick(raidStatuses: Map<Raid, CharacterRaidStatus>, raid: Raid): void {
