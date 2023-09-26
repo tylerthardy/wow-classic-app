@@ -2,21 +2,17 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Raid, Raids, WowClasses } from 'classic-companion-core';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { ColumnSpecification } from '../../common/components/grid/grid.component';
-import { LocalStorageService } from '../../common/services/local-storage.service';
 import { ToastService } from '../../common/services/toast/toast.service';
 import { AppConfig } from '../../config/app.config';
+import { MyCharactersService } from '../my-characters.service';
 import { IEditLockoutModalInput } from './edit-lockout-modal/edit-lockout-modal-input.interface';
 import { IEditLockoutModalOutput } from './edit-lockout-modal/edit-lockout-modal-output.interface';
 import { EditLockoutModalComponent } from './edit-lockout-modal/edit-lockout-modal.component';
 import { CharacterRaidStatus } from './models/character-raid-status.model';
-import {
-  MyCharacterLockoutSaveLockout,
-  MyCharactersLockoutsSave,
-  MyCharactersLockoutsSaveCharacter
-} from './models/imports/my-characters-lockouts-save.interface';
 import { INitImport, NitImport } from './models/imports/nit-import.interface';
 import { CharacterLockoutsViewModel } from './models/view-models/character-lockouts.viewmodel';
 import { MyCharactersLockoutsViewModel } from './models/view-models/my-characters-lockouts.viewmodel';
+import { MyCharactersLockoutsViewModelV2 } from './models/view-models/my-characters-lockouts.viewmodel-v2';
 
 @Component({
   selector: 'app-my-characters-lockouts',
@@ -29,18 +25,18 @@ export class MyCharactersLockoutsComponent implements OnInit {
   public nitInput?: string;
   public viewModel: MyCharactersLockoutsViewModel | undefined;
   public columns!: ColumnSpecification<CharacterLockoutsViewModel>[];
-  public isLoading: boolean = false;
 
   constructor(
+    private myCharactersService: MyCharactersService,
+    // private localStorageService: LocalStorageService,
     private toastService: ToastService,
     private simpleModalService: SimpleModalService,
-    private localStorageService: LocalStorageService,
     private config: AppConfig
   ) {}
 
   ngOnInit(): void {
     this.columns = this.getColumns();
-    this.loadSavedData();
+    this.viewModel = new MyCharactersLockoutsViewModelV2(this.myCharactersService.characters);
   }
 
   public onToggleHiddenClick(): void {
@@ -50,32 +46,8 @@ export class MyCharactersLockoutsComponent implements OnInit {
     this.viewModel.showHidden = !this.viewModel.showHidden;
   }
 
-  public loadSavedData(): void {
-    const saveData: any = this.localStorageService.get('my-characters-lockouts', 'lockouts');
-    if (!saveData) {
-      return;
-    }
-    const loadedSave = new MyCharactersLockoutsSave(saveData);
-    const save: MyCharactersLockoutsSave = new MyCharactersLockoutsSave({
-      version: loadedSave.version,
-      showHidden: loadedSave.showHidden,
-      characters: loadedSave.characters.map((c) => {
-        return new MyCharactersLockoutsSaveCharacter({
-          characterName: c.characterName,
-          classSlug: c.classSlug,
-          hidden: c.hidden,
-          lockouts: c.lockouts.map((l) => {
-            return new MyCharacterLockoutSaveLockout(l);
-          })
-        });
-      })
-    });
-    this.viewModel = new MyCharactersLockoutsViewModel(save);
-    this.viewModel.showHidden = save.showHidden;
-  }
-
   public saveLockouts(): void {
-    this.localStorageService.store('my-characters-lockouts', 'lockouts', this.viewModel?.getSaveableData());
+    this.myCharactersService.saveCharacters();
   }
 
   public onImportClick(): void {

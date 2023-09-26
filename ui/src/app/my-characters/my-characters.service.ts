@@ -11,7 +11,9 @@ import { IStoredCharacter } from './stored-character.interface';
 export class MyCharactersService {
   public characters: Character[] = [];
 
-  constructor(private localStorageService: LocalStorageService) {}
+  constructor(private localStorageService: LocalStorageService) {
+    this.loadCharacters();
+  }
 
   public saveCharacters(): void {
     const storedCharacters: IStoredCharacter[] = this.characters.map((character) => {

@@ -1,14 +1,12 @@
-<h4>
+<!-- <h4>
   Install addon, type <strong>/gme</strong>, and copy the "Account Lockouts" section. Paste into the box below and press
   "Import".
 </h4>
 <textarea [(ngModel)]="nitInput"></textarea>
 <button (click)="onImportClick()" [disabled]="!nitInput">Import</button>
 <button (click)="onToggleHiddenClick()">Toggle Hidden</button>
-<button (click)="onAddClick()">Add Character</button>
+<button (click)="onAddClick()">Add Character</button> -->
 <button (click)="onDeleteClick()">Delete Character</button>
-<div class="loading-spinner large" *ngIf="isLoading"></div>
-<div *ngIf="!viewModel && !isLoading">No data yet</div>
 <app-grid
   class="characters-table"
   *ngIf="viewModel"
