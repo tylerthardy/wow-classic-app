@@ -123,6 +123,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
     if (characterName != null) {
       this.viewModel?.data.push(new CharacterLockoutsViewModel(characterName, undefined, []));
     }
+    this.saveLockouts();
   }
 
   public onDeleteClick(): void {
