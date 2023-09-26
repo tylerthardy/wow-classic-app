@@ -44,6 +44,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
       return;
     }
     this.viewModel.showHidden = !this.viewModel.showHidden;
+    this.saveLockouts();
   }
 
   public saveLockouts(): void {
@@ -91,6 +92,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
     if (characterName != null) {
       this.viewModel?.data.push(new CharacterLockoutsViewModel(characterName, WowClasses.PALADIN.name, []));
     }
+    this.saveLockouts();
   }
 
   public onDeleteClick(): void {
@@ -109,6 +111,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
       return;
     }
     this.viewModel.data.splice(toDeleteIndex, 1);
+    this.saveLockouts();
   }
 
   public onRaidLockoutClick(raidStatuses: Map<Raid, CharacterRaidStatus>, raid: Raid): void {
