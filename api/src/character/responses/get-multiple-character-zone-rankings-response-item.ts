@@ -37,23 +37,31 @@ export class GetMultipleCharacterZoneRankingsResponseItem implements IGetMultipl
     this.role = query.role;
     this.errors = errors;
     if (wclCharacterData && wclCharacterData.zoneRankings) {
-      this.lastUpdated = wclCharacterData.lastUpdated;
-      this.warcraftLogsClassId = wclCharacterData.classID;
-      this.bestPerformanceAverage = wclCharacterData.zoneRankings.bestPerformanceAverage;
-      this.medianPerformanceAverage = wclCharacterData.zoneRankings.medianPerformanceAverage;
+      if (!wclCharacterData.zoneRankings.error) {
+        this.lastUpdated = wclCharacterData.lastUpdated;
+        this.warcraftLogsClassId = wclCharacterData.classID;
+        this.bestPerformanceAverage = wclCharacterData.zoneRankings.bestPerformanceAverage;
+        this.medianPerformanceAverage = wclCharacterData.zoneRankings.medianPerformanceAverage;
 
-      const encounterRankings: ZoneEncounterRanking[] = ZoneRankingParser.filterUnrankedEncounters(
-        wclCharacterData.zoneRankings.rankings
-      );
+        const encounterRankings: ZoneEncounterRanking[] = ZoneRankingParser.filterUnrankedEncounters(
+          wclCharacterData.zoneRankings.rankings
+        );
 
-      const zoneId: number = wclCharacterData.zoneRankings.zone;
-      this.bestProgress = ZoneRankingParser.getBestProgress(encounterRankings);
-      this.maxPossibleProgress = encounterRankings.length;
+        const zoneId: number = wclCharacterData.zoneRankings.zone;
+        this.bestProgress = ZoneRankingParser.getBestProgress(encounterRankings);
+        this.maxPossibleProgress = encounterRankings.length;
 
-      const hardModes: string[] = ZoneRankingParser.getHardModes(zoneId, encounterRankings);
-      this.bestHardModeProgress = hardModes.length;
-      this.hardModes = hardModes;
-      this.maxPossibleHardmodes = this.getHardModeCount(zoneId);
+        const hardModes: string[] = ZoneRankingParser.getHardModes(zoneId, encounterRankings);
+        this.bestHardModeProgress = hardModes.length;
+        this.hardModes = hardModes;
+        this.maxPossibleHardmodes = this.getHardModeCount(zoneId);
+      } else {
+        if (wclCharacterData.zoneRankings.error === "You do not have permission to see this character's rankings.") {
+          errors.push('Player has logs hidden');
+        } else {
+          errors.push(`zoneRankings error for ${query.characterName}: ${wclCharacterData.zoneRankings.error}`);
+        }
+      }
     }
   }
 

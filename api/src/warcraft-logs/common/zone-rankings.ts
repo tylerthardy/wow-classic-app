@@ -11,4 +11,5 @@ export interface ZoneRankings {
   zone: number;
   allStars: AllStar[];
   rankings: ZoneEncounterRanking[];
+  error?: string;
 }
