@@ -46,6 +46,26 @@ export class CharacterRaidStatus {
     );
   }
 
+  public patchLockout(imported: CharacterRaidStatus): void {
+    if (imported.expires && imported.expires > this.manuallyCompletedOn) {
+      this.manuallyCompletedOn = -1;
+      this.expires = imported.expires;
+    }
+    if (this.manuallyCompletedOn > 0 && imported.expires === undefined) {
+      this.manuallyCompletedOn = -1;
+      this.expires = imported.expires;
+    }
+    if (this.expires === undefined) {
+      this.expires = imported.expires;
+      if (this.manuallyCompletedOn > 0) {
+        this.manuallyCompletedOn = -1;
+      }
+    }
+    if (this.expires && imported.expires && this.expires < imported.expires) {
+      this.expires = imported.expires;
+    }
+  }
+
   private isResetAfterNow(): boolean {
     if (this.expires === undefined) {
       return false;

@@ -1,18 +1,17 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { Raid, Raids, WowClasses } from 'classic-companion-core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Raid, Raids } from 'classic-companion-core';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { ColumnSpecification } from '../../common/components/grid/grid.component';
+import { LocalStorageService } from '../../common/services/local-storage.service';
 import { ToastService } from '../../common/services/toast/toast.service';
 import { AppConfig } from '../../config/app.config';
+import { Character } from '../character';
 import { MyCharactersService } from '../my-characters.service';
 import { IEditLockoutModalInput } from './edit-lockout-modal/edit-lockout-modal-input.interface';
 import { IEditLockoutModalOutput } from './edit-lockout-modal/edit-lockout-modal-output.interface';
 import { EditLockoutModalComponent } from './edit-lockout-modal/edit-lockout-modal.component';
 import { CharacterRaidStatus } from './models/character-raid-status.model';
 import { INitImport, NitImport } from './models/imports/nit-import.interface';
-import { CharacterLockoutsViewModel } from './models/view-models/character-lockouts.viewmodel';
-import { MyCharactersLockoutsViewModel } from './models/view-models/my-characters-lockouts.viewmodel';
-import { MyCharactersLockoutsViewModelV2 } from './models/view-models/my-characters-lockouts.viewmodel-v2';
 
 @Component({
   selector: 'app-my-characters-lockouts',
@@ -23,32 +22,33 @@ export class MyCharactersLockoutsComponent implements OnInit {
   @ViewChild('playerNameTemplate', { static: true }) playerNameTemplateRef!: TemplateRef<any>;
   @ViewChild('raidStatusTemplate', { static: true }) raidStatusTemplateRef!: TemplateRef<any>;
   public nitInput?: string;
-  public viewModel: MyCharactersLockoutsViewModel | undefined;
-  public columns!: ColumnSpecification<CharacterLockoutsViewModel>[];
+  public columns!: ColumnSpecification<Character>[];
+  public showHidden: boolean = true;
+  public test = true;
 
   constructor(
-    private myCharactersService: MyCharactersService,
-    // private localStorageService: LocalStorageService,
+    public myCharactersService: MyCharactersService,
+    private localStorageService: LocalStorageService,
     private toastService: ToastService,
     private simpleModalService: SimpleModalService,
-    private config: AppConfig
+    private config: AppConfig,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
+    const showHidden: boolean | undefined = this.localStorageService.get('my-characters-lockouts', 'show-hidden');
+    this.showHidden = showHidden !== undefined ? showHidden : true;
     this.columns = this.getColumns();
-    this.viewModel = new MyCharactersLockoutsViewModelV2(this.myCharactersService.characters);
   }
 
   public onToggleHiddenClick(): void {
-    if (!this.viewModel) {
-      return;
-    }
-    this.viewModel.showHidden = !this.viewModel.showHidden;
-    this.saveLockouts();
+    this.showHidden = !this.showHidden;
+    this.save();
   }
 
-  public saveLockouts(): void {
-    this.myCharactersService.saveCharacters();
+  public save(): void {
+    this.localStorageService.store('my-characters-lockouts', 'show-hidden', this.showHidden);
+    this.myCharactersService.save();
   }
 
   public onImportClick(): void {
@@ -72,50 +72,56 @@ export class MyCharactersLockoutsComponent implements OnInit {
     }
 
     const nitImport: NitImport = new NitImport(nitImportData);
-    if (!this.viewModel) {
-      this.viewModel = new MyCharactersLockoutsViewModel(nitImport);
-    } else {
-      const viewModelToMerge: MyCharactersLockoutsViewModel = new MyCharactersLockoutsViewModel(nitImport);
-      this.viewModel.patchData(viewModelToMerge);
-    }
-    this.saveLockouts();
+    this.myCharactersService.patchNitImport(nitImport);
+    // this.test = false;
+    // FIXME: THIS IS STILL NOT WORKING
+    // this.cdr.markForCheck();
+    // this.cdr.detectChanges();
   }
 
-  public onHiddenToggleClick(character: CharacterLockoutsViewModel): void {
-    character.hidden = !character.hidden;
-    this.saveLockouts();
+  public onHiddenToggleClick(character: Character): void {
+    // character.hidden = !character.hidden;
+    // this.save();
+    // TODO: This
+    this.toastService.warn('Cannot Hide', 'Feature temporarily disabled');
   }
 
   public onAddClick(): void {
     const characterName = prompt('Enter character name');
 
     if (characterName != null) {
-      this.viewModel?.data.push(new CharacterLockoutsViewModel(characterName, WowClasses.PALADIN.name, []));
+      const newCharacter: Character = new Character({
+        name: characterName,
+        className: 'PALADIN',
+        metric: 'dps',
+        gear: { items: [] }
+      });
+      try {
+        this.myCharactersService.add(newCharacter);
+        this.save();
+      } catch (error) {
+        this.toastService.error('Add Character Failed', error);
+      }
     }
-    this.saveLockouts();
   }
 
   public onDeleteClick(): void {
-    if (!this.viewModel) {
-      return;
-    }
     const characterName: string | null = prompt('Enter character name to delete');
     if (!characterName) {
       return;
     }
-    const toDeleteIndex: number = this.viewModel.data.findIndex(
-      (characterLockouts) => characterLockouts.characterName.toLowerCase() === characterName.toLowerCase()
-    );
-    if (toDeleteIndex === -1) {
+    const characterToDelete: Character | undefined = this.myCharactersService.get(characterName);
+    if (!characterToDelete) {
       this.toastService.warn('Cannot delete Character', 'Character not found ' + characterName);
       return;
     }
-    this.viewModel.data.splice(toDeleteIndex, 1);
-    this.saveLockouts();
+    this.myCharactersService.delete(characterName);
+    this.save();
   }
 
-  public onRaidLockoutClick(raidStatuses: Map<Raid, CharacterRaidStatus>, raid: Raid): void {
-    const raidData: CharacterRaidStatus | undefined = raidStatuses.get(raid);
+  public onRaidLockoutClick(raidStatuses: CharacterRaidStatus[], raid: Raid): void {
+    // TODO: Performance; ideally the grid should pass the row value (character object) instead of the cell value
+    const raidData: CharacterRaidStatus | undefined = raidStatuses.find((raidStatus) => raidStatus.raid === raid);
     if (!raidData) {
       throw new Error('raid lockout not found ' + JSON.stringify(raid));
     }
@@ -133,13 +139,13 @@ export class MyCharactersLockoutsComponent implements OnInit {
         raidData.notes = result.notes;
         raidData.needsToRun = result.needsToRun ?? false;
         raidData.manuallyCompletedOn = result.completed === true ? Date.now() : -1;
-        this.saveLockouts();
+        this.save();
       }
     });
   }
 
-  private getRaidCellStyle(rowValue: CharacterLockoutsViewModel, raid: Raid): { [key: string]: any } {
-    const raidData: CharacterRaidStatus | undefined = rowValue.raidStatuses.get(raid);
+  private getRaidCellStyle(rowValue: Character, raid: Raid): { [key: string]: any } {
+    const raidData: CharacterRaidStatus | undefined = rowValue.getRaidStatus(raid);
     let backgroundColor: string;
     if (!raidData) {
       throw new Error('raid lockout not found ' + JSON.stringify(raid));
@@ -156,12 +162,12 @@ export class MyCharactersLockoutsComponent implements OnInit {
     return { 'background-color': backgroundColor };
   }
 
-  private getColumns(): ColumnSpecification<CharacterLockoutsViewModel>[] {
+  private getColumns(): ColumnSpecification<Character>[] {
     const columnStyle = {};
     return [
       {
         label: 'Name',
-        valueKey: 'characterName',
+        valueKey: 'name',
         format: {
           type: 'template',
           template: this.playerNameTemplateRef
@@ -173,7 +179,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
         cellStyle: (rowValue) => this.getRaidCellStyle(rowValue, Raids.Onyxia10),
         onClick: (rowValue) => this.onRaidLockoutClick(rowValue, Raids.Onyxia10),
         columnStyle,
-        transform: (rowValue) => rowValue.raidStatuses.get(Raids.Onyxia10),
+        transform: (rowValue) => rowValue.getRaidStatus(Raids.Onyxia10),
         format: {
           type: 'template',
           template: this.raidStatusTemplateRef
@@ -185,7 +191,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
         cellStyle: (rowValue) => this.getRaidCellStyle(rowValue, Raids.Onyxia25),
         onClick: (rowValue) => this.onRaidLockoutClick(rowValue, Raids.Onyxia25),
         columnStyle,
-        transform: (rowValue) => rowValue.raidStatuses.get(Raids.Onyxia25),
+        transform: (rowValue) => rowValue.getRaidStatus(Raids.Onyxia25),
         format: {
           type: 'template',
           template: this.raidStatusTemplateRef
@@ -197,7 +203,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
         cellStyle: (rowValue) => this.getRaidCellStyle(rowValue, Raids.VoA10),
         onClick: (rowValue) => this.onRaidLockoutClick(rowValue, Raids.VoA10),
         columnStyle,
-        transform: (rowValue) => rowValue.raidStatuses.get(Raids.VoA10),
+        transform: (rowValue) => rowValue.getRaidStatus(Raids.VoA10),
         format: {
           type: 'template',
           template: this.raidStatusTemplateRef
@@ -209,7 +215,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
         cellStyle: (rowValue) => this.getRaidCellStyle(rowValue, Raids.VoA25),
         onClick: (rowValue) => this.onRaidLockoutClick(rowValue, Raids.VoA25),
         columnStyle,
-        transform: (rowValue) => rowValue.raidStatuses.get(Raids.VoA25),
+        transform: (rowValue) => rowValue.getRaidStatus(Raids.VoA25),
         format: {
           type: 'template',
           template: this.raidStatusTemplateRef
@@ -221,7 +227,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
         cellStyle: (rowValue) => this.getRaidCellStyle(rowValue, Raids.Ulduar10),
         onClick: (rowValue) => this.onRaidLockoutClick(rowValue, Raids.Ulduar10),
         columnStyle,
-        transform: (rowValue) => rowValue.raidStatuses.get(Raids.Ulduar10),
+        transform: (rowValue) => rowValue.getRaidStatus(Raids.Ulduar10),
         format: {
           type: 'template',
           template: this.raidStatusTemplateRef
@@ -233,7 +239,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
         cellStyle: (rowValue) => this.getRaidCellStyle(rowValue, Raids.Ulduar25),
         onClick: (rowValue) => this.onRaidLockoutClick(rowValue, Raids.Ulduar25),
         columnStyle,
-        transform: (rowValue) => rowValue.raidStatuses.get(Raids.Ulduar25),
+        transform: (rowValue) => rowValue.getRaidStatus(Raids.Ulduar25),
         format: {
           type: 'template',
           template: this.raidStatusTemplateRef
@@ -245,7 +251,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
         cellStyle: (rowValue) => this.getRaidCellStyle(rowValue, Raids.ToGC10),
         onClick: (rowValue) => this.onRaidLockoutClick(rowValue, Raids.ToGC10),
         columnStyle,
-        transform: (rowValue) => rowValue.raidStatuses.get(Raids.ToGC10),
+        transform: (rowValue) => rowValue.getRaidStatus(Raids.ToGC10),
         format: {
           type: 'template',
           template: this.raidStatusTemplateRef
@@ -257,7 +263,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
         cellStyle: (rowValue) => this.getRaidCellStyle(rowValue, Raids.ToGC25),
         onClick: (rowValue) => this.onRaidLockoutClick(rowValue, Raids.ToGC25),
         columnStyle,
-        transform: (rowValue) => rowValue.raidStatuses.get(Raids.ToGC25),
+        transform: (rowValue) => rowValue.getRaidStatus(Raids.ToGC25),
         format: {
           type: 'template',
           template: this.raidStatusTemplateRef

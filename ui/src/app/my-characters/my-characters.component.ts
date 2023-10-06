@@ -28,7 +28,7 @@ export class MyCharactersComponent {
     private specializationService: SpecializationService,
     private simpleModalService: SimpleModalService
   ) {
-    this.myCharactersService.loadCharacters();
+    this.myCharactersService.load();
     this.selectedCharacter = this.myCharactersService.characters[0];
     this.loadSelectedCharacterGearSets();
   }
@@ -40,7 +40,7 @@ export class MyCharactersComponent {
     if (matchedCharacter) {
       matchedCharacter.gear = wowSimsImport.gear;
       this.toastService.info('Character Updated', 'Imported data to existing character');
-      this.myCharactersService.saveCharacters();
+      this.myCharactersService.save();
     } else {
       const data: IMyCharacterImportModalInput = {
         name: wowSimsImport.name,
@@ -59,7 +59,7 @@ export class MyCharactersComponent {
             });
             this.myCharactersService.characters.push(newCharacter);
             this.selectedCharacter = newCharacter;
-            this.myCharactersService.saveCharacters();
+            this.myCharactersService.save();
           }
         });
     }
@@ -78,7 +78,7 @@ export class MyCharactersComponent {
       return;
     }
     this.myCharactersService.characters.splice(deletedIndex, 1);
-    this.myCharactersService.saveCharacters();
+    this.myCharactersService.save();
   }
 
   public onEditCharacterClick(character: Character): void {
@@ -96,7 +96,7 @@ export class MyCharactersComponent {
           character.metric = result.metric;
           character.wowClass = result.wowClass;
           character.specialization = result.specialization;
-          this.myCharactersService.saveCharacters();
+          this.myCharactersService.save();
         }
       });
   }
