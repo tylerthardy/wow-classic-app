@@ -120,10 +120,18 @@ export class WarcraftLogsService {
           }
         `;
 
-    const result: ApolloQueryResult<CharacterData> = await this.apollo.query({
-      query: GET_CHARACTER_ZONE_RANKINGS,
-      fetchPolicy: 'network-only'
-    });
+    let result: ApolloQueryResult<CharacterData>;
+    console.log('querying wcl for character');
+    try {
+      result = await this.apollo.query({
+        query: GET_CHARACTER_ZONE_RANKINGS,
+        fetchPolicy: 'network-only'
+      });
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+    console.log('query complete');
 
     // FIXME: Hacky. There should be more defined types
     return {
