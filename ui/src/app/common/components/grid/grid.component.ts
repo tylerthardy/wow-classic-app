@@ -28,6 +28,7 @@ export interface ColumnSpecification<T> {
   transform?: (rowValue: T) => any;
   tooltip?: string | ((rowValue: T) => string | undefined);
   sortType?: SortType;
+  // TODO: Add a sort value property, so we don't need 'parse' and 'custom' sort types
   customSort?: (a: T, b: T) => number;
   onClick?: (value: any) => void;
   columnStyle?: { [key: string]: any };
