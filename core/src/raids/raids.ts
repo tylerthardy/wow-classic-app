@@ -93,6 +93,7 @@ export class Instances {
     hardModeCount: 12
   });
 
+  public static MOST_RECENT_RAID: Instance = Instances.IcecrownCitadel;
   public static All: Instance[] = [
     Instances.VaultOfArchavon,
     Instances.Naxxramas,

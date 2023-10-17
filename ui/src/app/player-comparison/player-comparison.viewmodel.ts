@@ -1,7 +1,15 @@
-import { ColumnSpecification, ParseColumnDeprecated } from '../common/components/grid/grid.component';
+import { TemplateRef } from '@angular/core';
+import { SpecializationData } from 'classic-companion-core';
+import { ColumnSpecification } from '../common/components/grid/grid.component';
 import { Theme } from '../common/services/theme/theme.type';
 import { ParseUtil } from '../common/utils';
 import { PlayerLookupViewModel, PlayerLookupViewModelEncounterItem } from '../player-lookup/player-lookup.viewmodel';
+
+interface IParseColumnCellData {
+  value: number | undefined;
+  specialization: SpecializationData | undefined;
+  hardMode: boolean;
+}
 
 export class PlayerComparisonViewModelEncounter {
   constructor(
@@ -12,11 +20,25 @@ export class PlayerComparisonViewModelEncounter {
   get encounterNameDisplay(): string | undefined {
     return this.player1.encounterNameDisplay;
   }
-  get bestPercent1Display(): ParseColumnDeprecated {
-    return this.player1.bestPercentDisplay;
+  get bestPercent1Display(): IParseColumnCellData {
+    return {
+      value: this.player1.bestPercentDisplay.value,
+      specialization: this.player1.bestPercentDisplay.specialization,
+      hardMode:
+        this.player1.highestDifficulty !== undefined &&
+        this.player1.highestDifficulty !== '' &&
+        this.player1.highestDifficulty !== 'Normal Mode'
+    };
   }
-  get bestPercent2Display(): ParseColumnDeprecated {
-    return this.player2.bestPercentDisplay;
+  get bestPercent2Display(): IParseColumnCellData {
+    return {
+      value: this.player2.bestPercentDisplay.value,
+      specialization: this.player2.bestPercentDisplay.specialization,
+      hardMode:
+        this.player2.highestDifficulty !== undefined &&
+        this.player2.highestDifficulty !== '' &&
+        this.player2.highestDifficulty !== 'Normal Mode'
+    };
   }
   get bestPercentDifference(): number {
     return this.player1.bestPercent! - this.player2.bestPercent!;
@@ -27,7 +49,12 @@ export class PlayerComparisonViewModel {
   public encounters: PlayerComparisonViewModelEncounter[];
   public columns: ColumnSpecification<PlayerComparisonViewModelEncounter>[];
 
-  constructor(private player1: PlayerLookupViewModel, private player2: PlayerLookupViewModel, theme: Theme) {
+  constructor(
+    private player1: PlayerLookupViewModel,
+    private player2: PlayerLookupViewModel,
+    theme: Theme,
+    private parseColumnTemplate: TemplateRef<any>
+  ) {
     if (!player1.encounters || !player2.encounters) {
       throw new Error('Encounters missing');
     }
@@ -49,7 +76,8 @@ export class PlayerComparisonViewModel {
         valueKey: 'bestPercent1Display',
         sortType: 'parse',
         format: {
-          type: 'parse'
+          type: 'template',
+          template: this.parseColumnTemplate
         },
         cellStyle: (rowValue) => {
           return { 'background-color': ParseUtil.getParseWarningColor(rowValue.bestPercent1Display.value, theme) };
@@ -60,7 +88,8 @@ export class PlayerComparisonViewModel {
         valueKey: 'bestPercent2Display',
         sortType: 'parse',
         format: {
-          type: 'parse'
+          type: 'template',
+          template: this.parseColumnTemplate
         },
         cellStyle: (rowValue) => {
           return { 'background-color': ParseUtil.getParseWarningColor(rowValue.bestPercent2Display.value, theme) };

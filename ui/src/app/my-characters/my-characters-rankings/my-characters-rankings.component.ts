@@ -17,7 +17,7 @@ import { MyCharactersRankingsViewModel } from './my-characters-rankings.viewmode
 export class MyCharactersRankingsComponent implements OnInit {
   @Input() myCharacters!: Character[];
   @Input() public instanceSizeSelection: InstanceSizeSelection = new InstanceSizeSelection({
-    instance: Instances.ToGC,
+    instance: Instances.MOST_RECENT_RAID,
     sizes: [25]
   });
   public viewModel: MyCharactersRankingsViewModel | undefined;
