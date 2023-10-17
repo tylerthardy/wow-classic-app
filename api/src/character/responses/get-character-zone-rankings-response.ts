@@ -74,6 +74,15 @@ export class GetCharacterZoneRankingsResponse implements IGetCharacterZoneRankin
       hardModeEncounter.highestDifficulty = 'Hard Mode';
       this.encounters![normalRankingIndex] = hardModeEncounter;
     }
+
+    // TODO: This is hacky. It should realistically determine the actual average by merging the two and then taking average
+    // https://math.stackexchange.com/a/148491
+    this.bestPerformanceAverage = this.bestPerformanceAverage
+      ? (this.bestPerformanceAverage + rankings.zoneRankings.bestPerformanceAverage) / 2
+      : rankings.zoneRankings.bestPerformanceAverage;
+    this.medianPerformanceAverage = this.medianPerformanceAverage
+      ? (this.medianPerformanceAverage + rankings.zoneRankings.medianPerformanceAverage) / 2
+      : rankings.zoneRankings.medianPerformanceAverage;
   }
 
   private getHardModeCount(zoneId: number): number {
