@@ -1,0 +1,85 @@
+
+:Tank: Tank (5)
+:Protection: 11 Slack
+:Blood_Tank: 21 Robertpwns
+:Protection1: 9 Raen
+:Protection1: 31 Dragalkim/
+:Protection1: 52 Tengén
+‎
+:DK: DK (6)
+:Frost_DPS: 10 Slack
+:Frost_DPS: 14 Motothemo
+:Frost_DPS: 18 Xhyn
+:Frost_DPS: 30 Oddkjob/Ow
+:Frost_DPS: 54 mashcup/dk
+:Unholy_DPS: 57 Kuang
+‎
+:Warrior: Warrior (2)
+:Fury: 15 Motothemo
+:Fury: 40 Darko
+‎
+:Druid: Druid (5)
+:Balance: 19 Xhyn
+:Balance: 49 Tacopop/Ev
+:Feral: 42 Darko
+:Restoration: 47 Søren
+:Restoration: 55 mashcup/dk
+‎
+:Paladin: Paladin (8)
+:Retribution: 7 Xhyn
+:Retribution: 38 chumby
+:Retribution: 58 Kuang
+:Holy1: 22 Robertpwns
+:Holy1: 28 Samehada
+:Holy1: 32 Chions
+:Holy1: 45 Søren
+:Holy1: 56 mashcup/dk
+‎
+:Rogue: Rogue (6)
+:Assassination: 8 Raen
+:Assassination: 26 Pixx/Grind
+:Assassination: 37 catmeowlsi
+:Combat: 23 Talent
+:Combat: 33 Chions
+:Combat: 44 Darko
+‎
+:Hunter: Hunter (4)
+:Survival: 4 Noidej
+:Survival: 34 Chions
+:Survival: 43 Darko
+:Survival: 61 Dibulina/D
+‎
+:Mage: Mage (5)
+:Arcane: 5 Noidej
+:Fire: 16 Xhyn
+:Fire: 25 Margathon
+:Fire: 36 Remmu
+:Fire: 59 Bucketman
+‎
+:Warlock: Warlock (7)
+:Destruction: 3 Noidej
+:Destruction: 24 Sheezzy
+:Demonology: 6 Glitch
+:Demonology: 29 TrHoa
+:Demonology: 35 Chions
+:Affliction: 39 Morosx
+:Affliction: 50 Tacopop/Ev
+‎
+:Priest: Priest (3)
+:Shadow: 12 Slack
+:Discipline: 2 Noidej
+:Discipline: 48 Søren
+‎
+:Shaman: Shaman (8)
+:Elemental: 1 Noidej
+:Elemental: 17 Xhyn
+:Elemental: 62 Dibulina/D
+:Restoration1: 20 Robertpwns
+:Restoration1: 27 jeffepstie
+:Restoration1: 46 Søren
+:Enhancement: 41 Darko
+:Enhancement: 60 Bucketman
+‎
+‎
+
+:(\w*): (\d{1,2}) (\w+)
