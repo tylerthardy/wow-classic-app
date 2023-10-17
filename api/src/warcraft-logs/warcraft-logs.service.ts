@@ -99,6 +99,11 @@ export class WarcraftLogsService {
     if (request.specName) {
       additionalQueries += `, specName: "${request.specName}"`;
     }
+    if (request.difficulty === 'hard') {
+      additionalQueries += `, difficulty: 4`;
+    } else if (request.difficulty === 'normal') {
+      additionalQueries += `, difficulty: 3`;
+    }
     const GET_CHARACTER_ZONE_RANKINGS: TypedDocumentNode<CharacterData, unknown> = gql`
           query {
             characterData {
