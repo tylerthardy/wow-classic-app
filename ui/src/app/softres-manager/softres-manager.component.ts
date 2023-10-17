@@ -108,7 +108,7 @@ export class SoftresManagerComponent implements OnInit {
     }
     const data: CreateSoftresModalData = {
       instanceSizeSelection: new InstanceSizeSelection({
-        instance: Instances.ToGC,
+        instance: Instances.MOST_RECENT_RAID,
         sizes: [25]
       }),
       softReserveCount: 1,

@@ -22,7 +22,7 @@ import { PlayerLookupViewModel } from './player-lookup.viewmodel';
   styleUrls: ['./player-lookup.component.scss']
 })
 export class PlayerLookupComponent implements OnInit {
-  @Input() instanceSizeSelection: IInstanceSizeSelection = { instance: Instances.ToGC, sizes: [25] };
+  @Input() instanceSizeSelection: IInstanceSizeSelection = { instance: Instances.MOST_RECENT_RAID, sizes: [25] };
   characterNameInput: string | undefined;
   rankingMetricValues = RankingMetricValues;
   metricInput: RankingMetric = 'dps';

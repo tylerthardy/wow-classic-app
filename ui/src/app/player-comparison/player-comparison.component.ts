@@ -25,7 +25,7 @@ import { PlayerComparisonViewModel } from './player-comparison.viewmodel';
 export class PlayerComparisonComponent implements OnInit {
   @ViewChild('parseColumnTemplate', { static: true }) parseColumnTemplateRef!: TemplateRef<any>;
   @Input() public instanceSizeSelection: InstanceSizeSelection = new InstanceSizeSelection({
-    instance: Instances.ToGC,
+    instance: Instances.MOST_RECENT_RAID,
     sizes: [25]
   });
   player1NameInput: string | undefined;
