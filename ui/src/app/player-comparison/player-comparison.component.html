@@ -30,3 +30,12 @@
     <app-grid style="flex: 2" [data]="viewModel.encounters" [columns]="viewModel.columns"></app-grid>
   </div>
 </ng-container>
+
+<ng-template #parseColumnTemplate let-cellValue="cellValue">
+  <app-parse-number
+    style="display: inline-block"
+    [specialization]="cellValue.specialization"
+    [value]="cellValue.value"
+  ></app-parse-number>
+  <span *ngIf="cellValue.hardMode">🥇</span>
+</ng-template>

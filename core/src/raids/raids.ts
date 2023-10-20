@@ -85,7 +85,15 @@ export class Instances {
     holdOverSlug: 'toc',
     hardModeCount: 5
   });
+  public static IcecrownCitadel = new Instance({
+    name: 'Icecrown Citadel',
+    zoneId: 1020,
+    sizes: [10, 25],
+    holdOverSlug: 'icc',
+    hardModeCount: 12
+  });
 
+  public static MOST_RECENT_RAID: Instance = Instances.IcecrownCitadel;
   public static All: Instance[] = [
     Instances.VaultOfArchavon,
     Instances.Naxxramas,
@@ -93,7 +101,8 @@ export class Instances {
     Instances.EyeOfEternity,
     Instances.Onyxia,
     Instances.Ulduar,
-    Instances.ToGC
+    Instances.ToGC,
+    Instances.IcecrownCitadel
   ];
   private static instanceByZoneId: Map<number, Instance> = new Map(
     Instances.All.map((instance) => [instance.zoneId, instance])
@@ -240,6 +249,20 @@ export class Raids {
     softresSlug: 'toc25',
     lfgName: 'ToGC 25'
   });
+  public static ICC10 = new Raid({
+    slug: 'ICC10',
+    instance: Instances.IcecrownCitadel,
+    size: 10,
+    softresSlug: 'icc10',
+    lfgName: 'ICC 10'
+  });
+  public static ICC25 = new Raid({
+    slug: 'ICC25',
+    instance: Instances.IcecrownCitadel,
+    size: 25,
+    softresSlug: 'icc25',
+    lfgName: 'ICC 25'
+  });
 
   public static All = [
     Raids.VoA10,
@@ -255,7 +278,9 @@ export class Raids {
     Raids.Onyxia10,
     Raids.Onyxia25,
     Raids.ToGC10,
-    Raids.ToGC25
+    Raids.ToGC25,
+    Raids.ICC10,
+    Raids.ICC25
   ];
   private static raidBySoftRes: Map<string, Raid> = new Map(Raids.All.map((raid) => [raid.softresSlug, raid]));
   private static raidBySizeInstance: Map<RaidSize, Map<Instance, Raid>> = new Map([

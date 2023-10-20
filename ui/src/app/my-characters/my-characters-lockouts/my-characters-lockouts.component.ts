@@ -293,6 +293,30 @@ export class MyCharactersLockoutsComponent implements OnInit {
           type: 'template',
           template: this.raidStatusTemplateRef
         }
+      },
+      {
+        label: 'ICC10',
+        valueKey: 'raidStatuses',
+        cellStyle: (rowValue) => this.getRaidCellStyle(rowValue, Raids.ICC10),
+        onClick: (rowValue) => this.onRaidLockoutClick(rowValue, Raids.ICC10),
+        columnStyle,
+        transform: (rowValue) => rowValue.raidStatuses.get(Raids.ICC10),
+        format: {
+          type: 'template',
+          template: this.raidStatusTemplateRef
+        }
+      },
+      {
+        label: 'ICC25',
+        valueKey: 'raidStatuses',
+        cellStyle: (rowValue) => this.getRaidCellStyle(rowValue, Raids.ICC25),
+        onClick: (rowValue) => this.onRaidLockoutClick(rowValue, Raids.ICC25),
+        columnStyle,
+        transform: (rowValue) => rowValue.raidStatuses.get(Raids.ICC25),
+        format: {
+          type: 'template',
+          template: this.raidStatusTemplateRef
+        }
       }
     ];
   }

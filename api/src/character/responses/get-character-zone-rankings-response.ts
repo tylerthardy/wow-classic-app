@@ -50,6 +50,41 @@ export class GetCharacterZoneRankingsResponse implements IGetCharacterZoneRankin
     }
   }
 
+  public appendHardModes_ICC(rankings: IGetWclCharacterZoneRankingsResponse): void {
+    this.bestHardModeProgress = 0;
+    this.hardModes = [];
+    for (const ranking of rankings.zoneRankings.rankings) {
+      if (ranking.totalKills <= 0) {
+        continue;
+      }
+      // Add to hardmode count & collection
+      this.hardModes.push(ranking.encounter.name);
+      this.bestHardModeProgress += 1;
+
+      // Overwrite the normal encounter with hard
+      const normalRankingIndex: number = this.encounters!.findIndex(
+        (encounter) => encounter.encounterId === ranking.encounter.id
+      );
+      if (normalRankingIndex === -1) {
+        throw new Error('No normal ranking found to map hard mode encounter');
+      }
+      const hardModeEncounter: GetCharacterZoneRankingsResponseRanking = new GetCharacterZoneRankingsResponseRanking(
+        ranking
+      );
+      hardModeEncounter.highestDifficulty = 'Hard Mode';
+      this.encounters![normalRankingIndex] = hardModeEncounter;
+    }
+
+    // TODO: This is hacky. It should realistically determine the actual average by merging the two and then taking average
+    // https://math.stackexchange.com/a/148491
+    this.bestPerformanceAverage = this.bestPerformanceAverage
+      ? (this.bestPerformanceAverage + rankings.zoneRankings.bestPerformanceAverage) / 2
+      : rankings.zoneRankings.bestPerformanceAverage;
+    this.medianPerformanceAverage = this.medianPerformanceAverage
+      ? (this.medianPerformanceAverage + rankings.zoneRankings.medianPerformanceAverage) / 2
+      : rankings.zoneRankings.medianPerformanceAverage;
+  }
+
   private getHardModeCount(zoneId: number): number {
     const instance: Instance | undefined = Instances.getByZoneId(zoneId);
     if (!instance) {

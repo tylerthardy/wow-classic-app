@@ -33,7 +33,7 @@ export class RaidLeadHelperComponent implements OnInit {
   @ViewChild('softresManager') softresManagerRef!: SoftresManagerComponent;
 
   public instanceSizeSelection: InstanceSizeSelection = new InstanceSizeSelection({
-    instance: Instances.ToGC,
+    instance: Instances.MOST_RECENT_RAID,
     sizes: [25]
   });
   public raid: Raid | undefined;

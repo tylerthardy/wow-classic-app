@@ -13,4 +13,6 @@ export type SoftresRaidSlug =
   | 'naxxdragons25'
   | 'ulduar25'
   | 'toc10'
-  | 'toc25';
+  | 'toc25'
+  | 'icc10'
+  | 'icc25';

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import {
   Instances,
   Raid,
@@ -23,8 +23,9 @@ import { PlayerComparisonViewModel } from './player-comparison.viewmodel';
   styleUrls: ['./player-comparison.component.scss']
 })
 export class PlayerComparisonComponent implements OnInit {
+  @ViewChild('parseColumnTemplate', { static: true }) parseColumnTemplateRef!: TemplateRef<any>;
   @Input() public instanceSizeSelection: InstanceSizeSelection = new InstanceSizeSelection({
-    instance: Instances.ToGC,
+    instance: Instances.MOST_RECENT_RAID,
     sizes: [25]
   });
   player1NameInput: string | undefined;
@@ -109,7 +110,7 @@ export class PlayerComparisonComponent implements OnInit {
       .subscribe((response) => {
         const player1 = new PlayerLookupViewModel(response[0], theme);
         const player2 = new PlayerLookupViewModel(response[1], theme);
-        this.viewModel = new PlayerComparisonViewModel(player1, player2, theme);
+        this.viewModel = new PlayerComparisonViewModel(player1, player2, theme, this.parseColumnTemplateRef);
       });
   }
 }

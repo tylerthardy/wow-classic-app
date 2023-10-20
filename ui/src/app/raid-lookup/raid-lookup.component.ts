@@ -34,7 +34,7 @@ export class RaidLookupComponent implements OnInit {
   @ViewChild('lastUpdatedTemplate', { static: true }) lastUpdatedTemplateRef!: TemplateRef<any>;
   @Output() public characterNameClicked: EventEmitter<string> = new EventEmitter<string>();
   @Input() public instanceSizeSelection: InstanceSizeSelection = new InstanceSizeSelection({
-    instance: Instances.ToGC,
+    instance: Instances.MOST_RECENT_RAID,
     sizes: [10]
   });
   protected importJson: string | undefined;

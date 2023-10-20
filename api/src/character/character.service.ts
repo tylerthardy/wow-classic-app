@@ -1,6 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ValidationError, validate } from 'class-validator';
-import { IGetCharacterZoneRankingsResponse, IGetMultipleCharacterZoneRankingsResponse } from 'classic-companion-core';
+import {
+  IGetCharacterZoneRankingsResponse,
+  IGetMultipleCharacterZoneRankingsResponse,
+  Instances
+} from 'classic-companion-core';
 import { NotFoundError } from 'common-errors';
 import { PlayerTableService } from '../common/player-table/player-table.service';
 import { IGetWclCharacterZoneRankingsResponse } from '../warcraft-logs/responses/get-wcl-character-zone-rankings-response.interface';
@@ -22,6 +26,10 @@ export class CharacterService {
   public async getCharacterZoneRankings(
     request: GetCharacterZoneRankingsRequest
   ): Promise<IGetCharacterZoneRankingsResponse> {
+    if (request.zoneId === Instances.IcecrownCitadel.zoneId) {
+      return this.getRankings_ICC(request);
+    }
+
     const wclRankings: IGetWclCharacterZoneRankingsResponse = await this.getWclCharacterZoneRankings(request);
     if (!wclRankings || !wclRankings.name) {
       throw new NotFoundError('character not found');
@@ -73,6 +81,26 @@ export class CharacterService {
     return {
       characters: responseCharacters
     };
+  }
+
+  private async getRankings_ICC(request: GetCharacterZoneRankingsRequest): Promise<IGetCharacterZoneRankingsResponse> {
+    const normalRankings: IGetWclCharacterZoneRankingsResponse = await this.getWclCharacterZoneRankings({
+      ...request,
+      difficulty: 'normal'
+    });
+    if (!normalRankings || !normalRankings.name) {
+      throw new NotFoundError('character not found for normal icc');
+    }
+    const hardRankings: IGetWclCharacterZoneRankingsResponse = await this.getWclCharacterZoneRankings({
+      ...request,
+      difficulty: 'hard'
+    });
+    if (!hardRankings || !hardRankings.name) {
+      throw new NotFoundError('character not found for hard icc');
+    }
+    const response = new GetCharacterZoneRankingsResponse(normalRankings);
+    response.appendHardModes_ICC(hardRankings);
+    return response;
   }
 
   private async getCharacterValidationErrors(character: IGetCharacterZoneRankingsRequest): Promise<ValidationError[]> {

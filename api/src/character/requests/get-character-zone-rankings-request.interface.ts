@@ -6,8 +6,9 @@ export interface IGetCharacterZoneRankingsRequest {
   serverSlug: string;
   serverRegion: string;
   zoneId: number;
+  size: RaidSize;
   metric: RankingMetric;
   classSlug?: string;
   specName?: string;
-  size: RaidSize;
+  difficulty?: 'hard' | 'normal';
 }

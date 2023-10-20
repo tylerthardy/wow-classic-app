@@ -38,4 +38,9 @@ export class GetCharacterZoneRankingsRequest implements IGetCharacterZoneRanking
   @IsString()
   @IsOptional()
   role?: string;
+
+  @IsString()
+  @IsIn(['hard', 'normal'])
+  @IsOptional()
+  difficulty?: 'hard' | 'normal';
 }
