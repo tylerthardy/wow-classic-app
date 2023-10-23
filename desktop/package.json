@@ -1,7 +1,7 @@
 {
   "name": "wca-desktop",
   "version": "0.0.0",
-  "main": "main.js",
+  "main": "dist-electron/main.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,7 +9,7 @@
     "electron-tsc": "tsc main.ts && ng build --base-href ./ && electron .",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "electron": "tsc main.ts && ng build --base-href ./ && electron ."
+    "electron": "tsc -p tsconfig.electron.json && ng build --base-href ./ && electron ."
   },
   "private": true,
   "dependencies": {
