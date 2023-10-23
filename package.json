@@ -20,7 +20,8 @@
     "deploy:api": "npm run build:core && npm run build:api && npm run prep:api && cdk deploy classic-companion-api",
     "deploy:ui": "npm run build:core && npm run build:ui && cdk deploy classic-companion-ui",
     "deploy:invalidate": "bash ./invalidate-cloudfront.sh",
-    "deploy:cd": "npm install && npm run build:all && npm run deploy:all && npm run deploy:invalidate"
+    "deploy:cd": "npm install && npm run build:all && npm run deploy:all && npm run deploy:invalidate",
+    "clean": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +"
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",
@@ -42,6 +43,7 @@
     "api",
     "core",
     "ui",
-    "scraper"
+    "scraper",
+    "desktop"
   ]
 }

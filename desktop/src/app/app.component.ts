@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ElectronService } from './electron.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,17 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'wca-desktop';
+
+  constructor(private electronService: ElectronService) {}
+
+  public onLoadButtonClick(): void {
+    this.electronService.send('action1', {
+      a: 1,
+      b: 7
+    });
+  }
+
+  public watchFile(): void {
+    this.electronService.send('watch-file', null);
+  }
 }
