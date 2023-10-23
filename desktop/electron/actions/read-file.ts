@@ -1,15 +1,9 @@
 import * as chokidar from 'chokidar';
 import * as fs from 'fs';
-import * as path from 'path';
+const { format, parse } = require('lua-json');
 
 export class ReadFile {
-  constructor() {}
-
-  private fileName = 'NovaInstanceTracker.lua';
-  private filePath = path.join(
-    'C:/Program Files (x86)/World of Warcraft/_classic_/WTF/Account/MENTALSKATER45/SavedVariables',
-    this.fileName
-  );
+  constructor(private filePath: string) {}
 
   public watchFile(callback: (err: any, data: any) => void): void {
     chokidar.watch(this.filePath).on('change', (event, path) => {
@@ -20,6 +14,17 @@ export class ReadFile {
   }
 
   private readFile(path: string, callback: (err: any, data: any) => void): void {
-    fs.readFile(path, 'utf-8', (err, data) => callback(err, data));
+    fs.readFile(path, 'utf-8', (err, data) => {
+      if (err) {
+        callback(err, null);
+        return;
+      }
+      try {
+        const out: any = parse(`return { ${data} }`);
+        callback(null, out);
+      } catch (err) {
+        callback(err, null);
+      }
+    });
   }
 }

@@ -20,5 +20,5 @@
     "module": "CommonJS",
     "lib": ["ES2020", "dom"]
   },
-  "include": ["./electron", "./main.ts"]
+  "include": ["./electron"]
 }

@@ -1,4 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
+import { IpcRendererEvent } from 'electron';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,18 @@ export class ElectronService {
         console.log('ui receive', { action, params });
       });
     });
+  }
+
+  // TODO: Use a Subject
+  public receive(
+    channelToListen: any,
+    callback: (channelReceived: any, event: IpcRendererEvent, ...args: any) => void
+  ): void {
+    // Wrap callback in ngZone so that it may receive change detection
+    const wrappedCallback = (channelReceived: any, event: IpcRendererEvent, ...args: any) => {
+      this.ngZone.run(() => callback(channelReceived, event, ...args));
+    };
+    this.electron.receive(channelToListen, wrappedCallback);
   }
 
   public send(action: any, params: any): any {

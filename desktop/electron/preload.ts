@@ -1,4 +1,4 @@
-// import { ElectronAppActions } from './actions/electron-app-actions';
+import { IpcRendererEvent } from 'electron';
 
 const { contextBridge, ipcRenderer } = require('electron');
 
@@ -11,25 +11,16 @@ contextBridge.exposeInMainWorld('api', {
     ipcRenderer.send(channel, data);
     // }
   },
-  receive: (channel: string, func: any) => {
+  receive: (channel: string, callback: any): void => {
     // let validChannels = ['fromMain'];
     // if (validChannels.includes(channel)) {
     // Deliberately strip event as it includes `sender`
-    console.log(`registering ${channel}`, func);
-    ipcRenderer.on(channel, (event: any, ...args: any) => func(...args));
-    ipcRenderer.send(channel, {});
+    console.log(`registering ${channel}`, callback);
+    ipcRenderer.on(channel, (event: IpcRendererEvent, ...args: any): void => {
+      callback(channel, event, ...args);
+    });
     // }
   }
 });
-
-// // These are electron handlers for UI actions
-// ipcRenderer.on('read file', (a: any, b: any): any => {
-//   console.log(a, b);
-// });
-// ipcRenderer.send('read file', { test: 1 });
-
-// ipcRenderer.on('action1', (a: any, b: any): any => {
-//   console.log(a, b);
-// });
 
 console.log('preload complete');
