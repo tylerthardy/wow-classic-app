@@ -1,13 +1,9 @@
-const { app, ipcMain, dialog } = require('electron');
+import { BrowserWindow, app, ipcMain } from 'electron';
+import { configureActions } from './actions';
 const path = require('path');
 const url = require('url');
-import { BrowserWindow, IpcMainEvent } from 'electron';
-import { ElectronAppActions } from './actions/electron-app-actions';
-import { ElectronUiActions } from './actions/electron-ui-actions';
-import { ReadFile } from './actions/read-file';
 
 let win: BrowserWindow;
-let readFile: ReadFile | undefined;
 
 function createWindow() {
   win = new BrowserWindow({
@@ -36,29 +32,7 @@ function createWindow() {
     win = null;
   });
 
-  ipcMain.on(ElectronUiActions.WATCH_FILE, (_event: IpcMainEvent, ...args: any) => {
-    const filePath: string = args[0];
-    console.log(`${ElectronUiActions.WATCH_FILE} event`);
-    console.log(`now watching ${filePath}`);
-    readFile = new ReadFile(filePath);
-    readFile.watchFile((err: any, data: any) => {
-      if (err) {
-        alert('An error occurred reading the file :' + err.message);
-        return;
-      }
-      win.webContents.send(ElectronAppActions.FILE_CHANGED, {
-        filePath
-      });
-    });
-  });
-
-  ipcMain.on(ElectronUiActions.OPEN_FILE, async (_event: IpcMainEvent, ..._args: any) => {
-    console.log(`${ElectronUiActions.OPEN_FILE} event`);
-    const result = await dialog.showOpenDialog(win, {
-      properties: ['openDirectory']
-    });
-    win.webContents.send(ElectronAppActions.FILE_OPENED, result);
-  });
+  configureActions(win, ipcMain);
 }
 app.on('ready', createWindow);
 // on macOS, closing the window doesn't quit the app
