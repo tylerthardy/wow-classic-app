@@ -1,3 +1,4 @@
+export * from './addon-saved-variables';
 export * from './common';
 export * from './http';
 export * from './raids';

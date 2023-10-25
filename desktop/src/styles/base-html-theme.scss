@@ -1,0 +1,61 @@
+// Root
+.light-theme {
+  color: #000000;
+}
+.dark-theme {
+  color: #d5d5d5;
+}
+
+// Table
+.light-theme {
+  table,
+  th,
+  td {
+    border: 1px solid #000000;
+  }
+  tr {
+    background-color: #f1f1f1;
+  }
+}
+.dark-theme {
+  table,
+  th,
+  td {
+    border: 1px solid #000000;
+  }
+  tr {
+    background-color: #282828;
+  }
+}
+
+// Button, Input, Textarea, Select
+.light-theme {
+  button,
+  input,
+  textarea,
+  select {
+    border: solid 1px #1c1c1c;
+  }
+  button {
+    background-color: #f0f0f0;
+  }
+  button:hover {
+    background-color: #e4e4e4;
+  }
+}
+.dark-theme {
+  button,
+  input,
+  textarea,
+  select {
+    background-color: #2e2e2e;
+    border: solid 1px #1c1c1c;
+    color: #d5d5d5;
+  }
+  button {
+    background-color: #4c4c4c;
+  }
+  button:hover {
+    background-color: #636363;
+  }
+}

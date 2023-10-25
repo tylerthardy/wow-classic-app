@@ -1,0 +1,6 @@
+<p><input [(ngModel)]="filePath" style="width: 80%" /></p>
+<button (click)="onWatchFileClick()">WATCH FILE</button>
+<button (click)="onOpenFileClick()">OPEN FILE</button>
+<p>File last updated: {{ getLastUpdatedValue(lastUpdated) }}</p>
+<div *ngIf="isLoading" class="loader"></div>
+<ngx-json-viewer [json]="data"></ngx-json-viewer>

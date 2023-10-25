@@ -1,6 +1,38 @@
-<p><input [(ngModel)]="filePath" style="width: 80%" /></p>
-<button (click)="watchFile()">WATCH FILE</button>
-<button (click)="openFile()">OPEN FILE</button>
-<p>File last updated: {{ getLastUpdatedValue(lastUpdated) }}</p>
-<div *ngIf="isLoading" class="loader"></div>
-<ngx-json-viewer [json]="data"></ngx-json-viewer>
+<!-- <div id="navbarContent" class="collapse navbar-collapse">
+  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/sign-up" routerLinkActive="active" *ngIf="!isAuthenticated">Sign up</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/sign-in" routerLinkActive="active" *ngIf="!isAuthenticated">Sign in</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/profile" routerLinkActive="active" *ngIf="isAuthenticated">Profile</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="" (click)="signOut()" *ngIf="isAuthenticated">Sign out</a>
+    </li>
+  </ul>
+</div> -->
+
+<div class="wrapper" class="dark-theme" id="content">
+  <header>
+    <span style="margin-right: 10px; font-size: 16px">WoW Classic App Helper</span>
+    <div class="header-button-bar">
+      <!-- <app-svg-icon class="svg-button" iconName="discord" size="18px" (click)="onDiscordClick()"></app-svg-icon> -->
+      <!-- <button (click)="onDownloadButtonClick()">Download Addon</button> -->
+      <!-- <button class="emoji" (click)="onToggleThemeClick()">
+        {{ themeService.theme === 'light' ? '🌞' : '🌙' }}
+      </button> -->
+      <!-- <ng-container *ngIf="!appConfig.maintenance"> -->
+      <button *ngIf="!isAuthenticated" (click)="onRegisterButtonClick()">
+        Register <span class="free-emphasis">Free!</span>
+      </button>
+      <button *ngIf="!isAuthenticated" (click)="onSignInButtonClick()">Sign In</button>
+      <span style="display: inline-block" *ngIf="isAuthenticated">{{ cognitoService.user!.name }}</span>
+      <button *ngIf="isAuthenticated" (click)="onSignOutButtonClick()">Sign Out</button>
+      <!-- </ng-container> -->
+    </div>
+  </header>
+  <router-outlet></router-outlet>
+</div>

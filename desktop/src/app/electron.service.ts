@@ -12,13 +12,10 @@ export class ElectronService {
   public initialize(): void {
     console.log('service initializing');
     this.electron = (window as any).api;
-
-    this.electron.receive('actionZ', (action: any, params: any) => {
-      console.log('here');
-      this.ngZone.run(() => {
-        console.log('ui receive', { action, params });
-      });
-    });
+    if (!this.electron) {
+      console.log('using spoofed electron');
+      this.electron = this.getSpoofedElectron();
+    }
   }
 
   // TODO: Use a Subject
@@ -33,7 +30,21 @@ export class ElectronService {
     this.electron.receive(channelToListen, wrappedCallback);
   }
 
-  public send(action: any, params: any): any {
-    this.electron.send(action, params);
+  public send(channel: string, params: any): any {
+    this.electron.send(channel, params);
+  }
+
+  private getSpoofedElectron(): any {
+    return {
+      send: (channel: string, params: any) => {
+        console.log('spoofed send to electron: ' + channel, params);
+      },
+      receive: (
+        channelToListen: any,
+        callback: (channelReceived: any, event: IpcRendererEvent, ...args: any) => void
+      ) => {
+        console.log('spoofed receive register to electron: ' + channelToListen, callback);
+      }
+    };
   }
 }
