@@ -1,5 +1,12 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { Raid, Raids } from 'classic-companion-core';
+import {
+  IMyCharactersLockoutsSave,
+  MyCharacterLockoutSaveLockout,
+  MyCharactersLockoutsSave,
+  MyCharactersLockoutsSaveCharacter,
+  Raid,
+  Raids
+} from 'classic-companion-core';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { ColumnSpecification } from '../../common/components/grid/grid.component';
 import { ToastService } from '../../common/services/toast/toast.service';
@@ -9,12 +16,6 @@ import { IEditLockoutModalInput } from './edit-lockout-modal/edit-lockout-modal-
 import { IEditLockoutModalOutput } from './edit-lockout-modal/edit-lockout-modal-output.interface';
 import { EditLockoutModalComponent } from './edit-lockout-modal/edit-lockout-modal.component';
 import { CharacterRaidStatus } from './models/character-raid-status.model';
-import {
-  IMyCharactersLockoutsSave,
-  MyCharacterLockoutSaveLockout,
-  MyCharactersLockoutsSave,
-  MyCharactersLockoutsSaveCharacter
-} from './models/imports/my-characters-lockouts-save.interface';
 import { INitImport, NitImport } from './models/imports/nit-import.interface';
 import { CharacterLockoutsViewModel } from './models/view-models/character-lockouts.viewmodel';
 import { MyCharactersLockoutsViewModel } from './models/view-models/my-characters-lockouts.viewmodel';

@@ -1,10 +1,10 @@
-import { Raid } from 'classic-companion-core';
-import { CharacterRaidStatus } from '../character-raid-status.model';
 import {
   IMyCharactersLockoutsSave,
   IMyCharactersLockoutsSaveCharacter,
-  MyCharactersLockoutsSave
-} from '../imports/my-characters-lockouts-save.interface';
+  MyCharactersLockoutsSave,
+  Raid
+} from 'classic-companion-core';
+import { CharacterRaidStatus } from '../character-raid-status.model';
 import { NitImport, NitImportCharacter, NitImportLockout } from '../imports/nit-import.interface';
 import { CharacterLockoutsViewModel } from './character-lockouts.viewmodel';
 export class MyCharactersLockoutsViewModel {

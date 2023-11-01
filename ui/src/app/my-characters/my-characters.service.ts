@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
+import { IMyCharactersLockoutsSave } from 'classic-companion-core';
 import { LocalStorageService } from '../common/services/local-storage.service';
-import { IMyCharactersLockoutsSave } from './my-characters-lockouts/models/imports/my-characters-lockouts-save.interface';
 
 @Injectable({
   providedIn: 'root'

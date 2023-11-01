@@ -1,5 +1,4 @@
-import { Raid, Raids } from 'classic-companion-core';
-import { MyCharacterLockoutSaveLockout } from './imports/my-characters-lockouts-save.interface';
+import { MyCharacterLockoutSaveLockout, Raid, Raids } from 'classic-companion-core';
 import { NitImportLockout } from './imports/nit-import.interface';
 
 export class CharacterRaidStatus {

@@ -1,6 +1,5 @@
-import { Raid, Raids, WowClass, WowClasses } from 'classic-companion-core';
+import { MyCharacterLockoutSaveLockout, Raid, Raids, WowClass, WowClasses } from 'classic-companion-core';
 import { CharacterRaidStatus } from '../character-raid-status.model';
-import { MyCharacterLockoutSaveLockout } from '../imports/my-characters-lockouts-save.interface';
 import { NitImportLockout } from '../imports/nit-import.interface';
 
 export class CharacterLockoutsViewModel {
