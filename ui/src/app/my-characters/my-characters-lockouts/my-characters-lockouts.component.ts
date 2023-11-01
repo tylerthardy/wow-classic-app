@@ -2,9 +2,9 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Raid, Raids } from 'classic-companion-core';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { ColumnSpecification } from '../../common/components/grid/grid.component';
-import { LocalStorageService } from '../../common/services/local-storage.service';
 import { ToastService } from '../../common/services/toast/toast.service';
 import { AppConfig } from '../../config/app.config';
+import { MyCharactersService } from '../my-characters.service';
 import { IEditLockoutModalInput } from './edit-lockout-modal/edit-lockout-modal-input.interface';
 import { IEditLockoutModalOutput } from './edit-lockout-modal/edit-lockout-modal-output.interface';
 import { EditLockoutModalComponent } from './edit-lockout-modal/edit-lockout-modal.component';
@@ -35,7 +35,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
   constructor(
     private toastService: ToastService,
     private simpleModalService: SimpleModalService,
-    private localStorageService: LocalStorageService,
+    private myCharactersService: MyCharactersService,
     private config: AppConfig
   ) {}
 
@@ -53,10 +53,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
   }
 
   public loadSavedData(): void {
-    const loadedSave: IMyCharactersLockoutsSave | undefined = this.localStorageService.get(
-      'my-characters-lockouts',
-      'lockouts'
-    );
+    const loadedSave: IMyCharactersLockoutsSave | undefined = this.myCharactersService.getAll();
     if (!loadedSave) {
       return;
     }
@@ -79,7 +76,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
   }
 
   public saveLockouts(): void {
-    this.localStorageService.store('my-characters-lockouts', 'lockouts', this.viewModel?.getSaveableData());
+    this.myCharactersService.save(this.viewModel?.getSaveableData());
   }
 
   public onImportClick(): void {
