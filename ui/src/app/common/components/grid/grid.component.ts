@@ -30,7 +30,7 @@ export interface ColumnSpecification<T> {
   sortType?: SortType;
   // TODO: Add a sort value property, so we don't need 'parse' and 'custom' sort types
   customSort?: (a: T, b: T) => number;
-  onClick?: (value: any) => void;
+  onClick?: (cellValue: any, rowValue?: any) => void;
   columnStyle?: { [key: string]: any };
   cellStyle?: { [key: string]: any } | ((rowValue: T) => { [key: string]: any });
 }
@@ -81,7 +81,7 @@ export class GridComponent implements OnInit, OnChanges {
     if (!column.onClick) {
       return;
     }
-    column.onClick(dataRow[column.valueKey]);
+    column.onClick(dataRow[column.valueKey], dataRow);
   }
 
   // FIXME: Should have a generic? T instead of any?

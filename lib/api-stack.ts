@@ -28,6 +28,12 @@ export class ClassicCompanionApiStack extends Stack {
       sortKey: { name: 'sk', type: AttributeType.STRING }
     });
 
+    const myCharactersTable = new Table(this, 'my-characters-1698991669', {
+      billingMode: BillingMode.PAY_PER_REQUEST,
+      partitionKey: { name: 'pk', type: AttributeType.STRING },
+      sortKey: { name: 'sk', type: AttributeType.STRING }
+    });
+
     const lambdaLayer = this.createLambdaLayer();
     const insightsLayer = LayerVersion.fromLayerVersionArn(this, `lambda-insights-layer`, this.getLambdaInsightsArn());
     const handlerLambda = this.createHandlerLambda([lambdaLayer, insightsLayer]);
@@ -38,8 +44,10 @@ export class ClassicCompanionApiStack extends Stack {
       ManagedPolicy.fromAwsManagedPolicyName('CloudWatchLambdaInsightsExecutionRolePolicy')
     );
     handlerLambda.addEnvironment('DYNAMO_PLAYER_TABLE_NAME', playerTable.tableName);
-    // Allow API to write to player table
+    handlerLambda.addEnvironment('DYNAMO_MY_CHARACTERS_TABLE_NAME', myCharactersTable.tableName);
+    // Allow API to write to tables
     playerTable.grantReadWriteData(handlerLambda);
+    myCharactersTable.grantReadWriteData(handlerLambda);
 
     const apiGatewayId: string = 'nestjs-api-gateway';
     const authorizer = new CognitoUserPoolsAuthorizer(this, 'api-authorizer', {

@@ -1,8 +1,7 @@
 import {
   IMyCharactersLockoutsSave,
   IMyCharactersLockoutsSaveCharacter,
-  MyCharactersLockoutsSave,
-  Raid
+  MyCharactersLockoutsSave
 } from 'classic-companion-core';
 import { CharacterRaidStatus } from '../character-raid-status.model';
 import { NitImport, NitImportCharacter, NitImportLockout } from '../imports/nit-import.interface';
@@ -54,33 +53,9 @@ export class MyCharactersLockoutsViewModel {
   }
 
   public getSaveableData(): IMyCharactersLockoutsSave {
-    const characters: IMyCharactersLockoutsSaveCharacter[] = this.data.map((characterData) => {
-      const character: IMyCharactersLockoutsSaveCharacter = {
-        characterName: characterData.characterName,
-        classSlug: characterData.wowClass?.slug,
-        hidden: characterData.hidden,
-        lockouts: []
-      };
-      for (const kvp of characterData.raidStatuses.entries()) {
-        const raid: Raid = kvp[0];
-        const lockout: CharacterRaidStatus = kvp[1];
-        if (!lockout.completed && !lockout.hasCustomData()) {
-          continue;
-        }
-        const data = {
-          raidSlug: raid.slug,
-          itemsNeeded: lockout.itemsNeeded,
-          needsToRun: lockout.needsToRun,
-          manuallyCompletedOn: lockout.manuallyCompletedOn,
-          expires: lockout.expires,
-          scheduledDay: lockout.scheduledDay,
-          scheduledTime: lockout.scheduledTime,
-          notes: lockout.notes
-        };
-        character.lockouts.push(data);
-      }
-      return character;
-    });
+    const characters: IMyCharactersLockoutsSaveCharacter[] = this.data.map((characterData) =>
+      characterData.getSaveableData()
+    );
 
     return {
       version: '0.1',

@@ -54,30 +54,39 @@ export class MyCharactersLockoutsComponent implements OnInit {
   }
 
   public loadSavedData(): void {
-    const loadedSave: IMyCharactersLockoutsSave | undefined = this.myCharactersService.getAll();
-    if (!loadedSave) {
-      return;
-    }
-    const save: MyCharactersLockoutsSave = new MyCharactersLockoutsSave({
-      version: loadedSave.version,
-      showHidden: loadedSave.showHidden,
-      characters: loadedSave.characters.map((c) => {
-        return new MyCharactersLockoutsSaveCharacter({
-          characterName: c.characterName,
-          classSlug: c.classSlug,
-          hidden: c.hidden,
-          lockouts: c.lockouts.map((l) => {
-            return new MyCharacterLockoutSaveLockout(l);
-          })
-        });
-      })
+    this.myCharactersService.getAll().subscribe((loadedSave: IMyCharactersLockoutsSave) => {
+      if (!loadedSave) {
+        return;
+      }
+      // FIXME: Simplify types
+      const save: MyCharactersLockoutsSave = new MyCharactersLockoutsSave({
+        version: loadedSave.version,
+        showHidden: loadedSave.showHidden,
+        characters: loadedSave.characters.map((c) => {
+          return new MyCharactersLockoutsSaveCharacter({
+            characterName: c.characterName,
+            classSlug: c.classSlug,
+            hidden: c.hidden,
+            lockouts: c.lockouts.map((l) => {
+              return new MyCharacterLockoutSaveLockout(l);
+            })
+          });
+        })
+      });
+      this.viewModel = new MyCharactersLockoutsViewModel(save);
+      this.viewModel.showHidden = save.showHidden;
     });
-    this.viewModel = new MyCharactersLockoutsViewModel(save);
-    this.viewModel.showHidden = save.showHidden;
   }
 
   public saveLockouts(): void {
-    this.myCharactersService.save(this.viewModel?.getSaveableData());
+    if (!this.viewModel) {
+      throw new Error('no viewmodel for saving characters');
+    }
+    this.myCharactersService.save(this.viewModel.getSaveableData()).subscribe();
+  }
+
+  public saveCharacter(characterViewModel: CharacterLockoutsViewModel): void {
+    this.myCharactersService.saveCharacter(characterViewModel.getSaveableData()).subscribe();
   }
 
   public onImportClick(): void {
@@ -112,38 +121,45 @@ export class MyCharactersLockoutsComponent implements OnInit {
 
   public onHiddenToggleClick(character: CharacterLockoutsViewModel): void {
     character.hidden = !character.hidden;
-    this.saveLockouts();
+    this.saveCharacter(character);
   }
 
   public onAddClick(): void {
     const characterName = prompt('Enter character name');
-
-    if (characterName != null) {
-      this.viewModel?.data.push(new CharacterLockoutsViewModel(characterName, undefined, []));
+    if (!characterName || !this.viewModel) {
+      return;
     }
-    this.saveLockouts();
+    // FIXME: Simplify types
+    const newCharacter: CharacterLockoutsViewModel = new CharacterLockoutsViewModel(characterName, undefined, []);
+    this.viewModel.data.push(newCharacter);
+    this.saveCharacter(newCharacter);
   }
 
   public onDeleteClick(): void {
-    if (!this.viewModel) {
-      return;
-    }
-    const characterName: string | null = prompt('Enter character name to delete');
-    if (!characterName) {
-      return;
-    }
-    const toDeleteIndex: number = this.viewModel.data.findIndex(
-      (characterLockouts) => characterLockouts.characterName.toLowerCase() === characterName.toLowerCase()
-    );
-    if (toDeleteIndex === -1) {
-      this.toastService.warn('Cannot delete Character', 'Character not found ' + characterName);
-      return;
-    }
-    this.viewModel.data.splice(toDeleteIndex, 1);
-    this.saveLockouts();
+    this.toastService.warn('Cannot Delete', 'Deletion is disabled for now. Hide characters you wish to delete.');
+    // if (!this.viewModel) {
+    //   return;
+    // }
+    // const characterName: string | null = prompt('Enter character name to delete');
+    // if (!characterName) {
+    //   return;
+    // }
+    // const toDeleteIndex: number = this.viewModel.data.findIndex(
+    //   (characterLockouts) => characterLockouts.characterName.toLowerCase() === characterName.toLowerCase()
+    // );
+    // if (toDeleteIndex === -1) {
+    //   this.toastService.warn('Cannot delete Character', 'Character not found ' + characterName);
+    //   return;
+    // }
+    // this.viewModel.data.splice(toDeleteIndex, 1);
+    // this.saveLockouts();
   }
 
-  public onRaidLockoutClick(raidStatuses: Map<Raid, CharacterRaidStatus>, raid: Raid): void {
+  public onRaidLockoutClick(
+    rowValue: CharacterLockoutsViewModel,
+    raidStatuses: Map<Raid, CharacterRaidStatus>,
+    raid: Raid
+  ): void {
     const raidData: CharacterRaidStatus | undefined = raidStatuses.get(raid);
     if (!raidData) {
       throw new Error('raid lockout not found ' + JSON.stringify(raid));
@@ -162,7 +178,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
         raidData.notes = result.notes;
         raidData.needsToRun = result.needsToRun ?? false;
         raidData.manuallyCompletedOn = result.completed === true ? Date.now() : -1;
-        this.saveLockouts();
+        this.saveCharacter(rowValue);
       }
     });
   }
@@ -200,7 +216,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
         label: 'Ony10',
         valueKey: 'raidStatuses',
         cellStyle: (rowValue) => this.getRaidCellStyle(rowValue, Raids.Onyxia10),
-        onClick: (rowValue) => this.onRaidLockoutClick(rowValue, Raids.Onyxia10),
+        onClick: (cellValue, rowValue) => this.onRaidLockoutClick(rowValue, cellValue, Raids.Onyxia10),
         columnStyle,
         transform: (rowValue) => rowValue.raidStatuses.get(Raids.Onyxia10),
         format: {
@@ -212,7 +228,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
         label: 'Ony25',
         valueKey: 'raidStatuses',
         cellStyle: (rowValue) => this.getRaidCellStyle(rowValue, Raids.Onyxia25),
-        onClick: (rowValue) => this.onRaidLockoutClick(rowValue, Raids.Onyxia25),
+        onClick: (cellValue, rowValue) => this.onRaidLockoutClick(rowValue, cellValue, Raids.Onyxia25),
         columnStyle,
         transform: (rowValue) => rowValue.raidStatuses.get(Raids.Onyxia25),
         format: {
@@ -224,7 +240,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
         label: 'VoA10',
         valueKey: 'raidStatuses',
         cellStyle: (rowValue) => this.getRaidCellStyle(rowValue, Raids.VoA10),
-        onClick: (rowValue) => this.onRaidLockoutClick(rowValue, Raids.VoA10),
+        onClick: (cellValue, rowValue) => this.onRaidLockoutClick(rowValue, cellValue, Raids.VoA10),
         columnStyle,
         transform: (rowValue) => rowValue.raidStatuses.get(Raids.VoA10),
         format: {
@@ -236,7 +252,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
         label: 'VoA25',
         valueKey: 'raidStatuses',
         cellStyle: (rowValue) => this.getRaidCellStyle(rowValue, Raids.VoA25),
-        onClick: (rowValue) => this.onRaidLockoutClick(rowValue, Raids.VoA25),
+        onClick: (cellValue, rowValue) => this.onRaidLockoutClick(rowValue, cellValue, Raids.VoA25),
         columnStyle,
         transform: (rowValue) => rowValue.raidStatuses.get(Raids.VoA25),
         format: {
@@ -248,7 +264,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
         label: 'Uld10',
         valueKey: 'raidStatuses',
         cellStyle: (rowValue) => this.getRaidCellStyle(rowValue, Raids.Ulduar10),
-        onClick: (rowValue) => this.onRaidLockoutClick(rowValue, Raids.Ulduar10),
+        onClick: (cellValue, rowValue) => this.onRaidLockoutClick(rowValue, cellValue, Raids.Ulduar10),
         columnStyle,
         transform: (rowValue) => rowValue.raidStatuses.get(Raids.Ulduar10),
         format: {
@@ -260,7 +276,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
         label: 'Uld25',
         valueKey: 'raidStatuses',
         cellStyle: (rowValue) => this.getRaidCellStyle(rowValue, Raids.Ulduar25),
-        onClick: (rowValue) => this.onRaidLockoutClick(rowValue, Raids.Ulduar25),
+        onClick: (cellValue, rowValue) => this.onRaidLockoutClick(rowValue, cellValue, Raids.Ulduar25),
         columnStyle,
         transform: (rowValue) => rowValue.raidStatuses.get(Raids.Ulduar25),
         format: {
@@ -272,7 +288,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
         label: 'ToGC10',
         valueKey: 'raidStatuses',
         cellStyle: (rowValue) => this.getRaidCellStyle(rowValue, Raids.ToGC10),
-        onClick: (rowValue) => this.onRaidLockoutClick(rowValue, Raids.ToGC10),
+        onClick: (cellValue, rowValue) => this.onRaidLockoutClick(rowValue, cellValue, Raids.ToGC10),
         columnStyle,
         transform: (rowValue) => rowValue.raidStatuses.get(Raids.ToGC10),
         format: {
@@ -284,7 +300,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
         label: 'ToGC25',
         valueKey: 'raidStatuses',
         cellStyle: (rowValue) => this.getRaidCellStyle(rowValue, Raids.ToGC25),
-        onClick: (rowValue) => this.onRaidLockoutClick(rowValue, Raids.ToGC25),
+        onClick: (cellValue, rowValue) => this.onRaidLockoutClick(rowValue, cellValue, Raids.ToGC25),
         columnStyle,
         transform: (rowValue) => rowValue.raidStatuses.get(Raids.ToGC25),
         format: {
@@ -296,7 +312,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
         label: 'ICC10',
         valueKey: 'raidStatuses',
         cellStyle: (rowValue) => this.getRaidCellStyle(rowValue, Raids.ICC10),
-        onClick: (rowValue) => this.onRaidLockoutClick(rowValue, Raids.ICC10),
+        onClick: (cellValue, rowValue) => this.onRaidLockoutClick(rowValue, cellValue, Raids.ICC10),
         columnStyle,
         transform: (rowValue) => rowValue.raidStatuses.get(Raids.ICC10),
         format: {
@@ -308,7 +324,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
         label: 'ICC25',
         valueKey: 'raidStatuses',
         cellStyle: (rowValue) => this.getRaidCellStyle(rowValue, Raids.ICC25),
-        onClick: (rowValue) => this.onRaidLockoutClick(rowValue, Raids.ICC25),
+        onClick: (cellValue, rowValue) => this.onRaidLockoutClick(rowValue, cellValue, Raids.ICC25),
         columnStyle,
         transform: (rowValue) => rowValue.raidStatuses.get(Raids.ICC25),
         format: {

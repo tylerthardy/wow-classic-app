@@ -29,6 +29,7 @@
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
     "@vendia/serverless-express": "^4.10.1",
+    "aws-jwt-verify": "^4.0.0",
     "change-case": "^4.1.2",
     "classic-companion-core": "*",
     "class-transformer": "^0.5.1",

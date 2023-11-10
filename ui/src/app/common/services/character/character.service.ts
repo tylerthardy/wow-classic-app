@@ -24,8 +24,7 @@ export class CharacterService {
   ) {}
 
   public getZoneRankings(query: IGetCharacterZoneRankings): Observable<IGetCharacterZoneRankingsResponse> {
-    if (!this.regionServerService.regionServer.regionSlug || !this.regionServerService.regionServer.serverSlug) {
-      this.toastService.warn('Invalid Server', 'Choose your server at top of page');
+    if (!this.regionServerService.validate()) {
       return of();
     }
     const url: string = `${this.config.apiUrl}/character`;
@@ -40,8 +39,7 @@ export class CharacterService {
   public getMultipleZoneRankings(
     queries: IGetCharacterZoneRankings[]
   ): Observable<IGetMultipleCharacterZoneRankingsResponse> {
-    if (!this.regionServerService.regionServer.regionSlug || !this.regionServerService.regionServer.serverSlug) {
-      this.toastService.warn('Invalid Server', 'Choose your server at top of page');
+    if (!this.regionServerService.validate()) {
       return of();
     }
     const url: string = `${this.config.apiUrl}/character/multiple`;

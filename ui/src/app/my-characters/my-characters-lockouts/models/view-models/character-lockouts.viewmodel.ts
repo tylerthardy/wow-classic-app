@@ -1,4 +1,11 @@
-import { MyCharacterLockoutSaveLockout, Raid, Raids, WowClass, WowClasses } from 'classic-companion-core';
+import {
+  IMyCharactersLockoutsSaveCharacter,
+  MyCharacterLockoutSaveLockout,
+  Raid,
+  Raids,
+  WowClass,
+  WowClasses
+} from 'classic-companion-core';
 import { CharacterRaidStatus } from '../character-raid-status.model';
 import { NitImportLockout } from '../imports/nit-import.interface';
 
@@ -31,5 +38,33 @@ export class CharacterLockoutsViewModel {
       const raidStatus: CharacterRaidStatus = statusPerRaid.get(raid) ?? new CharacterRaidStatus();
       this.raidStatuses.set(raid, raidStatus);
     });
+  }
+
+  public getSaveableData(): IMyCharactersLockoutsSaveCharacter {
+    const character: IMyCharactersLockoutsSaveCharacter = {
+      characterName: this.characterName,
+      classSlug: this.wowClass?.slug,
+      hidden: this.hidden,
+      lockouts: []
+    };
+    for (const kvp of this.raidStatuses.entries()) {
+      const raid: Raid = kvp[0];
+      const lockout: CharacterRaidStatus = kvp[1];
+      if (!lockout.completed && !lockout.hasCustomData()) {
+        continue;
+      }
+      const data = {
+        raidSlug: raid.slug,
+        itemsNeeded: lockout.itemsNeeded,
+        needsToRun: lockout.needsToRun,
+        manuallyCompletedOn: lockout.manuallyCompletedOn,
+        expires: lockout.expires,
+        scheduledDay: lockout.scheduledDay,
+        scheduledTime: lockout.scheduledTime,
+        notes: lockout.notes
+      };
+      character.lockouts.push(data);
+    }
+    return character;
   }
 }

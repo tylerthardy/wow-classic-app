@@ -4,11 +4,12 @@ import { AppConfigModule } from './app-config.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CharacterModule } from './character/character.module';
+import { MyCharacterModule } from './my-character/my-character.module';
 import { SpecializationModule } from './specialization/specialization.module';
 import { WarcraftLogsModule } from './warcraft-logs/warcraft-logs.module';
 
 @Module({
-  imports: [AppConfigModule, WarcraftLogsModule, CharacterModule, SpecializationModule],
+  imports: [AppConfigModule, WarcraftLogsModule, CharacterModule, SpecializationModule, MyCharacterModule],
   controllers: [AppController],
   providers: [AppService, AppConfig]
 })
