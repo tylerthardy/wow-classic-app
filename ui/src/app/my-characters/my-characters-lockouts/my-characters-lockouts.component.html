@@ -30,8 +30,9 @@
     <div style="flex: 1">
       <app-class-icon [wowClass]="rowValue.wowClass" sizePx="18px" [showUnknownIcon]="true"></app-class-icon>
     </div>
-    <div style="flex: 5">{{ rowValue.characterName }}</div>
-    <div style="flex: 1; cursor: pointer; display: flex; align-items: center" (click)="onHiddenToggleClick(rowValue)">
+    <div style="flex: 4">{{ rowValue.characterName }}</div>
+    <div style="flex: 2; cursor: pointer; display: flex; align-items: center" (click)="onHiddenToggleClick(rowValue)">
+      <div>{{ rowValue.currencies[341] ?? 'N' }}</div>
       <app-svg-icon
         [ngClass]="{ warn: rowValue.hidden }"
         [iconName]="rowValue.hidden ? 'no-eye' : 'eye'"

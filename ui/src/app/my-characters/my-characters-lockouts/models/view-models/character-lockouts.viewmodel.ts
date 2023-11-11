@@ -14,15 +14,18 @@ export class CharacterLockoutsViewModel {
   public wowClass?: WowClass;
   public hidden: boolean = false;
   public raidStatuses: Map<Raid, CharacterRaidStatus> = new Map();
+  public currencies: { [id: number]: number } = {};
 
   constructor(
     characterName: string,
     classSlug: string | undefined,
     lockoutData: NitImportLockout[] | MyCharacterLockoutSaveLockout[],
+    currencies: { [id: number]: number },
     hidden?: boolean
   ) {
     this.characterName = characterName;
     this.wowClass = classSlug ? WowClasses.getClassBySlug(classSlug) : undefined;
+    this.currencies = currencies;
     this.hidden = hidden ?? this.hidden;
 
     const loadedRaidStatuses: CharacterRaidStatus[] = lockoutData.map((data) => new CharacterRaidStatus(data));
@@ -45,7 +48,8 @@ export class CharacterLockoutsViewModel {
       characterName: this.characterName,
       classSlug: this.wowClass?.slug,
       hidden: this.hidden,
-      lockouts: []
+      lockouts: [],
+      currencies: this.currencies
     };
     for (const kvp of this.raidStatuses.entries()) {
       const raid: Raid = kvp[0];

@@ -22,6 +22,7 @@ export interface IMyCharactersLockoutsSaveCharacter {
   classSlug?: string;
   hidden: boolean;
   lockouts: IMyCharacterLockoutSaveLockout[];
+  currencies: { [id: number]: number };
 }
 
 export interface IMyCharacterLockoutSaveLockout {
@@ -40,6 +41,7 @@ export class MyCharactersLockoutsSaveCharacter implements IMyCharactersLockoutsS
   public classSlug?: string;
   public hidden: boolean;
   public lockouts: IMyCharacterLockoutSaveLockout[];
+  public currencies: { [id: number]: number } = {};
 
   constructor(data: IMyCharactersLockoutsSaveCharacter) {
     this.characterName = data.characterName;

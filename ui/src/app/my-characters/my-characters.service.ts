@@ -52,7 +52,7 @@ export class MyCharactersService {
       return of();
     }
     // FIXME: Cleanup types
-    const transformed: IPostMyCharacter = data as IPostMyCharacter;
+    const transformed: IPostMyCharacter = data as unknown as IPostMyCharacter;
     const region: string = this.regionServerService.regionServer.regionSlug!;
     const server: string = this.regionServerService.regionServer.serverSlug!;
 

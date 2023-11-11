@@ -17,14 +17,21 @@ export class MyCharactersLockoutsViewModel {
   constructor(importedData: NitImport | MyCharactersLockoutsSave) {
     if (importedData instanceof MyCharactersLockoutsSave) {
       this.data = importedData.characters.map((char) => {
-        return new CharacterLockoutsViewModel(char.characterName, char.classSlug, char.lockouts, char.hidden);
+        return new CharacterLockoutsViewModel(
+          char.characterName,
+          char.classSlug,
+          char.lockouts,
+          char.currencies,
+          char.hidden
+        );
       });
     } else {
       this.data = Object.entries(importedData.characters).map((kvp) => {
         const characterName: string = kvp[0];
         const character: NitImportCharacter = kvp[1];
         const lockouts: NitImportLockout[] = character.instances;
-        return new CharacterLockoutsViewModel(characterName, character.classEnglish, lockouts);
+        const currencies: {} = {};
+        return new CharacterLockoutsViewModel(characterName, character.classEnglish, lockouts, currencies);
       });
     }
   }

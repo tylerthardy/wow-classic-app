@@ -69,7 +69,8 @@ export class MyCharactersLockoutsComponent implements OnInit {
             hidden: c.hidden,
             lockouts: c.lockouts.map((l) => {
               return new MyCharacterLockoutSaveLockout(l);
-            })
+            }),
+            currencies: c.currencies
           });
         })
       });
@@ -130,7 +131,7 @@ export class MyCharactersLockoutsComponent implements OnInit {
       return;
     }
     // FIXME: Simplify types
-    const newCharacter: CharacterLockoutsViewModel = new CharacterLockoutsViewModel(characterName, undefined, []);
+    const newCharacter: CharacterLockoutsViewModel = new CharacterLockoutsViewModel(characterName, undefined, [], {});
     this.viewModel.data.push(newCharacter);
     this.saveCharacter(newCharacter);
   }
