@@ -4,7 +4,7 @@
   "main": "dist-electron/main.js",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --port=4201",
     "build": "ng build",
     "electron-tsc": "tsc main.ts && ng build --base-href ./ && electron .",
     "watch": "ng build --watch --configuration development",
@@ -21,7 +21,8 @@
     "@angular/platform-browser": "^14.0.0",
     "@angular/platform-browser-dynamic": "^14.0.0",
     "@angular/router": "^14.0.0",
-    "aws-amplify": "^5.3.11",
+    "@aws-amplify/auth": "^5.2.0",
+    "amazon-cognito-identity-js": "^6.1.2",
     "chokidar": "^3.5.3",
     "classic-companion-core": "*",
     "javascript-time-ago": "^2.5.9",

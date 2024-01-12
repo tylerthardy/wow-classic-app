@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { CognitoService, IUser } from '../cognito.service';
+import { CognitoService, IUserLogin } from '../cognito.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -11,12 +11,12 @@ import { CognitoService, IUser } from '../cognito.service';
 export class SignUpComponent {
   loading: boolean;
   isConfirm: boolean;
-  user: IUser;
+  user: IUserLogin;
 
   constructor(private router: Router, private cognitoService: CognitoService) {
     this.loading = false;
     this.isConfirm = false;
-    this.user = {} as IUser;
+    this.user = {} as IUserLogin;
   }
 
   public signUp(): void {

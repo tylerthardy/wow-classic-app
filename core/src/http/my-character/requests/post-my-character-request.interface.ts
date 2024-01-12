@@ -7,4 +7,5 @@ export interface IPostMyCharacter {
   classSlug?: string | undefined;
   hidden: boolean;
   lockouts: IMyCharacterLockoutSaveLockout[];
+  currencies?: { [currencyId: number]: number };
 }

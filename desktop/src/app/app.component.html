@@ -31,6 +31,7 @@
       <button *ngIf="!isAuthenticated" (click)="onSignInButtonClick()">Sign In</button>
       <span style="display: inline-block" *ngIf="isAuthenticated">{{ cognitoService.user!.name }}</span>
       <button *ngIf="isAuthenticated" (click)="onSignOutButtonClick()">Sign Out</button>
+      <button (click)="onClick()">Test</button>
       <!-- </ng-container> -->
     </div>
   </header>

@@ -30,6 +30,9 @@ export class PostMyCharacterBody implements IPostMyCharacter {
   @IsOptional()
   @IsString()
   classSlug?: string | undefined;
+
+  // FIXME: Validation
+  currencies?: { [currencyId: number]: number };
 }
 
 class MyCharacterLockout implements IMyCharacterLockoutSaveLockout {

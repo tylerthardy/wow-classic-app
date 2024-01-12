@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { from } from 'rxjs';
 import { CognitoService } from './cognito.service';
 
 @Component({
@@ -8,16 +9,16 @@ import { CognitoService } from './cognito.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  isAuthenticated: boolean;
+  protected isAuthenticated: boolean = false;
 
-  constructor(private router: Router, protected cognitoService: CognitoService) {
-    this.isAuthenticated = false;
-  }
+  constructor(private router: Router, protected cognitoService: CognitoService) {}
 
   public ngOnInit(): void {
-    this.cognitoService.isAuthenticated().then((success: boolean) => {
-      this.isAuthenticated = success;
+    this.cognitoService.initialize();
+    from(this.cognitoService.getUser()).subscribe((result) => {
+      console.log('app getUser', result);
     });
+    this.cognitoService.authenticated$.subscribe((isAuthenticated) => (this.isAuthenticated = isAuthenticated));
   }
 
   protected onRegisterButtonClick(): void {
@@ -30,7 +31,13 @@ export class AppComponent {
 
   protected onSignOutButtonClick(): void {
     this.cognitoService.signOut().then(() => {
-      this.router.navigate(['/sign-in']);
+      this.router.navigate(['sign-in']);
+    });
+  }
+
+  protected onClick(): void {
+    this.cognitoService.getSession().subscribe((result) => {
+      console.log('app getSession', result);
     });
   }
 }

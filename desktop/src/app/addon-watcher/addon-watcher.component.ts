@@ -4,6 +4,7 @@ import en from 'javascript-time-ago/locale/en.json';
 import { ElectronAppActions } from '../../../electron/actions/electron-app-actions';
 import { ElectronUiActions } from '../../../electron/actions/electron-ui-actions';
 import { ElectronService } from '../electron.service';
+import { MyCharactersService } from '../my-characters.service';
 
 @Component({
   selector: 'app-addon-watcher',
@@ -18,7 +19,11 @@ export class AddonWatcherComponent {
     'C:/Program Files (x86)/World of Warcraft/_classic_/WTF/Account/MENTALSKATER45/SavedVariables/NovaInstanceTracker.lua';
   private timeAgo: TimeAgo;
 
-  constructor(private electronService: ElectronService, cdRef: ChangeDetectorRef) {
+  constructor(
+    private electronService: ElectronService,
+    cdRef: ChangeDetectorRef,
+    private myCharactersService: MyCharactersService
+  ) {
     TimeAgo.addDefaultLocale(en);
     this.timeAgo = new TimeAgo('en-US');
     // TODO: Use a backoff here since after 60 seconds we only show minutes
@@ -69,5 +74,11 @@ export class AddonWatcherComponent {
       return 'Never';
     }
     return this.timeAgo.format(lastUpdated, 'twitter-now');
+  }
+
+  protected gimmeUser(): void {
+    this.myCharactersService.getAll().subscribe((result) => {
+      console.log(result);
+    });
   }
 }

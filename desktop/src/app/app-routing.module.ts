@@ -7,7 +7,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'signIn',
+    redirectTo: 'sign-in',
     pathMatch: 'full'
   },
   {
@@ -24,7 +24,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'signIn'
+    redirectTo: 'sign-in'
   }
 ];
 
