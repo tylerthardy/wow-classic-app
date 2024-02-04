@@ -144,4 +144,209 @@ export class WarcraftLogsService {
       size: request.size
     };
   }
+
+  public async getGuildEncounters(
+    guildId: number,
+    zoneId: number,
+    encounterId: number,
+    hardMode: boolean
+  ): Promise<IGuildEncounters> {
+    const hardModeQuery: string = hardMode ? ',difficulty: 4' : '';
+
+    const GET_GUILD_ENCOUNTERS: TypedDocumentNode<IGuildEncounters, unknown> = gql`
+        query {
+          reportData {
+            reports(guildID:${guildId}, zoneID:${zoneId}) {
+              total
+              data {
+                code
+                startTime
+                endTime
+                fights(encounterID: ${encounterId} ${hardModeQuery}) {
+                  id
+                  startTime
+                  endTime
+                  size
+                }
+                owner {
+                  id
+                }
+              }
+            }
+          }
+        }
+      `;
+
+    let result: ApolloQueryResult<IGuildEncounters>;
+    console.log('querying wcl for guild reports', {
+      guildId,
+      zoneId,
+      encounterId,
+      hardMode
+    });
+    try {
+      result = await this.apollo.query({
+        query: GET_GUILD_ENCOUNTERS,
+        fetchPolicy: 'network-only'
+      });
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+    console.log('guild reports query complete');
+
+    return result.data;
+  }
+
+  public async getGuildEncountersByTag(
+    guildId: number,
+    tagId: number,
+    encounterId: number,
+    hardMode: boolean
+  ): Promise<IGuildEncounters> {
+    const hardModeQuery: string = hardMode ? ',difficulty: 4' : '';
+
+    const GET_GUILD_ENCOUNTERS: TypedDocumentNode<IGuildEncounters, unknown> = gql`
+        query {
+          reportData {
+            reports(guildID:${guildId}, guildTagID:${tagId}) {
+              total
+              data {
+                code
+                startTime
+                endTime
+                fights(encounterID: ${encounterId} ${hardModeQuery}) {
+                  id
+                  startTime
+                  endTime
+                  size
+                }
+                owner {
+                  id
+                }
+              }
+            }
+          }
+        }
+      `;
+
+    let result: ApolloQueryResult<IGuildEncounters>;
+    console.log('querying wcl for guild reports', {
+      guildId,
+      tagId,
+      encounterId,
+      hardMode
+    });
+    try {
+      result = await this.apollo.query({
+        query: GET_GUILD_ENCOUNTERS,
+        fetchPolicy: 'network-only'
+      });
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+    console.log('guild reports query complete');
+
+    return result.data;
+  }
+
+  public async getReportEncounterPlayerDetails(
+    log: IGuildEncounterReport,
+    encounterId: number
+  ): Promise<IPlayerDetails> {
+    const reportCode: string = log.code;
+    // Unneeded extra security
+    // const fightIds: number[] = log.fights.filter(f => f.encounterID === encounterId).map(f => f.id);
+    const fightIds: number[] = log.fights.map((f) => f.id);
+
+    const GET_GUILD_ENCOUNTERS: TypedDocumentNode<IPlayerDetails, unknown> = gql`
+      query {
+        reportData {
+          report(code: "${reportCode}") {
+            playerDetails(encounterID: ${encounterId}, fightIDs: [${fightIds.join(',')}])
+          }
+        }
+      }
+    `;
+
+    let result: ApolloQueryResult<IPlayerDetails>;
+    console.log('querying wcl for report', {
+      reportCode,
+      encounterId
+    });
+    try {
+      result = await this.apollo.query({
+        query: GET_GUILD_ENCOUNTERS,
+        fetchPolicy: 'network-only'
+      });
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+    console.log('guild reports query complete');
+
+    return result.data;
+  }
+}
+
+export interface IGuildEncounters {
+  reportData: {
+    reports: {
+      total: number;
+      data: IGuildEncounterReport[];
+    };
+  };
+}
+
+export interface IGuildEncounterReport {
+  code: string;
+  startTime: number;
+  endTime: number;
+  fights: {
+    id: number;
+    startTime: number;
+    endTime: number;
+    size: number;
+    // name: string;
+    // difficulty: number;
+    // encounterID: number;
+  }[];
+  owner: {
+    id: number;
+  };
+}
+
+export interface IPlayerDetails {
+  reportData: {
+    report: {
+      playerDetails: {
+        data: {
+          playerDetails: {
+            healers: IPlayerDetailsPlayer[];
+            tanks: IPlayerDetailsPlayer[];
+            dps: IPlayerDetailsPlayer[];
+          };
+        };
+      };
+    };
+  };
+}
+
+export interface IPlayerDetailsPlayer {
+  name: string;
+  id: number;
+  guid: number;
+  type: string;
+  server: string;
+  icon: string;
+  specs: {
+    spec: string;
+    count: number;
+  }[];
+  minItemLevel: number;
+  maxItemLevel: number;
+  potionUse: number;
+  healthstoneUse: number;
+  combatantInfo: any[];
 }
